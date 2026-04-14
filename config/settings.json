@@ -1,0 +1,15 @@
+{
+    "sitio": "AWA05",
+    "frecuencia_muestreo_minutos": 60,
+    "zona_horaria": "America/Guatemala",
+    "rutas": {
+        "datos_raw": "data/raw/",
+        "datos_procesados": "data/processed/",
+        "backups": "data/backups/",
+        "logs": "logs/"
+    },
+    "github": {
+        "repo": "",
+        "rama": "main"
+    }
+}

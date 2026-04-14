@@ -1,0 +1,7 @@
+{
+    "factor_calibracion": 1.0,
+    "offset_tara": 0,
+    "unidades": "kg",
+    "limite_minimo": 0,
+    "limite_maximo": 20
+}
