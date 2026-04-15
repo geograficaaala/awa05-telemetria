@@ -1,904 +1,948 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Proyecto AWA05 · Tablero Dinámico</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<style>
-  :root {
-    --bg: #f6fbff;
-    --surface: #ffffff;
-    --surface-soft: #eef7ff;
-    --surface-alt: #e3f2fd;
-    --border: #c9dff2;
-    --border-strong: #a9cde9;
-    --primary: #6faed9;
-    --primary-dark: #4f8fc1;
-    --sky: #92cbe8;
-    --mint: #b7e3f8;
-    --rose: #b9d9ef;
-    --green: #8fc7dd;
-    --text: #24455f;
-    --muted: #5f7f98;
-    --shadow: 0 10px 26px rgba(111, 174, 217, 0.12);
-  }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWA05 · Tablero de Telemetría</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --bg: #f5fbff;
+      --surface: #ffffff;
+      --surface-soft: #eef7ff;
+      --surface-alt: #e2f1fb;
+      --border: #c8dff2;
+      --border-strong: #a7cbe7;
+      --primary: #6eaed8;
+      --primary-dark: #4b89bb;
+      --blue-1: #6eaed8;
+      --blue-2: #8dc2e6;
+      --blue-3: #aacfe9;
+      --blue-4: #7aaed0;
+      --blue-5: #93bdd9;
+      --blue-6: #7cb3e2;
+      --blue-7: #aecfe4;
+      --blue-8: #9ed7ef;
+      --blue-9: #d0e9f7;
+      --text: #24455f;
+      --muted: #5d7f99;
+      --shadow: 0 12px 28px rgba(110, 174, 216, 0.12);
+    }
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Calibri, "Segoe UI", Arial, sans-serif;
-  }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Calibri, "Segoe UI", Arial, sans-serif;
+    }
 
-  html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; }
 
-  body {
-    background: linear-gradient(180deg, #f8fcff 0%, #eef7ff 48%, #f7fbfe 100%);
-    color: var(--text);
-    font-size: 12pt;
-    overflow-x: hidden;
-  }
+    body {
+      background: linear-gradient(180deg, #f7fcff 0%, #edf7ff 50%, #f7fbff 100%);
+      color: var(--text);
+      font-size: 12pt;
+      overflow-x: hidden;
+    }
 
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(111,174,217,.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(111,174,217,.08) 1px, transparent 1px);
-    background-size: 54px 54px;
-    pointer-events: none;
-    z-index: 0;
-  }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(110,174,216,0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(110,174,216,0.07) 1px, transparent 1px);
+      background-size: 54px 54px;
+      pointer-events: none;
+      z-index: 0;
+    }
 
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 100;
-    background: rgba(255,255,255,0.92);
-    backdrop-filter: blur(14px);
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 32px;
-    height: 62px;
-    box-shadow: 0 4px 14px rgba(111,174,217,0.08);
-  }
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 0 30px;
+      height: 64px;
+      background: rgba(255,255,255,0.94);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 18px rgba(110,174,216,0.08);
+    }
 
-  .header-left,
-  .header-right,
-  .live-indicator {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-  }
+    .header-left,
+    .header-right,
+    .live-indicator {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
 
-  .logo {
-    font-size: 13pt;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--primary-dark);
-  }
+    .logo {
+      font-size: 13pt;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary-dark);
+      white-space: nowrap;
+    }
 
-  .breadcrumb,
-  .live-indicator,
-  .last-update,
-  .trend,
-  .chart-subtitle,
-  .kpi-label,
-  .label,
-  .section-tag,
-  .chart-badge,
-  .sidebar-label {
-    color: var(--muted);
-  }
+    .header-title {
+      font-size: 12pt;
+      font-weight: 700;
+      color: var(--text);
+      white-space: nowrap;
+    }
 
-  .breadcrumb,
-  .live-indicator,
-  .section-tag,
-  .chart-badge,
-  .kpi-label,
-  .label,
-  .sidebar-label {
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: 10pt;
-    font-weight: 700;
-  }
+    .live-indicator,
+    .section-tag,
+    .chart-badge,
+    .kpi-label,
+    .card-label,
+    .sidebar-label,
+    .trend,
+    .last-update,
+    .corr-table th {
+      font-size: 10pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
 
-  .mode-badge {
-    font-size: 9.5pt;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 7px 12px;
-    border-radius: 999px;
-    background: #e8f5ff;
-    color: var(--primary-dark);
-    border: 1px solid var(--border-strong);
-  }
+    .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 10px rgba(110,174,216,0.35);
+      animation: blink 2s ease-in-out infinite;
+    }
 
-  .dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--primary);
-    box-shadow: 0 0 10px rgba(111,174,217,.35);
-    animation: blink 2s ease-in-out infinite;
-  }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
 
-  @keyframes blink { 0%,100%{opacity:1}50%{opacity:.35} }
+    .back-link {
+      color: var(--primary-dark);
+      text-decoration: none;
+      font-size: 10pt;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 10px 16px;
+      border-radius: 999px;
+      border: 1px solid var(--border-strong);
+      background: #f9fcff;
+      white-space: nowrap;
+    }
 
-  .back-link {
-    color: var(--primary-dark);
-    text-decoration: none;
-    font-size: 10pt;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    padding: 10px 16px;
-    border-radius: 999px;
-    border: 1px solid var(--border-strong);
-    background: #f8fcff;
-  }
+    .back-link:hover {
+      background: var(--surface-alt);
+    }
 
-  .back-link:hover { background: var(--surface-alt); }
+    .layout {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      min-height: calc(100vh - 64px);
+    }
 
-  .layout {
-    display: grid;
-    grid-template-columns: 220px 1fr;
-    min-height: calc(100vh - 62px);
-    position: relative;
-    z-index: 1;
-  }
+    .sidebar {
+      position: sticky;
+      top: 64px;
+      height: calc(100vh - 64px);
+      overflow-y: auto;
+      padding: 22px 0;
+      border-right: 1px solid var(--border);
+      background: rgba(255,255,255,0.78);
+      backdrop-filter: blur(10px);
+    }
 
-  .sidebar {
-    border-right: 1px solid var(--border);
-    padding: 24px 0;
-    background: rgba(255,255,255,0.72);
-    position: sticky;
-    top: 62px;
-    height: calc(100vh - 62px);
-    overflow-y: auto;
-    backdrop-filter: blur(10px);
-  }
+    .sidebar-section { margin-bottom: 12px; }
+    .sidebar-label { padding: 8px 20px 6px; }
 
-  .sidebar-section { margin-bottom: 12px; }
+    .sidebar-item {
+      display: block;
+      padding: 11px 20px;
+      text-decoration: none;
+      color: var(--muted);
+      font-weight: 600;
+      border-left: 3px solid transparent;
+      transition: all 0.15s ease;
+    }
 
-  .sidebar-label {
-    padding: 8px 22px 6px;
-  }
+    .sidebar-item:hover,
+    .sidebar-item.active {
+      color: var(--primary-dark);
+      background: rgba(191,226,248,0.38);
+      border-left-color: var(--primary);
+    }
 
-  .sidebar-icon { display: none; }
+    .sidebar-kpi,
+    .kpi-card,
+    .chart-card,
+    .corr-card {
+      background: rgba(255,255,255,0.88);
+      border: 1px solid var(--border);
+      border-radius: 18px;
+      box-shadow: var(--shadow);
+    }
 
-  .sidebar-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 11px 22px;
-    font-size: 12pt;
-    font-weight: 600;
-    color: var(--muted);
-    cursor: pointer;
-    transition: all 0.15s ease;
-    border-left: 3px solid transparent;
-    text-decoration: none;
-  }
+    .sidebar-kpi {
+      margin: 10px 12px;
+      padding: 14px 14px;
+    }
 
-  .sidebar-item:hover,
-  .sidebar-item.active {
-    color: var(--primary-dark);
-    background: rgba(191,230,255,0.35);
-    border-left-color: var(--primary);
-  }
+    .sidebar-value {
+      font-size: 18pt;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-top: 4px;
+    }
 
-  .sidebar-kpi,
-  .kpi-card,
-  .chart-card {
-    background: rgba(255,255,255,0.86);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-  }
+    .sidebar-unit { font-size: 11pt; color: var(--muted); }
 
-  .sidebar-kpi {
-    padding: 14px 16px;
-    margin: 10px 14px;
-    border-radius: 16px;
-  }
+    main {
+      padding: 30px;
+      display: flex;
+      flex-direction: column;
+      gap: 30px;
+    }
 
-  .kpi-val {
-    font-size: 20pt;
-    font-weight: 700;
-    color: var(--primary-dark);
-  }
+    .hero-panel {
+      padding: 30px;
+      border-radius: 22px;
+      background: rgba(255,255,255,0.88);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow);
+    }
 
-  .kpi-unit { font-size: 11pt; color: var(--muted); }
+    .hero-panel h1 {
+      font-size: clamp(34px, 5vw, 58px);
+      line-height: 0.95;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
 
-  main {
-    padding: 32px;
-    display: flex;
-    flex-direction: column;
-    gap: 32px;
-  }
+    .hero-panel h1 span { display: block; color: var(--primary-dark); }
 
-  .section-header { margin-bottom: 18px; }
+    .hero-panel p {
+      max-width: 860px;
+      color: var(--muted);
+      text-align: justify;
+    }
 
-  .section-title,
-  .chart-title {
-    color: var(--text);
-  }
+    .section-header { margin-bottom: 16px; }
 
-  .section-title {
-    font-size: 28pt;
-    font-weight: 700;
-    letter-spacing: -0.02em;
-  }
+    .section-title {
+      font-size: 28pt;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
 
-  .kpi-row {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-    gap: 16px;
-  }
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 16px;
+    }
 
-  .kpi-card {
-    padding: 22px 24px;
-    border-radius: 18px;
-    position: relative;
-    overflow: hidden;
-  }
+    .kpi-card {
+      padding: 20px 22px;
+      position: relative;
+      overflow: hidden;
+    }
 
-  .kpi-card::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    height: 4px;
-  }
+    .kpi-card::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 4px;
+    }
 
-  .kpi-card.teal::after { background: linear-gradient(90deg, var(--primary), var(--mint)); }
-  .kpi-card.blue::after { background: linear-gradient(90deg, var(--primary-dark), var(--sky)); }
-  .kpi-card.amber::after { background: linear-gradient(90deg, #86b8dc, #c5e7fb); }
-  .kpi-card.rose::after { background: linear-gradient(90deg, #9fcbe5, #d2efff); }
-  .kpi-card.green::after { background: linear-gradient(90deg, #79b4cf, #bde5f6); }
+    .accent-1::after { background: var(--blue-1); }
+    .accent-2::after { background: var(--blue-2); }
+    .accent-3::after { background: var(--blue-3); }
+    .accent-4::after { background: var(--blue-4); }
+    .accent-5::after { background: var(--blue-5); }
+    .accent-6::after { background: var(--blue-6); }
 
-  .value {
-    font-size: 28pt;
-    font-weight: 700;
-    color: var(--primary-dark);
-  }
+    .card-value {
+      font-size: 25pt;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-top: 6px;
+    }
 
-  .unit {
-    font-size: 11pt;
-    color: var(--muted);
-    margin-left: 4px;
-  }
+    .card-unit { font-size: 11pt; color: var(--muted); }
 
-  .trend {
-    margin-top: 6px;
-    font-size: 10pt;
-    font-weight: 600;
-  }
+    .chart-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
 
-  .trend-up { color: #568db8 !important; }
-  .trend-dn { color: #7a9db8 !important; }
+    .chart-grid.single { grid-template-columns: 1fr; }
 
-  .chart-grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 24px;
-  }
+    .chart-card,
+    .corr-card {
+      padding: 22px;
+    }
 
-  .chart-grid.single { grid-template-columns: 1fr; }
+    .chart-card.wide,
+    .corr-card.wide {
+      grid-column: span 2;
+    }
 
-  .chart-card {
-    padding: 24px;
-    border-radius: 20px;
-    position: relative;
-  }
+    .chart-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      margin-bottom: 16px;
+    }
 
-  .chart-card.wide { grid-column: span 2; }
+    .chart-title {
+      font-size: 15pt;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 4px;
+    }
 
-  .chart-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 12px;
-    margin-bottom: 18px;
-  }
+    .chart-subtitle {
+      color: var(--muted);
+      text-align: justify;
+    }
 
-  .chart-title {
-    font-size: 16pt;
-    font-weight: 700;
-  }
+    .chart-badge {
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--surface-soft);
+      border: 1px solid var(--border-strong);
+      color: var(--primary-dark);
+      white-space: nowrap;
+    }
 
-  .chart-subtitle,
-  .last-update {
-    font-size: 10pt;
-    margin-top: 4px;
-  }
+    .chart-wrap {
+      position: relative;
+      height: 260px;
+    }
 
-  .chart-badge {
-    padding: 6px 10px;
-    border-radius: 999px;
-    background: #edf8ff;
-    border: 1px solid var(--border-strong);
-    color: var(--primary-dark);
-  }
+    .chart-wrap.tall { height: 320px; }
 
-  .chart-wrap {
-    position: relative;
-    height: 230px;
-  }
+    .corr-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 8px;
+    }
 
-  .chart-wrap.tall { height: 290px; }
+    .corr-table th,
+    .corr-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
 
-  .corr-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
-  }
+    .corr-table th { text-align: center; }
 
-  .corr-table th {
-    padding: 10px 12px;
-    border-bottom: 1px solid var(--border);
-    text-align: left;
-    font-size: 10pt;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-  }
+    .corr-table td:last-child { width: 140px; }
 
-  .corr-table td {
-    padding: 12px;
-    border-bottom: 1px solid rgba(201,223,242,0.8);
-    font-size: 12pt;
-    color: var(--text);
-  }
+    .bar-wrap {
+      width: 120px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--surface-soft);
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
 
-  .corr-table tr:last-child td { border-bottom: none; }
+    .bar-fill {
+      height: 100%;
+      border-radius: 999px;
+    }
 
-  .corr-val {
-    font-weight: 700;
-    color: var(--primary-dark);
-  }
+    .dash-footer {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 18px 30px 28px;
+      border-top: 1px solid var(--border);
+      background: rgba(255,255,255,0.84);
+      backdrop-filter: blur(8px);
+    }
 
-  .bar-wrap {
-    width: 120px;
-    height: 8px;
-    background: #e9f5fc;
-    border-radius: 999px;
-    overflow: hidden;
-  }
+    @media (max-width: 1120px) {
+      .layout { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .chart-grid { grid-template-columns: 1fr; }
+      .chart-card.wide, .corr-card.wide { grid-column: auto; }
+    }
 
-  .bar-fill {
-    height: 100%;
-    border-radius: 999px;
-    transition: width 0.6s ease;
-  }
+    @media (max-width: 720px) {
+      header, .dash-footer { padding-left: 18px; padding-right: 18px; }
+      main { padding: 20px; }
+      .hero-panel { padding: 22px; }
+      .chart-header { flex-direction: column; }
+      .kpi-row { grid-template-columns: 1fr 1fr; }
+    }
 
-  .dash-footer {
-    position: relative;
-    z-index: 1;
-    border-top: 1px solid var(--border);
-    background: rgba(255,255,255,0.86);
-    padding: 16px 32px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 14px;
-    font-size: 10pt;
-    color: var(--muted);
-  }
-
-  @media (max-width: 900px) {
-    .layout { grid-template-columns: 1fr; }
-    .sidebar { display: none; }
-    .chart-grid { grid-template-columns: 1fr; }
-    .chart-card.wide { grid-column: auto; }
-  }
-
-  @media (max-width: 600px) {
-    header { padding: 0 16px; height: auto; min-height: 62px; flex-wrap: wrap; gap: 10px; padding-top: 10px; padding-bottom: 10px; }
-    main { padding: 20px; }
-    .dash-footer { padding: 16px 20px; justify-content: center; }
-  }
-</style>
+    @media (max-width: 560px) {
+      .kpi-row { grid-template-columns: 1fr; }
+      header { flex-wrap: wrap; height: auto; padding-top: 12px; padding-bottom: 12px; }
+    }
+  </style>
 </head>
 <body>
+  <header>
+    <div class="header-left">
+      <div class="logo">AWA05</div>
+      <div class="header-title">Tablero operativo</div>
+    </div>
+    <div class="header-right">
+      <div class="live-indicator"><span class="dot"></span><span id="live-ts">—</span></div>
+      <a href="index.html" class="back-link">Volver al inicio</a>
+    </div>
+  </header>
 
-<header>
-  <div class="header-left">
-    <div class="logo">AWA05</div>
-    <div class="breadcrumb">/ tablero</div>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sidebar-section">
+        <div class="sidebar-label">Navegación</div>
+        <a class="sidebar-item active" href="#resumen">Resumen</a>
+        <a class="sidebar-item" href="#nivel">Nivel de agua</a>
+        <a class="sidebar-item" href="#clima-base">Clima base</a>
+        <a class="sidebar-item" href="#clima-avanzado">Clima avanzado</a>
+        <a class="sidebar-item" href="#correlacion">Correlación</a>
+      </div>
+      <div class="sidebar-section">
+        <div class="sidebar-label">Valores instantáneos</div>
+        <div class="sidebar-kpi">
+          <div class="card-label">Nivel</div>
+          <div class="sidebar-value"><span id="sb-nivel">—</span><span class="sidebar-unit"> L</span></div>
+        </div>
+        <div class="sidebar-kpi">
+          <div class="card-label">Humedad</div>
+          <div class="sidebar-value"><span id="sb-hum">—</span><span class="sidebar-unit"> %</span></div>
+        </div>
+        <div class="sidebar-kpi">
+          <div class="card-label">Temp.</div>
+          <div class="sidebar-value"><span id="sb-temp">—</span><span class="sidebar-unit"> °C</span></div>
+        </div>
+        <div class="sidebar-kpi">
+          <div class="card-label">Presión</div>
+          <div class="sidebar-value"><span id="sb-pres">—</span><span class="sidebar-unit"> inHg</span></div>
+        </div>
+      </div>
+    </aside>
+
+    <main>
+      <section id="resumen" class="hero-panel">
+        <div class="section-tag">Nodo AWA05</div>
+        <h1>Bienvenido <span>Jose Toriello</span></h1>
+        <p>
+          Este tablero concentra el nivel de agua, todas las variables expuestas por la estación meteorológica WS-2000 y los indicadores comparativos necesarios para revisión rápida del estado del sitio. Los enlaces fueron corregidos para publicación en GitHub Pages usando <strong>index.html</strong> y <strong>dashboard.html</strong> en la raíz del repositorio.
+        </p>
+      </section>
+
+      <section>
+        <div class="section-header">
+          <div class="section-tag">KPIs principales</div>
+          <div class="section-title">Resumen del estado actual</div>
+        </div>
+        <div class="kpi-row">
+          <div class="kpi-card accent-1"><div class="kpi-label">Nivel de agua</div><div class="card-value"><span id="kpi-nivel">—</span><span class="card-unit"> L</span></div><div class="trend" id="trend-nivel">—</div></div>
+          <div class="kpi-card accent-2"><div class="kpi-label">Humedad relativa</div><div class="card-value"><span id="kpi-hum">—</span><span class="card-unit"> %</span></div><div class="trend" id="trend-hum">—</div></div>
+          <div class="kpi-card accent-3"><div class="kpi-label">Temperatura</div><div class="card-value"><span id="kpi-temp">—</span><span class="card-unit"> °C</span></div><div class="trend" id="trend-temp">—</div></div>
+          <div class="kpi-card accent-4"><div class="kpi-label">Punto de rocío</div><div class="card-value"><span id="kpi-dew">—</span><span class="card-unit"> °C</span></div><div class="trend" id="trend-dew">—</div></div>
+          <div class="kpi-card accent-5"><div class="kpi-label">Presión</div><div class="card-value"><span id="kpi-pres">—</span><span class="card-unit"> inHg</span></div><div class="trend" id="trend-pres">—</div></div>
+          <div class="kpi-card accent-6"><div class="kpi-label">Viento</div><div class="card-value"><span id="kpi-wind">—</span><span class="card-unit"> km/h</span></div><div class="trend" id="trend-wind">—</div></div>
+        </div>
+      </section>
+
+      <section id="nivel">
+        <div class="section-header">
+          <div class="section-tag">Serie de nivel</div>
+          <div class="section-title">Nivel de agua</div>
+        </div>
+        <div class="chart-grid single">
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Volumen acumulado</div>
+                <div class="chart-subtitle">Serie temporal principal del contenedor de agua a partir del sensor ultrasónico.</div>
+              </div>
+              <div class="chart-badge">Nivel</div>
+            </div>
+            <div class="chart-wrap tall"><canvas id="chart-nivel"></canvas></div>
+            <div class="last-update" id="upd-nivel">—</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="clima-base">
+        <div class="section-header">
+          <div class="section-tag">Variables climáticas básicas</div>
+          <div class="section-title">Temperatura, humedad, rocío y presión</div>
+        </div>
+        <div class="chart-grid">
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Humedad relativa</div><div class="chart-subtitle">Evolución porcentual registrada por la estación.</div></div><div class="chart-badge">Humedad</div></div><div class="chart-wrap"><canvas id="chart-hum"></canvas></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Temperatura exterior</div><div class="chart-subtitle">Comportamiento térmico del ambiente exterior.</div></div><div class="chart-badge">Temperatura</div></div><div class="chart-wrap"><canvas id="chart-temp"></canvas></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Punto de rocío</div><div class="chart-subtitle">Serie de referencia para condensación atmosférica.</div></div><div class="chart-badge">Rocío</div></div><div class="chart-wrap"><canvas id="chart-dew"></canvas></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Presión barométrica</div><div class="chart-subtitle">Seguimiento de la presión reportada por la estación.</div></div><div class="chart-badge">Presión</div></div><div class="chart-wrap"><canvas id="chart-pres"></canvas></div></div>
+        </div>
+      </section>
+
+      <section id="clima-avanzado">
+        <div class="section-header">
+          <div class="section-tag">Variables climáticas avanzadas</div>
+          <div class="section-title">Viento, lluvia, radiación solar y UV</div>
+        </div>
+        <div class="chart-grid">
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Velocidad del viento</div><div class="chart-subtitle">Serie de velocidad del viento convertida a km/h.</div></div><div class="chart-badge">Viento</div></div><div class="chart-wrap"><canvas id="chart-wind"></canvas></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Dirección del viento</div><div class="chart-subtitle">Orientación angular del viento en grados.</div></div><div class="chart-badge">Dirección</div></div><div class="chart-wrap"><canvas id="chart-dir"></canvas></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Lluvia por hora</div><div class="chart-subtitle">Precipitación horaria reportada por la estación.</div></div><div class="chart-badge">Lluvia</div></div><div class="chart-wrap"><canvas id="chart-rain"></canvas></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Radiación solar</div><div class="chart-subtitle">Carga radiativa instantánea del entorno.</div></div><div class="chart-badge">Radiación</div></div><div class="chart-wrap"><canvas id="chart-solar"></canvas></div></div>
+          <div class="chart-card wide"><div class="chart-header"><div><div class="chart-title">Índice UV</div><div class="chart-subtitle">Variación temporal del nivel UV medido por la estación.</div></div><div class="chart-badge">UV</div></div><div class="chart-wrap"><canvas id="chart-uv"></canvas></div></div>
+        </div>
+      </section>
+
+      <section id="correlacion">
+        <div class="section-header">
+          <div class="section-tag">Comparación estadística</div>
+          <div class="section-title">Correlación entre nivel de agua y variables meteorológicas</div>
+        </div>
+        <div class="chart-grid">
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Nivel vs Humedad</div>
+                <div class="chart-subtitle">Dispersión para contraste entre volumen acumulado y humedad relativa.</div>
+              </div>
+              <div class="chart-badge">Dispersión</div>
+            </div>
+            <div class="chart-wrap"><canvas id="chart-corr-hum"></canvas></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Nivel vs Punto de rocío</div>
+                <div class="chart-subtitle">Dispersión para contraste entre volumen acumulado y punto de rocío.</div>
+              </div>
+              <div class="chart-badge">Dispersión</div>
+            </div>
+            <div class="chart-wrap"><canvas id="chart-corr-dew"></canvas></div>
+          </div>
+          <div class="corr-card wide">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Coeficientes de correlación</div>
+                <div class="chart-subtitle">Tabla resumen de Pearson respecto al nivel de agua.</div>
+              </div>
+              <div class="chart-badge">Pearson</div>
+            </div>
+            <table class="corr-table">
+              <thead>
+                <tr>
+                  <th>Variable</th>
+                  <th>r</th>
+                  <th>R²</th>
+                  <th>Tendencia</th>
+                  <th>Magnitud</th>
+                </tr>
+              </thead>
+              <tbody id="corr-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
   </div>
-  <div class="header-right">
-    <span class="mode-badge">Sistema AWA05</span>
-    <div class="live-indicator"><span class="dot"></span><span id="live-ts">—</span></div>
-    <a href="index_awa05_pastel_jose.html" class="back-link"> inicio</a>
+
+  <div class="dash-footer">
+    <div class="live-indicator"><span class="dot"></span><span id="footer-ts">—</span></div>
   </div>
-</header>
 
-<div class="layout">
-  <aside class="sidebar">
-    <div class="sidebar-section">
-      <div class="sidebar-label">Vistas</div>
-      <a class="sidebar-item active" href="#nivel">Nivel de agua</a>
-      <a class="sidebar-item" href="#clima">Clima</a>
-      <a class="sidebar-item" href="#correlacion">Correlación</a>
-    </div>
-    <div class="sidebar-section">
-      <div class="sidebar-label">Ahora</div>
-      <div class="sidebar-kpi">
-        <div class="kpi-label">Nivel</div>
-        <div class="kpi-val"><span id="sb-nivel">—</span><span class="kpi-unit">L</span></div>
-      </div>
-      <div class="sidebar-kpi">
-        <div class="kpi-label">Humedad</div>
-        <div class="kpi-val"><span id="sb-hum">—</span><span class="kpi-unit">%</span></div>
-      </div>
-      <div class="sidebar-kpi">
-        <div class="kpi-label">Temp.</div>
-        <div class="kpi-val"><span id="sb-temp">—</span><span class="kpi-unit">°C</span></div>
-      </div>
-    </div>
-    <div class="sidebar-section">
-      <div class="sidebar-label">Sistema</div>
-      <a class="sidebar-item" href="https://github.com/geograficaaala/awa05-telemetria" target="_blank">GitHub</a>
-    </div>
-  </aside>
+  <script>
+    const chartRegistry = {};
 
-  <main>
-    <section class="welcome-banner">
-      <div class="welcome-kicker">Panel principal del sistema</div>
-      <div class="welcome-title">Bienvenido Jose Toriello</div>
-      <div class="welcome-desc">Visualización central del sistema AWA05 para seguimiento de nivel de agua, variables climáticas y métricas de correlación operativa.</div>
-    </section>
-    <div>
-      <div class="section-header">
-        <div class="section-tag">Resumen en tiempo real</div>
-        <div class="section-title">Estado del nodo AWA05</div>
-      </div>
-      <div class="kpi-row">
-        <div class="kpi-card teal">
-          <div class="label">Nivel de agua</div>
-          <div class="value"><span id="kpi-nivel">—</span><span class="unit">L</span></div>
-          <div class="trend" id="kpi-nivel-trend">—</div>
-        </div>
-        <div class="kpi-card amber">
-          <div class="label">Humedad relativa</div>
-          <div class="value"><span id="kpi-hum">—</span><span class="unit">%</span></div>
-          <div class="trend" id="kpi-hum-trend">—</div>
-        </div>
-        <div class="kpi-card blue">
-          <div class="label">Temperatura</div>
-          <div class="value"><span id="kpi-temp">—</span><span class="unit">°C</span></div>
-          <div class="trend" id="kpi-temp-trend">—</div>
-        </div>
-        <div class="kpi-card rose">
-          <div class="label">Punto de rocío</div>
-          <div class="value"><span id="kpi-dew">—</span><span class="unit">°C</span></div>
-          <div class="trend" id="kpi-dew-trend">—</div>
-        </div>
-        <div class="kpi-card green">
-          <div class="label">Viento</div>
-          <div class="value"><span id="kpi-wind">—</span><span class="unit">km/h</span></div>
-          <div class="trend" id="kpi-wind-trend">—</div>
-        </div>
-      </div>
-    </div>
+    function buildLabels(n = 24) {
+      const labels = [];
+      const now = new Date();
+      for (let i = n - 1; i >= 0; i--) {
+        const d = new Date(now.getTime() - i * 3600000);
+        labels.push(String(d.getHours()).padStart(2, '0') + ':00');
+      }
+      return labels;
+    }
 
-    <div id="nivel">
-      <div class="section-header">
-        <div class="section-tag">Sensor JSN-SR04T · GPIO 17/18</div>
-        <div class="section-title">Nivel de Agua · Últimas 24 h</div>
-      </div>
-      <div class="chart-grid single">
-        <div class="chart-card">
-          <div class="chart-header">
-            <div>
-              <div class="chart-title">Litros acumulados</div>
-              <div class="chart-subtitle">Garrafón Ø27 cm · altura 50 cm · capacidad máxima 24.2 L</div>
-            </div>
-            <span class="chart-badge">RAW CSV</span>
-          </div>
-          <div class="chart-wrap tall"><canvas id="chart-nivel"></canvas></div>
-          <div class="last-update" id="upd-nivel">Última lectura: —</div>
-        </div>
-      </div>
-    </div>
+    function createFallbackPayload() {
+      const labels = buildLabels(24);
+      const nivel = [];
+      const hum = [];
+      const temp = [];
+      const dew = [];
+      const pres = [];
+      const wind = [];
+      const dir = [];
+      const rain = [];
+      const solar = [];
+      const uv = [];
 
-    <div id="clima">
-      <div class="section-header">
-        <div class="section-tag">Estación WS-2000 · Flask :7777</div>
-        <div class="section-title">Variables Climáticas · Últimas 24 h</div>
-      </div>
-      <div class="chart-grid">
-        <div class="chart-card">
-          <div class="chart-header">
-            <div>
-              <div class="chart-title">Humedad Relativa</div>
-              <div class="chart-subtitle">%HR ambiental · WS-2000</div>
-            </div>
-            <span class="chart-badge">HR</span>
-          </div>
-          <div class="chart-wrap"><canvas id="chart-hum"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-header">
-            <div>
-              <div class="chart-title">Temperatura</div>
-              <div class="chart-subtitle">°C ambiental · WS-2000</div>
-            </div>
-            <span class="chart-badge">TEMP</span>
-          </div>
-          <div class="chart-wrap"><canvas id="chart-temp"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-header">
-            <div>
-              <div class="chart-title">Punto de Rocío</div>
-              <div class="chart-subtitle">°C calculado · WS-2000</div>
-            </div>
-            <span class="chart-badge">DEW</span>
-          </div>
-          <div class="chart-wrap"><canvas id="chart-dew"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-header">
-            <div>
-              <div class="chart-title">Velocidad del Viento</div>
-              <div class="chart-subtitle">km/h · WS-2000</div>
-            </div>
-            <span class="chart-badge">VIENTO</span>
-          </div>
-          <div class="chart-wrap"><canvas id="chart-wind"></canvas></div>
-        </div>
-      </div>
-    </div>
+      for (let i = 0; i < labels.length; i++) {
+        const h = i;
+        const nVal = 10 + Math.sin(h / 4) * 2.2 + (Math.random() - 0.5) * 0.4;
+        const humVal = 70 + Math.sin(h / 3) * 9 + (Math.random() - 0.5) * 2;
+        const tempVal = 21 - Math.sin(h / 4) * 3 + (Math.random() - 0.5) * 0.6;
+        const dewVal = tempVal - (100 - humVal) / 5;
+        const presVal = 29.75 + Math.sin(h / 6) * 0.07 + (Math.random() - 0.5) * 0.02;
+        const windVal = 6 + Math.abs(Math.sin(h / 3)) * 8 + Math.random();
+        const dirVal = (120 + h * 11 + Math.random() * 25) % 360;
+        const rainVal = Math.max(0, (Math.sin(h / 5) > 0.7 ? Math.random() * 2 : Math.random() * 0.2));
+        const solarVal = Math.max(0, Math.sin((h - 6) / 12 * Math.PI) * 750 + Math.random() * 40);
+        const uvVal = Math.max(0, Math.sin((h - 6) / 12 * Math.PI) * 10 + Math.random() * 0.5);
+        nivel.push(Number(nVal.toFixed(2)));
+        hum.push(Number(humVal.toFixed(1)));
+        temp.push(Number(tempVal.toFixed(1)));
+        dew.push(Number(dewVal.toFixed(1)));
+        pres.push(Number(presVal.toFixed(2)));
+        wind.push(Number(windVal.toFixed(1)));
+        dir.push(Number(dirVal.toFixed(0)));
+        rain.push(Number(rainVal.toFixed(2)));
+        solar.push(Number(solarVal.toFixed(1)));
+        uv.push(Number(uvVal.toFixed(1)));
+      }
 
-    <div id="correlacion">
-      <div class="section-header">
-        <div class="section-tag">Modelos matemáticos de correlación</div>
-        <div class="section-title">Correlación: Agua vs Variables Climáticas</div>
-      </div>
-      <div class="chart-grid">
-        <div class="chart-card">
-          <div class="chart-header">
-            <div>
-              <div class="chart-title">Nivel vs Humedad Relativa</div>
-              <div class="chart-subtitle">Dispersión · regresión lineal</div>
-            </div>
-            <span class="chart-badge">R²</span>
-          </div>
-          <div class="chart-wrap"><canvas id="chart-corr-hum"></canvas></div>
-        </div>
-        <div class="chart-card">
-          <div class="chart-header">
-            <div>
-              <div class="chart-title">Nivel vs Punto de Rocío</div>
-              <div class="chart-subtitle">Dispersión · regresión lineal</div>
-            </div>
-            <span class="chart-badge">R²</span>
-          </div>
-          <div class="chart-wrap"><canvas id="chart-corr-dew"></canvas></div>
-        </div>
-        <div class="chart-card wide">
-          <div class="chart-header">
-            <div>
-              <div class="chart-title">Índice de Correlación por Variable</div>
-              <div class="chart-subtitle">|r| de Pearson · serie de 24 h</div>
-            </div>
-          </div>
-          <table class="corr-table" id="corr-table">
-            <thead>
-              <tr>
-                <th>Variable</th>
-                <th>Pearson r</th>
-                <th>R²</th>
-                <th>Tendencia</th>
-                <th>Intensidad</th>
-              </tr>
-            </thead>
-            <tbody id="corr-body"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </main>
-</div>
-
-<div class="dash-footer">
-  <span id="footer-ts">—</span>
-</div>
-
-<script>
-const N = 24;
-
-function genTimestamps() {
-  const labels = [];
-  const now = new Date();
-  for (let i = N - 1; i >= 0; i--) {
-    const d = new Date(now - i * 3600000);
-    labels.push(d.getHours().toString().padStart(2,'0') + ':00');
-  }
-  return labels;
-}
-
-function genNivel(n) {
-  const arr = [];
-  let v = 12;
-  for (let i = 0; i < n; i++) {
-    v += (Math.random() - 0.3) * 0.8;
-    v = Math.max(2, Math.min(22, v));
-    arr.push(+v.toFixed(2));
-  }
-  return arr;
-}
-
-function genHum(n) {
-  const arr = [];
-  for (let i = 0; i < n; i++) {
-    const h = 55 + Math.sin(i / 4) * 18 + (Math.random() - 0.5) * 6;
-    arr.push(+h.toFixed(1));
-  }
-  return arr;
-}
-
-function genTemp(n) {
-  const arr = [];
-  for (let i = 0; i < n; i++) {
-    const t = 20 - Math.sin(i / 4) * 5 + (Math.random() - 0.5) * 2;
-    arr.push(+t.toFixed(1));
-  }
-  return arr;
-}
-
-function genDew(hum, temp) {
-  return hum.map((h, i) => +(parseFloat(temp[i]) - (100 - h) / 5).toFixed(1));
-}
-
-function genWind(n) {
-  const arr = [];
-  for (let i = 0; i < n; i++) {
-    const w = 3 + Math.abs(Math.sin(i/3)) * 9 + Math.random() * 2;
-    arr.push(+w.toFixed(1));
-  }
-  return arr;
-}
-
-const labels = genTimestamps();
-const dNivel = genNivel(N);
-const dHum = genHum(N);
-const dTemp = genTemp(N);
-const dDew = genDew(dHum, dTemp);
-const dWind = genWind(N);
-
-Chart.defaults.color = '#5f7f98';
-Chart.defaults.font.family = "Calibri, 'Segoe UI', Arial, sans-serif";
-Chart.defaults.font.size = 12;
-
-const gridOpts = {
-  color: 'rgba(169, 205, 233, 0.65)',
-  drawBorder: false,
-};
-
-function lineChart(id, data, color, yLabel) {
-  const ctx = document.getElementById(id).getContext('2d');
-  const grad = ctx.createLinearGradient(0, 0, 0, 240);
-  grad.addColorStop(0, color + '55');
-  grad.addColorStop(1, color + '05');
-
-  return new Chart(ctx, {
-    type: 'line',
-    data: {
-      labels,
-      datasets: [{
-        data,
-        borderColor: color,
-        backgroundColor: grad,
-        borderWidth: 2.2,
-        pointRadius: 2.6,
-        pointHoverRadius: 5,
-        pointBackgroundColor: color,
-        fill: true,
-        tension: 0.38,
-      }]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#ffffff',
-          borderColor: '#a9cde9',
-          borderWidth: 1,
-          titleColor: '#24455f',
-          bodyColor: '#24455f',
-          padding: 10,
-          callbacks: { label: ctx => ' ' + ctx.parsed.y + ' ' + yLabel }
+      return {
+        actualizado: new Date().toLocaleString('es-GT'),
+        kpis: {
+          nivel_l: nivel.at(-1),
+          humedad_pct: hum.at(-1),
+          temp_c: temp.at(-1),
+          punto_rocio_c: dew.at(-1),
+          presion_inhg: pres.at(-1),
+          viento_kmh: wind.at(-1),
+          viento_dir_deg: dir.at(-1),
+          lluvia_hora_mm: rain.at(-1),
+          radiacion_solar_wm2: solar.at(-1),
+          uv: uv.at(-1)
+        },
+        series: {
+          labels,
+          nivel_l: nivel,
+          humedad_pct: hum,
+          temp_c: temp,
+          punto_rocio_c: dew,
+          presion_inhg: pres,
+          viento_kmh: wind,
+          viento_dir_deg: dir,
+          lluvia_hora_mm: rain,
+          radiacion_solar_wm2: solar,
+          uv: uv
         }
-      },
-      scales: {
-        x: { grid: gridOpts, ticks: { maxTicksLimit: 8 } },
-        y: { grid: gridOpts, ticks: { callback: v => v + ' ' + yLabel } }
+      };
+    }
+
+    async function fetchDashboardData() {
+      try {
+        const response = await fetch('./data/processed/dashboard_data.json?t=' + Date.now());
+        if (!response.ok) throw new Error('dataset no disponible');
+        const payload = await response.json();
+        if (!payload || !payload.series || !payload.series.labels) throw new Error('dataset incompleto');
+        return payload;
+      } catch (error) {
+        return createFallbackPayload();
       }
     }
-  });
-}
 
-lineChart('chart-nivel', dNivel, '#6faed9', 'L');
-lineChart('chart-hum', dHum, '#8fbfdb', '%');
-lineChart('chart-temp', dTemp, '#5f9fcd', '°C');
-lineChart('chart-dew', dDew, '#9fcbe5', '°C');
-lineChart('chart-wind', dWind, '#7eb5cf', 'km/h');
+    function gradient(ctx, color) {
+      const g = ctx.createLinearGradient(0, 0, 0, 260);
+      g.addColorStop(0, color + '55');
+      g.addColorStop(1, color + '08');
+      return g;
+    }
 
-function scatterChart(id, xData, yData, xLabel, yLabel, color) {
-  const ctx = document.getElementById(id).getContext('2d');
-  const pts = xData.map((x, i) => ({ x, y: yData[i] }));
+    function destroyChart(id) {
+      if (chartRegistry[id]) {
+        chartRegistry[id].destroy();
+      }
+    }
 
-  const n = pts.length;
-  const mx = xData.reduce((a,b)=>a+b,0)/n;
-  const my = yData.reduce((a,b)=>a+b,0)/n;
-  const num = pts.reduce((a,p)=>a+(p.x-mx)*(p.y-my),0);
-  const den = pts.reduce((a,p)=>a+(p.x-mx)**2,0);
-  const m = num/den;
-  const b = my - m*mx;
-  const xmin = Math.min(...xData), xmax = Math.max(...xData);
-  const regLine = [{ x: xmin, y: m*xmin+b }, { x: xmax, y: m*xmax+b }];
-
-  new Chart(ctx, {
-    data: {
-      datasets: [
-        {
-          type: 'scatter',
-          data: pts,
-          backgroundColor: color + '88',
-          borderColor: color,
-          borderWidth: 1,
-          pointRadius: 4,
-          label: 'datos',
+    function lineChart(id, labels, data, color, unit, minY = undefined, maxY = undefined) {
+      destroyChart(id);
+      const ctx = document.getElementById(id).getContext('2d');
+      chartRegistry[id] = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            data,
+            borderColor: color,
+            backgroundColor: gradient(ctx, color),
+            borderWidth: 2,
+            pointRadius: 2,
+            pointHoverRadius: 5,
+            pointBackgroundColor: color,
+            fill: true,
+            tension: 0.35
+          }]
         },
-        {
-          type: 'line',
-          data: regLine,
-          borderColor: color,
-          borderWidth: 1.8,
-          borderDash: [5,5],
-          pointRadius: 0,
-          fill: false,
-          label: 'regresión',
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      maintainAspectRatio: false,
-      plugins: {
-        legend: { display: false },
-        tooltip: {
-          backgroundColor: '#ffffff',
-          borderColor: '#a9cde9',
-          borderWidth: 1,
-          titleColor: '#24455f',
-          bodyColor: '#24455f',
-          callbacks: {
-            label: ctx => ` ${xLabel}: ${ctx.parsed.x} · ${yLabel}: ${ctx.parsed.y}`
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#ffffff',
+              borderColor: '#c8dff2',
+              borderWidth: 1,
+              titleColor: '#24455f',
+              bodyColor: '#24455f',
+              callbacks: {
+                label: (ctx) => `${ctx.parsed.y} ${unit}`.trim()
+              }
+            }
+          },
+          scales: {
+            x: {
+              grid: { color: 'rgba(168, 203, 231, 0.35)' },
+              ticks: { color: '#5d7f99' }
+            },
+            y: {
+              min: minY,
+              max: maxY,
+              grid: { color: 'rgba(168, 203, 231, 0.35)' },
+              ticks: {
+                color: '#5d7f99',
+                callback: (value) => `${value} ${unit}`.trim()
+              }
+            }
           }
         }
-      },
-      scales: {
-        x: { grid: gridOpts, title: { display: true, text: xLabel, color:'#5f7f98' } },
-        y: { grid: gridOpts, title: { display: true, text: yLabel, color:'#5f7f98' } }
+      });
+    }
+
+    function barChart(id, labels, data, color, unit) {
+      destroyChart(id);
+      const ctx = document.getElementById(id).getContext('2d');
+      chartRegistry[id] = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [{
+            data,
+            backgroundColor: color,
+            borderColor: color,
+            borderWidth: 1,
+            borderRadius: 6,
+            maxBarThickness: 24
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#ffffff',
+              borderColor: '#c8dff2',
+              borderWidth: 1,
+              titleColor: '#24455f',
+              bodyColor: '#24455f',
+              callbacks: { label: (ctx) => `${ctx.parsed.y} ${unit}`.trim() }
+            }
+          },
+          scales: {
+            x: { grid: { display: false }, ticks: { color: '#5d7f99' } },
+            y: {
+              grid: { color: 'rgba(168, 203, 231, 0.35)' },
+              ticks: { color: '#5d7f99', callback: (value) => `${value} ${unit}`.trim() }
+            }
+          }
+        }
+      });
+    }
+
+    function scatterChart(id, xData, yData, color, xLabel, yLabel) {
+      destroyChart(id);
+      const ctx = document.getElementById(id).getContext('2d');
+      const points = xData.map((x, i) => ({ x, y: yData[i] }));
+      chartRegistry[id] = new Chart(ctx, {
+        type: 'scatter',
+        data: {
+          datasets: [{
+            data: points,
+            backgroundColor: color + '99',
+            borderColor: color,
+            borderWidth: 1,
+            pointRadius: 4,
+            pointHoverRadius: 6
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          plugins: {
+            legend: { display: false },
+            tooltip: {
+              backgroundColor: '#ffffff',
+              borderColor: '#c8dff2',
+              borderWidth: 1,
+              titleColor: '#24455f',
+              bodyColor: '#24455f',
+              callbacks: { label: (ctx) => `${xLabel}: ${ctx.parsed.x} | ${yLabel}: ${ctx.parsed.y}` }
+            }
+          },
+          scales: {
+            x: { grid: { color: 'rgba(168, 203, 231, 0.35)' }, title: { display: true, text: xLabel, color: '#5d7f99' } },
+            y: { grid: { color: 'rgba(168, 203, 231, 0.35)' }, title: { display: true, text: yLabel, color: '#5d7f99' } }
+          }
+        }
+      });
+    }
+
+    function pearson(xs, ys) {
+      const n = Math.min(xs.length, ys.length);
+      if (!n) return 0;
+      const mx = xs.slice(0, n).reduce((a, b) => a + b, 0) / n;
+      const my = ys.slice(0, n).reduce((a, b) => a + b, 0) / n;
+      let num = 0;
+      let dx = 0;
+      let dy = 0;
+      for (let i = 0; i < n; i++) {
+        const vx = xs[i] - mx;
+        const vy = ys[i] - my;
+        num += vx * vy;
+        dx += vx * vx;
+        dy += vy * vy;
       }
+      return dx && dy ? num / Math.sqrt(dx * dy) : 0;
     }
-  });
-}
 
-scatterChart('chart-corr-hum', dHum, dNivel, 'Humedad %', 'Litros L', '#8fbfdb');
-scatterChart('chart-corr-dew', dDew, dNivel, 'P. Rocío °C', 'Litros L', '#9fcbe5');
-
-function pearson(xs, ys) {
-  const n = xs.length;
-  const mx = xs.reduce((a,b)=>a+b,0)/n;
-  const my = ys.reduce((a,b)=>a+b,0)/n;
-  const num = xs.reduce((a,x,i)=>a+(x-mx)*(ys[i]-my),0);
-  const dx = Math.sqrt(xs.reduce((a,x)=>a+(x-mx)**2,0));
-  const dy = Math.sqrt(ys.reduce((a,y)=>a+(y-my)**2,0));
-  return num/(dx*dy);
-}
-
-const vars = [
-  { name: 'Humedad Relativa', data: dHum, color: '#8fbfdb' },
-  { name: 'Temperatura', data: dTemp, color: '#5f9fcd' },
-  { name: 'Punto de Rocío', data: dDew, color: '#9fcbe5' },
-  { name: 'Velocidad del Viento', data: dWind, color: '#7eb5cf' },
-];
-
-const tbody = document.getElementById('corr-body');
-vars.forEach(v => {
-  const r = pearson(v.data, dNivel);
-  const r2 = (r*r).toFixed(3);
-  const pct = Math.round(Math.abs(r)*100);
-  const sign = r > 0 ? 'positiva' : 'inversa';
-  const tr = document.createElement('tr');
-  tr.innerHTML = `
-    <td style="font-weight:700">${v.name}</td>
-    <td class="corr-val" style="color:${v.color}">${r.toFixed(3)}</td>
-    <td class="corr-val">${r2}</td>
-    <td style="color:${r > 0 ? '#568db8' : '#7a9db8'}">${sign}</td>
-    <td>
-      <div class="bar-wrap">
-        <div class="bar-fill" style="width:${pct}%;background:${v.color}"></div>
-      </div>
-    </td>
-  `;
-  tbody.appendChild(tr);
-});
-
-let prevNivel = null, prevHum = null, prevTemp = null, prevDew = null, prevWind = null;
-
-function updateKPIs() {
-  const now = new Date();
-  const t = now.getTime();
-  const nivel = +(12 + Math.sin(t/3600000)*4 + Math.random()*0.3).toFixed(2);
-  const hum = +(55 + Math.sin(t/600000)*15 + Math.random()*2).toFixed(1);
-  const temp = +(18 + Math.sin(t/900000)*4 + Math.random()*0.4).toFixed(1);
-  const dew = +(temp - (100-hum)/5).toFixed(1);
-  const wind = +(2 + Math.abs(Math.sin(t/300000))*8 + Math.random()).toFixed(1);
-
-  function setKPI(id, val, prev, unit) {
-    document.getElementById(id).textContent = val;
-    const el = document.getElementById(id + '-trend');
-    if (el && prev !== null) {
-      const diff = (val - prev).toFixed(2);
-      const up = val >= prev;
-      el.className = 'trend ' + (up ? 'trend-up' : 'trend-dn');
-      el.textContent = (up ? 'Aumento ' : 'Descenso ') + Math.abs(diff) + ' ' + unit;
+    function setText(id, value) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = value !== undefined && value !== null && value !== '' ? value : '—';
     }
-  }
 
-  setKPI('kpi-nivel', nivel, prevNivel, 'L');
-  setKPI('kpi-hum', hum, prevHum, '%');
-  setKPI('kpi-temp', temp, prevTemp, '°C');
-  setKPI('kpi-dew', dew, prevDew, '°C');
-  setKPI('kpi-wind', wind, prevWind, 'km/h');
-
-  document.getElementById('sb-nivel').textContent = nivel;
-  document.getElementById('sb-hum').textContent = hum;
-  document.getElementById('sb-temp').textContent = temp;
-
-  const ts = now.toLocaleString('es-GT');
-  document.getElementById('live-ts').textContent = now.toLocaleTimeString('es-GT');
-  document.getElementById('footer-ts').textContent = 'TS: ' + ts;
-  document.getElementById('upd-nivel').textContent = 'Última lectura: ' + ts;
-
-  prevNivel = nivel;
-  prevHum = hum;
-  prevTemp = temp;
-  prevDew = dew;
-  prevWind = wind;
-}
-
-updateKPIs();
-setInterval(updateKPIs, 5000);
-
-const sections = ['nivel','clima','correlacion'];
-window.addEventListener('scroll', () => {
-  sections.forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    const link = document.querySelector(`.sidebar-item[href="#${id}"]`);
-    if (link) {
-      if (rect.top < 220 && rect.bottom > 120) link.classList.add('active');
-      else link.classList.remove('active');
+    function setTrend(id, series, unit) {
+      const el = document.getElementById(id);
+      if (!el || !Array.isArray(series) || series.length < 2) {
+        if (el) el.textContent = '—';
+        return;
+      }
+      const current = series[series.length - 1];
+      const previous = series[series.length - 2];
+      const diff = (current - previous).toFixed(2);
+      const direction = Number(diff) >= 0 ? 'Alza' : 'Baja';
+      el.textContent = `${direction} ${Math.abs(diff)} ${unit}`.trim();
     }
-  });
-});
-</script>
+
+    function updateCorrelationTable(levelSeries, variables) {
+      const tbody = document.getElementById('corr-body');
+      tbody.innerHTML = '';
+      variables.forEach((item) => {
+        const r = pearson(item.data, levelSeries);
+        const r2 = (r * r).toFixed(3);
+        const pct = Math.round(Math.abs(r) * 100);
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td><strong>${item.name}</strong></td>
+          <td>${r.toFixed(3)}</td>
+          <td>${r2}</td>
+          <td>${r >= 0 ? 'Directa' : 'Inversa'}</td>
+          <td>
+            <div class="bar-wrap">
+              <div class="bar-fill" style="width:${pct}%; background:${item.color};"></div>
+            </div>
+          </td>
+        `;
+        tbody.appendChild(row);
+      });
+    }
+
+    async function renderDashboard() {
+      const payload = await fetchDashboardData();
+      const labels = payload.series.labels || [];
+      const nivel = payload.series.nivel_l || [];
+      const hum = payload.series.humedad_pct || [];
+      const temp = payload.series.temp_c || [];
+      const dew = payload.series.punto_rocio_c || [];
+      const pres = payload.series.presion_inhg || [];
+      const wind = payload.series.viento_kmh || [];
+      const dir = payload.series.viento_dir_deg || [];
+      const rain = payload.series.lluvia_hora_mm || [];
+      const solar = payload.series.radiacion_solar_wm2 || [];
+      const uv = payload.series.uv || [];
+
+      setText('live-ts', payload.actualizado);
+      setText('footer-ts', payload.actualizado);
+      setText('upd-nivel', `Última actualización: ${payload.actualizado}`);
+
+      setText('kpi-nivel', payload.kpis?.nivel_l);
+      setText('kpi-hum', payload.kpis?.humedad_pct);
+      setText('kpi-temp', payload.kpis?.temp_c);
+      setText('kpi-dew', payload.kpis?.punto_rocio_c);
+      setText('kpi-pres', payload.kpis?.presion_inhg);
+      setText('kpi-wind', payload.kpis?.viento_kmh);
+      setText('sb-nivel', payload.kpis?.nivel_l);
+      setText('sb-hum', payload.kpis?.humedad_pct);
+      setText('sb-temp', payload.kpis?.temp_c);
+      setText('sb-pres', payload.kpis?.presion_inhg);
+
+      setTrend('trend-nivel', nivel, 'L');
+      setTrend('trend-hum', hum, '%');
+      setTrend('trend-temp', temp, '°C');
+      setTrend('trend-dew', dew, '°C');
+      setTrend('trend-pres', pres, 'inHg');
+      setTrend('trend-wind', wind, 'km/h');
+
+      lineChart('chart-nivel', labels, nivel, '#6eaed8', 'L');
+      lineChart('chart-hum', labels, hum, '#8dc2e6', '%');
+      lineChart('chart-temp', labels, temp, '#aacfe9', '°C');
+      lineChart('chart-dew', labels, dew, '#7aaed0', '°C');
+      lineChart('chart-pres', labels, pres, '#93bdd9', 'inHg');
+      lineChart('chart-wind', labels, wind, '#7cb3e2', 'km/h');
+      lineChart('chart-dir', labels, dir, '#aecfe4', '°', 0, 360);
+      barChart('chart-rain', labels, rain, '#9ed7ef', 'mm');
+      lineChart('chart-solar', labels, solar, '#6ba8cf', 'W/m²');
+      barChart('chart-uv', labels, uv, '#c0def3', 'UV');
+
+      scatterChart('chart-corr-hum', hum, nivel, '#8dc2e6', 'Humedad %', 'Nivel L');
+      scatterChart('chart-corr-dew', dew, nivel, '#7aaed0', 'Punto de rocío °C', 'Nivel L');
+
+      updateCorrelationTable(nivel, [
+        { name: 'Humedad relativa', data: hum, color: '#8dc2e6' },
+        { name: 'Temperatura exterior', data: temp, color: '#aacfe9' },
+        { name: 'Punto de rocío', data: dew, color: '#7aaed0' },
+        { name: 'Presión barométrica', data: pres, color: '#93bdd9' },
+        { name: 'Velocidad del viento', data: wind, color: '#7cb3e2' },
+        { name: 'Dirección del viento', data: dir, color: '#aecfe4' },
+        { name: 'Lluvia por hora', data: rain, color: '#9ed7ef' },
+        { name: 'Radiación solar', data: solar, color: '#6ba8cf' },
+        { name: 'Índice UV', data: uv, color: '#c0def3' }
+      ]);
+    }
+
+    renderDashboard();
+    setInterval(renderDashboard, 60000);
+
+    window.addEventListener('scroll', () => {
+      const sections = ['resumen', 'nivel', 'clima-base', 'clima-avanzado', 'correlacion'];
+      sections.forEach((id) => {
+        const section = document.getElementById(id);
+        const link = document.querySelector(`.sidebar-item[href="#${id}"]`);
+        if (!section || !link) return;
+        const rect = section.getBoundingClientRect();
+        if (rect.top < 180 && rect.bottom > 120) link.classList.add('active');
+        else link.classList.remove('active');
+      });
+    });
+  </script>
 </body>
 </html>
