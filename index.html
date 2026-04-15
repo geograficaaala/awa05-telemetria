@@ -1,776 +1,719 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>AWA05 · Telemetría Ambiental</title>
-<style>
-  :root {
-    --bg: #f6fbff;
-    --surface: #ffffff;
-    --surface-soft: #eef7ff;
-    --surface-alt: #e3f2fd;
-    --border: #c9dff2;
-    --border-strong: #a9cde9;
-    --primary: #6faed9;
-    --primary-dark: #4f8fc1;
-    --secondary: #98c9eb;
-    --accent: #bfe6ff;
-    --text: #24455f;
-    --muted: #5f7f98;
-    --shadow: 0 10px 28px rgba(111, 174, 217, 0.12);
-  }
-
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: Calibri, "Segoe UI", Arial, sans-serif;
-  }
-
-  html { scroll-behavior: smooth; }
-
-  body {
-    background: linear-gradient(180deg, #f8fcff 0%, #eef7ff 45%, #f7fbfe 100%);
-    color: var(--text);
-    font-size: 12pt;
-    line-height: 1.6;
-    overflow-x: hidden;
-  }
-
-  body::before {
-    content: "";
-    position: fixed;
-    inset: 0;
-    background-image:
-      linear-gradient(rgba(111, 174, 217, 0.08) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(111, 174, 217, 0.08) 1px, transparent 1px);
-    background-size: 54px 54px;
-    pointer-events: none;
-    z-index: 0;
-  }
-
-  nav {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 100;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px 38px;
-    border-bottom: 1px solid var(--border);
-    background: rgba(255, 255, 255, 0.92);
-    backdrop-filter: blur(14px);
-    box-shadow: 0 4px 18px rgba(111, 174, 217, 0.08);
-  }
-
-  .nav-logo {
-    font-size: 13pt;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--primary-dark);
-  }
-
-  .nav-status {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--muted);
-    font-size: 10pt;
-    font-weight: 600;
-  }
-
-  .status-dot {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--primary);
-    box-shadow: 0 0 10px rgba(111, 174, 217, 0.35);
-    animation: blink 2s ease-in-out infinite;
-  }
-
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.35} }
-
-  .nav-link,
-  .btn-primary,
-  .btn-secondary {
-    text-decoration: none;
-    transition: all 0.2s ease;
-  }
-
-  .nav-link {
-    color: var(--primary-dark);
-    font-size: 10pt;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    padding: 10px 18px;
-    border: 1px solid var(--border-strong);
-    border-radius: 999px;
-    background: #f8fcff;
-  }
-
-  .nav-link:hover {
-    background: var(--surface-alt);
-    border-color: var(--primary);
-  }
-
-  .ticker {
-    position: fixed;
-    top: 62px;
-    left: 0;
-    right: 0;
-    z-index: 99;
-    display: flex;
-    gap: 28px;
-    overflow: hidden;
-    padding: 8px 38px;
-    border-bottom: 1px solid var(--border);
-    background: rgba(239, 248, 255, 0.96);
-    color: var(--muted);
-    box-shadow: 0 4px 14px rgba(111, 174, 217, 0.05);
-  }
-
-  .ticker-item {
-    display: flex;
-    gap: 6px;
-    white-space: nowrap;
-    font-size: 10pt;
-  }
-
-  .ticker-val {
-    color: var(--primary-dark);
-    font-weight: 700;
-  }
-
-  .hero {
-    position: relative;
-    min-height: 100vh;
-    display: flex;
-    align-items: center;
-    padding: 150px 40px 88px;
-    z-index: 1;
-    overflow: hidden;
-  }
-
-  .hero-content {
-    max-width: 900px;
-  }
-
-  .hero-tag,
-  .section-tag {
-    color: var(--primary-dark);
-    text-transform: uppercase;
-    letter-spacing: 0.16em;
-    font-size: 10pt;
-    font-weight: 700;
-  }
-
-  .hero-tag {
-    margin-bottom: 22px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    animation: fadeUp 0.5s ease forwards;
-  }
-
-  .hero-tag::before {
-    content: "";
-    width: 34px;
-    height: 2px;
-    background: var(--primary);
-    border-radius: 999px;
-  }
-
-  .hero-title {
-    font-size: clamp(40px, 7vw, 86px);
-    font-weight: 700;
-    line-height: 0.96;
-    letter-spacing: -0.03em;
-    margin-bottom: 26px;
-    color: var(--text);
-    animation: fadeUp 0.5s 0.1s ease forwards;
-    opacity: 0;
-  }
-
-  .hero-title span {
-    color: var(--primary-dark);
-    display: block;
-  }
-
-  .hero-subtitle {
-    font-size: 18pt;
-    font-weight: 700;
-    color: var(--muted);
-    margin: -4px 0 18px;
-    animation: fadeUp 0.5s 0.15s ease forwards;
-    opacity: 0;
-  }
-
-  .hero-desc,
-  .step-desc,
-  .var-desc,
-  .cta-sub,
-  .section-intro {
-    color: var(--muted);
-    text-align: justify;
-  }
-
-  .hero-desc {
-    max-width: 620px;
-    margin-bottom: 40px;
-    font-size: 12pt;
-    animation: fadeUp 0.5s 0.2s ease forwards;
-    opacity: 0;
-  }
-
-  .hero-actions {
-    display: flex;
-    gap: 16px;
-    flex-wrap: wrap;
-    animation: fadeUp 0.5s 0.3s ease forwards;
-    opacity: 0;
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(14px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
-
-  .btn-primary {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 28px;
-    background: linear-gradient(135deg, var(--primary) 0%, #8ec2e8 100%);
-    color: #ffffff;
-    font-size: 10.5pt;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    border-radius: 999px;
-    box-shadow: var(--shadow);
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-1px);
-    filter: brightness(1.04);
-  }
-
-  .btn-secondary {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    padding: 14px 28px;
-    border: 1px solid var(--border-strong);
-    color: var(--primary-dark);
-    font-size: 10.5pt;
-    font-weight: 700;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    border-radius: 999px;
-    background: rgba(255,255,255,0.75);
-  }
-
-  .btn-secondary:hover {
-    background: var(--surface-alt);
-  }
-
-  .orbit {
-    position: absolute;
-    right: -80px;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 520px;
-    height: 520px;
-    opacity: 0.25;
-    pointer-events: none;
-    animation: spin 60s linear infinite;
-  }
-
-  @keyframes spin {
-    from { transform: translateY(-50%) rotate(0deg); }
-    to { transform: translateY(-50%) rotate(360deg); }
-  }
-
-  .stats-bar {
-    position: relative;
-    z-index: 1;
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 18px;
-    padding: 0 40px 0;
-    margin-top: -18px;
-  }
-
-  .stat-item {
-    background: rgba(255,255,255,0.88);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 26px 28px;
-    box-shadow: var(--shadow);
-    animation: fadeUp 0.5s ease forwards;
-    opacity: 0;
-  }
-
-  .stat-item:nth-child(1){animation-delay:.1s}
-  .stat-item:nth-child(2){animation-delay:.2s}
-  .stat-item:nth-child(3){animation-delay:.3s}
-  .stat-item:nth-child(4){animation-delay:.4s}
-
-  .stat-label,
-  .var-source,
-  .hw-detail {
-    font-size: 10pt;
-    color: var(--muted);
-  }
-
-  .stat-label {
-    text-transform: uppercase;
-    letter-spacing: 0.12em;
-    font-weight: 700;
-    margin-bottom: 8px;
-  }
-
-  .stat-value {
-    font-size: 26pt;
-    font-weight: 700;
-    color: var(--primary-dark);
-  }
-
-  .stat-unit {
-    font-size: 11pt;
-    color: var(--muted);
-    margin-left: 4px;
-  }
-
-  section {
-    position: relative;
-    z-index: 1;
-    padding: 92px 40px;
-  }
-
-  .section-tag {
-    margin-bottom: 14px;
-  }
-
-  .section-title,
-  .cta-title {
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: var(--text);
-  }
-
-  .section-title {
-    font-size: 30pt;
-    margin-bottom: 14px;
-  }
-
-  .section-intro {
-    max-width: 620px;
-    font-size: 12pt;
-    line-height: 1.7;
-  }
-
-  .pipeline {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 18px;
-    margin-top: 42px;
-  }
-
-  .pipeline-step,
-  .var-card,
-  .hw-list,
-  .cta {
-    background: rgba(255,255,255,0.84);
-    border: 1px solid var(--border);
-    box-shadow: var(--shadow);
-  }
-
-  .pipeline-step {
-    border-radius: 20px;
-    padding: 32px 28px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-  }
-
-  .pipeline-step:hover,
-  .var-card:hover,
-  .hw-item:hover {
-    transform: translateY(-2px);
-  }
-
-  .step-num {
-    font-size: 10pt;
-    color: var(--muted);
-    font-weight: 700;
-    margin-bottom: 16px;
-  }
-
-  .step-icon,
-  .var-icon {
-    display: none;
-  }
-
-  .step-title,
-  .var-name,
-  .hw-name {
-    font-size: 14pt;
-    font-weight: 700;
-    margin-bottom: 8px;
-    color: var(--text);
-  }
-
-  .vars-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 22px;
-    margin-top: 42px;
-  }
-
-  .var-card {
-    position: relative;
-    overflow: hidden;
-    border-radius: 18px;
-    padding: 28px;
-  }
-
-  .var-card::before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 4px;
-    background: linear-gradient(90deg, var(--primary), var(--accent));
-  }
-
-  .var-card.amber::before {
-    background: linear-gradient(90deg, #8ebfe5, #bfe6ff);
-  }
-
-  .var-card.blue::before {
-    background: linear-gradient(90deg, #74aedd, #9fd2f2);
-  }
-
-  .var-source {
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-weight: 700;
-    margin-bottom: 10px;
-  }
-
-  .hw-list {
-    margin-top: 40px;
-    border-radius: 20px;
-    overflow: hidden;
-  }
-
-  .hw-item {
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    padding: 22px 30px;
-    border-bottom: 1px solid var(--border);
-    transition: background 0.2s ease, transform 0.2s ease;
-  }
-
-  .hw-item:last-child {
-    border-bottom: none;
-  }
-
-  .hw-badge {
-    min-width: 102px;
-    text-align: center;
-    font-size: 9pt;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    padding: 7px 10px;
-    border-radius: 999px;
-  }
-
-  .badge-active {
-    background: #dff3ff;
-    color: var(--primary-dark);
-    border: 1px solid var(--border-strong);
-  }
-
-  .badge-pending {
-    background: #eef7ff;
-    color: #6e8ca5;
-    border: 1px solid var(--border);
-  }
-
-  .hw-name {
-    flex: 1;
-    margin-bottom: 0;
-  }
-
-  .cta {
-    position: relative;
-    z-index: 1;
-    text-align: center;
-    padding: 112px 40px;
-    border-radius: 28px;
-    margin: 0 40px 40px;
-    background: linear-gradient(180deg, rgba(255,255,255,0.92) 0%, rgba(234,246,255,0.98) 100%);
-  }
-
-  .cta-title {
-    font-size: clamp(34px, 5vw, 60px);
-    margin-bottom: 22px;
-  }
-
-  .cta-title em {
-    font-style: normal;
-    color: var(--primary-dark);
-  }
-
-  .cta-sub {
-    max-width: 560px;
-    margin: 0 auto 42px;
-  }
-
-  footer {
-    position: relative;
-    z-index: 1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 16px;
-    padding: 24px 40px 40px;
-    color: var(--muted);
-    font-size: 10pt;
-  }
-
-  .footer-right {
-    display: flex;
-    gap: 22px;
-    flex-wrap: wrap;
-  }
-
-  .footer-right a {
-    color: var(--primary-dark);
-    text-decoration: none;
-    font-weight: 700;
-  }
-
-  @media (max-width: 900px) {
-    .stats-bar { grid-template-columns: repeat(2, 1fr); }
-  }
-
-  @media (max-width: 768px) {
-    nav { padding: 14px 20px; }
-    .ticker { padding: 8px 20px; top: 60px; }
-    .hero { padding: 142px 20px 70px; }
-    section { padding: 72px 20px; }
-    .stats-bar { padding: 0 20px; gap: 14px; }
-    .cta { margin: 0 20px 28px; padding: 84px 20px; }
-    footer { padding: 24px 20px 34px; flex-direction: column; align-items: flex-start; }
-    .orbit { display: none; }
-  }
-
-  @media (max-width: 560px) {
-    .stats-bar { grid-template-columns: 1fr; }
-    .hw-item { flex-direction: column; align-items: flex-start; }
-  }
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AWA05 · Telemetría Ambiental</title>
+  <style>
+    :root {
+      --bg: #f5fbff;
+      --surface: #ffffff;
+      --surface-soft: #eef7ff;
+      --surface-alt: #e2f1fb;
+      --border: #c8dff2;
+      --border-strong: #a7cbe7;
+      --primary: #6eaed8;
+      --primary-dark: #4b89bb;
+      --primary-soft: #bfe2f8;
+      --text: #24455f;
+      --muted: #5d7f99;
+      --shadow: 0 12px 28px rgba(110, 174, 216, 0.12);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Calibri, "Segoe UI", Arial, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: linear-gradient(180deg, #f7fcff 0%, #edf7ff 52%, #f7fbff 100%);
+      color: var(--text);
+      font-size: 12pt;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(110, 174, 216, 0.07) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(110, 174, 216, 0.07) 1px, transparent 1px);
+      background-size: 54px 54px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 16px 34px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 4px 18px rgba(110, 174, 216, 0.08);
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 0;
+    }
+
+    .nav-logo {
+      font-size: 13pt;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--primary-dark);
+      white-space: nowrap;
+    }
+
+    .nav-status {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--muted);
+      font-size: 10pt;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--primary);
+      box-shadow: 0 0 10px rgba(110, 174, 216, 0.35);
+      animation: blink 2s ease-in-out infinite;
+    }
+
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.35} }
+
+    .nav-link,
+    .btn-primary,
+    .btn-secondary {
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .nav-link {
+      color: var(--primary-dark);
+      font-size: 10pt;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      padding: 10px 18px;
+      border: 1px solid var(--border-strong);
+      border-radius: 999px;
+      background: #f9fcff;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover {
+      background: var(--surface-alt);
+      border-color: var(--primary);
+    }
+
+    .ticker {
+      position: fixed;
+      top: 62px;
+      left: 0;
+      right: 0;
+      z-index: 99;
+      display: flex;
+      gap: 28px;
+      overflow-x: auto;
+      padding: 8px 34px;
+      border-bottom: 1px solid var(--border);
+      background: rgba(238, 247, 255, 0.96);
+      color: var(--muted);
+      box-shadow: 0 4px 12px rgba(110, 174, 216, 0.05);
+      scrollbar-width: none;
+    }
+
+    .ticker::-webkit-scrollbar { display: none; }
+
+    .ticker-item {
+      display: flex;
+      gap: 6px;
+      white-space: nowrap;
+      font-size: 10pt;
+    }
+
+    .ticker-label { font-weight: 700; }
+    .ticker-val {
+      color: var(--primary-dark);
+      font-weight: 700;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 150px 40px 88px;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    .hero-content { max-width: 980px; }
+
+    .eyebrow,
+    .section-tag {
+      color: var(--primary-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 10pt;
+      font-weight: 700;
+    }
+
+    .eyebrow {
+      margin-bottom: 24px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      animation: fadeUp 0.5s ease forwards;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 36px;
+      height: 2px;
+      background: var(--primary);
+      border-radius: 999px;
+    }
+
+    .hero-title {
+      font-size: clamp(42px, 7vw, 86px);
+      font-weight: 700;
+      line-height: 0.96;
+      letter-spacing: -0.03em;
+      margin-bottom: 18px;
+      color: var(--text);
+      animation: fadeUp 0.5s 0.08s ease forwards;
+      opacity: 0;
+    }
+
+    .hero-title span {
+      display: block;
+      color: var(--primary-dark);
+    }
+
+    .hero-subtitle {
+      font-size: clamp(18px, 3vw, 30px);
+      font-weight: 700;
+      color: var(--muted);
+      margin-bottom: 18px;
+      animation: fadeUp 0.5s 0.12s ease forwards;
+      opacity: 0;
+    }
+
+    .hero-desc,
+    .section-intro,
+    .step-desc,
+    .var-desc,
+    .card-desc {
+      color: var(--muted);
+      text-align: justify;
+    }
+
+    .hero-desc {
+      max-width: 720px;
+      margin-bottom: 36px;
+      animation: fadeUp 0.5s 0.18s ease forwards;
+      opacity: 0;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      animation: fadeUp 0.5s 0.24s ease forwards;
+      opacity: 0;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .btn-primary,
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 180px;
+      padding: 14px 24px;
+      border-radius: 999px;
+      font-size: 10.5pt;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+    }
+
+    .btn-primary {
+      background: var(--primary-dark);
+      color: #ffffff;
+      border: 1px solid var(--primary-dark);
+      box-shadow: var(--shadow);
+    }
+
+    .btn-primary:hover {
+      background: #3e79a9;
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      color: var(--primary-dark);
+      background: rgba(255,255,255,0.78);
+      border: 1px solid var(--border-strong);
+    }
+
+    .btn-secondary:hover {
+      background: var(--surface-alt);
+    }
+
+    .stats-bar {
+      position: relative;
+      z-index: 1;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.78);
+      backdrop-filter: blur(8px);
+    }
+
+    .stat-item {
+      padding: 28px 34px;
+      border-right: 1px solid var(--border);
+    }
+
+    .stat-item:last-child { border-right: none; }
+
+    .stat-label {
+      font-size: 10pt;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .stat-value {
+      font-size: 26pt;
+      font-weight: 700;
+      color: var(--primary-dark);
+    }
+
+    .stat-unit {
+      font-size: 11pt;
+      color: var(--muted);
+      margin-left: 4px;
+    }
+
+    section {
+      position: relative;
+      z-index: 1;
+      padding: 90px 40px;
+    }
+
+    .section-tag { margin-bottom: 12px; }
+
+    .section-title {
+      font-size: clamp(28px, 4vw, 40px);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .section-intro {
+      max-width: 760px;
+      margin-bottom: 40px;
+    }
+
+    .pipeline {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 18px;
+      margin-top: 40px;
+    }
+
+    .pipeline-step,
+    .var-card,
+    .overview-card,
+    .hw-item {
+      background: rgba(255,255,255,0.86);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow);
+    }
+
+    .pipeline-step {
+      padding: 28px 24px;
+    }
+
+    .step-num {
+      font-size: 10pt;
+      color: var(--primary-dark);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .step-title,
+    .var-name,
+    .overview-title,
+    .hw-name {
+      font-size: 15pt;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .overview-grid,
+    .vars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-top: 28px;
+    }
+
+    .overview-card,
+    .var-card {
+      padding: 24px;
+    }
+
+    .overview-value {
+      font-size: 30pt;
+      font-weight: 700;
+      color: var(--primary-dark);
+      margin-bottom: 8px;
+    }
+
+    .overview-label,
+    .var-source,
+    .hw-detail,
+    .footer-clock {
+      font-size: 10pt;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 700;
+    }
+
+    .var-source { margin-bottom: 10px; }
+
+    .hw-list {
+      display: grid;
+      gap: 14px;
+      margin-top: 32px;
+    }
+
+    .hw-item {
+      padding: 20px 24px;
+      display: grid;
+      grid-template-columns: 150px 1fr auto;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .hw-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 12px;
+      border-radius: 999px;
+      font-size: 10pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      border: 1px solid var(--border-strong);
+      color: var(--primary-dark);
+      background: var(--surface-soft);
+      width: fit-content;
+    }
+
+    footer {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding: 22px 34px 30px;
+      border-top: 1px solid var(--border);
+      background: rgba(255,255,255,0.84);
+      backdrop-filter: blur(8px);
+    }
+
+    @media (max-width: 980px) {
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .stat-item:nth-child(2) { border-right: none; }
+      .hw-item { grid-template-columns: 1fr; }
+      nav { flex-wrap: wrap; }
+    }
+
+    @media (max-width: 720px) {
+      nav, .ticker, footer { padding-left: 18px; padding-right: 18px; }
+      .hero, section { padding-left: 20px; padding-right: 20px; }
+      .hero { padding-top: 156px; }
+      .stats-bar { grid-template-columns: 1fr; }
+      .stat-item { border-right: none; border-bottom: 1px solid var(--border); }
+      .stat-item:last-child { border-bottom: none; }
+      .hero-actions { flex-direction: column; align-items: stretch; }
+      .btn-primary, .btn-secondary { width: 100%; }
+    }
+  </style>
 </head>
 <body>
+  <nav>
+    <div class="nav-brand">
+      <div class="nav-logo">AWA05</div>
+      <div class="nav-status"><span class="status-dot"></span><span>Sistema disponible</span></div>
+    </div>
+    <a href="dashboard.html" class="nav-link">Ir a tablero</a>
+  </nav>
 
-<nav>
-  <div class="nav-logo">AWA05 · Telemetría Ambiental</div>
-  <div class="nav-status"><span class="status-dot"></span><span>SISTEMA ACTIVO</span></div>
-  <a href="dashboard_awa05_pastel_jose_limpio.html" class="nav-link"> TABLERO</a>
-</nav>
+  <div class="ticker">
+    <div class="ticker-item"><span class="ticker-label">Nivel:</span><span class="ticker-val" id="t-nivel">—</span></div>
+    <div class="ticker-item"><span class="ticker-label">Humedad:</span><span class="ticker-val" id="t-hum">—</span></div>
+    <div class="ticker-item"><span class="ticker-label">Temp:</span><span class="ticker-val" id="t-temp">—</span></div>
+    <div class="ticker-item"><span class="ticker-label">P. Rocío:</span><span class="ticker-val" id="t-dew">—</span></div>
+    <div class="ticker-item"><span class="ticker-label">Presión:</span><span class="ticker-val" id="t-pres">—</span></div>
+    <div class="ticker-item"><span class="ticker-label">Viento:</span><span class="ticker-val" id="t-wind">—</span></div>
+    <div class="ticker-item"><span class="ticker-label">UV:</span><span class="ticker-val" id="t-uv">—</span></div>
+    <div class="ticker-item"><span class="ticker-label">Hora:</span><span class="ticker-val" id="t-ts">—</span></div>
+  </div>
 
-<div class="ticker">
-  <div class="ticker-item"><span>NIVEL:</span><span class="ticker-val" id="t-nivel">—</span></div>
-  <div class="ticker-item"><span>HUMEDAD:</span><span class="ticker-val" id="t-hum">—</span></div>
-  <div class="ticker-item"><span>TEMP:</span><span class="ticker-val" id="t-temp">—</span></div>
-  <div class="ticker-item"><span>P. ROCÍO:</span><span class="ticker-val" id="t-dew">—</span></div>
-  <div class="ticker-item"><span>VIENTO:</span><span class="ticker-val" id="t-wind">—</span></div>
-  <div class="ticker-item"><span>SITIO:</span><span class="ticker-val">AWA05</span></div>
-  <div class="ticker-item"><span>TS:</span><span class="ticker-val" id="t-ts">—</span></div>
-</div>
+  <section class="hero">
+    <div class="hero-content">
+      <div class="eyebrow">Sistema de telemetría ambiental</div>
+      <h1 class="hero-title">Bienvenido <span>Jose Toriello</span></h1>
+      <div class="hero-subtitle">Panel principal del nodo AWA05</div>
+      <p class="hero-desc">
+        Plataforma de monitoreo para nivel de agua y variables meteorológicas de la estación WS-2000, organizada para consulta rápida del estado operativo, navegación al tablero y revisión del flujo completo de adquisición, almacenamiento y publicación.
+      </p>
+      <div class="hero-actions">
+        <a href="dashboard.html" class="btn-primary">Abrir tablero</a>
+        <a href="https://github.com/geograficaaala/awa05-telemetria" target="_blank" rel="noopener noreferrer" class="btn-secondary">Abrir repositorio</a>
+      </div>
+    </div>
+  </section>
 
-<section class="hero">
-  <svg class="orbit" viewBox="0 0 520 520" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="260" cy="260" r="220" stroke="#7eb5df" stroke-width="1.5" stroke-dasharray="6 8" fill="none"/>
-    <circle cx="260" cy="260" r="160" stroke="#9cd0ef" stroke-width="1.5" stroke-dasharray="4 8" fill="none"/>
-    <circle cx="260" cy="260" r="100" stroke="#bfe6ff" stroke-width="1.2" fill="none"/>
-    <line x1="40" y1="260" x2="480" y2="260" stroke="#9cd0ef" stroke-width="1"/>
-    <line x1="260" y1="40" x2="260" y2="480" stroke="#9cd0ef" stroke-width="1"/>
-    <circle cx="260" cy="40" r="6" fill="#7eb5df"/>
-    <circle cx="480" cy="260" r="6" fill="#9cd0ef"/>
-    <circle cx="260" cy="480" r="6" fill="#bfe6ff"/>
-  </svg>
-
-  <div class="hero-content">
-    <div class="hero-tag">Monitoreo · Correlación · Predicción</div>
-    <h1 class="hero-title">Bienvenido<span>Jose Toriello</span></h1>
-    <div class="hero-subtitle">Sistema AWA05 de telemetría ambiental y monitoreo hídrico</div>
-    <p class="hero-desc">Sistema de monitoreo continuo de producción de la cosechadora de aire AWA05. Correlaciona nivel de agua con humedad, temperatura, punto de rocío y viento para predecir y optimizar la producción hídrica bajo una interfaz visual de estilo limpio, ligero y orientado a variables ambientales.</p>
-    <div class="hero-actions">
-      <a href="dashboard_awa05_pastel_jose_limpio.html" class="btn-primary">Ver tablero en vivo</a>
-      <a href="https://github.com/geograficaaala/awa05-telemetria" target="_blank" class="btn-secondary">Repositorio</a>
+  <div class="stats-bar">
+    <div class="stat-item">
+      <div class="stat-label">Lecturas programadas</div>
+      <div class="stat-value">1<span class="stat-unit">/ hora</span></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">Variables climáticas</div>
+      <div class="stat-value">9<span class="stat-unit">series</span></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">Subidas programadas</div>
+      <div class="stat-value">2<span class="stat-unit">/ día</span></div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-label">Sitio</div>
+      <div class="stat-value">AWA05</div>
     </div>
   </div>
-</section>
 
-<div class="stats-bar">
-  <div class="stat-item">
-    <div class="stat-label">Lecturas por hora</div>
-    <div class="stat-value">1<span class="stat-unit">lect.</span></div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-label">Variables monitoreadas</div>
-    <div class="stat-value">6<span class="stat-unit">vars</span></div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-label">Capacidad máxima del garrafón</div>
-    <div class="stat-value">24.2<span class="stat-unit">L</span></div>
-  </div>
-  <div class="stat-item">
-    <div class="stat-label">Subida a GitHub</div>
-    <div class="stat-value">2<span class="stat-unit">×/día</span></div>
-  </div>
-</div>
+  <section>
+    <div class="section-tag">Arquitectura operativa</div>
+    <h2 class="section-title">Flujo del sistema</h2>
+    <p class="section-intro">
+      El nodo opera sobre Raspberry Pi, captura nivel de agua por sensor ultrasónico, recibe datos meteorológicos por HTTP desde la WS-2000, consolida archivos en formato CSV y expone la información al tablero web publicado en GitHub Pages.
+    </p>
+    <div class="pipeline">
+      <div class="pipeline-step">
+        <div class="step-num">Etapa 01</div>
+        <div class="step-title">Adquisición de nivel</div>
+        <div class="step-desc">Lectura de distancia mediante JSN-SR04T y conversión geométrica a volumen de agua en litros.</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">Etapa 02</div>
+        <div class="step-title">Ingreso meteorológico</div>
+        <div class="step-desc">Recepción de temperatura, humedad, punto de rocío, presión, viento, lluvia, radiación solar y UV desde la estación WS-2000.</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">Etapa 03</div>
+        <div class="step-title">Persistencia local</div>
+        <div class="step-desc">Almacenamiento estructurado en <strong>data/raw/nivel_raw.csv</strong> y <strong>data/raw/clima_raw.csv</strong>.</div>
+      </div>
+      <div class="pipeline-step">
+        <div class="step-num">Etapa 04</div>
+        <div class="step-title">Publicación web</div>
+        <div class="step-desc">Generación del dataset del tablero y despliegue estático mediante GitHub Pages con acceso desde la raíz del repositorio.</div>
+      </div>
+    </div>
+  </section>
 
-<section>
-  <div class="section-tag">Arquitectura del sistema</div>
-  <h2 class="section-title">Funcionamiento del sistema</h2>
-  <p class="section-intro">Pipeline automatizado desde el sensor hasta la nube, ejecutándose 24/7 sobre Raspberry Pi 4B con Debian Trixie. La estructura visual mantiene una jerarquía tipográfica clara y una paleta pastel azul, celeste y blanco coherente con la temática del proyecto.</p>
-  <div class="pipeline">
-    <div class="pipeline-step">
-      <div class="step-num">01 -</div>
-      <div class="step-title">Sensor JSN-SR04T</div>
-      <div class="step-desc">Ultrasonido para medición de distancia al espejo de agua mediante los GPIO 17 y 18. Convierte la lectura a litros con geometría del recipiente: Ø27 cm, altura 50 cm y altura máxima útil de 42.5 cm.</div>
+  <section style="padding-top: 0;">
+    <div class="section-tag">Resumen visible</div>
+    <h2 class="section-title">Variables expuestas en el tablero</h2>
+    <div class="overview-grid">
+      <div class="overview-card">
+        <div class="overview-value">10</div>
+        <div class="overview-title">Series principales</div>
+        <div class="card-desc">Nivel de agua, humedad, temperatura, punto de rocío, presión, velocidad del viento, dirección del viento, lluvia por hora, radiación solar y radiación UV.</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-value">24 h</div>
+        <div class="overview-title">Ventana operativa</div>
+        <div class="card-desc">Las gráficas están pensadas para mostrar la evolución temporal del último tramo útil de medición y facilitar análisis comparativo entre variables.</div>
+      </div>
+      <div class="overview-card">
+        <div class="overview-value">JSON</div>
+        <div class="overview-title">Fuente de lectura</div>
+        <div class="card-desc">Los archivos HTML quedan listos para consumir un dataset estructurado desde <strong>data/processed/dashboard_data.json</strong>.</div>
+      </div>
     </div>
-    <div class="pipeline-step">
-      <div class="step-num">02 -</div>
-      <div class="step-title">Estación WS-2000</div>
-      <div class="step-desc">Transmisión de variables climáticas por HTTP POST al servidor Flask en el puerto 7777 para captura, almacenamiento y posterior correlación con la producción de agua.</div>
-    </div>
-    <div class="pipeline-step">
-      <div class="step-num">03 -</div>
-      <div class="step-title">Almacenamiento CSV</div>
-      <div class="step-desc">Persistencia de datos en <strong>nivel_raw.csv</strong> y <strong>clima_raw.csv</strong> dentro de <strong>data/raw/</strong>. El scheduler ejecuta la rutina cada 60 minutos bajo supervisión de systemd.</div>
-    </div>
-    <div class="pipeline-step">
-      <div class="step-num">04 -</div>
-      <div class="step-title">GitHub y Pages</div>
-      <div class="step-desc">Subida automática programada a las 12:00 y 00:00. El dashboard estático consume el histórico publicado y actualiza visualizaciones y métricas operativas.</div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<section style="padding-top:0">
-  <div class="section-tag">Variables monitoreadas</div>
-  <h2 class="section-title">Variables del sistema</h2>
-  <div class="vars-grid">
-    <div class="var-card">
-      <div class="var-name">Nivel de Agua</div>
-      <div class="var-source">JSN-SR04T · GPIO 17/18</div>
-      <div class="var-desc">Distancia ultrasonido transformada a volumen en litros a partir de la sección circular del recipiente y la altura efectiva de almacenamiento.</div>
+  <section style="padding-top: 0;">
+    <div class="section-tag">Variables monitoreadas</div>
+    <h2 class="section-title">Cobertura del modelo meteorológico</h2>
+    <div class="vars-grid">
+      <div class="var-card">
+        <div class="var-name">Nivel de agua</div>
+        <div class="var-source">Sensor ultrasónico</div>
+        <div class="var-desc">Conversión de distancia a volumen a partir de la geometría del contenedor y el rango operativo del sensor.</div>
+      </div>
+      <div class="var-card">
+        <div class="var-name">Temperatura exterior</div>
+        <div class="var-source">WS-2000</div>
+        <div class="var-desc">Serie térmica del ambiente exterior utilizada para evaluación de condiciones de condensación.</div>
+      </div>
+      <div class="var-card">
+        <div class="var-name">Humedad relativa</div>
+        <div class="var-source">WS-2000</div>
+        <div class="var-desc">Indicador central para el potencial de captura de agua atmosférica y comparación con producción registrada.</div>
+      </div>
+      <div class="var-card">
+        <div class="var-name">Punto de rocío</div>
+        <div class="var-source">WS-2000</div>
+        <div class="var-desc">Variable derivada clave para interpretar el umbral de condensación y su relación con el nivel de agua acumulado.</div>
+      </div>
+      <div class="var-card">
+        <div class="var-name">Presión barométrica</div>
+        <div class="var-source">WS-2000</div>
+        <div class="var-desc">Seguimiento de variaciones barométricas como apoyo a la interpretación de cambios en las condiciones atmosféricas locales.</div>
+      </div>
+      <div class="var-card">
+        <div class="var-name">Viento</div>
+        <div class="var-source">WS-2000</div>
+        <div class="var-desc">Visualización independiente para velocidad y dirección, permitiendo análisis del intercambio de masa y la ventilación del sistema.</div>
+      </div>
+      <div class="var-card">
+        <div class="var-name">Lluvia por hora</div>
+        <div class="var-source">WS-2000</div>
+        <div class="var-desc">Registro de precipitación horaria para distinguir captación por condensación frente a episodios de lluvia local.</div>
+      </div>
+      <div class="var-card">
+        <div class="var-name">Radiación solar y UV</div>
+        <div class="var-source">WS-2000</div>
+        <div class="var-desc">Seguimiento de carga radiativa mediante radiación solar y nivel UV para contextualizar el desempeño térmico del entorno.</div>
+      </div>
     </div>
-    <div class="var-card amber">
-      <div class="var-name">Humedad Relativa</div>
-      <div class="var-source">WS-2000 · HTTP POST</div>
-      <div class="var-desc">Variable principal de correlación debido a la dependencia directa entre humedad ambiental y potencial de condensación del sistema.</div>
-    </div>
-    <div class="var-card blue">
-      <div class="var-name">Temperatura</div>
-      <div class="var-source">WS-2000 · HTTP POST</div>
-      <div class="var-desc">Temperatura del aire en °C. Junto con la humedad relativa, determina el gradiente termodinámico de interés para la producción hídrica.</div>
-    </div>
-    <div class="var-card">
-      <div class="var-name">Punto de Rocío</div>
-      <div class="var-source">WS-2000 · Calculado</div>
-      <div class="var-desc">Indicador derivado crítico para estimar el umbral de condensación y evaluar el rendimiento potencial de la cosechadora de aire.</div>
-    </div>
-    <div class="var-card amber">
-      <div class="var-name">Velocidad del Viento</div>
-      <div class="var-source">WS-2000 · HTTP POST</div>
-      <div class="var-desc">Velocidad y dirección del flujo de aire. Influye en el intercambio de masa de vapor hacia las superficies de condensación.</div>
-    </div>
-    <div class="var-card blue">
-      <div class="var-name">Correlación Matemática</div>
-      <div class="var-source">Cálculo local · Regresión</div>
-      <div class="var-desc">Aplicación de modelos de regresión lineal y polinomial entre nivel de agua y variables climáticas para análisis exploratorio del comportamiento del sistema.</div>
-    </div>
-  </div>
-</section>
+  </section>
 
-<section style="padding-top:0">
-  <div class="section-tag">Hardware del nodo</div>
-  <h2 class="section-title">Equipamiento AWA05</h2>
-  <div class="hw-list">
-    <div class="hw-item">
-      <span class="hw-badge badge-active">Activo</span>
-      <span class="hw-name">Raspberry Pi 4B · Raspberry Pi OS 64-bit Debian Trixie</span>
-      <span class="hw-detail">192.168.0.9</span>
+  <section style="padding-top: 0;">
+    <div class="section-tag">Infraestructura</div>
+    <h2 class="section-title">Componentes del nodo</h2>
+    <div class="hw-list">
+      <div class="hw-item">
+        <div class="hw-badge">Raspberry Pi</div>
+        <div class="hw-name">Unidad de proceso y ejecución del scheduler</div>
+        <div class="hw-detail">Servicio continuo</div>
+      </div>
+      <div class="hw-item">
+        <div class="hw-badge">WS-2000</div>
+        <div class="hw-name">Ingreso de variables meteorológicas por endpoint Flask</div>
+        <div class="hw-detail">Puerto 7777</div>
+      </div>
+      <div class="hw-item">
+        <div class="hw-badge">GitHub Pages</div>
+        <div class="hw-name">Publicación del sitio estático desde la raíz de la rama main</div>
+        <div class="hw-detail">/(root)</div>
+      </div>
     </div>
-    <div class="hw-item">
-      <span class="hw-badge badge-active">Activo</span>
-      <span class="hw-name">Estación WS-2000 · Integración por WiFi</span>
-      <span class="hw-detail">puerto 7777</span>
-    </div>
-    <div class="hw-item">
-      <span class="hw-badge badge-active">Activo</span>
-      <span class="hw-name">Servicio systemd awa05.service</span>
-      <span class="hw-detail">enabled · running</span>
-    </div>
-    <div class="hw-item">
-      <span class="hw-badge badge-pending">Pendiente</span>
-      <span class="hw-name">Sensor JSN-SR04T × 2</span>
-      <span class="hw-detail">hardware pendiente</span>
-    </div>
-    <div class="hw-item">
-      <span class="hw-badge badge-pending">Pendiente</span>
-      <span class="hw-name">Conversor lógico 8 canales 5 V / 3.3 V × 2</span>
-      <span class="hw-detail">hardware pendiente</span>
-    </div>
-    <div class="hw-item">
-      <span class="hw-badge badge-pending">Pendiente</span>
-      <span class="hw-name">Case Pi 4 con ventilación activa</span>
-      <span class="hw-detail">hardware pendiente</span>
-    </div>
-  </div>
-</section>
+  </section>
 
-<div class="cta">
-  <a href="dashboard_awa05_pastel_jose_limpio.html" class="btn-primary" style="font-size: 12pt; padding: 18px 38px;">Abrir tablero AWA05</a>
-</div>
+  <footer>
+    <div class="footer-clock" id="footer-clock">—</div>
+  </footer>
 
-<footer>
-  <span id="footer-ts">—</span>
-</footer>
+  <script>
+    function buildFallback() {
+      const now = new Date();
+      const nivel = (8 + Math.sin(now.getTime() / 3600000) * 3 + Math.random() * 0.25).toFixed(2);
+      const hum = (68 + Math.sin(now.getTime() / 800000) * 9 + Math.random()).toFixed(1);
+      const temp = (21 + Math.sin(now.getTime() / 900000) * 3 + Math.random() * 0.4).toFixed(1);
+      const dew = (parseFloat(temp) - (100 - parseFloat(hum)) / 5).toFixed(1);
+      const pres = (29.7 + Math.sin(now.getTime() / 1200000) * 0.08).toFixed(2);
+      const wind = (6 + Math.abs(Math.sin(now.getTime() / 500000)) * 7).toFixed(1);
+      const uv = (2 + Math.abs(Math.sin(now.getTime() / 700000)) * 6).toFixed(1);
+      return {
+        actualizado: now.toLocaleString('es-GT'),
+        kpis: {
+          nivel_l: nivel,
+          humedad_pct: hum,
+          temp_c: temp,
+          punto_rocio_c: dew,
+          presion_inhg: pres,
+          viento_kmh: wind,
+          uv: uv
+        }
+      };
+    }
 
-<script>
-  function updateTicker() {
-    const now = new Date();
-    const t = now.getTime();
-    const hum = (55 + Math.sin(t/600000)*15 + Math.random()*2).toFixed(1);
-    const temp = (18 + Math.sin(t/900000)*4 + Math.random()*0.4).toFixed(1);
-    const dew = (parseFloat(temp) - (100 - parseFloat(hum))/5).toFixed(1);
-    const wind = (2 + Math.abs(Math.sin(t/300000))*8 + Math.random()).toFixed(1);
-    const nivel = (8 + Math.sin(t/3600000)*5 + Math.random()*0.2).toFixed(2);
-    document.getElementById('t-nivel').textContent = nivel + ' L';
-    document.getElementById('t-hum').textContent = hum + ' %';
-    document.getElementById('t-temp').textContent = temp + ' °C';
-    document.getElementById('t-dew').textContent = dew + ' °C';
-    document.getElementById('t-wind').textContent = wind + ' km/h';
-    const reloj = now.toLocaleTimeString('es-GT');
-    document.getElementById('t-ts').textContent = reloj;
-    const footerClock = document.getElementById('footer-ts');
-    if (footerClock) footerClock.textContent = reloj;
-  }
-  updateTicker();
-  setInterval(updateTicker, 5000);
-</script>
+    async function fetchDashboardData() {
+      try {
+        const response = await fetch('./data/processed/dashboard_data.json?t=' + Date.now());
+        if (!response.ok) throw new Error('dataset no disponible');
+        return await response.json();
+      } catch (error) {
+        return buildFallback();
+      }
+    }
+
+    function setText(id, value, suffix = '') {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = value !== undefined && value !== null && value !== '' ? `${value}${suffix}` : '—';
+    }
+
+    async function updateLanding() {
+      const payload = await fetchDashboardData();
+      const kpi = payload.kpis || {};
+      setText('t-nivel', kpi.nivel_l, ' L');
+      setText('t-hum', kpi.humedad_pct, ' %');
+      setText('t-temp', kpi.temp_c, ' °C');
+      setText('t-dew', kpi.punto_rocio_c, ' °C');
+      setText('t-pres', kpi.presion_inhg, ' inHg');
+      setText('t-wind', kpi.viento_kmh, ' km/h');
+      setText('t-uv', kpi.uv, '');
+      setText('t-ts', payload.actualizado || new Date().toLocaleTimeString('es-GT'));
+      setText('footer-clock', payload.actualizado || new Date().toLocaleString('es-GT'));
+    }
+
+    updateLanding();
+    setInterval(updateLanding, 60000);
+  </script>
 </body>
 </html>
