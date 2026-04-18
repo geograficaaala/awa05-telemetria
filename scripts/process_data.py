@@ -23,6 +23,32 @@ def leer_csv(ruta):
     with open(ruta, "r") as f:
         return list(csv.DictReader(f))
 
+
+def estado_sistema():
+    import subprocess, re
+    try:
+        temp = float(re.search(r"temp=([\d.]+)", subprocess.check_output(["vcgencmd","measure_temp"]).decode()).group(1))
+    except: temp = None
+    try:
+        volt = float(re.search(r"volt=([\d.]+)", subprocess.check_output(["vcgencmd","measure_volts"]).decode()).group(1))
+    except: volt = None
+    try:
+        mem = open("/proc/meminfo").read()
+        total = int(re.search(r"MemTotal:\s+(\d+)", mem).group(1))
+        available = int(re.search(r"MemAvailable:\s+(\d+)", mem).group(1))
+        ram_pct = round((total - available) / total * 100, 1)
+    except: ram_pct = None
+    try:
+        st = os.statvfs("/")
+        disco_pct = round((1 - st.f_bavail / st.f_blocks) * 100, 1)
+    except: disco_pct = None
+    try:
+        uptime_s = float(open("/proc/uptime").read().split()[0])
+        h, m = divmod(int(uptime_s // 60), 60)
+        uptime = f"{h}h {m}m"
+    except: uptime = None
+    return {"cpu_temp_c": temp, "voltaje_v": volt, "ram_uso_pct": ram_pct, "disco_uso_pct": disco_pct, "uptime": uptime}
+
 def generar_dashboard_json():
     os.makedirs("data/processed", exist_ok=True)
     nivel = leer_csv(RUTA_NIVEL)
@@ -60,6 +86,7 @@ def generar_dashboard_json():
     data = {
         "actualizado": timestamp_ahora(),
         "kpis": kpis,
+        "sistema": estado_sistema(),
         "series": {
             "labels":              labels,
             "nivel_l":             nivel_l,
