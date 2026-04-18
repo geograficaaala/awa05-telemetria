@@ -1,37 +1,67 @@
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import csv
 import json
 import os
-from datetime import datetime
 from scripts.utils import timestamp_ahora
 
-def calcular_promedio_horario(ruta_csv):
-    """Lee el CSV crudo y calcula promedios por hora."""
-    registros = {}
-    if not os.path.exists(ruta_csv):
-        return {}
-    with open(ruta_csv, 'r') as f:
-        reader = csv.DictReader(f)
-        for fila in reader:
-            hora = fila['timestamp'][:13]
-            if hora not in registros:
-                registros[hora] = []
-            registros[hora].append(float(fila['peso_kg']))
-    promedios = {}
-    for hora, valores in registros.items():
-        promedios[hora] = round(sum(valores) / len(valores), 3)
-    return promedios
+RUTA_NIVEL = "data/raw/nivel_raw.csv"
+RUTA_CLIMA = "data/raw/clima_raw.csv"
+RUTA_JSON  = "data/processed/dashboard_data.json"
 
-def generar_dashboard_json(promedios, ruta_salida):
-    """Genera el archivo JSON para el dashboard."""
+def leer_csv(ruta):
+    if not os.path.exists(ruta):
+        return []
+    with open(ruta, "r") as f:
+        return list(csv.DictReader(f))
+
+def ultima_lectura(filas, campos):
+    if not filas:
+        return {c: None for c in campos}
+    ultima = filas[-1]
+    return {c: ultima.get(c, None) for c in campos}
+
+def serie_temporal(filas, campo, limite=24):
+    datos = []
+    for fila in filas[-limite:]:
+        try:
+            datos.append({"timestamp": fila["timestamp"], "valor": float(fila[campo])})
+        except (ValueError, KeyError):
+            pass
+    return datos
+
+def generar_dashboard_json():
+    os.makedirs("data/processed", exist_ok=True)
+    nivel = leer_csv(RUTA_NIVEL)
+    clima = leer_csv(RUTA_CLIMA)
+    ultimo_nivel = ultima_lectura(nivel, ["distancia_cm", "volumen_litros"])
+    ultimo_clima = ultima_lectura(clima, ["temp_exterior", "humedad", "punto_rocio", "presion", "viento_vel", "viento_dir", "lluvia_hora", "radiacion_solar", "uv"])
     data = {
         "actualizado": timestamp_ahora(),
-        "datos": [{"hora": h, "peso_kg": v} for h, v in promedios.items()]
+        "nivel": {
+            "ultima": ultimo_nivel,
+            "serie": serie_temporal(nivel, "volumen_litros")
+        },
+        "clima": {
+            "ultima": ultimo_clima,
+            "series": {
+                "temperatura": serie_temporal(clima, "temp_exterior"),
+                "humedad": serie_temporal(clima, "humedad"),
+                "presion": serie_temporal(clima, "presion"),
+                "viento_vel": serie_temporal(clima, "viento_vel"),
+                "lluvia": serie_temporal(clima, "lluvia_hora"),
+                "radiacion_solar": serie_temporal(clima, "radiacion_solar"),
+                "uv": serie_temporal(clima, "uv")
+            }
+        }
     }
-    with open(ruta_salida, 'w') as f:
+    with open(RUTA_JSON, "w") as f:
         json.dump(data, f, indent=2)
-    print(f"Dashboard JSON generado en {ruta_salida}")
+    print(f"[OK] dashboard_data.json generado en {RUTA_JSON}")
+    return data
 
 if __name__ == "__main__":
-    promedios = calcular_promedio_horario("data/raw/peso_raw.csv")
-    print(f"Promedios calculados: {promedios}")
-EOF 
+    data = generar_dashboard_json()
+    print(f"Nivel actual: {data['nivel']['ultima']}")
+    print(f"Clima actual: {data['clima']['ultima']}")
