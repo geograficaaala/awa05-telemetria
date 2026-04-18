@@ -28,7 +28,7 @@ def recibir_datos():
     }
 
     guardar_csv(RUTA_CLIMA, fila)
-    print(f"[WS2000] Datos recibidos: temp={fila[chr(39)+'temp_exterior'+chr(39)]} humedad={fila[chr(39)+'humedad'+chr(39)]}")
+    print(f"[WS2000] Datos recibidos: temp={fila['temp_exterior']} humedad={fila['humedad']}")
     return "OK", 200
 
 @app.route("/", methods=["GET"])
