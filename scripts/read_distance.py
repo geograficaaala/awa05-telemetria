@@ -87,7 +87,7 @@ def leer_nivel():
     return distancia, volumen
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
+    logging.basicConfig(level=logging.WARNING)
     print("=== Prueba JSN-SR04T — AWA05 ===")
     dist, vol = leer_nivel()
     if dist is not None:
