@@ -2,3 +2,4 @@ __pycache__/
 *.pyc
 data/raw/peso_raw.csv
 .env
+data/raw/*.csv
