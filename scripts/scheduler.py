@@ -6,6 +6,7 @@ import time
 import threading
 from scripts.main import tomar_lectura
 from scripts.upload_github import subir_archivos
+from scripts.process_data import generar_dashboard_json
 from scripts.read_ws2000 import iniciar_servidor
 
 def job_lectura():
@@ -13,6 +14,8 @@ def job_lectura():
     tomar_lectura()
 
 def job_subida():
+    print("[SCHEDULER] Generando dashboard JSON...")
+    generar_dashboard_json()
     print("[SCHEDULER] Subiendo datos a GitHub...")
     subir_archivos()
 
