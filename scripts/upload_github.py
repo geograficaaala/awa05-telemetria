@@ -52,3 +52,32 @@ def subir_archivos():
 
 if __name__ == "__main__":
     subir_archivos()
+
+def subir_dashboard():
+    token = cargar_token()
+    g     = Github(auth=Auth.Token(token))
+    repo  = g.get_repo(REPO_NAME)
+    ruta_local = "data/processed/dashboard_data.json"
+    if not os.path.exists(ruta_local):
+        print("[SKIP] No existe dashboard_data.json")
+        return
+    with open(ruta_local, "r") as f:
+        contenido = f.read()
+    try:
+        archivo = repo.get_contents(ruta_local, ref=RAMA)
+        repo.update_file(
+            path    = ruta_local,
+            message = f"[sistema] KPIs Pi {timestamp_ahora()}",
+            content = contenido,
+            sha     = archivo.sha,
+            branch  = RAMA
+        )
+        print(f"[OK] dashboard_data.json actualizado")
+    except Exception:
+        repo.create_file(
+            path    = ruta_local,
+            message = f"[sistema] KPIs Pi {timestamp_ahora()}",
+            content = contenido,
+            branch  = RAMA
+        )
+        print(f"[OK] dashboard_data.json creado")

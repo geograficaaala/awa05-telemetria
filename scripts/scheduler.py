@@ -5,29 +5,28 @@ import schedule
 import time
 import threading
 from scripts.main import tomar_lectura
-from scripts.upload_github import subir_archivos
+from scripts.upload_github import subir_archivos, subir_dashboard
 from scripts.process_data import generar_dashboard_json
 from scripts.read_ws2000 import iniciar_servidor
 
 def job_lectura():
     print("[SCHEDULER] Tomando lectura del sensor...")
     tomar_lectura()
-
-def job_subida():
-    print("[SCHEDULER] Generando dashboard JSON...")
+    print("[SCHEDULER] Generando y subiendo datos...")
     generar_dashboard_json()
-    print("[SCHEDULER] Subiendo datos a GitHub...")
     subir_archivos()
+
+def job_sistema():
+    print("[SCHEDULER] Actualizando KPIs del sistema Pi...")
+    generar_dashboard_json()
+    subir_dashboard()
 
 def iniciar_scheduler():
     print("[SCHEDULER] Lectura inicial al arrancar...")
     job_lectura()
-
     schedule.every(60).minutes.do(job_lectura)
-    schedule.every().day.at("12:00").do(job_subida)
-    schedule.every().day.at("00:00").do(job_subida)
-
-    print("[SCHEDULER] Activo - lectura cada 60 min, subida a las 12:00 y 00:00")
+    schedule.every(15).minutes.do(job_sistema)
+    print("[SCHEDULER] Activo - lecturas cada 60 min, KPIs Pi cada 15 min")
     while True:
         schedule.run_pending()
         time.sleep(60)
