@@ -1,5 +1,5 @@
 {
-  "actualizado": "2026-04-21 23:05:37",
+  "actualizado": "2026-04-21 23:20:39",
   "kpis": {
     "nivel_l": 0.0,
     "humedad_pct": 68.0,
@@ -17,7 +17,7 @@
     "voltaje_v": 0.88,
     "ram_uso_pct": 9.9,
     "disco_uso_pct": 10.3,
-    "uptime": "0h 38m"
+    "uptime": "0h 53m"
   },
   "series": {
     "labels": [
