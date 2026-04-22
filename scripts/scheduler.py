@@ -22,6 +22,8 @@ def job_sistema():
     subir_dashboard()
 
 def iniciar_scheduler():
+    print("[SCHEDULER] Esperando 10 min para que la red levante...")
+    time.sleep(600)
     print("[SCHEDULER] Lectura inicial al arrancar...")
     job_lectura()
     schedule.every(60).minutes.do(job_lectura)
