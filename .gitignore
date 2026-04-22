@@ -3,3 +3,5 @@ __pycache__/
 data/raw/peso_raw.csv
 .env
 data/raw/*.csv
+data/processed/
+scripts/__pycache__/
