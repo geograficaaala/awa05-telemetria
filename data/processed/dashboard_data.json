@@ -1,1 +1,35 @@
-{}
+{
+  "actualizado": "2026-04-23 12:29:39",
+  "kpis": {
+    "nivel_l": null,
+    "humedad_pct": null,
+    "temp_c": null,
+    "punto_rocio_c": null,
+    "presion_inhg": null,
+    "viento_kmh": null,
+    "viento_dir_deg": null,
+    "lluvia_hora_mm": null,
+    "radiacion_solar_wm2": null,
+    "uv": null
+  },
+  "sistema": {
+    "cpu_temp_c": 37.4,
+    "voltaje_v": 0.946,
+    "ram_uso_pct": 10.2,
+    "disco_uso_pct": 10.3,
+    "uptime": "0h 53m"
+  },
+  "series": {
+    "labels": [],
+    "nivel_l": [],
+    "humedad_pct": [],
+    "temp_c": [],
+    "punto_rocio_c": [],
+    "presion_inhg": [],
+    "viento_kmh": [],
+    "viento_dir_deg": [],
+    "lluvia_hora_mm": [],
+    "radiacion_solar_wm2": [],
+    "uv": []
+  }
+}
