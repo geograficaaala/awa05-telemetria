@@ -349,7 +349,7 @@
       setText('sb-nivel',payload.kpis?.nivel_l);setText('sb-hum',payload.kpis?.humedad_pct);setText('sb-temp',payload.kpis?.temp_c);setText('sb-pres',payload.kpis?.presion_inhg);
       setTrend('trend-nivel',nivel,'L');setTrend('trend-hum',hum,'%');setTrend('trend-temp',temp,'C');setTrend('trend-dew',dew,'C');setTrend('trend-pres',pres,'inHg');setTrend('trend-wind',wind,'km/h');
       interpretarPi(payload.sistema);
-      const nivelMax=Math.max(...nivel.filter(v=>v!==null),5);lineChart('chart-nivel',labels,nivel,'#1a5f8f','L',0,Math.ceil(nivelMax*1.2));
+      const _nd=nivel.filter(v=>v!==null&&v!==undefined&&v!==0);const nivelMax=_nd.length?Math.max(..._nd):5;lineChart('chart-nivel',labels,nivel,'#1a5f8f','L',0,Math.ceil(nivelMax*1.2));
       lineChart('chart-hum',labels,hum,'#2d7ab5','%',0,100);
       lineChart('chart-temp',labels,temp,'#5ba3d0','C');
       lineChart('chart-dew',labels,dew,'#4490ba','C');
