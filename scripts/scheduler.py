@@ -42,7 +42,7 @@ def iniciar_scheduler():
     time.sleep(600)
     print("[SCHEDULER] Lectura inicial al arrancar...")
     job_lectura()
-    schedule.every(60).minutes.do(job_lectura)
+    schedule.every(15).minutes.do(job_lectura)
     schedule.every(15).minutes.do(job_sistema)
     schedule.every(5).minutes.do(watchdog_termico)
     print("[SCHEDULER] Activo - lecturas cada 60 min, KPIs Pi cada 15 min, watchdog cada 5 min")
