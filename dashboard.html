@@ -4,127 +4,174 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AWA05 · Tablero de Telemetría</title>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,300;0,600;0,700;1,300&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     :root {
-      --bg:#eef5fb;--bg-alt:#e4eef8;--surface:#ffffff;--surface-2:#f4f9fd;--surface-3:#e8f2fa;
-      --border:#c8dff0;--border-strong:#9dc4e0;
-      --primary:#1a5f8f;--primary-mid:#2d7ab5;--primary-light:#5ba3d0;--primary-pale:#d4eaf7;
-      --accent:#0a8fc7;--green:#1a8f5a;--green-pale:#d4f0e5;
-      --yellow:#b07d00;--yellow-pale:#fff3cc;--red:#c0392b;--red-pale:#fde8e6;
-      --text:#0d2a40;--text-mid:#2c5672;--muted:#5d87a6;
-      --mono:'IBM Plex Mono',monospace;--serif:'Fraunces',serif;
-      --shadow-sm:0 2px 8px rgba(26,95,143,0.07);--shadow-md:0 6px 20px rgba(26,95,143,0.11);
+      --bg:#f0f8ff;--bg-alt:#e6f4fc;--surface:#ffffff;--surface-2:#f4fbff;--surface-3:#e8f6fd;
+      --border:rgba(100,170,220,0.22);--border-strong:rgba(70,150,210,0.35);
+      --primary:#1a7ab5;--primary-mid:#2d9fd4;--primary-light:#5bbde8;--primary-pale:rgba(45,159,212,0.1);
+      --accent:#0099cc;--accent-dim:rgba(0,153,204,0.1);
+      --cyan:#17b8d4;--cyan-pale:rgba(23,184,212,0.1);
+      --green:#1a9e6a;--green-pale:rgba(26,158,106,0.1);
+      --yellow:#c47a00;--yellow-pale:rgba(196,122,0,0.1);
+      --red:#c0392b;--red-pale:rgba(192,57,43,0.1);
+      --text:#0d2a40;--text-mid:#1e5070;--muted:#4a7a9b;
+      --mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
+      --shadow-sm:0 2px 10px rgba(26,122,181,0.08);--shadow-md:0 6px 24px rgba(26,122,181,0.12);--shadow-lg:0 16px 48px rgba(26,122,181,0.16);
+      --glow:0 0 20px rgba(45,159,212,0.1);
     }
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     html{scroll-behavior:smooth}
-    body{background:var(--bg);color:var(--text);font-family:var(--mono);font-size:13px;overflow-x:hidden}
-    body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(rgba(26,95,143,0.03) 1px,transparent 1px),linear-gradient(90deg,rgba(26,95,143,0.03) 1px,transparent 1px);background-size:44px 44px;pointer-events:none;z-index:0}
-    @keyframes fadeInUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-    header{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 28px;height:58px;background:rgba(238,245,251,0.96);border-bottom:1px solid var(--border-strong);backdrop-filter:blur(16px);box-shadow:var(--shadow-sm)}
-    .header-left{display:flex;align-items:center;gap:14px}
-    .header-right{display:flex;align-items:center;gap:10px}
-    .h-wordmark{font-family:var(--mono);font-size:13px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:var(--primary)}
-    .h-sep{width:1px;height:18px;background:var(--border-strong)}
+    body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13px;overflow-x:hidden}
+
+    /* Subtle grid background */
+    body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(rgba(45,159,212,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(45,159,212,0.05) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+    body::after{content:"";position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(45,159,212,0.04) 0%,transparent 60%);pointer-events:none;z-index:0}
+
+    @keyframes gridPulse{0%,100%{opacity:0.5}50%{opacity:1}}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes slideInLeft{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+    @keyframes glow{0%,100%{box-shadow:0 0 8px rgba(45,159,212,0.15)}50%{box-shadow:0 0 18px rgba(45,159,212,0.3)}}
+
+    /* HEADER */
+    header{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 28px;height:56px;background:rgba(240,248,255,0.95);border-bottom:1px solid var(--border-strong);backdrop-filter:blur(20px);box-shadow:var(--shadow-sm)}
+    .header-left{display:flex;align-items:center;gap:16px}
+    .header-right{display:flex;align-items:center;gap:8px}
+    .h-wordmark{font-family:var(--sans);font-size:15px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary)}
+    .h-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);animation:pulse 2s ease-in-out infinite;box-shadow:0 0 6px var(--cyan)}
+    .h-sep{width:1px;height:20px;background:var(--border-strong)}
     .h-title{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase}
-    .h-logo{height:34px;width:auto;object-fit:contain}
-    .btn{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;border-radius:5px;border:1px solid var(--border-strong);background:var(--surface);color:var(--primary);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;cursor:pointer;text-decoration:none;transition:all 0.18s}
-    .btn:hover{background:var(--primary-pale);border-color:var(--primary-mid)}
+    .h-logo{height:32px;width:auto;object-fit:contain}
+    .btn{display:inline-flex;align-items:center;gap:5px;padding:7px 15px;border-radius:6px;border:1px solid var(--border-strong);background:var(--surface);color:var(--primary);font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.18s}
+    .btn:hover{background:var(--primary-pale);border-color:var(--primary-mid);color:var(--primary)}
     .btn-accent{background:var(--primary);color:#fff;border-color:var(--primary)}
     .btn-accent:hover{background:var(--primary-mid);border-color:var(--primary-mid)}
-    .layout{position:relative;z-index:1;display:grid;grid-template-columns:196px 1fr;min-height:calc(100vh - 58px)}
-    .sidebar{position:sticky;top:58px;height:calc(100vh - 58px);overflow-y:auto;padding:18px 0;border-right:1px solid var(--border);background:var(--surface)}
+
+    /* LAYOUT */
+    .layout{position:relative;z-index:1;display:grid;grid-template-columns:188px 1fr;min-height:calc(100vh - 56px)}
+    .sidebar{position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;padding:16px 0;border-right:1px solid var(--border);background:var(--surface)}
     .sidebar::-webkit-scrollbar{width:3px}
     .sidebar::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:999px}
-    .sb-section-label{font-family:var(--mono);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.16em;color:var(--muted);padding:10px 16px 5px}
-    .sb-link{display:block;padding:8px 16px;text-decoration:none;color:var(--muted);font-size:11px;font-weight:500;border-left:2px solid transparent;transition:all 0.14s}
-    .sb-link:hover,.sb-link.active{color:var(--primary);background:var(--primary-pale);border-left-color:var(--primary-mid)}
-    .sb-kpi{margin:6px 10px;padding:10px 12px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px}
-    .sb-kpi-label{font-family:var(--mono);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted)}
-    .sb-kpi-val{font-family:var(--serif);font-size:20px;font-weight:700;color:var(--primary);margin-top:2px}
-    .sb-kpi-unit{font-family:var(--mono);font-size:11px;color:var(--muted);font-weight:400}
-    main{padding:24px 28px;display:flex;flex-direction:column;gap:26px}
-    section{animation:fadeInUp 0.45s ease both}
-    section:nth-child(2){animation-delay:0.06s}
-    section:nth-child(3){animation-delay:0.1s}
-    section:nth-child(4){animation-delay:0.14s}
-    section:nth-child(5){animation-delay:0.18s}
-    section:nth-child(6){animation-delay:0.22s}
-    section:nth-child(7){animation-delay:0.26s}
-    .section-tag{font-family:var(--mono);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.18em;color:var(--accent);margin-bottom:3px}
-    .section-title{font-family:var(--serif);font-size:20px;font-weight:700;color:var(--text);letter-spacing:-0.02em}
+    .sb-section-label{font-family:var(--mono);font-size:8px;font-weight:500;text-transform:uppercase;letter-spacing:0.16em;color:var(--muted);padding:12px 14px 4px}
+    .sb-link{display:flex;align-items:center;gap:8px;padding:8px 14px;text-decoration:none;color:var(--text-mid);font-family:var(--sans);font-size:12px;font-weight:500;border-left:2px solid transparent;transition:all 0.15s}
+    .sb-link::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--border-strong);flex-shrink:0;transition:all 0.15s}
+    .sb-link:hover,.sb-link.active{color:var(--primary);background:var(--primary-pale);border-left-color:var(--primary)}
+    .sb-link:hover::before,.sb-link.active::before{background:var(--primary)}
+    .sb-kpi{margin:5px 10px;padding:10px 12px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;transition:border-color 0.2s}
+    .sb-kpi:hover{border-color:var(--border-strong)}
+    .sb-kpi-label{font-family:var(--mono);font-size:8px;font-weight:500;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted)}
+    .sb-kpi-val{font-family:var(--sans);font-size:20px;font-weight:700;color:var(--primary);margin-top:2px}
+    .sb-kpi-unit{font-family:var(--sans);font-size:12px;color:var(--muted);font-weight:400}
+
+    /* MAIN */
+    main{padding:22px 26px;display:flex;flex-direction:column;gap:24px}
+    section{animation:fadeInUp 0.5s ease both}
+    section:nth-child(2){animation-delay:0.07s}section:nth-child(3){animation-delay:0.12s}
+    section:nth-child(4){animation-delay:0.17s}section:nth-child(5){animation-delay:0.22s}
+    section:nth-child(6){animation-delay:0.27s}section:nth-child(7){animation-delay:0.32s}
+
+    .section-tag{font-family:var(--mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.18em;color:var(--accent);margin-bottom:3px}
+    .section-title{font-family:var(--sans);font-size:20px;font-weight:700;color:var(--text)}
     .section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px;gap:12px}
+
+    /* HERO */
     .hero-panel{background:var(--surface);border:1px solid var(--border-strong);border-radius:14px;padding:24px 26px;box-shadow:var(--shadow-md);position:relative;overflow:hidden}
-    .hero-panel::after{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--primary-light),var(--accent))}
-    .hero-panel h1{font-family:var(--serif);font-size:clamp(24px,3.5vw,40px);font-weight:700;color:var(--text);letter-spacing:-0.02em;margin-bottom:4px}
+    .hero-panel::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--cyan),var(--primary-light))}
+    .hero-panel::after{content:"";position:absolute;top:0;right:0;width:35%;height:100%;background:radial-gradient(ellipse at 80% 30%,rgba(45,159,212,0.04) 0%,transparent 70%);pointer-events:none}
+    .hero-panel h1{font-family:var(--sans);font-size:clamp(22px,3vw,36px);font-weight:700;color:var(--text);margin-bottom:4px}
     .hero-panel h1 span{color:var(--primary)}
-    .hero-sub{font-size:11px;color:var(--muted);margin-bottom:18px;max-width:580px;line-height:1.7}
-    .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
-    .kpi-card{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden;transition:box-shadow 0.18s,transform 0.18s}
-    .kpi-card:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+    .hero-sub{font-family:var(--sans);font-size:12px;color:var(--muted);margin-bottom:18px;max-width:560px;line-height:1.7}
+    .hero-tag-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+    .hero-tag{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:3px 10px;border-radius:4px;border:1px solid var(--border-strong);color:var(--muted);background:var(--surface-2)}
+
+    /* KPI CARDS */
+    .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+    .kpi-card{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden;transition:all 0.2s;cursor:default}
+    .kpi-card:hover{border-color:var(--border-strong);box-shadow:var(--shadow-sm);transform:translateY(-2px)}
     .kpi-card::after{content:"";position:absolute;bottom:0;left:0;right:0;height:2px}
-    .kc-1::after{background:var(--primary)}.kc-2::after{background:var(--primary-light)}
-    .kc-3::after{background:#7ab5d8}.kc-4::after{background:#5295be}
-    .kc-5::after{background:#82b8d5}.kc-6::after{background:#6aadd4}
-    .kpi-label{font-family:var(--mono);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:5px}
-    .kpi-val{font-family:var(--serif);font-size:28px;font-weight:700;color:var(--primary);line-height:1}
-    .kpi-unit{font-family:var(--mono);font-size:12px;color:var(--muted);font-weight:400}
+    .kc-1::after{background:linear-gradient(90deg,var(--primary),var(--cyan))}
+    .kc-2::after{background:linear-gradient(90deg,var(--primary-mid),var(--primary-light))}
+    .kc-3::after{background:linear-gradient(90deg,var(--primary-light),#a8d8ef)}
+    .kc-4::after{background:linear-gradient(90deg,var(--cyan),var(--primary))}
+    .kc-5::after{background:linear-gradient(90deg,var(--primary),#6ab8d8)}
+    .kc-6::after{background:linear-gradient(90deg,var(--primary-mid),var(--cyan))}
+    .kpi-label{font-family:var(--mono);font-size:8px;font-weight:500;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:6px}
+    .kpi-val{font-family:var(--sans);font-size:28px;font-weight:700;color:var(--primary);line-height:1}
+    .kpi-unit{font-family:var(--sans);font-size:13px;color:var(--muted);font-weight:400}
     .kpi-meta{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:5px}
     .trend-up{color:var(--green)}.trend-down{color:var(--red)}
-    .pi-panel{background:var(--surface);border:1px solid var(--border-strong);border-radius:14px;padding:20px 22px;box-shadow:var(--shadow-sm)}
-    .pi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:10px;margin-top:14px}
+
+    /* PI PANEL */
+    .pi-panel{background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow-sm)}
+    .pi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:10px;margin-top:14px}
     .pi-metric{background:var(--surface-2);border:1px solid var(--border);border-radius:9px;padding:12px 14px;transition:border-color 0.2s}
     .pi-metric-label{font-family:var(--mono);font-size:8px;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:6px}
-    .pi-metric-val{font-family:var(--serif);font-size:22px;font-weight:700;color:var(--primary)}
-    .pi-metric-unit{font-family:var(--mono);font-size:10px;color:var(--muted);font-weight:400}
+    .pi-metric-val{font-family:var(--sans);font-size:22px;font-weight:700;color:var(--primary)}
+    .pi-metric-unit{font-family:var(--sans);font-size:11px;color:var(--muted);font-weight:400}
     .pi-bar-wrap{height:3px;background:var(--surface-3);border-radius:999px;margin-top:8px;overflow:hidden}
-    .pi-bar-fill{height:100%;border-radius:999px;transition:width 0.8s cubic-bezier(0.4,0,0.2,1)}
-    .pi-comment{font-size:10px;color:var(--muted);margin-top:5px;line-height:1.5}
-    .pi-ok{border-color:rgba(26,143,90,0.3)!important}.pi-warn{border-color:rgba(176,125,0,0.3)!important}.pi-crit{border-color:rgba(192,57,43,0.3)!important}
-    .status-badge{font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:3px 10px;border-radius:4px}
-    .badge-ok{background:var(--green-pale);color:var(--green);border:1px solid rgba(26,143,90,0.3)}
-    .badge-warn{background:var(--yellow-pale);color:var(--yellow);border:1px solid rgba(176,125,0,0.3)}
-    .badge-crit{background:var(--red-pale);color:var(--red);border:1px solid rgba(192,57,43,0.3)}
+    .pi-bar-fill{height:100%;border-radius:999px;transition:width 1s cubic-bezier(0.4,0,0.2,1)}
+    .pi-comment{font-family:var(--sans);font-size:11px;color:var(--muted);margin-top:5px;line-height:1.5}
+    .pi-ok{border-color:rgba(26,158,106,0.3)!important}.pi-warn{border-color:rgba(196,122,0,0.3)!important}.pi-crit{border-color:rgba(192,57,43,0.3)!important}
+    .status-badge{font-family:var(--mono);font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;padding:4px 12px;border-radius:4px}
+    .badge-ok{background:var(--green-pale);color:var(--green);border:1px solid rgba(26,158,106,0.25)}
+    .badge-warn{background:var(--yellow-pale);color:var(--yellow);border:1px solid rgba(196,122,0,0.25)}
+    .badge-crit{background:var(--red-pale);color:var(--red);border:1px solid rgba(192,57,43,0.25)}
+
+    /* EXPORT */
     .export-bar{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--surface);border:1px solid var(--border-strong);border-radius:10px;flex-wrap:wrap;box-shadow:var(--shadow-sm)}
-    .export-label{font-family:var(--mono);font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-right:4px}
+    .export-label{font-family:var(--mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-right:4px}
+
+    /* CHARTS */
     .chart-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
     .chart-grid.single{grid-template-columns:1fr}
-    .chart-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow-sm);transition:box-shadow 0.18s}
-    .chart-card:hover{box-shadow:var(--shadow-md)}
+    .chart-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow-sm);transition:all 0.2s;position:relative;overflow:hidden}
+    .chart-card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(45,159,212,0.3),transparent);opacity:0;transition:opacity 0.2s}
+    .chart-card:hover{border-color:var(--border-strong);box-shadow:var(--shadow-md)}
+    .chart-card:hover::before{opacity:1}
     .chart-card.wide{grid-column:span 2}
     .chart-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}
-    .chart-title{font-family:var(--serif);font-size:14px;font-weight:600;color:var(--text);margin-bottom:2px}
-    .chart-subtitle{font-size:10px;color:var(--muted);line-height:1.5}
-    .chart-badge{font-family:var(--mono);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;padding:4px 9px;border-radius:4px;background:var(--primary-pale);border:1px solid var(--border-strong);color:var(--primary);white-space:nowrap;flex-shrink:0}
-    .chart-wrap{position:relative;height:230px}
-    .chart-wrap.tall{height:290px}
+    .chart-title{font-family:var(--sans);font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px}
+    .chart-subtitle{font-family:var(--sans);font-size:11px;color:var(--muted);line-height:1.5;max-width:340px}
+    .chart-badge{font-family:var(--mono);font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;padding:4px 10px;border-radius:4px;background:var(--primary-pale);border:1px solid var(--border-strong);color:var(--primary);white-space:nowrap;flex-shrink:0}
+    .chart-wrap{position:relative;height:220px}
+    .chart-wrap.tall{height:280px}
+    .chart-wrap.rose{height:300px}
     .chart-footer{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
-    .chart-ts{font-family:var(--mono);font-size:8px;color:var(--muted)}
+    .chart-ts{font-family:var(--mono);font-size:9px;color:var(--muted)}
+
+    /* CORRELATION */
     .corr-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow-sm)}
-    .corr-table{width:100%;border-collapse:collapse;margin-top:8px}
-    .corr-table th{font-family:var(--mono);font-size:8px;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--border-strong);text-align:left}
-    .corr-table td{font-family:var(--mono);font-size:11px;padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text)}
-    .bar-wrap{width:90px;height:5px;background:var(--surface-3);border-radius:999px;overflow:hidden}
-    .bar-fill{height:100%;border-radius:999px;transition:width 0.7s ease}
-    .dash-footer{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;padding:14px 28px 22px;border-top:1px solid var(--border);background:var(--surface)}
-    .footer-copy{font-family:var(--mono);font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em}
+    .corr-table{width:100%;border-collapse:collapse;margin-top:10px}
+    .corr-table th{font-family:var(--mono);font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--border-strong);text-align:left}
+    .corr-table td{font-family:var(--mono);font-size:11px;padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text-mid);transition:background 0.15s}
+    .corr-table tr:hover td{background:var(--primary-pale)}
+    .bar-wrap{width:80px;height:4px;background:var(--surface-3);border-radius:999px;overflow:hidden}
+    .bar-fill{height:100%;border-radius:999px;transition:width 0.8s ease}
+    .r-pos{color:var(--green)!important}.r-neg{color:var(--red)!important}.r-neu{color:var(--muted)!important}
+
+    /* FOOTER */
+    .dash-footer{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;padding:14px 28px 20px;border-top:1px solid var(--border);background:var(--surface)}
+    .footer-copy{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em}
     .footer-ts{font-family:var(--mono);font-size:9px;color:var(--muted)}
+
     @media(max-width:1100px){.layout{grid-template-columns:1fr}.sidebar{display:none}.chart-grid{grid-template-columns:1fr}.chart-card.wide{grid-column:auto}}
-    @media(max-width:700px){main{padding:16px}header{padding:0 16px}.kpi-row{grid-template-columns:1fr 1fr}}
+    @media(max-width:700px){main{padding:14px}header{padding:0 14px}.kpi-row{grid-template-columns:1fr 1fr}}
   </style>
 </head>
 <body>
   <header>
     <div class="header-left">
       <div class="h-wordmark">AWA05</div>
+      <div class="h-dot"></div>
       <div class="h-sep"></div>
       <div class="h-title">Tablero de Telemetría Ambiental</div>
     </div>
     <div class="header-right">
-      <button class="btn btn-accent" onclick="exportarExcel()">Exportar Excel</button>
-      <a href="index.html" class="btn">Inicio</a>
+      <button class="btn btn-accent" onclick="exportarExcel()">↓ Exportar Excel</button>
+      <a href="index.html" class="btn">← Inicio</a>
       <img src="aala_logo.png" alt="AALA" class="h-logo">
     </div>
   </header>
@@ -138,30 +185,36 @@
         <a class="sb-link" href="#nivel">Nivel de agua</a>
         <a class="sb-link" href="#clima-base">Clima base</a>
         <a class="sb-link" href="#clima-avanzado">Clima avanzado</a>
-        <a class="sb-link" href="#correlacion">Correlacion</a>
+        <a class="sb-link" href="#correlacion">Correlación</a>
       </div>
       <div style="margin-top:10px">
         <div class="sb-section-label">Valores en vivo</div>
         <div class="sb-kpi"><div class="sb-kpi-label">Nivel</div><div class="sb-kpi-val"><span id="sb-nivel">--</span><span class="sb-kpi-unit"> L</span></div></div>
         <div class="sb-kpi"><div class="sb-kpi-label">Humedad</div><div class="sb-kpi-val"><span id="sb-hum">--</span><span class="sb-kpi-unit"> %</span></div></div>
-        <div class="sb-kpi"><div class="sb-kpi-label">Temperatura</div><div class="sb-kpi-val"><span id="sb-temp">--</span><span class="sb-kpi-unit"> C</span></div></div>
-        <div class="sb-kpi"><div class="sb-kpi-label">Presion</div><div class="sb-kpi-val"><span id="sb-pres">--</span><span class="sb-kpi-unit"> inHg</span></div></div>
+        <div class="sb-kpi"><div class="sb-kpi-label">Temperatura</div><div class="sb-kpi-val"><span id="sb-temp">--</span><span class="sb-kpi-unit"> °C</span></div></div>
+        <div class="sb-kpi"><div class="sb-kpi-label">Presión</div><div class="sb-kpi-val"><span id="sb-pres">--</span><span class="sb-kpi-unit"> inHg</span></div></div>
       </div>
     </aside>
 
     <main>
       <section id="resumen">
         <div class="hero-panel">
-          <div class="section-tag">Nodo AWA05 - Lago de Atitlan</div>
+          <div class="section-tag">Nodo AWA05 — Lago de Atitlán · Guatemala</div>
           <h1>Tablero <span>Operativo</span></h1>
-          <p class="hero-sub">Monitoreo de nivel de captacion y variables meteorologicas. Raspberry Pi 4B - JSN-SR04T - Ambient Weather WS-2000. Actualizacion cada 15 min. KPIs del nodo cada 15 min.</p>
-          <div style="margin-bottom:12px"><div class="section-tag">KPIs Actuales</div></div>
+          <p class="hero-sub">Monitoreo continuo de captación de agua y variables meteorológicas. Raspberry Pi 4B · JSN-SR04T · Ambient Weather WS-2000. Actualización cada 15 min.</p>
+          <div class="hero-tag-row">
+            <span class="hero-tag">JSN-SR04T</span>
+            <span class="hero-tag">WS-2000</span>
+            <span class="hero-tag">RPi 4B</span>
+            <span class="hero-tag">15 min</span>
+          </div>
+          <div style="margin-bottom:10px"><div class="section-tag">KPIs Actuales</div></div>
           <div class="kpi-row">
             <div class="kpi-card kc-1"><div class="kpi-label">Nivel de agua</div><div class="kpi-val"><span id="kpi-nivel">--</span><span class="kpi-unit"> L</span></div><div class="kpi-meta" id="trend-nivel">--</div></div>
             <div class="kpi-card kc-2"><div class="kpi-label">Humedad relativa</div><div class="kpi-val"><span id="kpi-hum">--</span><span class="kpi-unit"> %</span></div><div class="kpi-meta" id="trend-hum">--</div></div>
-            <div class="kpi-card kc-3"><div class="kpi-label">Temperatura</div><div class="kpi-val"><span id="kpi-temp">--</span><span class="kpi-unit"> C</span></div><div class="kpi-meta" id="trend-temp">--</div></div>
-            <div class="kpi-card kc-4"><div class="kpi-label">Punto de rocio</div><div class="kpi-val"><span id="kpi-dew">--</span><span class="kpi-unit"> C</span></div><div class="kpi-meta" id="trend-dew">--</div></div>
-            <div class="kpi-card kc-5"><div class="kpi-label">Presion</div><div class="kpi-val"><span id="kpi-pres">--</span><span class="kpi-unit"> inHg</span></div><div class="kpi-meta" id="trend-pres">--</div></div>
+            <div class="kpi-card kc-3"><div class="kpi-label">Temperatura</div><div class="kpi-val"><span id="kpi-temp">--</span><span class="kpi-unit"> °C</span></div><div class="kpi-meta" id="trend-temp">--</div></div>
+            <div class="kpi-card kc-4"><div class="kpi-label">Punto de rocío</div><div class="kpi-val"><span id="kpi-dew">--</span><span class="kpi-unit"> °C</span></div><div class="kpi-meta" id="trend-dew">--</div></div>
+            <div class="kpi-card kc-5"><div class="kpi-label">Presión</div><div class="kpi-val"><span id="kpi-pres">--</span><span class="kpi-unit"> inHg</span></div><div class="kpi-meta" id="trend-pres">--</div></div>
             <div class="kpi-card kc-6"><div class="kpi-label">Viento</div><div class="kpi-val"><span id="kpi-wind">--</span><span class="kpi-unit"> km/h</span></div><div class="kpi-meta" id="trend-wind">--</div></div>
           </div>
         </div>
@@ -169,16 +222,16 @@
 
       <section id="salud-pi">
         <div class="section-header">
-          <div><div class="section-tag">Diagnostico del hardware</div><div class="section-title">Salud del Nodo Raspberry Pi</div></div>
+          <div><div class="section-tag">Diagnóstico del hardware</div><div class="section-title">Salud del Nodo Raspberry Pi</div></div>
           <span id="pi-badge" class="status-badge badge-ok">OK</span>
         </div>
         <div class="pi-panel">
           <div class="pi-grid">
-            <div class="pi-metric" id="pi-temp-card"><div class="pi-metric-label">Temperatura CPU</div><div class="pi-metric-val"><span id="pi-cpu-temp">--</span><span class="pi-metric-unit"> C</span></div><div class="pi-bar-wrap"><div class="pi-bar-fill" id="pi-temp-bar" style="width:0%;background:var(--green)"></div></div><div class="pi-comment" id="pi-temp-comment">Cargando...</div></div>
-            <div class="pi-metric" id="pi-volt-card"><div class="pi-metric-label">Voltaje de alimentacion</div><div class="pi-metric-val"><span id="pi-voltaje">--</span><span class="pi-metric-unit"> V</span></div><div class="pi-bar-wrap"><div class="pi-bar-fill" id="pi-volt-bar" style="width:0%;background:var(--green)"></div></div><div class="pi-comment" id="pi-volt-comment">Cargando...</div></div>
+            <div class="pi-metric" id="pi-temp-card"><div class="pi-metric-label">Temperatura CPU</div><div class="pi-metric-val"><span id="pi-cpu-temp">--</span><span class="pi-metric-unit"> °C</span></div><div class="pi-bar-wrap"><div class="pi-bar-fill" id="pi-temp-bar" style="width:0%;background:var(--green)"></div></div><div class="pi-comment" id="pi-temp-comment">Cargando...</div></div>
+            <div class="pi-metric" id="pi-volt-card"><div class="pi-metric-label">Voltaje de alimentación</div><div class="pi-metric-val"><span id="pi-voltaje">--</span><span class="pi-metric-unit"> V</span></div><div class="pi-bar-wrap"><div class="pi-bar-fill" id="pi-volt-bar" style="width:0%;background:var(--green)"></div></div><div class="pi-comment" id="pi-volt-comment">Cargando...</div></div>
             <div class="pi-metric" id="pi-ram-card"><div class="pi-metric-label">Uso de RAM</div><div class="pi-metric-val"><span id="pi-ram">--</span><span class="pi-metric-unit"> %</span></div><div class="pi-bar-wrap"><div class="pi-bar-fill" id="pi-ram-bar" style="width:0%;background:var(--green)"></div></div><div class="pi-comment" id="pi-ram-comment">Cargando...</div></div>
             <div class="pi-metric" id="pi-disco-card"><div class="pi-metric-label">Uso de disco</div><div class="pi-metric-val"><span id="pi-disco">--</span><span class="pi-metric-unit"> %</span></div><div class="pi-bar-wrap"><div class="pi-bar-fill" id="pi-disco-bar" style="width:0%;background:var(--green)"></div></div><div class="pi-comment" id="pi-disco-comment">Cargando...</div></div>
-            <div class="pi-metric" id="pi-uptime-card"><div class="pi-metric-label">Tiempo en linea</div><div class="pi-metric-val" style="font-size:18px"><span id="pi-uptime">--</span></div><div class="pi-comment" id="pi-uptime-comment">Cargando...</div></div>
+            <div class="pi-metric" id="pi-uptime-card"><div class="pi-metric-label">Tiempo en línea</div><div class="pi-metric-val" style="font-size:16px"><span id="pi-uptime">--</span></div><div class="pi-comment" id="pi-uptime-comment">Cargando...</div></div>
           </div>
         </div>
       </section>
@@ -194,46 +247,47 @@
       </section>
 
       <section id="nivel">
-        <div class="section-header"><div><div class="section-tag">JSN-SR04T - Sensor ultrasonico</div><div class="section-title">Nivel de agua</div></div></div>
+        <div class="section-header"><div><div class="section-tag">JSN-SR04T — Sensor ultrasónico</div><div class="section-title">Nivel de agua</div></div></div>
         <div class="chart-grid single">
           <div class="chart-card">
-            <div class="chart-header"><div><div class="chart-title">Volumen acumulado en el tiempo</div><div class="chart-subtitle">Serie temporal del contenedor medido por eco ultrasonico. Conversion geometrica cilindrica. Cuadriculas de referencia cada litro.</div></div><div class="chart-badge">Litros</div></div>
+            <div class="chart-header"><div><div class="chart-title">Volumen acumulado en el tiempo</div><div class="chart-subtitle">Serie temporal del contenedor. Conversión geométrica cilíndrica. ALTURA 70cm · RADIO 12.9cm · 11 muestras mediana.</div></div><div class="chart-badge">Litros</div></div>
             <div class="chart-wrap tall"><canvas id="chart-nivel"></canvas></div>
-            <div class="chart-footer"><div class="chart-ts" id="ts-nivel">--</div><div class="chart-ts">Mediana de 5 muestras - 60 min</div></div>
+            <div class="chart-footer"><div class="chart-ts" id="ts-nivel">--</div><div class="chart-ts">Mediana de 11 muestras · 15 min</div></div>
           </div>
         </div>
       </section>
 
       <section id="clima-base">
-        <div class="section-header"><div><div class="section-tag">WS-2000 - Variables primarias</div><div class="section-title">Temperatura, humedad, rocio y presion</div></div></div>
+        <div class="section-header"><div><div class="section-tag">WS-2000 — Variables primarias</div><div class="section-title">Temperatura, humedad, rocío y presión</div></div></div>
         <div class="chart-grid">
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Humedad relativa</div><div class="chart-subtitle">% HR. Rango 0-100%. Linea de referencia al 70% para umbral de condensacion.</div></div><div class="chart-badge">% HR</div></div><div class="chart-wrap"><canvas id="chart-hum"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-hum">--</div><div class="chart-ts">WS-2000 - 60 s</div></div></div>
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Temperatura exterior</div><div class="chart-subtitle">Celsius. Temperatura ambiental. Influye en tasa de evaporacion y condensacion nocturna.</div></div><div class="chart-badge">C</div></div><div class="chart-wrap"><canvas id="chart-temp"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-temp">--</div><div class="chart-ts">WS-2000 - 60 s</div></div></div>
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Punto de rocio</div><div class="chart-subtitle">Celsius Td. Temperatura de condensacion. Cuando Td se acerca a T, la humedad relativa tiende al 100%.</div></div><div class="chart-badge">C Td</div></div><div class="chart-wrap"><canvas id="chart-dew"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-dew">--</div><div class="chart-ts">WS-2000 - 60 s</div></div></div>
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Presion barometrica</div><div class="chart-subtitle">inHg. Variaciones indican frentes de aire. Escala ajustada al rango observado para mayor resolucion.</div></div><div class="chart-badge">inHg</div></div><div class="chart-wrap"><canvas id="chart-pres"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-pres">--</div><div class="chart-ts">WS-2000 - 60 s</div></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Humedad relativa</div><div class="chart-subtitle">% HR. Umbral de condensación ≥70%.</div></div><div class="chart-badge">% HR</div></div><div class="chart-wrap"><canvas id="chart-hum"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-hum">--</div><div class="chart-ts">WS-2000 · 60s</div></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Temperatura exterior</div><div class="chart-subtitle">°C. Influye en tasa de evaporación y condensación nocturna.</div></div><div class="chart-badge">°C</div></div><div class="chart-wrap"><canvas id="chart-temp"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-temp">--</div><div class="chart-ts">WS-2000 · 60s</div></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Punto de rocío</div><div class="chart-subtitle">°C Td. Cuando Td → T, HR → 100%.</div></div><div class="chart-badge">°C Td</div></div><div class="chart-wrap"><canvas id="chart-dew"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-dew">--</div><div class="chart-ts">WS-2000 · 60s</div></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Presión barométrica</div><div class="chart-subtitle">inHg. Variaciones indican frentes de aire.</div></div><div class="chart-badge">inHg</div></div><div class="chart-wrap"><canvas id="chart-pres"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-pres">--</div><div class="chart-ts">WS-2000 · 60s</div></div></div>
         </div>
       </section>
 
       <section id="clima-avanzado">
-        <div class="section-header"><div><div class="section-tag">WS-2000 - Variables secundarias</div><div class="section-title">Viento, lluvia, radiacion y UV</div></div></div>
+        <div class="section-header"><div><div class="section-tag">WS-2000 — Variables secundarias</div><div class="section-title">Viento, lluvia, radiación y UV</div></div></div>
         <div class="chart-grid">
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Velocidad del viento</div><div class="chart-subtitle">km/h. Afecta la tasa de evaporacion del sistema. Eje Y desde cero para lectura absoluta.</div></div><div class="chart-badge">km/h</div></div><div class="chart-wrap"><canvas id="chart-wind"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-wind">--</div><div class="chart-ts">WS-2000 - 60 s</div></div></div>
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Direccion del viento</div><div class="chart-subtitle">Grados (0-360). N=0, E=90, S=180, O=270. Eje Y fijo para comparacion entre periodos.</div></div><div class="chart-badge">Grados</div></div><div class="chart-wrap"><canvas id="chart-dir"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-dir">--</div><div class="chart-ts">WS-2000 - 60 s</div></div></div>
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Precipitacion por hora</div><div class="chart-subtitle">mm/h. Barras para visualizar eventos discretos. Permite distinguir captacion vs. lluvia directa.</div></div><div class="chart-badge">mm/h</div></div><div class="chart-wrap"><canvas id="chart-rain"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-rain">--</div><div class="chart-ts">WS-2000 - 60 s</div></div></div>
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Radiacion solar</div><div class="chart-subtitle">W/m2. Carga energetica disponible. Correlaciona negativamente con la captacion de agua nocturna.</div></div><div class="chart-badge">W/m2</div></div><div class="chart-wrap"><canvas id="chart-solar"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-solar">--</div><div class="chart-ts">WS-2000 - 60 s</div></div></div>
-          <div class="chart-card wide"><div class="chart-header"><div><div class="chart-title">Indice UV</div><div class="chart-subtitle">Escala 0-11+. Referencia: 0-2 bajo, 3-5 moderado, 6-7 alto, 8-10 muy alto, 11+ extremo.</div></div><div class="chart-badge">UV Index</div></div><div class="chart-wrap"><canvas id="chart-uv"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-uv">--</div><div class="chart-ts">WS-2000 - 60 s</div></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Velocidad del viento</div><div class="chart-subtitle">km/h. Afecta tasa de evaporación del sistema.</div></div><div class="chart-badge">km/h</div></div><div class="chart-wrap"><canvas id="chart-wind"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-wind">--</div><div class="chart-ts">WS-2000 · 60s</div></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Rosa de vientos</div><div class="chart-subtitle">Frecuencia por sector de 22.5°. N=0°, E=90°, S=180°, O=270°.</div></div><div class="chart-badge">Rosa</div></div><div class="chart-wrap rose"><canvas id="chart-wind-rose"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-dir">--</div><div class="chart-ts">WS-2000 · 60s</div></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Precipitación acumulada</div><div class="chart-subtitle">mm/h. Eventos discretos de lluvia. Diferencia captación vs lluvia directa.</div></div><div class="chart-badge">mm/h</div></div><div class="chart-wrap"><canvas id="chart-rain"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-rain">--</div><div class="chart-ts">WS-2000 · 60s</div></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Radiación solar</div><div class="chart-subtitle">W/m². Carga energética. Correlaciona negativamente con captación nocturna.</div></div><div class="chart-badge">W/m²</div></div><div class="chart-wrap"><canvas id="chart-solar"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-solar">--</div><div class="chart-ts">WS-2000 · 60s</div></div></div>
+          <div class="chart-card wide"><div class="chart-header"><div><div class="chart-title">Índice UV</div><div class="chart-subtitle">Escala 0–11+. 0–2 bajo · 3–5 moderado · 6–7 alto · 8–10 muy alto · 11+ extremo.</div></div><div class="chart-badge">UV Index</div></div><div class="chart-wrap"><canvas id="chart-uv"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-uv">--</div><div class="chart-ts">WS-2000 · 60s</div></div></div>
         </div>
       </section>
 
       <section id="correlacion">
-        <div class="section-header"><div><div class="section-tag">Analisis estadistico - Pearson</div><div class="section-title">Correlacion nivel de agua vs variables</div></div></div>
+        <div class="section-header"><div><div class="section-tag">Análisis estadístico — Pearson</div><div class="section-title">Correlación nivel de agua vs variables</div></div></div>
         <div class="chart-grid">
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Nivel vs Humedad</div><div class="chart-subtitle">Diagrama de dispersion con linea de tendencia lineal. Eje X: % HR, Eje Y: Litros.</div></div><div class="chart-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-hum"></canvas></div></div>
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Nivel vs Punto de rocio</div><div class="chart-subtitle">Diagrama de dispersion. Temperatura de condensacion como predictor del nivel acumulado.</div></div><div class="chart-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-dew"></canvas></div></div>
-          <div class="corr-card wide">
-            <div class="chart-header"><div><div class="chart-title">Coeficientes de correlacion de Pearson</div><div class="chart-subtitle">r: correlacion lineal de -1 a 1. R2: proporcion de varianza explicada. Directa: a mayor X mayor nivel. Inversa: a mayor X menor nivel.</div></div><div class="chart-badge">r - R2</div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Nivel vs Humedad</div><div class="chart-subtitle">Dispersión con regresión lineal. Eje X: % HR · Eje Y: L</div></div><div class="chart-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-hum"></canvas></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Nivel vs Temperatura</div><div class="chart-subtitle">Dispersión con regresión lineal. Eje X: °C · Eje Y: L</div></div><div class="chart-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-temp"></canvas></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Nivel vs Punto de rocío</div><div class="chart-subtitle">Temperatura de condensación como predictor.</div></div><div class="chart-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-dew"></canvas></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Nivel vs Radiación solar</div><div class="chart-subtitle">Carga energética como predictor inverso.</div></div><div class="chart-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-solar"></canvas></div></div>
+          <div class="chart-card wide"><div class="chart-header"><div><div class="chart-title">Coeficientes de correlación de Pearson</div><div class="chart-subtitle">r: correlación lineal −1 a 1 · R²: varianza explicada · Directa: a mayor X mayor nivel · Inversa: a mayor X menor nivel</div></div><div class="chart-badge">r · R²</div></div>
             <table class="corr-table">
-              <thead><tr><th>Variable</th><th>r</th><th>R2</th><th>Tendencia</th><th>Magnitud</th></tr></thead>
+              <thead><tr><th>Variable</th><th>r</th><th>R²</th><th>Tendencia</th><th>p-valor aprox.</th><th>Magnitud</th></tr></thead>
               <tbody id="corr-body"></tbody>
             </table>
           </div>
@@ -243,7 +297,7 @@
   </div>
 
   <div class="dash-footer">
-    <div class="footer-copy">AWA05 - Amigos del Lago de Atitlan - Telemetria Ambiental</div>
+    <div class="footer-copy">AWA05 · Amigos del Lago de Atitlán · Telemetría Ambiental</div>
     <div class="footer-ts" id="footer-ts">--</div>
   </div>
 
@@ -251,123 +305,333 @@
     const chartRegistry = {};
     let globalPayload = null;
 
+    function setText(id, val) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.textContent = (val !== null && val !== undefined) ? val : '--';
+    }
+
+    function setTs(id, ts) { setText(id, ts || '--'); }
+
+    function setTrend(id, arr, unit) {
+      const el = document.getElementById(id);
+      if (!el || !arr || arr.length < 2) { if (el) el.textContent = '--'; return; }
+      const valid = arr.filter(v => v !== null && v !== undefined);
+      if (valid.length < 2) { el.textContent = '--'; return; }
+      const last = valid[valid.length - 1], prev = valid[valid.length - 2];
+      const diff = (last - prev).toFixed(2);
+      const sign = diff > 0 ? '+' : '';
+      el.textContent = `${sign}${diff} ${unit} vs anterior`;
+      el.className = 'kpi-meta ' + (diff > 0 ? 'trend-up' : diff < 0 ? 'trend-down' : '');
+    }
+
     function buildFallback() {
+      // Use real timestamps from Pi timezone (Guatemala CST = UTC-6)
       const labels = [], now = new Date();
-      for (let i=23;i>=0;i--){const d=new Date(now.getTime()-i*3600000);labels.push(String(d.getHours()).padStart(2,'0')+':00');}
+      for (let i = 23; i >= 0; i--) {
+        const d = new Date(now.getTime() - i * 3600000);
+        labels.push(String(d.getHours()).padStart(2,'0') + ':00');
+      }
       const n=[],h=[],t=[],d=[],p=[],w=[],dr=[],r=[],s=[],u=[];
-      for(let i=0;i<24;i++){n.push(+(10+Math.sin(i/4)*2.2+(Math.random()-.5)*.4).toFixed(2));h.push(+(70+Math.sin(i/3)*9+(Math.random()-.5)*2).toFixed(1));t.push(+(21-Math.sin(i/4)*3+(Math.random()-.5)*.6).toFixed(1));d.push(+(t[i]-(100-h[i])/5).toFixed(1));p.push(+(29.75+Math.sin(i/6)*.07+(Math.random()-.5)*.02).toFixed(3));w.push(+(6+Math.abs(Math.sin(i/3))*8+Math.random()).toFixed(1));dr.push(+((120+i*11+Math.random()*25)%360).toFixed(0));r.push(+(Math.max(0,Math.sin(i/5)>.7?Math.random()*2:Math.random()*.2)).toFixed(2));s.push(+(Math.max(0,Math.sin((i-6)/12*Math.PI)*750+Math.random()*40)).toFixed(1));u.push(+(Math.max(0,Math.sin((i-6)/12*Math.PI)*10+Math.random()*.5)).toFixed(1));}
+      for(let i=0;i<24;i++){n.push(+(10+Math.sin(i/4)*2.2+(Math.random()-.5)*.4).toFixed(2));h.push(+(70+Math.sin(i/3)*9+(Math.random()-.5)*2).toFixed(1));t.push(+(21-Math.sin(i/4)*3+(Math.random()-.5)*.6).toFixed(1));d.push(+(t[i]-(100-h[i])/5).toFixed(1));p.push(+(24.75+Math.sin(i/6)*.07+(Math.random()-.5)*.02).toFixed(3));w.push(+(6+Math.abs(Math.sin(i/3))*8+Math.random()).toFixed(1));dr.push(+((120+i*11+Math.random()*25)%360).toFixed(0));r.push(+(Math.max(0,Math.sin(i/5)>.7?Math.random()*2:Math.random()*.2)).toFixed(2));s.push(+(Math.max(0,Math.sin((i-6)/12*Math.PI)*750+Math.random()*40)).toFixed(1));u.push(+(Math.max(0,Math.sin((i-6)/12*Math.PI)*10+Math.random()*.5)).toFixed(1));}
       return {actualizado:new Date().toLocaleString('es-GT'),kpis:{nivel_l:n.at(-1),humedad_pct:h.at(-1),temp_c:t.at(-1),punto_rocio_c:d.at(-1),presion_inhg:p.at(-1),viento_kmh:w.at(-1)},sistema:{cpu_temp_c:null,voltaje_v:null,ram_uso_pct:null,disco_uso_pct:null,uptime:null},series:{labels,nivel_l:n,humedad_pct:h,temp_c:t,punto_rocio_c:d,presion_inhg:p,viento_kmh:w,viento_dir_deg:dr,lluvia_hora_mm:r,radiacion_solar_wm2:s,uv:u}};
     }
 
-    async function fetchData() {
-      try{const r=await fetch('./data/processed/dashboard_data.json?t='+Date.now());if(!r.ok)throw new Error();const d=await r.json();if(!d?.series?.labels)throw new Error();return d;}catch{return buildFallback();}
+    // Use timestamps from JSON labels directly (Pi writes Guatemala time)
+    function formatLabels(labels) {
+      return labels.map(l => {
+        if (!l) return '--';
+        // labels like "12:30" or full timestamps "2026-04-23 12:30:00"
+        if (l.length <= 5) return l;
+        return l.substring(11, 16); // extract HH:MM from full timestamp
+      });
     }
-
-    function setText(id,v){const el=document.getElementById(id);if(el)el.textContent=(v!==null&&v!==undefined&&v!=='')?v:'--';}
-    function setTrend(id,series,unit){const el=document.getElementById(id);if(!el||!Array.isArray(series)||series.length<2){if(el)el.textContent='--';return;}const diff=(series.at(-1)-series.at(-2)).toFixed(2);const up=Number(diff)>=0;el.textContent=(up?'+':'')+diff+' '+unit+' vs anterior';el.className='kpi-meta '+(up?'trend-up':'trend-down');}
-    function setTs(id,ts){const el=document.getElementById(id);if(el)el.textContent=ts?('Actualizado: '+ts):'--';}
 
     function interpretarPi(s){
       if(!s)return;
       const{cpu_temp_c,voltaje_v,ram_uso_pct,disco_uso_pct,uptime}=s;
-      if(cpu_temp_c!==null){setText('pi-cpu-temp',cpu_temp_c);const pct=Math.min(100,(cpu_temp_c/85)*100);const bar=document.getElementById('pi-temp-bar');const card=document.getElementById('pi-temp-card');const cmt=document.getElementById('pi-temp-comment');bar.style.width=pct+'%';if(cpu_temp_c<50){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent='Temperatura nominal. Procesador sin estres termico.';}else if(cpu_temp_c<70){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='Temperatura elevada. Revisar ventilacion del gabinete.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRITICO: Riesgo de throttling termico. Revisar inmediatamente.';}}
-      if(voltaje_v!==null){setText('pi-voltaje',voltaje_v);const pct=Math.min(100,Math.max(0,((voltaje_v-0.8)/0.2)*100));const bar=document.getElementById('pi-volt-bar');const card=document.getElementById('pi-volt-card');const cmt=document.getElementById('pi-volt-comment');bar.style.width=pct+'%';if(voltaje_v>=0.92){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent='Alimentacion estable. Voltaje del nucleo adecuado.';}else if(voltaje_v>=0.85){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='Voltaje bajo. Posible fuente de alimentacion debil.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRITICO: Subvoltaje. La Pi puede reiniciarse. Cambiar fuente.';}}
-      if(ram_uso_pct!==null){setText('pi-ram',ram_uso_pct);const bar=document.getElementById('pi-ram-bar');const card=document.getElementById('pi-ram-card');const cmt=document.getElementById('pi-ram-comment');bar.style.width=ram_uso_pct+'%';if(ram_uso_pct<60){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent=(100-ram_uso_pct)+'% libre. Uso de RAM normal.';}else if(ram_uso_pct<85){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='RAM moderadamente ocupada. Monitorear tendencia.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRITICO: RAM casi agotada. Riesgo de fallo del scheduler.';}}
-      if(disco_uso_pct!==null){setText('pi-disco',disco_uso_pct);const bar=document.getElementById('pi-disco-bar');const card=document.getElementById('pi-disco-card');const cmt=document.getElementById('pi-disco-comment');bar.style.width=disco_uso_pct+'%';if(disco_uso_pct<70){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent=(100-disco_uso_pct)+'% libre para acumular datos.';}else if(disco_uso_pct<90){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='Disco casi lleno. Limpiar logs o mover historicos.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRITICO: Disco lleno. Los CSV no podran escribirse.';}}
-      if(uptime!==null){setText('pi-uptime',uptime);const cmt=document.getElementById('pi-uptime-comment');const h=parseInt(uptime)||0;if(h<1)cmt.textContent='Nodo recien reiniciado. Verificar servicios.';else if(h<24)cmt.textContent='Menos de 24 h en linea. Operacion normal.';else cmt.textContent='Operacion continua estable. Sin reinicios recientes.';}
-      const badge=document.getElementById('pi-badge');const crit=(cpu_temp_c>=70)||(voltaje_v<0.85)||(ram_uso_pct>=85)||(disco_uso_pct>=90);const warn=(cpu_temp_c>=50)||(voltaje_v<0.92)||(ram_uso_pct>=60)||(disco_uso_pct>=70);if(crit){badge.className='status-badge badge-crit';badge.textContent='CRITICO';}else if(warn){badge.className='status-badge badge-warn';badge.textContent='ADVERTENCIA';}else{badge.className='status-badge badge-ok';badge.textContent='OK';}
+      if(cpu_temp_c!==null){setText('pi-cpu-temp',cpu_temp_c);const pct=Math.min(100,(cpu_temp_c/85)*100);const bar=document.getElementById('pi-temp-bar');const card=document.getElementById('pi-temp-card');const cmt=document.getElementById('pi-temp-comment');bar.style.width=pct+'%';if(cpu_temp_c<50){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent='Temperatura nominal. Procesador sin estrés térmico.';}else if(cpu_temp_c<70){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='Temperatura elevada. Revisar ventilación del gabinete.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRÍTICO: Riesgo de throttling térmico.';}}
+      if(voltaje_v!==null){setText('pi-voltaje',voltaje_v);const pct=Math.min(100,Math.max(0,((voltaje_v-0.8)/0.2)*100));const bar=document.getElementById('pi-volt-bar');const card=document.getElementById('pi-volt-card');const cmt=document.getElementById('pi-volt-comment');bar.style.width=pct+'%';if(voltaje_v>=0.92){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent='Alimentación estable. Voltaje del núcleo adecuado.';}else if(voltaje_v>=0.85){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='Voltaje bajo. Posible fuente de alimentación débil.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRÍTICO: Subvoltaje. La Pi puede reiniciarse.';}}
+      if(ram_uso_pct!==null){setText('pi-ram',ram_uso_pct);const bar=document.getElementById('pi-ram-bar');const card=document.getElementById('pi-ram-card');const cmt=document.getElementById('pi-ram-comment');bar.style.width=ram_uso_pct+'%';if(ram_uso_pct<60){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent=(100-ram_uso_pct)+'% libre. Uso de RAM normal.';}else if(ram_uso_pct<85){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='RAM moderadamente ocupada.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRÍTICO: RAM casi agotada.';}}
+      if(disco_uso_pct!==null){setText('pi-disco',disco_uso_pct);const bar=document.getElementById('pi-disco-bar');const card=document.getElementById('pi-disco-card');const cmt=document.getElementById('pi-disco-comment');bar.style.width=disco_uso_pct+'%';if(disco_uso_pct<70){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent=(100-disco_uso_pct)+'% libre para acumular datos.';}else if(disco_uso_pct<90){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='Disco casi lleno.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRÍTICO: Disco lleno.';}}
+      if(uptime!==null){setText('pi-uptime',uptime);const cmt=document.getElementById('pi-uptime-comment');const h=parseInt(uptime)||0;if(h<1)cmt.textContent='Nodo recién reiniciado. Verificar servicios.';else if(h<24)cmt.textContent='Menos de 24h en línea. Operación normal.';else cmt.textContent='Operación continua estable. Sin reinicios recientes.';}
+      const badge=document.getElementById('pi-badge');const crit=(cpu_temp_c>=70)||(voltaje_v<0.85)||(ram_uso_pct>=85)||(disco_uso_pct>=90);const warn=(cpu_temp_c>=50)||(voltaje_v<0.92)||(ram_uso_pct>=60)||(disco_uso_pct>=70);if(crit){badge.className='status-badge badge-crit';badge.textContent='CRÍTICO';}else if(warn){badge.className='status-badge badge-warn';badge.textContent='ADVERTENCIA';}else{badge.className='status-badge badge-ok';badge.textContent='OK';}
     }
 
-    function gradient(ctx,color,h){const g=ctx.createLinearGradient(0,0,0,h||230);g.addColorStop(0,color+'30');g.addColorStop(1,color+'04');return g;}
-    function destroyChart(id){if(chartRegistry[id]){chartRegistry[id].destroy();delete chartRegistry[id];}}
+    function gradient(ctx, color, h) {
+      const g = ctx.createLinearGradient(0, 0, 0, h || 220);
+      g.addColorStop(0, color + '28');
+      g.addColorStop(0.5, color + '10');
+      g.addColorStop(1, color + '02');
+      return g;
+    }
+    function destroyChart(id) { if (chartRegistry[id]) { chartRegistry[id].destroy(); delete chartRegistry[id]; } }
 
-    function sciOptions(unit,minY,maxY,refLines){
+    function sciOptions(unit, minY, maxY) {
       return {
-        responsive:true,maintainAspectRatio:false,animation:{duration:550,easing:'easeInOutCubic'},
-        plugins:{legend:{display:false},tooltip:{backgroundColor:'#ffffff',borderColor:'#9dc4e0',borderWidth:1,titleColor:'#1a5f8f',bodyColor:'#0d2a40',titleFont:{family:"'IBM Plex Mono'",size:10},bodyFont:{family:"'IBM Plex Mono'",size:11},padding:10,callbacks:{label:(c)=>' '+c.parsed.y+' '+unit}}},
-        scales:{
-          x:{grid:{color:'rgba(26,95,143,0.07)',lineWidth:1},border:{color:'rgba(26,95,143,0.2)'},ticks:{color:'#5d87a6',font:{family:"'IBM Plex Mono'",size:9},maxRotation:0}},
-          y:{min:minY,max:maxY,grid:{color:'rgba(26,95,143,0.07)',lineWidth:1},border:{color:'rgba(26,95,143,0.2)',dash:[4,4]},ticks:{color:'#5d87a6',font:{family:"'IBM Plex Mono'",size:9},callback:(v)=>v+' '+unit}}
+        responsive: true, maintainAspectRatio: false,
+        animation: { duration: 800, easing: 'easeInOutQuart' },
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            backgroundColor: '#ffffff', borderColor: 'rgba(45,159,212,0.3)', borderWidth: 1,
+            titleColor: '#1a7ab5', bodyColor: '#0d2a40',
+            titleFont: { family: "'DM Mono'", size: 10 }, bodyFont: { family: "'DM Sans'", size: 12 },
+            padding: 10, cornerRadius: 6,
+            callbacks: { label: (c) => ' ' + c.parsed.y + ' ' + unit }
+          }
+        },
+        scales: {
+          x: { grid: { color: 'rgba(45,159,212,0.08)', lineWidth: 1 }, border: { color: 'rgba(45,159,212,0.2)' }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 }, maxRotation: 0, maxTicksLimit: 12 } },
+          y: { min: minY, max: maxY, grid: { color: 'rgba(45,159,212,0.08)', lineWidth: 1 }, border: { color: 'rgba(45,159,212,0.2)', dash: [3, 3] }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 }, callback: (v) => v + ' ' + unit } }
         }
       };
     }
 
-    function lineChart(id,labels,data,color,unit,minY,maxY,refLines){
-      destroyChart(id);const ctx=document.getElementById(id)?.getContext('2d');if(!ctx)return;
-      const datasets=[{data,borderColor:color,backgroundColor:gradient(ctx,color),borderWidth:2,pointRadius:data.length<=24?3:1.5,pointHoverRadius:6,pointBackgroundColor:'#ffffff',pointBorderColor:color,pointBorderWidth:2,fill:true,tension:0.35}];
-      chartRegistry[id]=new Chart(ctx,{type:'line',data:{labels,datasets},options:sciOptions(unit,minY,maxY,refLines)});
+    function lineChart(id, labels, data, color, unit, minY, maxY) {
+      destroyChart(id);
+      const ctx = document.getElementById(id)?.getContext('2d');
+      if (!ctx) return;
+      const datasets = [{
+        data, borderColor: color, backgroundColor: gradient(ctx, color),
+        borderWidth: 1.5, pointRadius: data.length <= 48 ? 2.5 : 1, pointHoverRadius: 5,
+        pointBackgroundColor: '#060e18', pointBorderColor: color, pointBorderWidth: 1.5,
+        fill: true, tension: 0.4
+      }];
+      chartRegistry[id] = new Chart(ctx, { type: 'line', data: { labels, datasets }, options: sciOptions(unit, minY, maxY) });
     }
 
-    function barChart(id,labels,data,color,unit){
-      destroyChart(id);const ctx=document.getElementById(id)?.getContext('2d');if(!ctx)return;
-      chartRegistry[id]=new Chart(ctx,{type:'bar',data:{labels,datasets:[{data,backgroundColor:color+'bb',borderColor:color,borderWidth:1,borderRadius:3,maxBarThickness:22}]},options:sciOptions(unit)});
+    function barChart(id, labels, data, color, unit) {
+      destroyChart(id);
+      const ctx = document.getElementById(id)?.getContext('2d');
+      if (!ctx) return;
+      chartRegistry[id] = new Chart(ctx, {
+        type: 'bar', data: { labels, datasets: [{ data, backgroundColor: color + 'aa', borderColor: color, borderWidth: 1, borderRadius: 3, maxBarThickness: 20 }] },
+        options: { ...sciOptions(unit), animation: { duration: 900, easing: 'easeOutQuart' } }
+      });
     }
 
-    function scatterChart(id,xData,yData,color,xLabel,yLabel){
-      destroyChart(id);const ctx=document.getElementById(id)?.getContext('2d');if(!ctx)return;
-      const points=xData.map((x,i)=>({x,y:yData[i]}));
-      const datasets=[{data:points,backgroundColor:color+'aa',borderColor:color,borderWidth:1,pointRadius:4,pointHoverRadius:6}];
-      if(points.length>=3){const xs=points.map(p=>p.x),ys=points.map(p=>p.y);const n=xs.length,mx=xs.reduce((a,b)=>a+b,0)/n,my=ys.reduce((a,b)=>a+b,0)/n;let num=0,den=0;xs.forEach((x,i)=>{num+=(x-mx)*(ys[i]-my);den+=(x-mx)**2;});const m=den?num/den:0,b2=my-m*mx;const xMin=Math.min(...xs),xMax=Math.max(...xs);datasets.push({type:'line',data:[{x:xMin,y:m*xMin+b2},{x:xMax,y:m*xMax+b2}],borderColor:color+'88',borderWidth:1.5,borderDash:[5,4],pointRadius:0,fill:false,tension:0});}
-      chartRegistry[id]=new Chart(ctx,{type:'scatter',data:{datasets},options:{responsive:true,maintainAspectRatio:false,animation:{duration:550},plugins:{legend:{display:false},tooltip:{backgroundColor:'#ffffff',borderColor:'#9dc4e0',borderWidth:1,titleColor:'#1a5f8f',bodyColor:'#0d2a40',titleFont:{family:"'IBM Plex Mono'",size:9},bodyFont:{family:"'IBM Plex Mono'",size:10},padding:9,callbacks:{label:(c)=>xLabel+': '+c.parsed.x+' | '+yLabel+': '+c.parsed.y}}},scales:{x:{grid:{color:'rgba(26,95,143,0.07)'},border:{color:'rgba(26,95,143,0.2)'},ticks:{color:'#5d87a6',font:{family:"'IBM Plex Mono'",size:9}},title:{display:true,text:xLabel,color:'#5d87a6',font:{family:"'IBM Plex Mono'",size:9}}},y:{grid:{color:'rgba(26,95,143,0.07)'},border:{color:'rgba(26,95,143,0.2)'},ticks:{color:'#5d87a6',font:{family:"'IBM Plex Mono'",size:9}},title:{display:true,text:yLabel,color:'#5d87a6',font:{family:"'IBM Plex Mono'",size:9}}}}}});
+    function scatterChart(id, xData, yData, color, xLabel, yLabel) {
+      destroyChart(id);
+      const ctx = document.getElementById(id)?.getContext('2d');
+      if (!ctx) return;
+      const validPairs = xData.map((x, i) => ({ x, y: yData[i] })).filter(p => p.x !== null && p.y !== null && p.x !== undefined && p.y !== undefined);
+      const datasets = [{
+        data: validPairs, backgroundColor: color + '88', borderColor: color,
+        borderWidth: 1, pointRadius: 4, pointHoverRadius: 6, pointStyle: 'circle'
+      }];
+      if (validPairs.length >= 3) {
+        const xs = validPairs.map(p => p.x), ys = validPairs.map(p => p.y);
+        const n = xs.length, mx = xs.reduce((a, b) => a + b, 0) / n, my = ys.reduce((a, b) => a + b, 0) / n;
+        let num = 0, den = 0;
+        xs.forEach((x, i) => { num += (x - mx) * (ys[i] - my); den += (x - mx) ** 2; });
+        const m = den ? num / den : 0, b2 = my - m * mx;
+        const xMin = Math.min(...xs), xMax = Math.max(...xs);
+        datasets.push({ type: 'line', data: [{ x: xMin, y: m * xMin + b2 }, { x: xMax, y: m * xMax + b2 }], borderColor: color + '99', borderWidth: 2, borderDash: [5, 4], pointRadius: 0, fill: false, tension: 0 });
+      }
+      chartRegistry[id] = new Chart(ctx, {
+        type: 'scatter', data: { datasets },
+        options: {
+          responsive: true, maintainAspectRatio: false, animation: { duration: 800, easing: 'easeInOutQuart' },
+          plugins: { legend: { display: false }, tooltip: { backgroundColor: '#ffffff', borderColor: 'rgba(45,159,212,0.3)', borderWidth: 1, titleColor: '#1a7ab5', bodyColor: '#0d2a40', titleFont: { family: "'DM Mono'", size: 9 }, bodyFont: { family: "'DM Sans'", size: 11 }, padding: 9, cornerRadius: 6, callbacks: { label: (c) => xLabel + ': ' + c.parsed.x + ' | ' + yLabel + ': ' + c.parsed.y } } },
+          scales: {
+            x: { grid: { color: 'rgba(45,159,212,0.08)' }, border: { color: 'rgba(45,159,212,0.2)' }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 } }, title: { display: true, text: xLabel, color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 } } },
+            y: { grid: { color: 'rgba(45,159,212,0.08)' }, border: { color: 'rgba(45,159,212,0.2)' }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 } }, title: { display: true, text: yLabel, color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 } } }
+          }
+        }
+      });
     }
 
-    function pearson(xs,ys){const n=Math.min(xs.length,ys.length);if(!n)return 0;const mx=xs.slice(0,n).reduce((a,b)=>a+b,0)/n;const my=ys.slice(0,n).reduce((a,b)=>a+b,0)/n;let num=0,dx=0,dy=0;for(let i=0;i<n;i++){const vx=xs[i]-mx,vy=ys[i]-my;num+=vx*vy;dx+=vx*vx;dy+=vy*vy;}return dx&&dy?num/Math.sqrt(dx*dy):0;}
-
-    function updateCorrTable(nivel,variables){
-      const tbody=document.getElementById('corr-body');tbody.innerHTML='';
-      variables.forEach(item=>{const r=pearson(item.data,nivel);const r2=(r*r).toFixed(3);const pct=Math.round(Math.abs(r)*100);const tr=document.createElement('tr');tr.innerHTML=`<td><strong>${item.name}</strong></td><td style="color:${r>=0?'var(--green)':'var(--red)'}">${r.toFixed(3)}</td><td>${r2}</td><td style="color:var(--muted)">${r>=0?'Directa':'Inversa'}</td><td><div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${item.color}"></div></div></td>`;tbody.appendChild(tr);});
+    // WIND ROSE — replaces the direction line chart
+    function windRoseChart(id, directions, speeds) {
+      destroyChart(id);
+      const ctx = document.getElementById(id)?.getContext('2d');
+      if (!ctx) return;
+      const sectors = 16;
+      const sectorSize = 360 / sectors;
+      const labels = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSO','SO','OSO','O','ONO','NO','NNO'];
+      const counts = new Array(sectors).fill(0);
+      const valid = directions.filter(d => d !== null && d !== undefined);
+      valid.forEach(deg => {
+        const idx = Math.floor(((deg + sectorSize / 2) % 360) / sectorSize);
+        counts[idx]++;
+      });
+      const total = valid.length || 1;
+      const pcts = counts.map(c => +((c / total) * 100).toFixed(1));
+      const palette = pcts.map(p => {
+        const intensity = p / Math.max(...pcts);
+        return `rgba(26,122,181,${0.15 + intensity * 0.65})`;
+      });
+      chartRegistry[id] = new Chart(ctx, {
+        type: 'polarArea',
+        data: { labels, datasets: [{ data: pcts, backgroundColor: palette, borderColor: 'rgba(58,159,212,0.4)', borderWidth: 1 }] },
+        options: {
+          responsive: true, maintainAspectRatio: false,
+          animation: { duration: 1000, easing: 'easeInOutQuart' },
+          plugins: {
+            legend: { display: false },
+            tooltip: { backgroundColor: '#ffffff', borderColor: 'rgba(45,159,212,0.3)', borderWidth: 1, titleColor: '#1a7ab5', bodyColor: '#0d2a40', titleFont: { family: "'DM Mono'", size: 9 }, bodyFont: { family: "'DM Sans'", size: 11 }, padding: 9, cornerRadius: 6, callbacks: { label: (c) => ' ' + c.parsed.r + '% de mediciones' } }
+          },
+          scales: {
+            r: {
+              grid: { color: 'rgba(45,159,212,0.15)' },
+              ticks: { display: false },
+              pointLabels: { font: { family: "'DM Mono'", size: 9 }, color: '#4a7a9b' }
+            }
+          }
+        }
+      });
     }
 
-    function exportarExcel(){
-      if(!globalPayload){alert('Sin datos.');return;}
-      const wb=XLSX.utils.book_new();const s=globalPayload.series,k=globalPayload.kpis,sis=globalPayload.sistema||{};
-      XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(s.labels.map((label,i)=>({'Hora':label,'Nivel (L)':s.nivel_l?.[i]??'','Humedad (%)':s.humedad_pct?.[i]??'','Temperatura (C)':s.temp_c?.[i]??'','Punto Rocio (C)':s.punto_rocio_c?.[i]??'','Presion (inHg)':s.presion_inhg?.[i]??'','Viento (km/h)':s.viento_kmh?.[i]??'','Dir. Viento (deg)':s.viento_dir_deg?.[i]??'','Lluvia (mm/h)':s.lluvia_hora_mm?.[i]??'','Rad. Solar (W/m2)':s.radiacion_solar_wm2?.[i]??'','UV Index':s.uv?.[i]??''}))),'Series Temporales');
-      XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet([{Indicador:'Nivel de agua',Valor:k.nivel_l,Unidad:'L'},{Indicador:'Humedad relativa',Valor:k.humedad_pct,Unidad:'%'},{Indicador:'Temperatura',Valor:k.temp_c,Unidad:'C'},{Indicador:'Punto de rocio',Valor:k.punto_rocio_c,Unidad:'C'},{Indicador:'Presion',Valor:k.presion_inhg,Unidad:'inHg'},{Indicador:'Viento',Valor:k.viento_kmh,Unidad:'km/h'},{Indicador:'Actualizado',Valor:globalPayload.actualizado,Unidad:''}]),'KPIs Actuales');
-      XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet([{Metrica:'CPU temp',Valor:sis.cpu_temp_c,Unidad:'C'},{Metrica:'Voltaje',Valor:sis.voltaje_v,Unidad:'V'},{Metrica:'RAM uso',Valor:sis.ram_uso_pct,Unidad:'%'},{Metrica:'Disco uso',Valor:sis.disco_uso_pct,Unidad:'%'},{Metrica:'Uptime',Valor:sis.uptime,Unidad:''}]),'Sistema Pi');
-      const corrVars=[{name:'Humedad',data:s.humedad_pct},{name:'Temperatura',data:s.temp_c},{name:'Punto de rocio',data:s.punto_rocio_c},{name:'Presion',data:s.presion_inhg},{name:'Viento',data:s.viento_kmh},{name:'Lluvia',data:s.lluvia_hora_mm},{name:'Rad. solar',data:s.radiacion_solar_wm2},{name:'UV',data:s.uv}];
-      XLSX.utils.book_append_sheet(wb,XLSX.utils.json_to_sheet(corrVars.map(v=>{const r=pearson(v.data||[],s.nivel_l||[]);return{Variable:v.name,'r (Pearson)':r.toFixed(4),'R2':(r*r).toFixed(4),Tendencia:r>=0?'Directa':'Inversa','Magnitud (%)':Math.round(Math.abs(r)*100)};})),'Correlaciones');
-      XLSX.writeFile(wb,'AWA05_telemetria_'+new Date().toISOString().slice(0,10)+'.xlsx');
+    function pearson(xs, ys) {
+      const pairs = xs.map((x, i) => [x, ys[i]]).filter(([x, y]) => x !== null && y !== null && x !== undefined && y !== undefined);
+      const n = pairs.length;
+      if (n < 3) return 0;
+      const mx = pairs.reduce((a, [x]) => a + x, 0) / n;
+      const my = pairs.reduce((a, [, y]) => a + y, 0) / n;
+      let num = 0, dx = 0, dy = 0;
+      pairs.forEach(([x, y]) => { const vx = x - mx, vy = y - my; num += vx * vy; dx += vx * vx; dy += vy * vy; });
+      return dx && dy ? num / Math.sqrt(dx * dy) : 0;
     }
 
-    function exportarCSV(tipo){
-      if(!globalPayload){alert('Sin datos.');return;}
-      const s=globalPayload.series,sis=globalPayload.sistema||{};const fecha=new Date().toISOString().slice(0,10);let csv='',fn='';
-      if(tipo==='nivel'){csv='hora,nivel_l\n'+s.labels.map((l,i)=>`${l},${s.nivel_l?.[i]??''}`).join('\n');fn='AWA05_nivel_'+fecha+'.csv';}
-      else if(tipo==='clima'){csv='hora,humedad_pct,temp_c,punto_rocio_c,presion_inhg,viento_kmh,viento_dir_deg,lluvia_hora_mm,radiacion_solar_wm2,uv\n'+s.labels.map((l,i)=>`${l},${s.humedad_pct?.[i]??''},${s.temp_c?.[i]??''},${s.punto_rocio_c?.[i]??''},${s.presion_inhg?.[i]??''},${s.viento_kmh?.[i]??''},${s.viento_dir_deg?.[i]??''},${s.lluvia_hora_mm?.[i]??''},${s.radiacion_solar_wm2?.[i]??''},${s.uv?.[i]??''}`).join('\n');fn='AWA05_clima_'+fecha+'.csv';}
-      else if(tipo==='sistema'){csv='metrica,valor,unidad\ncpu_temp_c,'+(sis.cpu_temp_c??'')+',C\nvoltaje_v,'+(sis.voltaje_v??'')+',V\nram_uso_pct,'+(sis.ram_uso_pct??'')+',%\ndisco_uso_pct,'+(sis.disco_uso_pct??'')+',%\nuptime,'+(sis.uptime??'')+',';fn='AWA05_sistema_'+fecha+'.csv';}
-      const a=document.createElement('a');a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);a.download=fn;a.click();
+    // Approximate p-value using t-distribution for n-2 df
+    function pValue(r, n) {
+      if (n < 4) return '--';
+      const t = r * Math.sqrt((n - 2) / (1 - r * r + 1e-10));
+      const absT = Math.abs(t);
+      if (absT > 5) return '<0.001';
+      if (absT > 3.5) return '<0.005';
+      if (absT > 2.8) return '<0.01';
+      if (absT > 2.0) return '<0.05';
+      if (absT > 1.5) return '<0.15';
+      return '>0.15';
     }
 
-    async function renderDashboard(){
-      const payload=await fetchData();globalPayload=payload;
-      const s=payload.series;
-      const labels=s.labels||[],nivel=s.nivel_l||[],hum=s.humedad_pct||[],temp=s.temp_c||[],dew=s.punto_rocio_c||[],pres=s.presion_inhg||[],wind=s.viento_kmh||[],dir=s.viento_dir_deg||[],rain=s.lluvia_hora_mm||[],solar=s.radiacion_solar_wm2||[],uv=s.uv||[];
-      const ts=payload.actualizado||'--';
-      setText('footer-ts','Actualizado: '+ts);
-      ['ts-nivel','ts-hum','ts-temp','ts-dew','ts-pres','ts-wind','ts-dir','ts-rain','ts-solar','ts-uv'].forEach(id=>setTs(id,ts));
-      setText('kpi-nivel',payload.kpis?.nivel_l);setText('kpi-hum',payload.kpis?.humedad_pct);setText('kpi-temp',payload.kpis?.temp_c);setText('kpi-dew',payload.kpis?.punto_rocio_c);setText('kpi-pres',payload.kpis?.presion_inhg);setText('kpi-wind',payload.kpis?.viento_kmh);
-      setText('sb-nivel',payload.kpis?.nivel_l);setText('sb-hum',payload.kpis?.humedad_pct);setText('sb-temp',payload.kpis?.temp_c);setText('sb-pres',payload.kpis?.presion_inhg);
-      setTrend('trend-nivel',nivel,'L');setTrend('trend-hum',hum,'%');setTrend('trend-temp',temp,'C');setTrend('trend-dew',dew,'C');setTrend('trend-pres',pres,'inHg');setTrend('trend-wind',wind,'km/h');
+    function updateCorrTable(nivel, variables) {
+      const tbody = document.getElementById('corr-body');
+      tbody.innerHTML = '';
+      const nValid = nivel.filter(v => v !== null && v !== undefined).length;
+      variables.forEach(item => {
+        const r = pearson(item.data, nivel);
+        const r2 = (r * r).toFixed(3);
+        const pct = Math.round(Math.abs(r) * 100);
+        const pv = pValue(r, nValid);
+        const rClass = Math.abs(r) > 0.5 ? (r >= 0 ? 'r-pos' : 'r-neg') : 'r-neu';
+        const tr = document.createElement('tr');
+        tr.innerHTML = `<td><strong>${item.name}</strong></td><td class="${rClass}">${r.toFixed(3)}</td><td>${r2}</td><td style="color:${r >= 0 ? 'var(--accent)' : 'var(--red)'}">${r >= 0 ? '↑ Directa' : '↓ Inversa'}</td><td style="color:var(--muted);font-size:9px">${pv}</td><td><div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${item.color}"></div></div></td>`;
+        tbody.appendChild(tr);
+      });
+    }
+
+    async function fetchData() {
+      try {
+        const r = await fetch('./data/processed/dashboard_data.json?t=' + Date.now());
+        if (!r.ok) throw new Error();
+        const d = await r.json();
+        if (!d?.series?.labels) throw new Error();
+        return d;
+      } catch { return buildFallback(); }
+    }
+
+    function exportarExcel() {
+      if (!globalPayload) { alert('Sin datos.'); return; }
+      const wb = XLSX.utils.book_new();
+      const s = globalPayload.series, k = globalPayload.kpis, sis = globalPayload.sistema || {};
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(s.labels.map((label, i) => ({'Hora': label,'Nivel (L)': s.nivel_l?.[i] ?? '','Humedad (%)': s.humedad_pct?.[i] ?? '','Temperatura (C)': s.temp_c?.[i] ?? '','Punto Rocio (C)': s.punto_rocio_c?.[i] ?? '','Presion (inHg)': s.presion_inhg?.[i] ?? '','Viento (km/h)': s.viento_kmh?.[i] ?? '','Dir. Viento (deg)': s.viento_dir_deg?.[i] ?? '','Lluvia (mm/h)': s.lluvia_hora_mm?.[i] ?? '','Rad. Solar (W/m2)': s.radiacion_solar_wm2?.[i] ?? '','UV Index': s.uv?.[i] ?? ''}))), 'Series Temporales');
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet([{Indicador:'Nivel de agua',Valor:k.nivel_l,Unidad:'L'},{Indicador:'Humedad relativa',Valor:k.humedad_pct,Unidad:'%'},{Indicador:'Temperatura',Valor:k.temp_c,Unidad:'C'},{Indicador:'Punto de rocio',Valor:k.punto_rocio_c,Unidad:'C'},{Indicador:'Presion',Valor:k.presion_inhg,Unidad:'inHg'},{Indicador:'Viento',Valor:k.viento_kmh,Unidad:'km/h'},{Indicador:'Actualizado',Valor:globalPayload.actualizado,Unidad:''}]), 'KPIs Actuales');
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet([{Metrica:'CPU temp',Valor:sis.cpu_temp_c,Unidad:'C'},{Metrica:'Voltaje',Valor:sis.voltaje_v,Unidad:'V'},{Metrica:'RAM uso',Valor:sis.ram_uso_pct,Unidad:'%'},{Metrica:'Disco uso',Valor:sis.disco_uso_pct,Unidad:'%'},{Metrica:'Uptime',Valor:sis.uptime,Unidad:''}]), 'Sistema Pi');
+      const corrVars = [{name:'Humedad',data:s.humedad_pct},{name:'Temperatura',data:s.temp_c},{name:'Punto de rocio',data:s.punto_rocio_c},{name:'Presion',data:s.presion_inhg},{name:'Viento',data:s.viento_kmh},{name:'Lluvia',data:s.lluvia_hora_mm},{name:'Rad. solar',data:s.radiacion_solar_wm2},{name:'UV',data:s.uv}];
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(corrVars.map(v => { const r = pearson(v.data || [], s.nivel_l || []); return { Variable: v.name, 'r (Pearson)': r.toFixed(4), 'R2': (r * r).toFixed(4), Tendencia: r >= 0 ? 'Directa' : 'Inversa', 'Magnitud (%)': Math.round(Math.abs(r) * 100) }; })), 'Correlaciones');
+      XLSX.writeFile(wb, 'AWA05_telemetria_' + new Date().toISOString().slice(0, 10) + '.xlsx');
+    }
+
+    function exportarCSV(tipo) {
+      if (!globalPayload) { alert('Sin datos.'); return; }
+      const s = globalPayload.series, sis = globalPayload.sistema || {};
+      const fecha = new Date().toISOString().slice(0, 10);
+      let csv = '', fn = '';
+      if (tipo === 'nivel') { csv = 'hora,nivel_l\n' + s.labels.map((l, i) => `${l},${s.nivel_l?.[i] ?? ''}`).join('\n'); fn = 'AWA05_nivel_' + fecha + '.csv'; }
+      else if (tipo === 'clima') { csv = 'hora,humedad_pct,temp_c,punto_rocio_c,presion_inhg,viento_kmh,viento_dir_deg,lluvia_hora_mm,radiacion_solar_wm2,uv\n' + s.labels.map((l, i) => `${l},${s.humedad_pct?.[i] ?? ''},${s.temp_c?.[i] ?? ''},${s.punto_rocio_c?.[i] ?? ''},${s.presion_inhg?.[i] ?? ''},${s.viento_kmh?.[i] ?? ''},${s.viento_dir_deg?.[i] ?? ''},${s.lluvia_hora_mm?.[i] ?? ''},${s.radiacion_solar_wm2?.[i] ?? ''},${s.uv?.[i] ?? ''}`).join('\n'); fn = 'AWA05_clima_' + fecha + '.csv'; }
+      else if (tipo === 'sistema') { csv = 'metrica,valor,unidad\ncpu_temp_c,' + (sis.cpu_temp_c ?? '') + ',C\nvoltaje_v,' + (sis.voltaje_v ?? '') + ',V\nram_uso_pct,' + (sis.ram_uso_pct ?? '') + ',%\ndisco_uso_pct,' + (sis.disco_uso_pct ?? '') + ',%\nuptime,' + (sis.uptime ?? '') + ','; fn = 'AWA05_sistema_' + fecha + '.csv'; }
+      const a = document.createElement('a'); a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv); a.download = fn; a.click();
+    }
+
+    async function renderDashboard() {
+      const payload = await fetchData();
+      globalPayload = payload;
+      const s = payload.series;
+      const rawLabels = s.labels || [];
+      const labels = formatLabels(rawLabels);
+      const nivel = s.nivel_l || [], hum = s.humedad_pct || [], temp = s.temp_c || [];
+      const dew = s.punto_rocio_c || [], pres = s.presion_inhg || [], wind = s.viento_kmh || [];
+      const dir = s.viento_dir_deg || [], rain = s.lluvia_hora_mm || [];
+      const solar = s.radiacion_solar_wm2 || [], uv = s.uv || [];
+      const ts = payload.actualizado || '--';
+      setText('footer-ts', 'Actualizado: ' + ts);
+      ['ts-nivel','ts-hum','ts-temp','ts-dew','ts-pres','ts-wind','ts-dir','ts-rain','ts-solar','ts-uv'].forEach(id => setTs(id, ts));
+      setText('kpi-nivel', payload.kpis?.nivel_l); setText('kpi-hum', payload.kpis?.humedad_pct);
+      setText('kpi-temp', payload.kpis?.temp_c); setText('kpi-dew', payload.kpis?.punto_rocio_c);
+      setText('kpi-pres', payload.kpis?.presion_inhg); setText('kpi-wind', payload.kpis?.viento_kmh);
+      setText('sb-nivel', payload.kpis?.nivel_l); setText('sb-hum', payload.kpis?.humedad_pct);
+      setText('sb-temp', payload.kpis?.temp_c); setText('sb-pres', payload.kpis?.presion_inhg);
+      setTrend('trend-nivel', nivel, 'L'); setTrend('trend-hum', hum, '%');
+      setTrend('trend-temp', temp, '°C'); setTrend('trend-dew', dew, '°C');
+      setTrend('trend-pres', pres, 'inHg'); setTrend('trend-wind', wind, 'km/h');
       interpretarPi(payload.sistema);
-      const _nd=nivel.filter(v=>v!==null&&v!==undefined&&v!==0);const nivelMax=_nd.length?Math.max(..._nd):5;lineChart('chart-nivel',labels,nivel,'#1a5f8f','L',0,Math.ceil(nivelMax*1.2));
-      lineChart('chart-hum',labels,hum,'#2d7ab5','%',0,100);
-      lineChart('chart-temp',labels,temp,'#5ba3d0','C');
-      lineChart('chart-dew',labels,dew,'#4490ba','C');
-      lineChart('chart-pres',labels,pres,'#6aadd4','inHg');
-      lineChart('chart-wind',labels,wind,'#3d87b8','km/h',0);
-      lineChart('chart-dir',labels,dir,'#82b8d5','deg',0,360);
-      barChart('chart-rain',labels,rain,'#1a5f8f','mm');
-      lineChart('chart-solar',labels,solar,'#5ba3d0','W/m2',0);
-      barChart('chart-uv',labels,uv,'#2d7ab5','UV');
-      scatterChart('chart-corr-hum',hum,nivel,'#2d7ab5','Humedad %','Nivel L');
-      scatterChart('chart-corr-dew',dew,nivel,'#4490ba','Punto de rocio C','Nivel L');
-      updateCorrTable(nivel,[{name:'Humedad relativa',data:hum,color:'#2d7ab5'},{name:'Temperatura exterior',data:temp,color:'#5ba3d0'},{name:'Punto de rocio',data:dew,color:'#4490ba'},{name:'Presion barometrica',data:pres,color:'#6aadd4'},{name:'Velocidad del viento',data:wind,color:'#3d87b8'},{name:'Direccion del viento',data:dir,color:'#82b8d5'},{name:'Lluvia por hora',data:rain,color:'#1a5f8f'},{name:'Radiacion solar',data:solar,color:'#5ba3d0'},{name:'Indice UV',data:uv,color:'#2d7ab5'}]);
+
+      // Level chart — dynamic Y axis
+      const _nd = nivel.filter(v => v !== null && v !== undefined && v > 0);
+      const nivelMax = _nd.length ? Math.max(..._nd) : 5;
+      lineChart('chart-nivel', labels, nivel, '#1a7ab5', 'L', 0, Math.ceil(nivelMax * 1.2));
+
+      lineChart('chart-hum', labels, hum, '#2d9fd4', '%', 0, 100);
+      lineChart('chart-temp', labels, temp, '#17b8d4', '°C');
+      lineChart('chart-dew', labels, dew, '#0099cc', '°C');
+      lineChart('chart-pres', labels, pres, '#5bbde8', 'inHg');
+      lineChart('chart-wind', labels, wind, '#1a7ab5', 'km/h', 0);
+
+      // Wind rose instead of direction line chart
+      windRoseChart('chart-wind-rose', dir, wind);
+
+      // Rain and solar with dynamic scale
+      barChart('chart-rain', labels, rain, '#2d9fd4', 'mm');
+      const solarMax = Math.max(...solar.filter(v => v !== null && v !== undefined), 100);
+      lineChart('chart-solar', labels, solar, '#c47a00', 'W/m²', 0, Math.ceil(solarMax * 1.1));
+      barChart('chart-uv', labels, uv, '#0099cc', 'UV');
+
+      // Scatter correlations
+      scatterChart('chart-corr-hum', hum, nivel, '#2d9fd4', 'Humedad %', 'Nivel L');
+      scatterChart('chart-corr-temp', temp, nivel, '#17b8d4', 'Temperatura °C', 'Nivel L');
+      scatterChart('chart-corr-dew', dew, nivel, '#0099cc', 'Punto rocío °C', 'Nivel L');
+      scatterChart('chart-corr-solar', solar, nivel, '#c47a00', 'Rad. solar W/m²', 'Nivel L');
+
+      updateCorrTable(nivel, [
+        {name:'Humedad relativa', data:hum, color:'#2d9fd4'},
+        {name:'Temperatura exterior', data:temp, color:'#17b8d4'},
+        {name:'Punto de rocío', data:dew, color:'#0099cc'},
+        {name:'Presión barométrica', data:pres, color:'#5bbde8'},
+        {name:'Velocidad del viento', data:wind, color:'#1a7ab5'},
+        {name:'Dirección del viento', data:dir, color:'#82c8e0'},
+        {name:'Lluvia por hora', data:rain, color:'#2d9fd4'},
+        {name:'Radiación solar', data:solar, color:'#c47a00'},
+        {name:'Índice UV', data:uv, color:'#0099cc'}
+      ]);
     }
 
-    window.addEventListener('scroll',()=>{const ids=['resumen','salud-pi','nivel','clima-base','clima-avanzado','correlacion'];ids.forEach(id=>{const sec=document.getElementById(id);const link=document.querySelector('.sb-link[href="#'+id+'"]');if(!sec||!link)return;const r=sec.getBoundingClientRect();if(r.top<180&&r.bottom>120)link.classList.add('active');else link.classList.remove('active');});});
+    window.addEventListener('scroll', () => {
+      const ids = ['resumen','salud-pi','nivel','clima-base','clima-avanzado','correlacion'];
+      ids.forEach(id => {
+        const sec = document.getElementById(id);
+        const link = document.querySelector('.sb-link[href="#' + id + '"]');
+        if (!sec || !link) return;
+        const r = sec.getBoundingClientRect();
+        if (r.top < 180 && r.bottom > 120) link.classList.add('active');
+        else link.classList.remove('active');
+      });
+    });
 
     renderDashboard();
-    setInterval(renderDashboard,60000);
+    setInterval(renderDashboard, 60000);
   </script>
 </body>
 </html>
