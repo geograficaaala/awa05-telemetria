@@ -442,11 +442,28 @@
     }
 
     function buildFallback() {
-      const labels = [], now = new Date();
-      for (let i = 47; i >= 0; i--) { const d = new Date(now.getTime() - i * 1800000); labels.push(d.toISOString().slice(11,16)); }
-      const n=[],h=[],t=[],d=[],p=[],w=[],dr=[],r=[],s=[],u=[];
-      for(let i=0;i<48;i++){n.push(+(Math.min(19,(i%16)*1.2+(Math.random()*.3))).toFixed(2));h.push(+(70+Math.sin(i/3)*9+(Math.random()-.5)*2).toFixed(1));t.push(+(21-Math.sin(i/4)*3+(Math.random()-.5)*.6).toFixed(1));d.push(+(t[i]-(100-h[i])/5).toFixed(1));p.push(+(24.75+Math.sin(i/6)*.07+(Math.random()-.5)*.02).toFixed(3));w.push(+(6+Math.abs(Math.sin(i/3))*8+Math.random()).toFixed(1));dr.push(+((120+i*11+Math.random()*25)%360).toFixed(0));r.push(+(Math.max(0,Math.sin(i/5)>.7?Math.random()*2:0)).toFixed(2));s.push(+(Math.max(0,Math.sin((i%24-6)/12*Math.PI)*750)).toFixed(1));u.push(+(Math.max(0,Math.sin((i%24-6)/12*Math.PI)*10)).toFixed(1));}
-      return {actualizado:new Date().toLocaleString('es-GT'),kpis:{nivel_l:n.at(-1),humedad_pct:h.at(-1),temp_c:t.at(-1),punto_rocio_c:d.at(-1),presion_inhg:p.at(-1),viento_kmh:w.at(-1)},sistema:{cpu_temp_c:null,voltaje_v:null,ram_uso_pct:null,disco_uso_pct:null,uptime:null},series:{labels,labels_nivel:labels,nivel_l:n,humedad_pct:h,temp_c:t,punto_rocio_c:d,presion_inhg:p,viento_kmh:w,viento_dir_deg:dr,lluvia_hora_mm:r,radiacion_solar_wm2:s,uv:u}};
+      // Genera timestamps completos "YYYY-MM-DD HH:MM:SS" para que renderProduccionAnalisis funcione
+      const labels = [], labels_nivel = [], now = new Date();
+      // Clima: 48 muestras cada 30min
+      for (let i = 47; i >= 0; i--) {
+        const d = new Date(now.getTime() - i * 1800000);
+        const pad = v => String(v).padStart(2,'0');
+        labels.push(d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':00');
+      }
+      // Nivel: 96 muestras cada 15min (abarca ~24h, múltiples días si now es tarde)
+      const n=[];
+      for (let i = 95; i >= 0; i--) {
+        const d = new Date(now.getTime() - i * 900000);
+        const pad = v => String(v).padStart(2,'0');
+        labels_nivel.push(d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())+' '+pad(d.getHours())+':'+pad(d.getMinutes())+':00');
+        // Simula llenado cíclico con vaciados
+        const ciclo = i % 32;
+        const volBase = Math.min(19, ciclo * 0.6 + (Math.random() * 0.2));
+        n.push(+volBase.toFixed(2));
+      }
+      const h=[],t=[],d=[],p=[],w=[],dr=[],r=[],s=[],u=[];
+      for(let i=0;i<48;i++){h.push(+(70+Math.sin(i/3)*9+(Math.random()-.5)*2).toFixed(1));t.push(+(21-Math.sin(i/4)*3+(Math.random()-.5)*.6).toFixed(1));d.push(+(t[i]-(100-h[i])/5).toFixed(1));p.push(+(24.75+Math.sin(i/6)*.07+(Math.random()-.5)*.02).toFixed(3));w.push(+(6+Math.abs(Math.sin(i/3))*8+Math.random()).toFixed(1));dr.push(+((120+i*11+Math.random()*25)%360).toFixed(0));r.push(+(Math.max(0,Math.sin(i/5)>.7?Math.random()*2:0)).toFixed(2));s.push(+(Math.max(0,Math.sin((i%24-6)/12*Math.PI)*750)).toFixed(1));u.push(+(Math.max(0,Math.sin((i%24-6)/12*Math.PI)*10)).toFixed(1));}
+      return {actualizado:new Date().toLocaleString('es-GT'),kpis:{nivel_l:n.at(-1),humedad_pct:h.at(-1),temp_c:t.at(-1),punto_rocio_c:d.at(-1),presion_inhg:p.at(-1),viento_kmh:w.at(-1)},sistema:{cpu_temp_c:null,voltaje_v:null,ram_uso_pct:null,disco_uso_pct:null,uptime:null},series:{labels,labels_nivel,nivel_l:n,humedad_pct:h,temp_c:t,punto_rocio_c:d,presion_inhg:p,viento_kmh:w,viento_dir_deg:dr,lluvia_hora_mm:r,radiacion_solar_wm2:s,uv:u}};
     }
 
     function interpretarPi(s){
@@ -697,19 +714,18 @@
       const HORA_DIURNO_INI = 5.5;
       const HORA_DIURNO_FIN = 18.5;
 
-      // Parse timestamps — supports "2026-04-23 12:29:11" and "HH:MM"
+      // Parse timestamps — soporta "2026-04-23 12:29:11" y "2026-04-23T12:29:11" y "HH:MM"
       const puntos = rawLabels.map((l, i) => {
         if (!l || nivel[i] === null || nivel[i] === undefined) return null;
         let fecha, hora;
-        if (l.length >= 16) {
-          // Full timestamp: "2026-04-23 12:29:11"
+        if (l.length >= 16 && (l[10] === ' ' || l[10] === 'T')) {
+          // Full timestamp: "2026-04-23 12:29:11" o "2026-04-23T12:29:11"
           fecha = l.substring(0, 10);
           const hh = parseInt(l.substring(11, 13));
           const mm = parseInt(l.substring(14, 16));
           hora = hh + mm / 60;
         } else {
-          // HH:MM only — skip, can't assign date
-          return null;
+          return null; // Sin fecha completa no podemos asignar día
         }
         const diurno = hora >= HORA_DIURNO_INI && hora < HORA_DIURNO_FIN;
         return { fecha, hora, diurno, vol: nivel[i], idx: i };
@@ -721,7 +737,8 @@
       const dias = [...new Set(puntos.map(p => p.fecha))].sort();
 
       // Calcula producción por día y período
-      // Producción = suma de incrementos positivos (Δvol > 0)
+      // Producción = suma de incrementos positivos válidos (Δvol > 0 y ≤ 6L)
+      // Las caídas bruscas (vaciado) se ignoran — no son producción negativa
       const prodDiurna = {}, prodNocturna = {}, prodTotal = {};
       dias.forEach(d => { prodDiurna[d] = 0; prodNocturna[d] = 0; prodTotal[d] = 0; });
 
@@ -729,9 +746,10 @@
         const prev = puntos[i-1], curr = puntos[i];
         const delta = curr.vol - prev.vol;
         if (delta > 0 && delta <= 6) { // incremento válido (no outlier)
-          if (curr.diurno) prodDiurna[curr.fecha] = (prodDiurna[curr.fecha] || 0) + delta;
-          else prodNocturna[curr.fecha] = (prodNocturna[curr.fecha] || 0) + delta;
-          prodTotal[curr.fecha] = (prodTotal[curr.fecha] || 0) + delta;
+          const dia = curr.fecha; // acumular en el día del punto actual
+          if (curr.diurno) prodDiurna[dia] = (prodDiurna[dia] || 0) + delta;
+          else prodNocturna[dia] = (prodNocturna[dia] || 0) + delta;
+          prodTotal[dia] = (prodTotal[dia] || 0) + delta;
         }
       }
 
@@ -747,29 +765,29 @@
       const nocturnaVals = dias.map(d => +((prodNocturna[d]||0).toFixed(2)));
       const totalVals = dias.map(d => +((prodTotal[d]||0).toFixed(2)));
 
-      // GRÁFICA 1: Diurna vs Nocturna (barras agrupadas)
+      // GRÁFICA 1: Diurna vs Nocturna (líneas)
       destroyChart('chart-dia-noche');
       const ctx1 = document.getElementById('chart-dia-noche')?.getContext('2d');
       if (ctx1) {
         chartRegistry['chart-dia-noche'] = new Chart(ctx1, {
-          type: 'line',
+          type: dias.length === 1 ? 'bar' : 'line',
           data: {
             labels: diaLabels,
             datasets: [
-              { label: 'Diurno (05:30–18:30)', data: diurnaVals, borderColor: '#b56a00', backgroundColor: 'rgba(181,106,0,0.06)', borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 8, pointBackgroundColor: '#fff', pointBorderColor: '#b56a00', pointBorderWidth: 2, fill: true, tension: 0.3 },
-              { label: 'Nocturno (18:30–05:30)', data: nocturnaVals, borderColor: '#1a4d8a', backgroundColor: 'rgba(26,77,138,0.06)', borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 8, pointBackgroundColor: '#fff', pointBorderColor: '#1a4d8a', pointBorderWidth: 2, fill: true, tension: 0.3 }
+              { label: 'Diurno (05:30–18:30)', data: diurnaVals, borderColor: '#b56a00', backgroundColor: dias.length === 1 ? 'rgba(181,106,0,0.5)' : 'rgba(181,106,0,0.06)', borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 8, pointBackgroundColor: '#fff', pointBorderColor: '#b56a00', pointBorderWidth: 2, fill: true, tension: 0.3 },
+              { label: 'Nocturno (18:30–05:30)', data: nocturnaVals, borderColor: '#1a4d8a', backgroundColor: dias.length === 1 ? 'rgba(26,77,138,0.5)' : 'rgba(26,77,138,0.06)', borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 8, pointBackgroundColor: '#fff', pointBorderColor: '#1a4d8a', pointBorderWidth: 2, fill: true, tension: 0.3 }
             ]
           },
           options: {
             responsive: true, maintainAspectRatio: false,
             animation: { duration: 800, easing: 'easeInOutQuart' },
             plugins: {
-              legend: { display: true, position: 'top', labels: { font: { family: "'DM Mono'", size: 9 }, color: '#4a7a9b', boxWidth: 14, padding: 16 } },
-              tooltip: { backgroundColor: '#fff', borderColor: 'rgba(45,159,212,0.3)', borderWidth: 1, titleColor: '#1a7ab5', bodyColor: '#0d2a40', titleFont: { family: "'DM Mono'", size: 10 }, bodyFont: { family: "'DM Sans'", size: 12 }, padding: 10, callbacks: { label: c => ' ' + c.dataset.label + ': ' + c.parsed.y + ' L' } }
+              legend: { display: true, position: 'top', labels: { font: { family: "'IBM Plex Mono'", size: 9 }, color: '#6a6a5a', boxWidth: 14, padding: 16 } },
+              tooltip: { backgroundColor: '#fff', borderColor: 'rgba(60,60,50,0.18)', borderWidth: 1, titleColor: '#1a4d8a', bodyColor: '#1a1a16', titleFont: { family: "'IBM Plex Mono'", size: 10 }, bodyFont: { family: "'Source Sans 3'", size: 12 }, padding: 10, callbacks: { label: c => ' ' + c.dataset.label + ': ' + c.parsed.y + ' L' } }
             },
             scales: {
-              x: { grid: { color: 'rgba(45,159,212,0.07)' }, border: { color: 'rgba(45,159,212,0.18)' }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 } } },
-              y: { grid: { color: 'rgba(45,159,212,0.07)' }, border: { color: 'rgba(45,159,212,0.18)', dash: [3,3] }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 }, callback: v => v + ' L' }, title: { display: true, text: 'Litros producidos', color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 } } }
+              x: { grid: { color: 'rgba(60,60,50,0.06)' }, border: { color: 'rgba(60,60,50,0.12)' }, ticks: { color: '#6a6a5a', font: { family: "'IBM Plex Mono'", size: 9 } } },
+              y: { grid: { color: 'rgba(60,60,50,0.06)' }, border: { color: 'rgba(60,60,50,0.12)', dash: [3,3] }, ticks: { color: '#6a6a5a', font: { family: "'IBM Plex Mono'", size: 9 }, callback: v => v + ' L' }, min: 0, title: { display: true, text: 'Litros producidos', color: '#6a6a5a', font: { family: "'IBM Plex Mono'", size: 9 } } }
             }
           }
         });
@@ -780,24 +798,17 @@
       destroyChart('chart-prod-diaria');
       const ctx2 = document.getElementById('chart-prod-diaria')?.getContext('2d');
       if (ctx2) {
-        const maxTotal = Math.max(...totalVals, 1);
         chartRegistry['chart-prod-diaria'] = new Chart(ctx2, {
-          type: 'line',
+          type: 'bar',
           data: {
             labels: diaLabels,
             datasets: [{
               label: 'Producción total diaria',
               data: totalVals,
-              borderColor: '#1a4d8a',
-              backgroundColor: 'rgba(26,77,138,0.05)',
-              borderWidth: 2.5,
-              pointRadius: totalVals.map((v,i) => 7),
-              pointHoverRadius: 9,
-              pointBackgroundColor: totalVals.map((v,i) => DIA_COLORS[i % DIA_COLORS.length]),
-              pointBorderColor: '#fff',
-              pointBorderWidth: 2,
-              fill: true,
-              tension: 0.2
+              backgroundColor: dias.map((_,i) => DIA_COLORS[i % DIA_COLORS.length] + 'cc'),
+              borderColor: dias.map((_,i) => DIA_COLORS[i % DIA_COLORS.length]),
+              borderWidth: 1.5,
+              borderRadius: 3,
             }]
           },
           options: {
@@ -805,11 +816,11 @@
             animation: { duration: 800 },
             plugins: {
               legend: { display: false },
-              tooltip: { backgroundColor: '#fff', borderColor: 'rgba(45,159,212,0.3)', borderWidth: 1, titleColor: '#1a7ab5', bodyColor: '#0d2a40', titleFont: { family: "'DM Mono'", size: 10 }, bodyFont: { family: "'DM Sans'", size: 12 }, padding: 10, callbacks: { label: c => ' Total: ' + c.parsed.y + ' L' } }
+              tooltip: { backgroundColor: '#fff', borderColor: 'rgba(60,60,50,0.18)', borderWidth: 1, titleColor: '#1a4d8a', bodyColor: '#1a1a16', titleFont: { family: "'IBM Plex Mono'", size: 10 }, bodyFont: { family: "'Source Sans 3'", size: 12 }, padding: 10, callbacks: { label: c => ' Total: ' + c.parsed.y + ' L' } }
             },
             scales: {
-              x: { grid: { color: 'rgba(45,159,212,0.07)' }, border: { color: 'rgba(45,159,212,0.18)' }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 } } },
-              y: { grid: { color: 'rgba(45,159,212,0.07)' }, border: { color: 'rgba(45,159,212,0.18)', dash: [3,3] }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 }, callback: v => v + ' L' }, min: 0 }
+              x: { grid: { color: 'rgba(60,60,50,0.06)' }, border: { color: 'rgba(60,60,50,0.12)' }, ticks: { color: '#6a6a5a', font: { family: "'IBM Plex Mono'", size: 9 } } },
+              y: { grid: { color: 'rgba(60,60,50,0.06)' }, border: { color: 'rgba(60,60,50,0.12)', dash: [3,3] }, ticks: { color: '#6a6a5a', font: { family: "'IBM Plex Mono'", size: 9 }, callback: v => v + ' L' }, min: 0 }
             }
           }
         });
@@ -820,7 +831,6 @@
       destroyChart('chart-curvas-dia');
       const ctx3 = document.getElementById('chart-curvas-dia')?.getContext('2d');
       if (ctx3) {
-        // Para cada día, construye serie hora vs vol relativo (desde 0)
         const datasets = [];
         const legendEl = document.getElementById('legend-dias');
         if (legendEl) legendEl.innerHTML = '';
@@ -828,10 +838,11 @@
         dias.forEach((dia, dIdx) => {
           const puntosDelDia = puntos.filter(p => p.fecha === dia);
           if (puntosDelDia.length < 2) return;
-          const volBase = puntosDelDia[0].vol;
+          // Volumen base = mínimo del día (para absorber vaciados dentro del día)
+          const volBase = Math.min(...puntosDelDia.map(p => p.vol));
           const color = DIA_COLORS[dIdx % DIA_COLORS.length];
           const data = puntosDelDia.map(p => ({ x: +p.hora.toFixed(2), y: +Math.max(0, p.vol - volBase).toFixed(2) }));
-          datasets.push({ label: diaLabels[dIdx], data, borderColor: color, backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, tension: 0.3, fill: false });
+          datasets.push({ label: diaLabels[dIdx], data, borderColor: color, backgroundColor: 'transparent', borderWidth: 2, pointRadius: 3, pointHoverRadius: 5, tension: 0.3, fill: false });
           if (legendEl) {
             const item = document.createElement('div');
             item.className = 'legend-item';
@@ -847,12 +858,12 @@
             responsive: true, maintainAspectRatio: false,
             animation: { duration: 900, easing: 'easeInOutQuart' },
             plugins: {
-              legend: { display: false },
-              tooltip: { backgroundColor: '#fff', borderColor: 'rgba(45,159,212,0.3)', borderWidth: 1, titleColor: '#1a7ab5', bodyColor: '#0d2a40', titleFont: { family: "'DM Mono'", size: 10 }, bodyFont: { family: "'DM Sans'", size: 12 }, padding: 10, callbacks: { title: items => { const h = Math.floor(items[0].parsed.x); const m = Math.round((items[0].parsed.x - h) * 60); return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0'); }, label: c => ' ' + c.dataset.label + ': +' + c.parsed.y + ' L' } }
+              legend: { display: datasets.length <= 5, position: 'top', labels: { font: { family: "'IBM Plex Mono'", size: 9 }, color: '#6a6a5a', boxWidth: 12, padding: 12 } },
+              tooltip: { backgroundColor: '#fff', borderColor: 'rgba(60,60,50,0.18)', borderWidth: 1, titleColor: '#1a4d8a', bodyColor: '#1a1a16', titleFont: { family: "'IBM Plex Mono'", size: 10 }, bodyFont: { family: "'Source Sans 3'", size: 12 }, padding: 10, callbacks: { title: items => { const h = Math.floor(items[0].parsed.x); const m = Math.round((items[0].parsed.x - h) * 60); return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0'); }, label: c => ' ' + c.dataset.label + ': +' + c.parsed.y + ' L' } }
             },
             scales: {
-              x: { type: 'linear', min: 0, max: 24, grid: { color: 'rgba(45,159,212,0.07)' }, border: { color: 'rgba(45,159,212,0.18)' }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 }, callback: v => String(Math.floor(v)).padStart(2,'0') + ':00', stepSize: 3 }, title: { display: true, text: 'Hora del día', color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 } } },
-              y: { grid: { color: 'rgba(45,159,212,0.07)' }, border: { color: 'rgba(45,159,212,0.18)', dash: [3,3] }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 }, callback: v => '+' + v + ' L' }, min: 0, title: { display: true, text: 'Δ Litros desde inicio del día', color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 } } }
+              x: { type: 'linear', min: 0, max: 24, grid: { color: 'rgba(60,60,50,0.06)' }, border: { color: 'rgba(60,60,50,0.12)' }, ticks: { color: '#6a6a5a', font: { family: "'IBM Plex Mono'", size: 9 }, callback: v => String(Math.floor(v)).padStart(2,'0') + ':00', stepSize: 3 }, title: { display: true, text: 'Hora del día', color: '#6a6a5a', font: { family: "'IBM Plex Mono'", size: 9 } } },
+              y: { grid: { color: 'rgba(60,60,50,0.06)' }, border: { color: 'rgba(60,60,50,0.12)', dash: [3,3] }, ticks: { color: '#6a6a5a', font: { family: "'IBM Plex Mono'", size: 9 }, callback: v => '+' + v + ' L' }, min: 0, title: { display: true, text: 'Δ Litros desde inicio del día', color: '#6a6a5a', font: { family: "'IBM Plex Mono'", size: 9 } } }
             }
           }
         });
