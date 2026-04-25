@@ -252,6 +252,20 @@
       .grid-2,.grid-3,.precio-grid,.irr-grid{grid-template-columns:1fr}
       .grid-4{grid-template-columns:1fr}
     }
+
+    /* ── HEATMAP CORRELACIÓN ────────────────────────────────────── */
+    .hm-table{border-collapse:collapse;font-family:var(--mono);font-size:9px}
+    .hm-cell{width:52px;height:52px;text-align:center;vertical-align:middle;cursor:default;transition:opacity 0.15s;font-size:8.5px;font-weight:500;position:relative}
+    .hm-cell:hover{opacity:0.75;outline:2px solid var(--ink-mid)}
+    .hm-label-col{font-family:var(--mono);font-size:8px;color:var(--ink-soft);padding:0 8px 0 0;text-align:right;white-space:nowrap;font-weight:400}
+    .hm-label-row{font-family:var(--mono);font-size:8px;color:var(--ink-soft);padding:4px 2px 0;text-align:center;white-space:nowrap;font-weight:400;max-width:52px;overflow:hidden;text-overflow:ellipsis}
+    /* ── IMPORTANCIA BARS ────────────────────────────────────────── */
+    .imp-bar-wrap{display:flex;flex-direction:column;gap:8px;padding:16px 20px}
+    .imp-row{display:flex;align-items:center;gap:10px}
+    .imp-name{font-family:var(--mono);font-size:9px;color:var(--ink-soft);width:100px;flex-shrink:0;text-align:right}
+    .imp-bar-bg{flex:1;height:20px;background:var(--surface3);border-radius:2px;overflow:hidden;position:relative}
+    .imp-bar-fill{height:100%;border-radius:2px;transition:width 0.6s ease;display:flex;align-items:center;padding-left:6px}
+    .imp-bar-val{font-family:var(--mono);font-size:8px;color:#fff;font-weight:500;white-space:nowrap}
   </style>
 </head>
 <body>
@@ -297,7 +311,7 @@
     <a class="sb-link" href="#empresa">Análisis empresarial</a>
     <a class="sb-link" href="#clima-base">Clima — Variables base</a>
     <a class="sb-link" href="#clima-avanzado">Clima — Variables avanzadas</a>
-    <a class="sb-link" href="#correlacion">Correlación estadística</a>
+    <a class="sb-link" href="#correlacion">Evaluación estadística</a>
   </div>
   <div class="sb-divider"></div>
   <div class="sb-section">
@@ -702,30 +716,142 @@
 
 <div class="section-rule"></div>
 
-<!-- ─── CORRELACIÓN ───────────────────────────────────────────── -->
+<!-- ─── EVALUACIÓN ESTADÍSTICA ────────────────────────────────── -->
 <section id="correlacion">
-  <div class="section-eyebrow">Análisis estadístico — Pearson · distribución t · n−2 g.l.</div>
-  <div class="section-title">¿Qué variables <em>predicen</em> la producción?</div>
-  <div class="section-subtitle">Coeficientes de correlación de Pearson entre el nivel de agua y cada variable climática. Un r cercano a ±1 indica correlación fuerte.</div>
-  <div class="grid-2" style="margin-bottom:16px">
-    <div class="card"><div class="card-head" style="display:flex;justify-content:space-between"><div><div class="card-title">Nivel vs Humedad</div><div class="card-sub">Scatter + regresión lineal</div></div><div class="card-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-hum"></canvas></div></div>
-    <div class="card"><div class="card-head" style="display:flex;justify-content:space-between"><div><div class="card-title">Nivel vs Temperatura</div><div class="card-sub">Scatter + regresión lineal</div></div><div class="card-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-temp"></canvas></div></div>
+  <div class="section-eyebrow">Evaluación estadística multivariable · Regresión OLS · Análisis de umbral · Importancia de variables</div>
+  <div class="section-title">¿Qué <em>determina</em> la producción de agua?</div>
+  <div class="section-subtitle">La correlación de Pearson simple asume linealidad y no detecta umbrales ni interacciones. Este bloque implementa regresión lineal múltiple OLS, análisis de umbral por rangos de humedad, importancia de variables por permutación de R², y matriz de correlación completa entre todas las variables climáticas. Basado en literatura científica de captación de niebla (Schemenauer, Castillo-Botón et al.).</div>
+
+  <!-- RESUMEN DEL MODELO OLS -->
+  <div class="inv-display" style="margin-bottom:16px">
+    <div class="inv-grid" style="grid-template-columns:repeat(5,1fr)">
+      <div class="inv-item">
+        <div class="inv-item-label">R² ajustado del modelo</div>
+        <div class="inv-item-val"><span id="ols-r2adj">--</span></div>
+        <div class="inv-item-sub">Varianza explicada por todas las variables</div>
+      </div>
+      <div class="inv-item">
+        <div class="inv-item-label">R² múltiple</div>
+        <div class="inv-item-val"><span id="ols-r2">--</span></div>
+        <div class="inv-item-sub">Bondad de ajuste global</div>
+      </div>
+      <div class="inv-item">
+        <div class="inv-item-label">RMSE del modelo</div>
+        <div class="inv-item-val"><span id="ols-rmse">--</span><span class="inv-item-unit"> L</span></div>
+        <div class="inv-item-sub">Error cuadrático medio</div>
+      </div>
+      <div class="inv-item">
+        <div class="inv-item-label">Variable más determinante</div>
+        <div class="inv-item-val" style="font-size:16px"><span id="ols-top-var">--</span></div>
+        <div class="inv-item-sub">Mayor reducción de R² al permutar</div>
+      </div>
+      <div class="inv-item">
+        <div class="inv-item-label">N observaciones</div>
+        <div class="inv-item-val"><span id="ols-n">--</span></div>
+        <div class="inv-item-sub">Pares válidos nivel + clima</div>
+      </div>
+    </div>
+    <div class="inv-ticker">
+      <div class="inv-ticker-item">Modelo: <span>Regresión OLS multivariable</span></div>
+      <div class="inv-ticker-item">Predictores: <span>HR, Temp, Rocío, Presión, Viento, Radiación</span></div>
+      <div class="inv-ticker-item">Selección: <span>Importancia por permutación de R²</span></div>
+      <div class="inv-ticker-item">Umbral condensación: <span>HR ≥ 70%</span></div>
+    </div>
   </div>
+
+  <!-- FILA 1: Importancia + Umbral HR -->
   <div class="grid-2" style="margin-bottom:16px">
-    <div class="card"><div class="card-head" style="display:flex;justify-content:space-between"><div><div class="card-title">Nivel vs Punto de rocío</div><div class="card-sub">Temperatura de condensación como predictor</div></div><div class="card-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-dew"></canvas></div></div>
-    <div class="card"><div class="card-head" style="display:flex;justify-content:space-between"><div><div class="card-title">Nivel vs Radiación solar</div><div class="card-sub">Carga energética como predictor inverso</div></div><div class="card-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-solar"></canvas></div></div>
+    <div class="card">
+      <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div class="card-title">Importancia de variables — Permutación de R²</div>
+          <div class="card-sub">Reducción en R² al aleatorizar cada variable. Mayor caída = mayor importancia causal. Basado en Boruta / permutation importance.</div>
+        </div>
+        <div class="card-badge">ΔR²</div>
+      </div>
+      <div class="chart-wrap tall"><canvas id="chart-importancia"></canvas></div>
+      <div class="card-foot"><div class="card-ts" id="ts-importancia">--</div><div class="card-ts">ΔR² = R²_completo − R²_sin_variable</div></div>
+    </div>
+    <div class="card">
+      <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div class="card-title">Análisis de umbral — Nivel por rango de humedad</div>
+          <div class="card-sub">Distribución del nivel de agua segmentada por rangos de HR. Detecta el umbral de condensación donde la captación se activa. La niebla ocurre típicamente con HR ≥ 70%.</div>
+        </div>
+        <div class="card-badge">Umbral</div>
+      </div>
+      <div class="chart-wrap tall"><canvas id="chart-umbral-hr"></canvas></div>
+      <div class="card-foot"><div class="card-ts" id="ts-umbral">--</div><div class="card-ts">Nivel medio ± σ por rango de HR · n por rango en etiqueta</div></div>
+    </div>
   </div>
-  <div class="card">
+
+  <!-- FILA 2: Coeficientes OLS + Residuales -->
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div class="card-title">Coeficientes OLS — Regresión múltiple</div>
+          <div class="card-sub">Efecto marginal de cada variable sobre el nivel, controlando por las demás. Barras positivas = aumentan captación; negativas = la reducen.</div>
+        </div>
+        <div class="card-badge">OLS · β</div>
+      </div>
+      <div class="chart-wrap tall"><canvas id="chart-ols-coef"></canvas></div>
+      <div class="card-foot"><div class="card-ts" id="ts-ols">--</div><div class="card-ts">Coeficientes no estandarizados · cada unidad de la variable en su escala original</div></div>
+    </div>
+    <div class="card">
+      <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div class="card-title">Residuales vs valores predichos</div>
+          <div class="card-sub">Patrón aleatorio sin estructura = modelo bien especificado. Patrones sistemáticos indican relaciones no capturadas (no linealidad, heterocedasticidad).</div>
+        </div>
+        <div class="card-badge">Diagnóstico</div>
+      </div>
+      <div class="chart-wrap tall"><canvas id="chart-residuales"></canvas></div>
+      <div class="card-foot"><div class="card-ts" id="ts-resid">--</div><div class="card-ts">Residual = Nivel_observado − Nivel_predicho · línea roja = 0</div></div>
+    </div>
+  </div>
+
+  <!-- FILA 3: Matriz de correlación + Scatter múltiple -->
+  <div class="card" style="margin-bottom:16px">
     <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
-      <div><div class="card-title">Coeficientes de correlación de Pearson</div><div class="card-sub">r: correlación −1→1 · R²: varianza explicada · p-valor t(n−2)</div></div>
-      <div class="card-badge">r · R²</div>
+      <div>
+        <div class="card-title">Matriz de correlación completa — Heatmap de Pearson</div>
+        <div class="card-sub">Correlación entre todas las variables climáticas y el nivel. Detecta multicolinealidad entre predictores (problema para la regresión) y relaciones cruzadas.</div>
+      </div>
+      <div class="card-badge">Heatmap r</div>
+    </div>
+    <div style="padding:16px 20px;overflow-x:auto">
+      <div id="heatmap-corr" style="display:inline-block;min-width:500px"></div>
+    </div>
+    <div class="card-foot"><div class="card-ts" id="ts-heatmap">--</div><div class="card-ts">Pearson r · celda roja = correlación positiva · azul = negativa · blanco = sin correlación</div></div>
+  </div>
+
+  <!-- FILA 4: Tabla OLS completa -->
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <div class="card-title">Tabla estadística completa — OLS + Pearson bivariado</div>
+        <div class="card-sub">r: Pearson bivariado · β: coeficiente OLS · β*: coeficiente estandarizado (importancia relativa) · p: p-valor t(n−k−1) · VIF: factor de inflación de varianza</div>
+      </div>
+      <div class="card-badge">OLS · r · β · VIF</div>
     </div>
     <div class="card-body" style="padding:0">
-      <table class="corr-table">
-        <thead><tr><th>Variable</th><th>r</th><th>R²</th><th>Tendencia</th><th>p-valor</th><th>Magnitud</th></tr></thead>
+      <table class="fin-table">
+        <thead><tr><th>Variable</th><th>r (Pearson)</th><th>β (OLS)</th><th>β* (estand.)</th><th>p-valor</th><th>VIF</th><th>Importancia ΔR²</th><th>Interpretación</th></tr></thead>
         <tbody id="corr-body"></tbody>
       </table>
     </div>
+    <div class="card-foot"><div class="card-ts" id="ts-tabla-ols">--</div><div class="card-ts">VIF > 10 = multicolinealidad severa · β* permite comparar variables en distintas unidades</div></div>
+  </div>
+
+  <!-- FILA 5: Scatter con regresión por variable top -->
+  <div class="grid-2">
+    <div class="card"><div class="card-head" style="display:flex;justify-content:space-between"><div><div class="card-title">Nivel vs Humedad relativa</div><div class="card-sub">Scatter + OLS + banda de confianza 95%</div></div><div class="card-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-hum"></canvas></div></div>
+    <div class="card"><div class="card-head" style="display:flex;justify-content:space-between"><div><div class="card-title">Nivel vs Punto de rocío</div><div class="card-sub">Temperatura de condensación como predictor físico principal</div></div><div class="card-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-dew"></canvas></div></div>
+  </div>
+  <div class="grid-2" style="margin-top:16px">
+    <div class="card"><div class="card-head" style="display:flex;justify-content:space-between"><div><div class="card-title">Nivel vs Temperatura exterior</div><div class="card-sub">Efecto térmico sobre la condensación</div></div><div class="card-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-temp"></canvas></div></div>
+    <div class="card"><div class="card-head" style="display:flex;justify-content:space-between"><div><div class="card-title">Nivel vs Radiación solar</div><div class="card-sub">Predictor inverso — mayor radiación = menor captación nocturna</div></div><div class="card-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-solar"></canvas></div></div>
   </div>
 </section>
 
@@ -861,7 +987,21 @@ function lineChart(id, labels, data, color, unit, yMin, yMax) {
   destroyChart(id);
   const ctx=document.getElementById(id)?.getContext('2d');
   if(!ctx) return;
-  chartRegistry[id]=new Chart(ctx,{type:'line',data:{labels,datasets:[{data,borderColor:color,borderWidth:2,pointRadius:0,pointHoverRadius:5,tension:0.3,fill:true,backgroundColor:color+'18'}]},options:mergeOpts({scales:{x:{...chartDefaults.scales.x},y:{...chartDefaults.scales.y,min:yMin,max:yMax,ticks:{...chartDefaults.scales.y.ticks,callback:v=>v+' '+unit}}}})});
+  chartRegistry[id]=new Chart(ctx,{type:'line',data:{labels,datasets:[{
+    data,borderColor:color,borderWidth:2.5,
+    pointRadius:0,pointHoverRadius:6,
+    pointHoverBackgroundColor:'#fff',pointHoverBorderColor:color,pointHoverBorderWidth:2,
+    tension:0.3,fill:true,backgroundColor:color+'18'
+  }]},options:mergeOpts({
+    interaction:{mode:'index',intersect:false},
+    plugins:{...chartDefaults.plugins,
+      tooltip:{...chartDefaults.plugins.tooltip,
+        callbacks:{label:c=>' '+(c.parsed.y!=null?c.parsed.y.toFixed(2):'-')+' '+unit}
+      }
+    },
+    scales:{x:{...chartDefaults.scales.x},y:{...chartDefaults.scales.y,min:yMin,max:yMax,
+      ticks:{...chartDefaults.scales.y.ticks,callback:v=>v+' '+unit}}}
+  })});
 }
 
 function barChart(id, labels, data, color, unit) {
@@ -876,8 +1016,32 @@ function nivelChart(id, labels, nivel, garrafonIdx) {
   const ctx=document.getElementById(id)?.getContext('2d');
   if(!ctx) return;
   const ptColors=nivel.map((_,i)=>garrafonIdx.includes(i)?'#1a5c38':'rgba(0,0,0,0)');
-  const ptRadius=nivel.map((_,i)=>garrafonIdx.includes(i)?6:0);
-  chartRegistry[id]=new Chart(ctx,{type:'line',data:{labels,datasets:[{data:nivel,borderColor:'#1c3f6e',borderWidth:2.5,pointRadius:ptRadius,pointHoverRadius:6,pointBackgroundColor:ptColors,pointBorderColor:'#fff',pointBorderWidth:1.5,tension:0.3,fill:true,backgroundColor:'rgba(28,63,110,0.06)'}]},options:mergeOpts({scales:{x:{...chartDefaults.scales.x},y:{...chartDefaults.scales.y,min:0,max:21,ticks:{...chartDefaults.scales.y.ticks,callback:v=>v+' L'}}}})});
+  const ptBorder=nivel.map((_,i)=>garrafonIdx.includes(i)?'#fff':'rgba(0,0,0,0)');
+  const ptRadius=nivel.map((_,i)=>garrafonIdx.includes(i)?7:0);
+  chartRegistry[id]=new Chart(ctx,{type:'line',data:{labels,datasets:[{
+    data:nivel,borderColor:'#1c3f6e',borderWidth:2.5,
+    pointRadius:ptRadius,
+    pointHoverRadius:7,
+    pointHoverBackgroundColor:nivel.map((_,i)=>garrafonIdx.includes(i)?'#1a5c38':'#fff'),
+    pointHoverBorderColor:'#1c3f6e',pointHoverBorderWidth:2,
+    pointBackgroundColor:ptColors,pointBorderColor:ptBorder,pointBorderWidth:2,
+    tension:0.3,fill:true,backgroundColor:'rgba(28,63,110,0.06)'
+  }]},options:mergeOpts({
+    interaction:{mode:'index',intersect:false},
+    plugins:{...chartDefaults.plugins,
+      tooltip:{...chartDefaults.plugins.tooltip,
+        callbacks:{
+          label:c=>{
+            const v=c.parsed.y;
+            const isG=garrafonIdx.includes(c.dataIndex);
+            return (isG?'🟢 Garrafón completado: ':'  Nivel: ')+(v!=null?v.toFixed(2):'-')+' L';
+          }
+        }
+      }
+    },
+    scales:{x:{...chartDefaults.scales.x},y:{...chartDefaults.scales.y,min:0,max:21,
+      ticks:{...chartDefaults.scales.y.ticks,callback:v=>v+' L'}}}
+  })});
 }
 
 function windRoseChart(id, directions) {
@@ -907,31 +1071,397 @@ function scatterChart(id, x, y, color, xLabel, yLabel) {
   chartRegistry[id]=new Chart(ctx,{type:'scatter',data:{datasets:[{data:pts,backgroundColor:color+'55',borderColor:color,borderWidth:1,pointRadius:3,pointHoverRadius:5},{type:'line',data:[{x:xMin,y:slope*xMin+inter},{x:xMax,y:slope*xMax+inter}],borderColor:color,borderWidth:1.5,pointRadius:0,borderDash:[4,3]}]},options:mergeOpts({plugins:{legend:{display:false}},scales:{x:{...chartDefaults.scales.x,title:{display:true,text:xLabel,color:'#a09e98',font:{family:"'JetBrains Mono'",size:8}}},y:{...chartDefaults.scales.y,title:{display:true,text:yLabel,color:'#a09e98',font:{family:"'JetBrains Mono'",size:8}}}}})});
 }
 
-function updateCorrTable(nivel, variables) {
+// ─── ESTADÍSTICA AVANZADA ─────────────────────────────────────────────
+
+/** Regresión OLS multivariable. X: matriz n×k (sin intercept), y: vector n.
+ *  Devuelve {beta, yhat, residuals, r2, r2adj, rmse, se_beta, t_stat} */
+function olsMultiple(X, y) {
+  const n = y.length, k = X[0].length;
+  if (n < k + 2) return null;
+  // Añadir columna de unos para el intercepto
+  const Xa = X.map(row => [1, ...row]);
+  const kk = kk_cols = Xa[0].length;
+  // XtX (k×k)
+  const XtX = Array.from({length:kk}, (_,i) => Array.from({length:kk}, (_,j) => {
+    let s=0; for(let r=0;r<n;r++) s+=Xa[r][i]*Xa[r][j]; return s;
+  }));
+  // Xt y (k)
+  const Xty = Array.from({length:kk}, (_,i) => { let s=0; for(let r=0;r<n;r++) s+=Xa[r][i]*y[r]; return s; });
+  // Invertir XtX (Gauss-Jordan)
+  const inv = XtX.map((row,i)=>[...row, ...Array(kk).fill(0).map((_,j)=>i===j?1:0)]);
+  for(let col=0;col<kk;col++){
+    let pivot=inv[col][col]; if(Math.abs(pivot)<1e-12) return null;
+    for(let j=0;j<2*kk;j++) inv[col][j]/=pivot;
+    for(let row=0;row<kk;row++){
+      if(row===col) continue;
+      const f=inv[row][col];
+      for(let j=0;j<2*kk;j++) inv[row][j]-=f*inv[col][j];
+    }
+  }
+  const XtX_inv = inv.map(row=>row.slice(kk));
+  // beta = XtX_inv * Xty
+  const beta = XtX_inv.map(row => row.reduce((s,v,j)=>s+v*Xty[j],0));
+  // Predichos y residuales
+  const yhat = Xa.map(row => row.reduce((s,v,j)=>s+v*beta[j],0));
+  const resid = y.map((v,i)=>v-yhat[i]);
+  // R²
+  const ym = y.reduce((a,b)=>a+b,0)/n;
+  const sst = y.reduce((s,v)=>s+(v-ym)**2,0);
+  const sse = resid.reduce((s,v)=>s+v**2,0);
+  const r2 = 1 - sse/sst;
+  const r2adj = 1 - (1-r2)*(n-1)/(n-kk);
+  const rmse = Math.sqrt(sse/(n-kk));
+  // Error estándar de beta
+  const se_beta = XtX_inv.map((_,i)=>Math.sqrt(Math.max(0,XtX_inv[i][i])*sse/(n-kk)));
+  const t_stat = beta.map((b,i)=>b/(se_beta[i]||1e-10));
+  return {beta, yhat, resid, r2, r2adj, rmse, se_beta, t_stat, n, k:kk-1};
+}
+
+/** Calcula Pearson r entre dos vectores (ignora nulos) */
+function pearsonR(x, y) {
+  const pairs = x.map((v,i)=>[v,y[i]]).filter(p=>p[0]!=null&&p[1]!=null);
+  if(pairs.length<3) return {r:0,p:1,n:0};
+  const n=pairs.length;
+  const xm=pairs.reduce((s,p)=>s+p[0],0)/n, ym=pairs.reduce((s,p)=>s+p[1],0)/n;
+  const num=pairs.reduce((s,p)=>s+(p[0]-xm)*(p[1]-ym),0);
+  const dx=Math.sqrt(pairs.reduce((s,p)=>s+(p[0]-xm)**2,0));
+  const dy=Math.sqrt(pairs.reduce((s,p)=>s+(p[1]-ym)**2,0));
+  const r=(dx&&dy)?num/(dx*dy):0;
+  const t=r*Math.sqrt((n-2)/(1-r*r+1e-12));
+  const p=2*(1-Math.min(0.9999,Math.abs(t)/Math.sqrt(t*t+n-2)));
+  return {r,p,n};
+}
+
+/** Calcula VIF para variable j en matriz X (n×k, sin intercept) */
+function calcVIF(X, j) {
+  const k=X[0].length;
+  if(k<2) return 1;
+  const y_j=X.map(r=>r[j]);
+  const X_noj=X.map(r=>r.filter((_,c)=>c!==j));
+  const res=olsMultiple(X_noj, y_j);
+  if(!res) return 1;
+  return res.r2>=1?999:1/(1-res.r2);
+}
+
+/** Color para heatmap: azul (-1) → blanco (0) → rojo (1) */
+function heatColor(r) {
+  const v=Math.max(-1,Math.min(1,r));
+  if(v>=0){const t=v;return `rgb(${Math.round(220-t*170)},${Math.round(220-t*180)},${Math.round(220-t*185)})`;}
+  else{const t=-v;return `rgb(${Math.round(220-t*185)},${Math.round(220-t*180)},${Math.round(220-t*50)})`;}
+}
+
+function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
+  // Alinear longitudes — tomar mínimo de pares válidos
+  const n0=Math.min(nivel.length, hum.length, temp.length, dew.length, pres.length, wind.length, solar.length);
+  const rows=[];
+  for(let i=0;i<n0;i++){
+    if([nivel[i],hum[i],temp[i],dew[i],pres[i],wind[i],solar[i]].every(v=>v!=null))
+      rows.push({y:nivel[i],x:[hum[i],temp[i],dew[i],pres[i],wind[i],solar[i]]});
+  }
+  if(rows.length<6) return;
+
+  const Y=rows.map(r=>r.y);
+  const X=rows.map(r=>r.x);
+  const VARS=[
+    {name:'Humedad', short:'HR%', color:'#0f6b60'},
+    {name:'Temperatura', short:'Temp°C', color:'#b05c00'},
+    {name:'Rocío', short:'Rocío°C', color:'#1c3f6e'},
+    {name:'Presión', short:'PresInHg', color:'#1a5c38'},
+    {name:'Viento', short:'V km/h', color:'#7a4a9e'},
+    {name:'Radiación', short:'Rad W/m²', color:'#c4960a'},
+  ];
+
+  // ── OLS completo ──
+  const ols=olsMultiple(X, Y);
+  if(!ols) return;
+
+  // ── Importancia por permutación de R² ──
+  const ym=Y.reduce((a,b)=>a+b,0)/Y.length;
+  const sst=Y.reduce((s,v)=>s+(v-ym)**2,0);
+  const sse_full=ols.resid.reduce((s,v)=>s+v**2,0);
+  const r2_full=1-sse_full/sst;
+
+  const importancia=VARS.map((_,j)=>{
+    const X_perm=X.map(r=>[...r]);
+    const col=X_perm.map(r=>r[j]);
+    // Shuffle col
+    for(let i=col.length-1;i>0;i--){const k=Math.floor(Math.random()*(i+1));[col[i],col[k]]=[col[k],col[i]];}
+    X_perm.forEach((r,i)=>r[j]=col[i]);
+    const ols_p=olsMultiple(X_perm,Y);
+    if(!ols_p) return 0;
+    const sse_p=ols_p.resid.reduce((s,v)=>s+v**2,0);
+    return Math.max(0, (1-sse_p/sst) - r2_full); // negativo = variable importa
+    // Nota: permutación baja R², así que delta = r2_full - r2_perm
+  });
+  // Recalcular con el delta correcto
+  const importanciaReal=VARS.map((_,j)=>{
+    const X_perm=X.map(r=>[...r]);
+    const col=X_perm.map(r=>r[j]);
+    for(let i=col.length-1;i>0;i--){const k=Math.floor(Math.random()*(i+1));[col[i],col[k]]=[col[k],col[i]];}
+    X_perm.forEach((r,i)=>r[j]=col[i]);
+    const ols_p=olsMultiple(X_perm,Y);
+    if(!ols_p) return 0;
+    const sse_p=ols_p.resid.reduce((s,v)=>s+v**2,0);
+    const r2_p=1-sse_p/sst;
+    return Math.max(0, r2_full - r2_p);
+  });
+
+  // ── Pearson bivariado ──
+  const pearson=VARS.map((_,j)=>pearsonR(X.map(r=>r[j]),Y));
+
+  // ── VIF ──
+  const vif=VARS.map((_,j)=>calcVIF(X,j));
+
+  // ── KPIs panel oscuro ──
+  setText('ols-r2', r2_full.toFixed(3));
+  setText('ols-r2adj', ols.r2adj.toFixed(3));
+  setText('ols-rmse', ols.rmse.toFixed(3));
+  setText('ols-n', rows.length);
+  const topVarIdx=importanciaReal.indexOf(Math.max(...importanciaReal));
+  setText('ols-top-var', VARS[topVarIdx].name);
+
+  const tsStr='Act: '+(document.getElementById('header-ts')?.textContent||'--');
+  ['ts-importancia','ts-umbral','ts-ols','ts-resid','ts-heatmap','ts-tabla-ols'].forEach(id=>setText(id,tsStr));
+
+  // ── GRÁFICA 1: Importancia por permutación ──
+  destroyChart('chart-importancia');
+  const ctx1=document.getElementById('chart-importancia')?.getContext('2d');
+  if(ctx1){
+    const sorted=[...VARS.map((v,i)=>({...v,imp:importanciaReal[i]}))].sort((a,b)=>b.imp-a.imp);
+    chartRegistry['chart-importancia']=new Chart(ctx1,{type:'bar',data:{
+      labels:sorted.map(v=>v.name),
+      datasets:[{data:sorted.map(v=>+v.imp.toFixed(4)),
+        backgroundColor:sorted.map(v=>v.color+'cc'),
+        borderColor:sorted.map(v=>v.color),
+        borderWidth:1.5,borderRadius:3}]
+    },options:mergeOpts({indexAxis:'y',
+      plugins:{legend:{display:false},tooltip:{...chartDefaults.plugins.tooltip,
+        callbacks:{label:c=>' ΔR² = '+c.parsed.x.toFixed(4)}}},
+      scales:{x:{...chartDefaults.scales.x,min:0,
+        ticks:{...chartDefaults.scales.x.ticks,callback:v=>v.toFixed(3)}},
+        y:{...chartDefaults.scales.y,grid:{display:false},
+          ticks:{...chartDefaults.scales.y.ticks,font:{family:"'JetBrains Mono'",size:9}}}}
+    })});
+  }
+
+  // ── GRÁFICA 2: Umbral HR ──
+  destroyChart('chart-umbral-hr');
+  const ctx2=document.getElementById('chart-umbral-hr')?.getContext('2d');
+  if(ctx2){
+    const buckets=[
+      {lbl:'< 50%', test:h=>h<50},
+      {lbl:'50–60%', test:h=>h>=50&&h<60},
+      {lbl:'60–70%', test:h=>h>=60&&h<70},
+      {lbl:'70–80%', test:h=>h>=70&&h<80},
+      {lbl:'80–90%', test:h=>h>=80&&h<90},
+      {lbl:'≥ 90%',  test:h=>h>=90},
+    ];
+    const stats=buckets.map(b=>{
+      const vals=rows.filter(r=>b.test(r.x[0])).map(r=>r.y);
+      if(!vals.length) return {mean:0,std:0,n:0};
+      const m=vals.reduce((a,v)=>a+v,0)/vals.length;
+      const std=Math.sqrt(vals.reduce((s,v)=>s+(v-m)**2,0)/vals.length);
+      return {mean:+m.toFixed(2),std:+std.toFixed(2),n:vals.length};
+    });
+    chartRegistry['chart-umbral-hr']=new Chart(ctx2,{type:'bar',data:{
+      labels:buckets.map((b,i)=>b.lbl+' (n='+stats[i].n+')'),
+      datasets:[
+        {label:'Nivel medio (L)',data:stats.map(s=>s.mean),
+          backgroundColor:['#a09e9855','#6b686855','#1a5c3855','#1c3f6eaa','#1c3f6ecc','#1c3f6e'],
+          borderColor:['#a09e98','#6b6860','#1a5c38','#1c3f6e','#1c3f6e','#1c3f6e'],
+          borderWidth:1.5,borderRadius:3},
+        {label:'Desv. estándar (L)',data:stats.map(s=>s.std),
+          backgroundColor:'rgba(176,92,0,0.25)',borderColor:'#b05c00',
+          borderWidth:1.5,borderRadius:3}
+      ]
+    },options:mergeOpts({
+      plugins:{legend:{display:true,position:'top',labels:{font:{family:"'JetBrains Mono'",size:8},color:'#6b6860',boxWidth:10,padding:12}},
+        tooltip:{...chartDefaults.plugins.tooltip,callbacks:{label:c=>' '+c.dataset.label+': '+c.parsed.y.toFixed(2)+' L'}}},
+      scales:{x:{...chartDefaults.scales.x},
+        y:{...chartDefaults.scales.y,min:0,ticks:{...chartDefaults.scales.y.ticks,callback:v=>v+' L'}}}
+    })});
+  }
+
+  // ── GRÁFICA 3: Coeficientes OLS ──
+  destroyChart('chart-ols-coef');
+  const ctx3=document.getElementById('chart-ols-coef')?.getContext('2d');
+  if(ctx3){
+    const betas=ols.beta.slice(1); // sin intercepto
+    const se=ols.se_beta.slice(1);
+    chartRegistry['chart-ols-coef']=new Chart(ctx3,{type:'bar',data:{
+      labels:VARS.map(v=>v.name),
+      datasets:[{label:'β (coeficiente OLS)',data:betas.map(b=>+b.toFixed(4)),
+        backgroundColor:betas.map((b,i)=>b>=0?VARS[i].color+'bb':'#951f1fbb'),
+        borderColor:betas.map((b,i)=>b>=0?VARS[i].color:'#951f1f'),
+        borderWidth:1.5,borderRadius:3}]
+    },options:mergeOpts({
+      plugins:{legend:{display:false},
+        tooltip:{...chartDefaults.plugins.tooltip,callbacks:{label:c=>{
+          const j=VARS.findIndex(v=>v.name===c.label);
+          const t=ols.t_stat[j+1];
+          const p=2*(1-Math.min(0.9999,Math.abs(t)/Math.sqrt(t*t+rows.length-VARS.length-1)));
+          return ' β='+c.parsed.y.toFixed(4)+'  p='+p.toFixed(3);
+        }}}
+      },
+      scales:{x:{...chartDefaults.scales.x,grid:{display:false}},
+        y:{...chartDefaults.scales.y,ticks:{...chartDefaults.scales.y.ticks,callback:v=>v.toFixed(3)}}}
+    })});
+  }
+
+  // ── GRÁFICA 4: Residuales vs predichos ──
+  destroyChart('chart-residuales');
+  const ctx4=document.getElementById('chart-residuales')?.getContext('2d');
+  if(ctx4){
+    const pts=ols.yhat.map((yh,i)=>({x:+yh.toFixed(3),y:+ols.resid[i].toFixed(3)}));
+    const xMin=Math.min(...pts.map(p=>p.x)), xMax=Math.max(...pts.map(p=>p.x));
+    chartRegistry['chart-residuales']=new Chart(ctx4,{type:'scatter',data:{datasets:[
+      {label:'Residual',data:pts,backgroundColor:'rgba(28,63,110,0.35)',
+        borderColor:'#1c3f6e',borderWidth:1,pointRadius:4,pointHoverRadius:7},
+      {type:'line',label:'Residual=0',data:[{x:xMin,y:0},{x:xMax,y:0}],
+        borderColor:'#951f1f',borderWidth:1.5,borderDash:[5,3],pointRadius:0,fill:false}
+    ]},options:mergeOpts({
+      plugins:{legend:{display:false},tooltip:{...chartDefaults.plugins.tooltip,
+        callbacks:{label:c=>'Predicho: '+c.parsed.x.toFixed(2)+' L  Residual: '+c.parsed.y.toFixed(3)+' L'}}},
+      scales:{x:{...chartDefaults.scales.x,title:{display:true,text:'Valor predicho (L)',color:'#a09e98',font:{family:"'JetBrains Mono'",size:8}}},
+        y:{...chartDefaults.scales.y,title:{display:true,text:'Residual (L)',color:'#a09e98',font:{family:"'JetBrains Mono'",size:8}},
+          ticks:{...chartDefaults.scales.y.ticks,callback:v=>v.toFixed(2)+' L'}}}
+    })});
+  }
+
+  // ── HEATMAP de correlación ──
+  const ALL_VARS=[...VARS,{name:'Nivel',short:'Nivel',color:'#1c3f6e'}];
+  const ALL_DATA=[...X.map(r=>[...r,0]).map((r,i)=>{r[6]=Y[i];return r;})]
+    .reduce((acc,row)=>{row.forEach((v,j)=>{if(!acc[j])acc[j]=[];acc[j].push(v);}); return acc;},
+      Array.from({length:7},()=>[]));
+
+  const hm=document.getElementById('heatmap-corr');
+  if(hm){
+    const k=ALL_VARS.length;
+    let html='<table class="hm-table"><thead><tr><td></td>';
+    ALL_VARS.forEach(v=>{html+=`<td class="hm-label-row" title="${v.name}">${v.short}</td>`;});
+    html+='</tr></thead><tbody>';
+    ALL_VARS.forEach((va,i)=>{
+      html+=`<tr><td class="hm-label-col">${va.short}</td>`;
+      ALL_VARS.forEach((vb,j)=>{
+        const {r}=pearsonR(ALL_DATA[i],ALL_DATA[j]);
+        const bg=heatColor(r);
+        const txt=i===j?'1.00':r.toFixed(2);
+        const txtCol=Math.abs(r)>0.5?'#fff':'#1a1914';
+        html+=`<td class="hm-cell" style="background:${bg};color:${txtCol}" title="${va.name} vs ${vb.name}: r=${r.toFixed(3)}">${txt}</td>`;
+      });
+      html+='</tr>';
+    });
+    html+='</tbody></table>';
+    hm.innerHTML=html;
+  }
+
+  // ── Tabla estadística completa ──
   const tbody=document.getElementById('corr-body');
-  if(!tbody) return;
-  tbody.innerHTML='';
-  const n2=nivel.filter(v=>v!=null);
-  variables.forEach(({name,data,color})=>{
-    const n3=data.filter(v=>v!=null);
-    const n=Math.min(n2.length,n3.length);
-    if(n<3){tbody.innerHTML+=`<tr><td>${name}</td><td colspan="5" style="color:var(--ink-faint)">Sin datos suficientes</td></tr>`;return;}
-    const x=n3.slice(0,n),y=n2.slice(0,n);
-    const xm=x.reduce((a,b)=>a+b,0)/n,ym=y.reduce((a,b)=>a+b,0)/n;
-    const num=x.reduce((a,v,i)=>a+(v-xm)*(y[i]-ym),0);
-    const dx=Math.sqrt(x.reduce((a,v)=>a+(v-xm)**2,0));
-    const dy=Math.sqrt(y.reduce((a,v)=>a+(v-ym)**2,0));
-    const r=(dx&&dy)?num/(dx*dy):0;
-    const r2=r*r;
-    const t=r*Math.sqrt((n-2)/(1-r2+1e-10));
-    const p=2*(1-Math.min(0.9999,Math.abs(t)/Math.sqrt(t*t+n-2)));
-    const mag=Math.abs(r)<0.2?'Muy débil':Math.abs(r)<0.4?'Débil':Math.abs(r)<0.6?'Moderada':Math.abs(r)<0.8?'Fuerte':'Muy fuerte';
-    const pStr=p<0.001?'< 0.001':p<0.01?'< 0.01':p<0.05?'< 0.05':p.toFixed(3);
-    const barW=Math.round(Math.abs(r)*80);
-    const barColor=r>0?'#1a5c38':'#951f1f';
-    tbody.innerHTML+=`<tr><td style="font-family:var(--body)">${name}</td><td><span class="corr-bar" style="width:${barW}px;background:${barColor}"></span> ${r.toFixed(3)}</td><td>${r2.toFixed(3)}</td><td style="color:${r>0?'var(--forest)':'var(--crimson)'}">● ${r>0?'Positiva':'Negativa'}</td><td>${pStr}</td><td>${mag}</td></tr>`;
+  if(tbody){
+    tbody.innerHTML='';
+    const maxImp=Math.max(...importanciaReal,0.001);
+    VARS.forEach((va,j)=>{
+      const {r,p}=pearson[j];
+      const beta=ols.beta[j+1];
+      const t_j=ols.t_stat[j+1];
+      const p_ols=2*(1-Math.min(0.9999,Math.abs(t_j)/Math.sqrt(t_j*t_j+rows.length-VARS.length-1)));
+      // Beta estandarizado: beta * std_x / std_y
+      const xs=X.map(r=>r[j]);
+      const ym2=Y.reduce((a,b)=>a+b,0)/Y.length;
+      const std_y=Math.sqrt(Y.reduce((s,v)=>s+(v-ym2)**2,0)/Y.length)||1;
+      const xm2=xs.reduce((a,b)=>a+b,0)/xs.length;
+      const std_x=Math.sqrt(xs.reduce((s,v)=>s+(v-xm2)**2,0)/xs.length)||1;
+      const beta_std=beta*(std_x/std_y);
+      const vif_j=vif[j];
+      const imp_j=importanciaReal[j];
+      const impBar=Math.round((imp_j/maxImp)*80);
+      const mag=Math.abs(r)<0.2?'Muy débil':Math.abs(r)<0.4?'Débil':Math.abs(r)<0.6?'Moderada':Math.abs(r)<0.8?'Fuerte':'Muy fuerte';
+      const pStr=p<0.001?'<0.001':p<0.01?'<0.01':p<0.05?'<0.05':p.toFixed(3);
+      const pOlsStr=p_ols<0.001?'<0.001':p_ols<0.01?'<0.01':p_ols<0.05?'<0.05':p_ols.toFixed(3);
+      const rCol=r>0?'var(--forest)':'var(--crimson)';
+      const vifWarn=vif_j>10?'var(--crimson)':vif_j>5?'var(--amber)':'var(--forest)';
+      tbody.innerHTML+=`<tr>
+        <td style="font-family:var(--body)">${va.name}</td>
+        <td style="color:${rCol};font-family:var(--mono)">${r.toFixed(3)} <span style="font-size:9px;color:var(--ink-faint)">(${mag})</span></td>
+        <td style="font-family:var(--mono)">${beta.toFixed(4)}</td>
+        <td style="font-family:var(--mono)">${beta_std.toFixed(3)}</td>
+        <td style="font-family:var(--mono);color:${p_ols<0.05?'var(--forest)':'var(--crimson)'}">${pOlsStr}</td>
+        <td style="font-family:var(--mono);color:${vifWarn}">${vif_j.toFixed(1)}</td>
+        <td style="font-family:var(--mono)">
+          <span style="display:inline-block;width:${impBar}px;height:8px;background:${va.color};border-radius:2px;vertical-align:middle;margin-right:4px"></span>
+          ${imp_j.toFixed(4)}
+        </td>
+        <td style="font-family:var(--body);font-size:11px;color:var(--ink-soft)">${r>0.4?'↑ Favorece captación':r<-0.4?'↓ Reduce captación':'— Sin efecto claro'}</td>
+      </tr>`;
+    });
+  }
+
+  // ── Scatters individuales mejorados (con banda de confianza 95%) ──
+  [
+    {id:'chart-corr-hum',  j:0, color:'#0f6b60', label:'Humedad %',     yLabel:'Nivel L'},
+    {id:'chart-corr-dew',  j:2, color:'#1c3f6e', label:'Rocío °C',      yLabel:'Nivel L'},
+    {id:'chart-corr-temp', j:1, color:'#b05c00', label:'Temperatura °C', yLabel:'Nivel L'},
+    {id:'chart-corr-solar',j:5, color:'#c4960a', label:'Rad. W/m²',     yLabel:'Nivel L'},
+  ].forEach(({id,j,color,label,yLabel})=>{
+    destroyChart(id);
+    const ctx=document.getElementById(id)?.getContext('2d');
+    if(!ctx) return;
+    const pts=rows.map(r=>({x:r.x[j],y:r.y})).filter(p=>p.x!=null&&p.y!=null);
+    if(pts.length<3) return;
+    const xs=pts.map(p=>p.x), ys=pts.map(p=>p.y);
+    const xm=xs.reduce((a,b)=>a+b,0)/xs.length, ym=ys.reduce((a,b)=>a+b,0)/ys.length;
+    const num=xs.reduce((a,v,i)=>a+(v-xm)*(ys[i]-ym),0);
+    const den=xs.reduce((a,v)=>a+(v-xm)**2,0)||1;
+    const slope=num/den, inter=ym-slope*xm;
+    // Banda de confianza 95% (aprox: ŷ ± t*se_ŷ)
+    const n=pts.length;
+    const resids=pts.map(p=>p.y-(slope*p.x+inter));
+    const s2=resids.reduce((s,v)=>s+v*v,0)/(n-2)||0;
+    const t95=1.96; // aproximación para n grande
+    const xSorted=[...xs].sort((a,b)=>a-b);
+    const bandPts=xSorted.map(xv=>{
+      const se=Math.sqrt(s2*(1/n+(xv-xm)**2/den));
+      const yhat=slope*xv+inter;
+      return {x:xv, upper:yhat+t95*se, lower:yhat-t95*se};
+    });
+    const {r,p}=pearsonR(xs,ys);
+    const pStr=p<0.001?'p<0.001':p<0.05?'p<0.05':'p='+p.toFixed(3);
+    chartRegistry[id]=new Chart(ctx,{type:'scatter',data:{datasets:[
+      // Banda confianza
+      {type:'line',label:'Banda 95%',
+        data:bandPts.map(b=>({x:b.x,y:b.upper})),
+        borderColor:'transparent',backgroundColor:color+'22',
+        pointRadius:0,fill:'+1',tension:0.3},
+      {type:'line',label:'_lower',
+        data:bandPts.map(b=>({x:b.x,y:b.lower})),
+        borderColor:'transparent',backgroundColor:'transparent',
+        pointRadius:0,fill:false,tension:0.3},
+      // Regresión
+      {type:'line',label:`OLS: r=${r.toFixed(2)} ${pStr}`,
+        data:[{x:xSorted[0],y:slope*xSorted[0]+inter},{x:xSorted[xSorted.length-1],y:slope*xSorted[xSorted.length-1]+inter}],
+        borderColor:color,borderWidth:2,borderDash:[5,3],pointRadius:0,fill:false},
+      // Puntos
+      {label:'Observaciones',data:pts,
+        backgroundColor:color+'55',borderColor:color,borderWidth:1,
+        pointRadius:3,pointHoverRadius:6,pointHoverBackgroundColor:'#fff',
+        pointHoverBorderColor:color,pointHoverBorderWidth:2},
+    ]},options:mergeOpts({
+      interaction:{mode:'nearest',intersect:true},
+      plugins:{legend:{display:true,position:'top',labels:{font:{family:"'JetBrains Mono'",size:8},color:'#6b6860',boxWidth:10,padding:10,
+        filter:item=>item.text!=='_lower'&&item.text!=='Banda 95%'}},
+        tooltip:{...chartDefaults.plugins.tooltip,callbacks:{
+          label:c=>c.dataset.label==='Observaciones'?label+': '+c.parsed.x.toFixed(1)+'  Nivel: '+c.parsed.y.toFixed(2)+' L':c.dataset.label}}},
+      scales:{
+        x:{...chartDefaults.scales.x,title:{display:true,text:label,color:'#a09e98',font:{family:"'JetBrains Mono'",size:8}}},
+        y:{...chartDefaults.scales.y,min:0,title:{display:true,text:yLabel,color:'#a09e98',font:{family:"'JetBrains Mono'",size:8}},
+          ticks:{...chartDefaults.scales.y.ticks,callback:v=>v.toFixed(1)+' L'}}}
+    })});
   });
 }
+
+// ─── CORRELACIÓN LEGACY (ya no se usa, mantenida para compatibilidad) ──
+function updateCorrTable() {}
+
 
 function interpretarPi(sistema) {
   if (!sistema) return;
@@ -1373,23 +1903,14 @@ async function renderDashboard() {
 
   renderProduccionAnalisis(rawNivelLabels,nivel);
   renderEmpresa(rawNivelLabels,nivel,hum,temp);
+  renderEstadistica(nivel,hum,temp,dew,pres,wind,solar);
 
   scatterChart('chart-corr-hum',hum,nivel,'#0f6b60','Humedad %','Nivel L');
   scatterChart('chart-corr-temp',temp,nivel,'#b05c00','Temperatura °C','Nivel L');
   scatterChart('chart-corr-dew',dew,nivel,'#1c3f6e','Punto rocío °C','Nivel L');
   scatterChart('chart-corr-solar',solar,nivel,'#c4960a','Rad. solar W/m²','Nivel L');
 
-  updateCorrTable(nivel,[
-    {name:'Humedad relativa',data:hum,color:'#0f6b60'},
-    {name:'Temperatura exterior',data:temp,color:'#b05c00'},
-    {name:'Punto de rocío',data:dew,color:'#1c3f6e'},
-    {name:'Presión barométrica',data:pres,color:'#1a5c38'},
-    {name:'Velocidad del viento',data:wind,color:'#1c3f6e'},
-    {name:'Dirección del viento',data:dir,color:'#7a4a9e'},
-    {name:'Lluvia por hora',data:rain,color:'#1c3f6e'},
-    {name:'Radiación solar',data:solar,color:'#b05c00'},
-    {name:'Índice UV',data:uv,color:'#1c3f6e'},
-  ]);
+  // Estadística avanzada — ver renderEstadistica()
 }
 
 // ─── SCROLL WATCHER ────────────────────────────────────────────────────
