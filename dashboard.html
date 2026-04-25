@@ -752,12 +752,12 @@
       const ctx1 = document.getElementById('chart-dia-noche')?.getContext('2d');
       if (ctx1) {
         chartRegistry['chart-dia-noche'] = new Chart(ctx1, {
-          type: 'bar',
+          type: 'line',
           data: {
             labels: diaLabels,
             datasets: [
-              { label: 'Diurno (05:30–18:30)', data: diurnaVals, backgroundColor: '#f0b42999', borderColor: '#f0b429', borderWidth: 1.5, borderRadius: 4 },
-              { label: 'Nocturno (18:30–05:30)', data: nocturnaVals, backgroundColor: '#1a7ab599', borderColor: '#1a7ab5', borderWidth: 1.5, borderRadius: 4 }
+              { label: 'Diurno (05:30–18:30)', data: diurnaVals, borderColor: '#b56a00', backgroundColor: 'rgba(181,106,0,0.06)', borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 8, pointBackgroundColor: '#fff', pointBorderColor: '#b56a00', pointBorderWidth: 2, fill: true, tension: 0.3 },
+              { label: 'Nocturno (18:30–05:30)', data: nocturnaVals, borderColor: '#1a4d8a', backgroundColor: 'rgba(26,77,138,0.06)', borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 8, pointBackgroundColor: '#fff', pointBorderColor: '#1a4d8a', pointBorderWidth: 2, fill: true, tension: 0.3 }
             ]
           },
           options: {
@@ -782,15 +782,22 @@
       if (ctx2) {
         const maxTotal = Math.max(...totalVals, 1);
         chartRegistry['chart-prod-diaria'] = new Chart(ctx2, {
-          type: 'bar',
+          type: 'line',
           data: {
             labels: diaLabels,
             datasets: [{
-              label: 'Producción total',
+              label: 'Producción total diaria',
               data: totalVals,
-              backgroundColor: totalVals.map((v,i) => DIA_COLORS[i % DIA_COLORS.length] + 'bb'),
-              borderColor: totalVals.map((v,i) => DIA_COLORS[i % DIA_COLORS.length]),
-              borderWidth: 1.5, borderRadius: 5
+              borderColor: '#1a4d8a',
+              backgroundColor: 'rgba(26,77,138,0.05)',
+              borderWidth: 2.5,
+              pointRadius: totalVals.map((v,i) => 7),
+              pointHoverRadius: 9,
+              pointBackgroundColor: totalVals.map((v,i) => DIA_COLORS[i % DIA_COLORS.length]),
+              pointBorderColor: '#fff',
+              pointBorderWidth: 2,
+              fill: true,
+              tension: 0.2
             }]
           },
           options: {
