@@ -1,23 +1,23 @@
 {
-  "actualizado": "2026-04-25 12:31:21",
+  "actualizado": "2026-04-25 12:46:28",
   "kpis": {
-    "nivel_l": 6.69,
-    "humedad_pct": 68.0,
-    "temp_c": 24.2,
+    "nivel_l": 6.9,
+    "humedad_pct": 67.0,
+    "temp_c": 24.4,
     "punto_rocio_c": 17.9,
-    "presion_inhg": 24.938,
-    "viento_kmh": 1.8,
-    "viento_dir_deg": 352.0,
+    "presion_inhg": 24.929,
+    "viento_kmh": 0.4,
+    "viento_dir_deg": 10.0,
     "lluvia_hora_mm": 0.0,
-    "radiacion_solar_wm2": 69.0,
+    "radiacion_solar_wm2": 94.5,
     "uv": 0.0
   },
   "sistema": {
-    "cpu_temp_c": 38.9,
+    "cpu_temp_c": 38.4,
     "voltaje_v": 0.946,
-    "ram_uso_pct": 10.9,
+    "ram_uso_pct": 10.7,
     "disco_uso_pct": 10.4,
-    "uptime": "17h 53m"
+    "uptime": "18h 8m"
   },
   "series": {
     "labels": [
@@ -312,7 +312,8 @@
       "11:45",
       "12:01",
       "12:16",
-      "12:31"
+      "12:31",
+      "12:46"
     ],
     "nivel_l": [
       16.99,
@@ -507,7 +508,8 @@
       6.38,
       6.43,
       6.74,
-      6.74
+      6.74,
+      6.9
     ],
     "humedad_pct": [
       69.0,
