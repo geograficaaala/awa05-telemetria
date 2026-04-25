@@ -189,6 +189,7 @@
         <a class="sb-link" href="#salud-pi">Salud del nodo</a>
         <a class="sb-link" href="#nivel">Producción de agua</a>
         <a class="sb-link" href="#produccion-analisis">Análisis producción</a>
+        <a class="sb-link" href="#economia">Modelo económico</a>
         <a class="sb-link" href="#clima-base">Clima base</a>
         <a class="sb-link" href="#clima-avanzado">Clima avanzado</a>
         <a class="sb-link" href="#correlacion">Correlación</a>
@@ -356,6 +357,155 @@
         </div>
       </section>
 
+      <!-- ══════════════════════════════════════════════════════════
+           SECCIÓN: MODELO ECONÓMICO
+           ══════════════════════════════════════════════════════════ -->
+      <section id="economia">
+        <div class="section-header">
+          <div>
+            <div class="section-tag">Modelo económico — Distribución triangular · DEOCSA Sololá</div>
+            <div class="section-title">Costo energético y valor del agua producida</div>
+          </div>
+        </div>
+
+        <!-- KPI ROW PRINCIPAL -->
+        <div class="kpi-row" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px">
+
+          <!-- Inversión total -->
+          <div class="chart-card" style="padding:20px 18px">
+            <div style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Inversión acumulada</div>
+            <div style="display:flex;align-items:baseline;gap:6px">
+              <span style="font-family:var(--serif);font-size:28px;font-weight:700;color:var(--accent)" id="eco-inversion-c">--</span>
+              <span style="font-family:var(--mono);font-size:10px;color:var(--muted)">Q</span>
+            </div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--muted-light);margin-top:4px" id="eco-inversion-rango">-- – -- Q</div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--muted-light);margin-top:2px">Central · 750W · desde inicio</div>
+          </div>
+
+          <!-- Costo por litro -->
+          <div class="chart-card" style="padding:20px 18px">
+            <div style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Costo por litro</div>
+            <div style="display:flex;align-items:baseline;gap:6px">
+              <span style="font-family:var(--serif);font-size:28px;font-weight:700;color:var(--primary)" id="eco-costo-litro-c">--</span>
+              <span style="font-family:var(--mono);font-size:10px;color:var(--muted)">Q/L</span>
+            </div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--muted-light);margin-top:4px" id="eco-costo-litro-rango">-- – -- Q/L</div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--muted-light);margin-top:2px">Intervalo 600–900 W</div>
+          </div>
+
+          <!-- Costo por garrafón -->
+          <div class="chart-card" style="padding:20px 18px">
+            <div style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Costo garrafón 20 L</div>
+            <div style="display:flex;align-items:baseline;gap:6px">
+              <span style="font-family:var(--serif);font-size:28px;font-weight:700;color:var(--primary)" id="eco-costo-garrafon-c">--</span>
+              <span style="font-family:var(--mono);font-size:10px;color:var(--muted)">Q</span>
+            </div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--muted-light);margin-top:4px" id="eco-costo-garrafon-rango">-- – -- Q</div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--muted-light);margin-top:2px">vs Q8–19 mercado local</div>
+          </div>
+
+          <!-- Ahorro vs mercado -->
+          <div class="chart-card" style="padding:20px 18px">
+            <div style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Ahorro vs mercado</div>
+            <div style="display:flex;align-items:baseline;gap:6px">
+              <span style="font-family:var(--serif);font-size:28px;font-weight:700" id="eco-ahorro-pct-c" style="color:var(--green)">--</span>
+              <span style="font-family:var(--mono);font-size:10px;color:var(--muted)">%</span>
+            </div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--muted-light);margin-top:4px" id="eco-ahorro-abs-c">-- Q ahorrados</div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--muted-light);margin-top:2px">vs precio medio Q13.5</div>
+          </div>
+
+          <!-- Eficiencia energética -->
+          <div class="chart-card" style="padding:20px 18px">
+            <div style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Eficiencia</div>
+            <div style="display:flex;align-items:baseline;gap:6px">
+              <span style="font-family:var(--serif);font-size:28px;font-weight:700;color:var(--teal)" id="eco-eficiencia-c">--</span>
+              <span style="font-family:var(--mono);font-size:10px;color:var(--muted)">L/kWh</span>
+            </div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--muted-light);margin-top:4px" id="eco-eficiencia-rango">-- – -- L/kWh</div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--muted-light);margin-top:2px">Litros por kWh consumido</div>
+          </div>
+
+          <!-- Uptime / horas operadas -->
+          <div class="chart-card" style="padding:20px 18px">
+            <div style="font-family:var(--mono);font-size:9px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:8px">Horas operando</div>
+            <div style="display:flex;align-items:baseline;gap:6px">
+              <span style="font-family:var(--serif);font-size:28px;font-weight:700;color:var(--text)" id="eco-horas">--</span>
+              <span style="font-family:var(--mono);font-size:10px;color:var(--muted)">h</span>
+            </div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--muted-light);margin-top:4px" id="eco-inicio">Desde --</div>
+            <div style="font-family:var(--mono);font-size:8px;color:var(--muted-light);margin-top:2px">Fecha inicio: 23 Abr 2026</div>
+          </div>
+        </div>
+
+        <!-- GRÁFICAS -->
+        <div class="chart-grid single" style="margin-bottom:13px">
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Inversión acumulada en el tiempo</div>
+                <div class="chart-subtitle">Quetzales gastados desde el inicio del experimento. Banda sombreada = intervalo de incertidumbre 600–900W. Línea central = 750W (media de distribución triangular).</div>
+              </div>
+              <div class="chart-badge">Q acumulado</div>
+            </div>
+            <div class="chart-wrap tall"><canvas id="chart-eco-inversion"></canvas></div>
+            <div class="chart-footer">
+              <div class="chart-ts" id="ts-eco-inv">--</div>
+              <div class="chart-ts">Dist. triangular(600,750,900) W · Q2.05/kWh DEOCSA</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-grid" style="margin-bottom:13px">
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Costo por litro — evolución temporal</div>
+                <div class="chart-subtitle">Q/L a lo largo del experimento. El costo baja conforme aumenta la producción acumulada. Banda = incertidumbre de potencia.</div>
+              </div>
+              <div class="chart-badge">Q / L</div>
+            </div>
+            <div class="chart-wrap tall"><canvas id="chart-eco-costo-litro"></canvas></div>
+            <div class="chart-footer">
+              <div class="chart-ts" id="ts-eco-costo">--</div>
+              <div class="chart-ts">Costo energético acumulado / litros producidos acumulados</div>
+            </div>
+          </div>
+
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Costo garrafón vs precio mercado</div>
+                <div class="chart-subtitle">Comparación directa del costo propio (banda de incertidumbre) vs rango de precio de mercado en Sololá (Q8–Q19). Línea verde = punto de equilibrio.</div>
+              </div>
+              <div class="chart-badge">Q / garrafón</div>
+            </div>
+            <div class="chart-wrap tall"><canvas id="chart-eco-garrafon"></canvas></div>
+            <div class="chart-footer">
+              <div class="chart-ts" id="ts-eco-garrafon">--</div>
+              <div class="chart-ts">Q8 mín · Q13.5 medio · Q19 máx · garrafón = 20 L</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="chart-grid single">
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Proyección mensual de costos e ingresos equivalentes</div>
+                <div class="chart-subtitle">Basado en tasa de producción actual. Muestra costo mensual proyectado vs valor equivalente del agua producida a precios de mercado (mín/medio/máx).</div>
+              </div>
+              <div class="chart-badge">Q / mes proyectado</div>
+            </div>
+            <div class="chart-wrap"><canvas id="chart-eco-proyeccion"></canvas></div>
+            <div class="chart-footer">
+              <div class="chart-ts" id="ts-eco-proy">--</div>
+              <div class="chart-ts">Extrapolación lineal a 30 días · asume producción constante</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section id="correlacion">
         <div class="section-header"><div><div class="section-tag">Análisis estadístico — Pearson</div><div class="section-title">Correlación nivel de agua vs variables</div></div></div>
         <div class="chart-grid">
@@ -457,7 +607,7 @@
       if(s.disco_uso_pct!==null&&s.disco_uso_pct!==undefined){setText('pi-disco',s.disco_uso_pct);const bar=document.getElementById('pi-disco-bar');const card=document.getElementById('pi-disco-card');const cmt=document.getElementById('pi-disco-comment');bar.style.width=s.disco_uso_pct+'%';if(s.disco_uso_pct<70){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent=(100-s.disco_uso_pct)+'% libre.';}else if(s.disco_uso_pct<90){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='Disco casi lleno.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRÍTICO: Disco lleno.';}}
       if(s.uptime!==null&&s.uptime!==undefined){setText('pi-uptime',s.uptime);const cmt=document.getElementById('pi-uptime-comment');const h=parseInt(s.uptime)||0;if(h<1)cmt.textContent='Recién reiniciado.';else if(h<24)cmt.textContent='Menos de 24h en línea.';else cmt.textContent='Operación continua estable.';}
       // Frecuencia CPU
-      if(s.freq_cpu_mhz!==null&&s.freq_cpu_mhz!==undefined){setText('pi-freq',s.freq_cpu_mhz);const pct=Math.min(100,(s.freq_cpu_mhz/1800)*100);const bar=document.getElementById('pi-freq-bar');const card=document.getElementById('pi-freq-card');const cmt=document.getElementById('pi-freq-comment');bar.style.width=pct+'%';if(s.freq_cpu_mhz>=1200){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent='Frecuencia alta. Sin throttling.';}else if(s.freq_cpu_mhz>=600){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent='Frecuencia normal en reposo. DVFS activo (eficiencia energética).';}else{bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='Frecuencia muy baja. Verificar alimentación.';}}
+      if(s.freq_cpu_mhz!==null&&s.freq_cpu_mhz!==undefined){setText('pi-freq',s.freq_cpu_mhz);const pct=Math.min(100,(s.freq_cpu_mhz/1800)*100);const bar=document.getElementById('pi-freq-bar');const card=document.getElementById('pi-freq-card');const cmt=document.getElementById('pi-freq-comment');bar.style.width=pct+'%';if(s.freq_cpu_mhz>=1800){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent='Frecuencia máxima. Sin throttling de rendimiento.';}else if(s.freq_cpu_mhz>=1200){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='Frecuencia reducida. Posible throttling térmico.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRÍTICO: Frecuencia muy baja. Throttling severo.';}}
       // WiFi
       if(s.wifi_pct!==null&&s.wifi_pct!==undefined){setText('pi-wifi-pct',s.wifi_pct);const bar=document.getElementById('pi-wifi-bar');const card=document.getElementById('pi-wifi-card');const cmt=document.getElementById('pi-wifi-comment');bar.style.width=s.wifi_pct+'%';const dbm=s.wifi_dbm||0;if(s.wifi_pct>=60){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent=dbm+' dBm — Señal buena. Subidas estables.';}else if(s.wifi_pct>=40){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent=dbm+' dBm — Señal moderada. Subidas pueden fallar.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent=dbm+' dBm — Señal débil. Riesgo de pérdida de datos.';}}
       // Throttling
@@ -752,12 +902,12 @@
       const ctx1 = document.getElementById('chart-dia-noche')?.getContext('2d');
       if (ctx1) {
         chartRegistry['chart-dia-noche'] = new Chart(ctx1, {
-          type: 'bar',
+          type: 'line',
           data: {
             labels: diaLabels,
             datasets: [
-              { label: 'Diurno (05:30–18:30)', data: diurnaVals, backgroundColor: '#f0b42999', borderColor: '#f0b429', borderWidth: 1.5, borderRadius: 4 },
-              { label: 'Nocturno (18:30–05:30)', data: nocturnaVals, backgroundColor: '#1a7ab599', borderColor: '#1a7ab5', borderWidth: 1.5, borderRadius: 4 }
+              { label: 'Diurno (05:30–18:30)', data: diurnaVals, borderColor: '#b56a00', backgroundColor: 'rgba(181,106,0,0.06)', borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 8, pointBackgroundColor: '#fff', pointBorderColor: '#b56a00', pointBorderWidth: 2, fill: true, tension: 0.3 },
+              { label: 'Nocturno (18:30–05:30)', data: nocturnaVals, borderColor: '#1a4d8a', backgroundColor: 'rgba(26,77,138,0.06)', borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 8, pointBackgroundColor: '#fff', pointBorderColor: '#1a4d8a', pointBorderWidth: 2, fill: true, tension: 0.3 }
             ]
           },
           options: {
@@ -782,15 +932,22 @@
       if (ctx2) {
         const maxTotal = Math.max(...totalVals, 1);
         chartRegistry['chart-prod-diaria'] = new Chart(ctx2, {
-          type: 'bar',
+          type: 'line',
           data: {
             labels: diaLabels,
             datasets: [{
-              label: 'Producción total',
+              label: 'Producción total diaria',
               data: totalVals,
-              backgroundColor: totalVals.map((v,i) => DIA_COLORS[i % DIA_COLORS.length] + 'bb'),
-              borderColor: totalVals.map((v,i) => DIA_COLORS[i % DIA_COLORS.length]),
-              borderWidth: 1.5, borderRadius: 5
+              borderColor: '#1a4d8a',
+              backgroundColor: 'rgba(26,77,138,0.05)',
+              borderWidth: 2.5,
+              pointRadius: totalVals.map((v,i) => 7),
+              pointHoverRadius: 9,
+              pointBackgroundColor: totalVals.map((v,i) => DIA_COLORS[i % DIA_COLORS.length]),
+              pointBorderColor: '#fff',
+              pointBorderWidth: 2,
+              fill: true,
+              tension: 0.2
             }]
           },
           options: {
@@ -908,6 +1065,9 @@
       // Análisis producción diurna/nocturna
       renderProduccionAnalisis(rawNivelLabels, nivel);
 
+      // Modelo económico
+      renderEconomia(rawNivelLabels, nivel);
+
       // Scatter
       scatterChart('chart-corr-hum', hum, nivel, '#2d9fd4', 'Humedad %', 'Nivel L');
       scatterChart('chart-corr-temp', temp, nivel, '#17b8d4', 'Temperatura °C', 'Nivel L');
@@ -927,8 +1087,424 @@
       ]);
     }
 
+    // ═══════════════════════════════════════════════════════════════════
+    // MODELO ECONÓMICO AWA05
+    // Distribución triangular de potencia: a=600W, b=750W (moda), c=900W
+    // Tarifa DEOCSA Sololá: Q2.05/kWh (tarifa social, feb–abr 2026)
+    // Garrafón AWA05: 20 litros
+    // Inicio del experimento: 2026-04-23 12:29:11 (primer registro CSV)
+    // ═══════════════════════════════════════════════════════════════════
+
+    const ECO = {
+      P_MIN:   600,          // W — mínimo observado
+      P_MODA:  750,          // W — moda (media triangular = (600+750+900)/3)
+      P_MAX:   900,          // W — máximo observado
+      TARIFA:  2.05,         // Q/kWh — DEOCSA tarifa social
+      GARRAFON_L: 20,        // litros por garrafón AWA05
+      PRECIO_MKT_MIN: 8,     // Q — precio mínimo garrafón en mercado local
+      PRECIO_MKT_MED: 13.5,  // Q — precio medio
+      PRECIO_MKT_MAX: 19,    // Q — precio máximo
+      INICIO: new Date('2026-04-23T12:29:11'),  // inicio experimento (CST, UTC-6)
+    };
+
+    // Media de distribución triangular: (a + moda + b) / 3
+    ECO.P_CENTRAL = (ECO.P_MIN + ECO.P_MODA + ECO.P_MAX) / 3;  // = 750 W exacto
+
+    // Varianza: (a²+b²+c²−ab−ac−bc) / 18
+    ECO.P_VAR = (
+      ECO.P_MIN**2 + ECO.P_MODA**2 + ECO.P_MAX**2
+      - ECO.P_MIN*ECO.P_MODA - ECO.P_MIN*ECO.P_MAX - ECO.P_MODA*ECO.P_MAX
+    ) / 18;
+    ECO.P_STD = Math.sqrt(ECO.P_VAR);  // ≈ 61.2 W
+
+    /**
+     * Calcula horas de operación desde el inicio del experimento.
+     * Usa el primer timestamp del CSV si está disponible; si no, la constante INICIO.
+     */
+    function ecoHorasOperacion(primerTimestamp) {
+      const inicio = primerTimestamp ? new Date(primerTimestamp.replace(' ','T')) : ECO.INICIO;
+      const ahora = new Date();
+      return Math.max(0, (ahora - inicio) / 3600000);  // ms → horas
+    }
+
+    /**
+     * Energía consumida (kWh) dado potencia W y tiempo h.
+     * Retorna { central, min, max }
+     */
+    function ecoEnergia(horas) {
+      return {
+        central: (ECO.P_CENTRAL / 1000) * horas,
+        min:     (ECO.P_MIN     / 1000) * horas,
+        max:     (ECO.P_MAX     / 1000) * horas,
+      };
+    }
+
+    /**
+     * Costo en quetzales dado energía en kWh.
+     */
+    function ecoCosto(energia) {
+      return {
+        central: energia.central * ECO.TARIFA,
+        min:     energia.min     * ECO.TARIFA,
+        max:     energia.max     * ECO.TARIFA,
+      };
+    }
+
+    /**
+     * Producción total de agua en litros desde los datos de nivel.
+     * Suma incrementos positivos válidos (Δvol > 0 y ≤ 6L → no outlier).
+     * También retorna la tasa de producción en L/h.
+     */
+    function ecoProduccion(rawLabels, nivel, primerTimestamp) {
+      let totalL = 0;
+      for (let i = 1; i < nivel.length; i++) {
+        const d = nivel[i] - nivel[i-1];
+        if (d > 0 && d <= 6) totalL += d;
+      }
+      const horas = ecoHorasOperacion(primerTimestamp);
+      const tasaLh = horas > 0 ? totalL / horas : 0;
+      return { totalL: +totalL.toFixed(3), horas, tasaLh };
+    }
+
+    /**
+     * Costo por litro: Q/L = costo_total / litros_producidos
+     * Si no hay producción, retorna Infinity.
+     */
+    function ecoCostoLitro(costo, totalL) {
+      if (totalL <= 0) return { central: null, min: null, max: null };
+      return {
+        central: costo.central / totalL,
+        // Peor escenario económico: mayor costo + menor producción no aplica aquí
+        // porque totalL es un valor fijo observado. El rango viene solo de la potencia.
+        min:     costo.min     / totalL,   // menor costo (600W)
+        max:     costo.max     / totalL,   // mayor costo (900W)
+      };
+    }
+
+    /**
+     * Costo por garrafón equivalente (20L).
+     */
+    function ecoCostoGarrafon(costoLitro) {
+      if (!costoLitro.central) return { central: null, min: null, max: null };
+      return {
+        central: costoLitro.central * ECO.GARRAFON_L,
+        min:     costoLitro.min     * ECO.GARRAFON_L,
+        max:     costoLitro.max     * ECO.GARRAFON_L,
+      };
+    }
+
+    /**
+     * Ratio de ahorro vs precio medio de mercado.
+     * ahorro = (precio_mercado − costo_propio) / precio_mercado × 100
+     */
+    function ecoAhorro(costoGarrafon) {
+      if (!costoGarrafon.central) return { pct: null, absQ: null };
+      const pct = ((ECO.PRECIO_MKT_MED - costoGarrafon.central) / ECO.PRECIO_MKT_MED) * 100;
+      const absQ = ECO.PRECIO_MKT_MED - costoGarrafon.central;
+      return { pct: +pct.toFixed(1), absQ: +absQ.toFixed(2) };
+    }
+
+    /**
+     * Eficiencia energética: L/kWh
+     */
+    function ecoEficiencia(totalL, energia) {
+      if (energia.central <= 0) return { central: null, min: null, max: null };
+      return {
+        central: totalL / energia.central,
+        min:     totalL / energia.max,   // menos eficiente con más potencia
+        max:     totalL / energia.min,   // más eficiente con menos potencia
+      };
+    }
+
+    /**
+     * Proyección a 30 días basada en tasa actual.
+     * Retorna costo mensual proyectado y valor equivalente del agua.
+     */
+    function ecoProyeccion(tasaLh, costo, horas) {
+      const HORAS_MES = 30 * 24;
+      const costoMes = {
+        central: (ECO.P_CENTRAL / 1000) * HORAS_MES * ECO.TARIFA,
+        min:     (ECO.P_MIN     / 1000) * HORAS_MES * ECO.TARIFA,
+        max:     (ECO.P_MAX     / 1000) * HORAS_MES * ECO.TARIFA,
+      };
+      const litrosMes = tasaLh * HORAS_MES;
+      const garrafonesMes = litrosMes / ECO.GARRAFON_L;
+      return {
+        costoMes,
+        litrosMes: +litrosMes.toFixed(1),
+        garrafonesMes: +garrafonesMes.toFixed(1),
+        valorMesMkMin: +(garrafonesMes * ECO.PRECIO_MKT_MIN).toFixed(2),
+        valorMesMkMed: +(garrafonesMes * ECO.PRECIO_MKT_MED).toFixed(2),
+        valorMesMkMax: +(garrafonesMes * ECO.PRECIO_MKT_MAX).toFixed(2),
+      };
+    }
+
+    /**
+     * Genera series temporales para las gráficas.
+     * Crea un punto por cada lectura de nivel válida.
+     */
+    function ecoSeries(rawLabels, nivel, primerTimestamp) {
+      const inicio = primerTimestamp ? new Date(primerTimestamp.replace(' ','T')) : ECO.INICIO;
+      const puntos = [];
+      let acumL = 0;
+
+      for (let i = 0; i < nivel.length; i++) {
+        if (!rawLabels[i] || nivel[i] === null) continue;
+        const ts = new Date(rawLabels[i].replace(' ','T'));
+        if (isNaN(ts)) continue;
+        const horas = Math.max(0, (ts - inicio) / 3600000);
+        if (i > 0 && nivel[i-1] !== null) {
+          const d = nivel[i] - nivel[i-1];
+          if (d > 0 && d <= 6) acumL += d;
+        }
+        const energiaAcum = { central: (ECO.P_CENTRAL/1000)*horas, min: (ECO.P_MIN/1000)*horas, max: (ECO.P_MAX/1000)*horas };
+        const costoAcum   = ecoCosto(energiaAcum);
+        const cLitro      = acumL > 0 ? { central: costoAcum.central/acumL, min: costoAcum.min/acumL, max: costoAcum.max/acumL } : null;
+        puntos.push({ horas, ts, acumL, costoAcum, cLitro });
+      }
+      return puntos;
+    }
+
+    // Formatea quetzales con 2 decimales
+    function fQ(v, dec=2) { return v !== null && v !== undefined ? v.toFixed(dec) : '--'; }
+
+    /**
+     * Renderiza todas las gráficas y KPIs económicos.
+     */
+    function renderEconomia(rawLabels, nivel) {
+      if (!rawLabels || rawLabels.length < 2 || !nivel || nivel.length < 2) return;
+
+      // Primer timestamp válido del CSV
+      const primerTS = rawLabels.find(l => l && l.length >= 16) || null;
+
+      // ── Cálculos centrales ───────────────────────────────────────────
+      const prod     = ecoProduccion(rawLabels, nivel, primerTS);
+      const energia  = ecoEnergia(prod.horas);
+      const costo    = ecoCosto(energia);
+      const cLitro   = ecoCostoLitro(costo, prod.totalL);
+      const cGarraf  = ecoCostoGarrafon(cLitro);
+      const ahorro   = ecoAhorro(cGarraf);
+      const efic     = ecoEficiencia(prod.totalL, energia);
+      const proy     = ecoProyeccion(prod.tasaLh, costo, prod.horas);
+      const series   = ecoSeries(rawLabels, nivel, primerTS);
+
+      // ── KPIs ────────────────────────────────────────────────────────
+      setText('eco-inversion-c',       'Q ' + fQ(costo.central));
+      setText('eco-inversion-rango',   'Q ' + fQ(costo.min) + ' – Q ' + fQ(costo.max));
+      const elAhorro = document.getElementById('eco-ahorro-pct-c');
+      if (elAhorro) {
+        elAhorro.textContent = ahorro.pct !== null ? ahorro.pct + '%' : '--';
+        elAhorro.style.color = ahorro.pct > 0 ? 'var(--green)' : 'var(--red)';
+      }
+      setText('eco-ahorro-abs-c',      ahorro.absQ !== null ? (ahorro.absQ >= 0 ? '+' : '') + fQ(ahorro.absQ) + ' Q/garrafón ahorrado' : '--');
+      setText('eco-costo-litro-c',     cLitro.central !== null ? fQ(cLitro.central) : '--');
+      setText('eco-costo-litro-rango', cLitro.min !== null ? fQ(cLitro.min) + ' – ' + fQ(cLitro.max) + ' Q/L' : '--');
+      setText('eco-costo-garrafon-c',  cGarraf.central !== null ? fQ(cGarraf.central) : '--');
+      setText('eco-costo-garrafon-rango', cGarraf.min !== null ? fQ(cGarraf.min) + ' – ' + fQ(cGarraf.max) + ' Q' : '--');
+      setText('eco-eficiencia-c',      efic.central !== null ? fQ(efic.central, 3) : '--');
+      setText('eco-eficiencia-rango',  efic.min !== null ? fQ(efic.min,3) + ' – ' + fQ(efic.max,3) + ' L/kWh' : '--');
+      setText('eco-horas',             fQ(prod.horas, 1));
+      setText('eco-inicio',            primerTS ? 'Desde ' + primerTS.substring(0,16) : 'Desde 2026-04-23 12:29');
+
+      const tsStr = 'Actualizado: ' + (document.getElementById('header-ts')?.textContent || '--');
+      ['ts-eco-inv','ts-eco-costo','ts-eco-garrafon','ts-eco-proy'].forEach(id => setText(id, tsStr));
+
+      if (!series.length) return;
+
+      // Labels de horas para eje X
+      const xLabels = series.map(p => {
+        const d = Math.floor(p.horas / 24);
+        const h = Math.floor(p.horas % 24);
+        return d > 0 ? `D${d}+${String(h).padStart(2,'0')}h` : `+${Math.round(p.horas)}h`;
+      });
+
+      // Paleta consistente
+      const C_CENTRAL = '#1a4d8a';
+      const C_BANDA   = 'rgba(26,77,138,0.10)';
+      const C_MAX_L   = 'rgba(26,77,138,0.0)';
+      const C_MIN_L   = 'rgba(26,77,138,0.0)';
+      const C_ACENTO  = '#c8622a';
+      const C_VERDE   = '#1a7a4a';
+      const C_TEAL    = '#1a7a6a';
+
+      // ── GRÁFICA 1: Inversión acumulada ──────────────────────────────
+      destroyChart('chart-eco-inversion');
+      const ctx1 = document.getElementById('chart-eco-inversion')?.getContext('2d');
+      if (ctx1) {
+        chartRegistry['chart-eco-inversion'] = new Chart(ctx1, {
+          type: 'line',
+          data: {
+            labels: xLabels,
+            datasets: [
+              // Banda superior (relleno hasta línea inferior)
+              { label: 'Máx (900W)', data: series.map(p => +p.costoAcum.max.toFixed(3)),
+                borderColor: 'rgba(26,77,138,0.25)', borderWidth: 1, borderDash: [4,3],
+                pointRadius: 0, fill: '+1', backgroundColor: C_BANDA, tension: 0.3 },
+              // Central
+              { label: 'Central (750W)', data: series.map(p => +p.costoAcum.central.toFixed(3)),
+                borderColor: C_CENTRAL, borderWidth: 2.5,
+                pointRadius: 0, pointHoverRadius: 6,
+                fill: false, tension: 0.3 },
+              // Banda inferior
+              { label: 'Mín (600W)', data: series.map(p => +p.costoAcum.min.toFixed(3)),
+                borderColor: 'rgba(26,77,138,0.25)', borderWidth: 1, borderDash: [4,3],
+                pointRadius: 0, fill: '-1', backgroundColor: C_BANDA, tension: 0.3 },
+            ]
+          },
+          options: ecoChartOptions('Q acumulado', v => 'Q ' + v.toFixed(2),
+            c => c.dataset.label + ': Q ' + c.parsed.y.toFixed(2))
+        });
+      }
+
+      // ── GRÁFICA 2: Costo por litro ──────────────────────────────────
+      destroyChart('chart-eco-costo-litro');
+      const ctx2 = document.getElementById('chart-eco-costo-litro')?.getContext('2d');
+      if (ctx2) {
+        const cLMax = series.map(p => p.cLitro ? +p.cLitro.max.toFixed(4) : null);
+        const cLCen = series.map(p => p.cLitro ? +p.cLitro.central.toFixed(4) : null);
+        const cLMin = series.map(p => p.cLitro ? +p.cLitro.min.toFixed(4) : null);
+        chartRegistry['chart-eco-costo-litro'] = new Chart(ctx2, {
+          type: 'line',
+          data: {
+            labels: xLabels,
+            datasets: [
+              { label: 'Máx Q/L (900W)', data: cLMax,
+                borderColor: 'rgba(200,98,42,0.3)', borderWidth: 1, borderDash: [4,3],
+                pointRadius: 0, fill: '+1', backgroundColor: 'rgba(200,98,42,0.08)', tension: 0.3 },
+              { label: 'Central Q/L (750W)', data: cLCen,
+                borderColor: C_ACENTO, borderWidth: 2.5,
+                pointRadius: 0, pointHoverRadius: 6, fill: false, tension: 0.3 },
+              { label: 'Mín Q/L (600W)', data: cLMin,
+                borderColor: 'rgba(200,98,42,0.3)', borderWidth: 1, borderDash: [4,3],
+                pointRadius: 0, fill: '-1', backgroundColor: 'rgba(200,98,42,0.08)', tension: 0.3 },
+            ]
+          },
+          options: ecoChartOptions('Q / L', v => 'Q ' + v.toFixed(3),
+            c => c.dataset.label + ': Q ' + c.parsed.y.toFixed(3) + '/L')
+        });
+      }
+
+      // ── GRÁFICA 3: Costo garrafón vs mercado ────────────────────────
+      destroyChart('chart-eco-garrafon');
+      const ctx3 = document.getElementById('chart-eco-garrafon')?.getContext('2d');
+      if (ctx3) {
+        const gMax = series.map(p => p.cLitro ? +(p.cLitro.max * ECO.GARRAFON_L).toFixed(3) : null);
+        const gCen = series.map(p => p.cLitro ? +(p.cLitro.central * ECO.GARRAFON_L).toFixed(3) : null);
+        const gMin = series.map(p => p.cLitro ? +(p.cLitro.min * ECO.GARRAFON_L).toFixed(3) : null);
+        const n = xLabels.length;
+        chartRegistry['chart-eco-garrafon'] = new Chart(ctx3, {
+          type: 'line',
+          data: {
+            labels: xLabels,
+            datasets: [
+              // Banda propia
+              { label: 'Costo máx (900W)', data: gMax,
+                borderColor: 'rgba(26,77,138,0.25)', borderWidth: 1, borderDash: [4,3],
+                pointRadius: 0, fill: '+1', backgroundColor: 'rgba(26,77,138,0.08)', tension: 0.3 },
+              { label: 'Costo central (750W)', data: gCen,
+                borderColor: C_CENTRAL, borderWidth: 2.5,
+                pointRadius: 0, pointHoverRadius: 6, fill: false, tension: 0.3 },
+              { label: 'Costo mín (600W)', data: gMin,
+                borderColor: 'rgba(26,77,138,0.25)', borderWidth: 1, borderDash: [4,3],
+                pointRadius: 0, fill: '-1', backgroundColor: 'rgba(26,77,138,0.08)', tension: 0.3 },
+              // Líneas de mercado
+              { label: 'Mercado máx Q19', data: Array(n).fill(ECO.PRECIO_MKT_MAX),
+                borderColor: 'rgba(168,32,32,0.45)', borderWidth: 1.5, borderDash: [6,3],
+                pointRadius: 0, fill: false },
+              { label: 'Mercado medio Q13.5', data: Array(n).fill(ECO.PRECIO_MKT_MED),
+                borderColor: 'rgba(168,32,32,0.75)', borderWidth: 2, borderDash: [6,3],
+                pointRadius: 0, fill: false },
+              { label: 'Mercado mín Q8', data: Array(n).fill(ECO.PRECIO_MKT_MIN),
+                borderColor: 'rgba(26,122,74,0.75)', borderWidth: 1.5, borderDash: [6,3],
+                pointRadius: 0, fill: false },
+            ]
+          },
+          options: ecoChartOptions('Q / garrafón', v => 'Q ' + v.toFixed(2),
+            c => c.dataset.label + ': Q ' + c.parsed.y.toFixed(2))
+        });
+      }
+
+      // ── GRÁFICA 4: Proyección mensual ───────────────────────────────
+      destroyChart('chart-eco-proyeccion');
+      const ctx4 = document.getElementById('chart-eco-proyeccion')?.getContext('2d');
+      if (ctx4) {
+        const cats = ['Costo eléctrico/mes\n(mín 600W)', 'Costo eléctrico/mes\n(central 750W)', 'Costo eléctrico/mes\n(máx 900W)',
+                      'Valor agua\n(mercado mín Q8)', 'Valor agua\n(mercado medio Q13.5)', 'Valor agua\n(mercado máx Q19)'];
+        const vals = [proy.costoMes.min, proy.costoMes.central, proy.costoMes.max,
+                      proy.valorMesMkMin, proy.valorMesMkMed, proy.valorMesMkMax];
+        const colors = [
+          'rgba(26,77,138,0.5)','rgba(26,77,138,0.75)','rgba(26,77,138,0.95)',
+          'rgba(26,122,74,0.5)','rgba(26,122,74,0.75)','rgba(26,122,74,0.95)',
+        ];
+        chartRegistry['chart-eco-proyeccion'] = new Chart(ctx4, {
+          type: 'bar',
+          data: {
+            labels: cats,
+            datasets: [{
+              label: 'Q / mes proyectado',
+              data: vals,
+              backgroundColor: colors,
+              borderColor: colors.map(c => c.replace(/[\d.]+\)$/,'1)')),
+              borderWidth: 1.5,
+              borderRadius: 3,
+            }]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            animation: { duration: 900 },
+            plugins: {
+              legend: { display: false },
+              tooltip: {
+                backgroundColor: '#fff', borderColor: 'rgba(60,60,50,0.18)', borderWidth: 1,
+                titleColor: '#1a4d8a', bodyColor: '#1a1a16',
+                titleFont: { family: "'IBM Plex Mono'", size: 9 },
+                bodyFont: { family: "'Source Sans 3'", size: 12 }, padding: 10,
+                callbacks: { label: c => ' Q ' + c.parsed.y.toFixed(2) + ' / mes' }
+              }
+            },
+            scales: {
+              x: { grid: { display: false }, ticks: { color: '#6a6a5a', font: { family: "'IBM Plex Mono'", size: 8 }, maxRotation: 0 } },
+              y: { grid: { color: 'rgba(60,60,50,0.06)' },
+                   ticks: { color: '#6a6a5a', font: { family: "'IBM Plex Mono'", size: 9 }, callback: v => 'Q ' + v },
+                   title: { display: true, text: 'Quetzales / mes', color: '#6a6a5a', font: { family: "'IBM Plex Mono'", size: 9 } } }
+            }
+          }
+        });
+      }
+    }
+
+    /** Opciones base para gráficas de línea del módulo económico */
+    function ecoChartOptions(yLabel, yTickFn, tooltipLabelFn) {
+      return {
+        responsive: true, maintainAspectRatio: false,
+        animation: { duration: 800, easing: 'easeInOutQuart' },
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: {
+            display: true, position: 'top',
+            labels: { font: { family: "'IBM Plex Mono'", size: 8 }, color: '#6a6a5a', boxWidth: 12, padding: 12,
+              filter: item => !item.text.includes('Máx') && !item.text.includes('Mín') || item.text.includes('Mercado') }
+          },
+          tooltip: {
+            backgroundColor: '#fff', borderColor: 'rgba(60,60,50,0.18)', borderWidth: 1,
+            titleColor: '#1a4d8a', bodyColor: '#1a1a16',
+            titleFont: { family: "'IBM Plex Mono'", size: 9 },
+            bodyFont: { family: "'Source Sans 3'", size: 12 }, padding: 10,
+            callbacks: { label: tooltipLabelFn }
+          }
+        },
+        scales: {
+          x: { grid: { color: 'rgba(60,60,50,0.06)' }, border: { color: 'rgba(60,60,50,0.12)' },
+               ticks: { color: '#6a6a5a', font: { family: "'IBM Plex Mono'", size: 8 }, maxTicksLimit: 10 } },
+          y: { grid: { color: 'rgba(60,60,50,0.06)' }, border: { color: 'rgba(60,60,50,0.12)', dash: [3,3] },
+               ticks: { color: '#6a6a5a', font: { family: "'IBM Plex Mono'", size: 9 }, callback: yTickFn },
+               title: { display: true, text: yLabel, color: '#6a6a5a', font: { family: "'IBM Plex Mono'", size: 9 } } }
+        }
+      };
+    }
+
     window.addEventListener('scroll', () => {
-      const ids = ['resumen','salud-pi','nivel','clima-base','clima-avanzado','correlacion'];
+      const ids = ['resumen','salud-pi','nivel','produccion-analisis','economia','clima-base','clima-avanzado','correlacion'];
       ids.forEach(id => {
         const sec = document.getElementById(id), link = document.querySelector('.sb-link[href="#'+id+'"]');
         if (!sec || !link) return;
