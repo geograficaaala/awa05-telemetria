@@ -186,6 +186,7 @@
         <a class="sb-link active" href="#resumen">Resumen</a>
         <a class="sb-link" href="#salud-pi">Salud del nodo</a>
         <a class="sb-link" href="#nivel">Producción de agua</a>
+        <a class="sb-link" href="#produccion-analisis">Análisis producción</a>
         <a class="sb-link" href="#clima-base">Clima base</a>
         <a class="sb-link" href="#clima-avanzado">Clima avanzado</a>
         <a class="sb-link" href="#correlacion">Correlación</a>
@@ -282,6 +283,52 @@
             </div>
             <div class="chart-wrap tall"><canvas id="chart-nivel"></canvas></div>
             <div class="chart-footer"><div class="chart-ts" id="ts-nivel">--</div><div class="chart-ts">Mediana 11 muestras · 15 min · Zona horaria Guatemala CST</div></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="produccion-analisis">
+        <div class="section-header"><div><div class="section-tag">Análisis de producción — Serie histórica</div><div class="section-title">Producción diurna vs nocturna por día</div></div></div>
+        <div class="chart-grid single">
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Producción acumulada por período</div>
+                <div class="chart-subtitle">Litros producidos por período diurno (05:30–18:30) y nocturno (18:30–05:30) por cada día de operación. La captación de niebla es predominantemente nocturna.</div>
+              </div>
+              <div class="chart-badge">L / período</div>
+            </div>
+            <div class="legend-row">
+              <div class="legend-item"><div class="legend-dot" style="background:#f0b429"></div>Diurno (05:30–18:30)</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#1a7ab5"></div>Nocturno (18:30–05:30)</div>
+            </div>
+            <div class="chart-wrap tall"><canvas id="chart-dia-noche"></canvas></div>
+            <div class="chart-footer"><div class="chart-ts" id="ts-dia-noche">--</div><div class="chart-ts">Δ volumen por período · outliers filtrados</div></div>
+          </div>
+        </div>
+        <div class="chart-grid" style="margin-top:13px">
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Producción total por día</div>
+                <div class="chart-subtitle">Litros producidos cada día calendario. Permite identificar días de alta y baja captación.</div>
+              </div>
+              <div class="chart-badge">L / día</div>
+            </div>
+            <div class="chart-wrap"><canvas id="chart-prod-diaria"></canvas></div>
+            <div class="chart-footer"><div class="chart-ts" id="ts-prod-diaria">--</div><div class="chart-ts">Suma diurno + nocturno</div></div>
+          </div>
+          <div class="chart-card">
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Curva de llenado por día</div>
+                <div class="chart-subtitle">Cada línea representa un día de operación. Permite comparar ritmos de captación. Reinicio en 0 tras cada vaciado.</div>
+              </div>
+              <div class="chart-badge">Comparativo</div>
+            </div>
+            <div class="legend-row" id="legend-dias"></div>
+            <div class="chart-wrap tall"><canvas id="chart-curvas-dia"></canvas></div>
+            <div class="chart-footer"><div class="chart-ts" id="ts-curvas-dia">--</div><div class="chart-ts">Normalizado por hora del día</div></div>
           </div>
         </div>
       </section>
@@ -621,6 +668,168 @@
       const a = document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv); a.download=fn; a.click();
     }
 
+    // COLORES POR DÍA
+    const DIA_COLORS = ['#1a7ab5','#17b8d4','#1a9e6a','#c47a00','#8b5cf6','#e11d48','#0891b2'];
+
+    function renderProduccionAnalisis(rawLabels, nivel) {
+      if (!rawLabels || rawLabels.length < 2) return;
+
+      // Agrupa datos por día y período
+      const HORA_DIURNO_INI = 5.5;  // 05:30
+      const HORA_DIURNO_FIN = 18.5; // 18:30
+
+      // Parse timestamps
+      const puntos = rawLabels.map((l, i) => {
+        let dt;
+        if (l.length > 5) {
+          dt = new Date(l.replace(' ', 'T'));
+        } else {
+          return null;
+        }
+        const hora = dt.getHours() + dt.getMinutes() / 60;
+        const fecha = l.substring(0, 10);
+        const diurno = hora >= HORA_DIURNO_INI && hora < HORA_DIURNO_FIN;
+        return { fecha, hora, diurno, vol: nivel[i], idx: i };
+      }).filter(p => p !== null && p.vol !== null && p.vol !== undefined);
+
+      if (puntos.length < 2) return;
+
+      // Obtiene días únicos ordenados
+      const dias = [...new Set(puntos.map(p => p.fecha))].sort();
+
+      // Calcula producción por día y período
+      // Producción = suma de incrementos positivos (Δvol > 0)
+      const prodDiurna = {}, prodNocturna = {}, prodTotal = {};
+      dias.forEach(d => { prodDiurna[d] = 0; prodNocturna[d] = 0; prodTotal[d] = 0; });
+
+      for (let i = 1; i < puntos.length; i++) {
+        const prev = puntos[i-1], curr = puntos[i];
+        const delta = curr.vol - prev.vol;
+        if (delta > 0 && delta <= 6) { // incremento válido (no outlier)
+          if (curr.diurno) prodDiurna[curr.fecha] = (prodDiurna[curr.fecha] || 0) + delta;
+          else prodNocturna[curr.fecha] = (prodNocturna[curr.fecha] || 0) + delta;
+          prodTotal[curr.fecha] = (prodTotal[curr.fecha] || 0) + delta;
+        }
+      }
+
+      // Formatea días para labels
+      const DIAS_S = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
+      const MESES_S = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
+      const diaLabels = dias.map(d => {
+        const dt = new Date(d + 'T12:00:00');
+        return DIAS_S[dt.getDay()] + ' ' + dt.getDate() + ' ' + MESES_S[dt.getMonth()];
+      });
+
+      const diurnaVals = dias.map(d => +((prodDiurna[d]||0).toFixed(2)));
+      const nocturnaVals = dias.map(d => +((prodNocturna[d]||0).toFixed(2)));
+      const totalVals = dias.map(d => +((prodTotal[d]||0).toFixed(2)));
+
+      // GRÁFICA 1: Diurna vs Nocturna (barras agrupadas)
+      destroyChart('chart-dia-noche');
+      const ctx1 = document.getElementById('chart-dia-noche')?.getContext('2d');
+      if (ctx1) {
+        chartRegistry['chart-dia-noche'] = new Chart(ctx1, {
+          type: 'bar',
+          data: {
+            labels: diaLabels,
+            datasets: [
+              { label: 'Diurno (05:30–18:30)', data: diurnaVals, backgroundColor: '#f0b42999', borderColor: '#f0b429', borderWidth: 1.5, borderRadius: 4 },
+              { label: 'Nocturno (18:30–05:30)', data: nocturnaVals, backgroundColor: '#1a7ab599', borderColor: '#1a7ab5', borderWidth: 1.5, borderRadius: 4 }
+            ]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            animation: { duration: 800, easing: 'easeInOutQuart' },
+            plugins: {
+              legend: { display: true, position: 'top', labels: { font: { family: "'DM Mono'", size: 9 }, color: '#4a7a9b', boxWidth: 14, padding: 16 } },
+              tooltip: { backgroundColor: '#fff', borderColor: 'rgba(45,159,212,0.3)', borderWidth: 1, titleColor: '#1a7ab5', bodyColor: '#0d2a40', titleFont: { family: "'DM Mono'", size: 10 }, bodyFont: { family: "'DM Sans'", size: 12 }, padding: 10, callbacks: { label: c => ' ' + c.dataset.label + ': ' + c.parsed.y + ' L' } }
+            },
+            scales: {
+              x: { grid: { color: 'rgba(45,159,212,0.07)' }, border: { color: 'rgba(45,159,212,0.18)' }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 } } },
+              y: { grid: { color: 'rgba(45,159,212,0.07)' }, border: { color: 'rgba(45,159,212,0.18)', dash: [3,3] }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 }, callback: v => v + ' L' }, title: { display: true, text: 'Litros producidos', color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 } } }
+            }
+          }
+        });
+        setText('ts-dia-noche', 'Actualizado: ' + (document.getElementById('header-ts')?.textContent || '--'));
+      }
+
+      // GRÁFICA 2: Producción total por día
+      destroyChart('chart-prod-diaria');
+      const ctx2 = document.getElementById('chart-prod-diaria')?.getContext('2d');
+      if (ctx2) {
+        const maxTotal = Math.max(...totalVals, 1);
+        chartRegistry['chart-prod-diaria'] = new Chart(ctx2, {
+          type: 'bar',
+          data: {
+            labels: diaLabels,
+            datasets: [{
+              label: 'Producción total',
+              data: totalVals,
+              backgroundColor: totalVals.map((v,i) => DIA_COLORS[i % DIA_COLORS.length] + 'bb'),
+              borderColor: totalVals.map((v,i) => DIA_COLORS[i % DIA_COLORS.length]),
+              borderWidth: 1.5, borderRadius: 5
+            }]
+          },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            animation: { duration: 800 },
+            plugins: {
+              legend: { display: false },
+              tooltip: { backgroundColor: '#fff', borderColor: 'rgba(45,159,212,0.3)', borderWidth: 1, titleColor: '#1a7ab5', bodyColor: '#0d2a40', titleFont: { family: "'DM Mono'", size: 10 }, bodyFont: { family: "'DM Sans'", size: 12 }, padding: 10, callbacks: { label: c => ' Total: ' + c.parsed.y + ' L' } }
+            },
+            scales: {
+              x: { grid: { color: 'rgba(45,159,212,0.07)' }, border: { color: 'rgba(45,159,212,0.18)' }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 } } },
+              y: { grid: { color: 'rgba(45,159,212,0.07)' }, border: { color: 'rgba(45,159,212,0.18)', dash: [3,3] }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 }, callback: v => v + ' L' }, min: 0 }
+            }
+          }
+        });
+        setText('ts-prod-diaria', 'Actualizado: ' + (document.getElementById('header-ts')?.textContent || '--'));
+      }
+
+      // GRÁFICA 3: Curvas de llenado por día (normalizado por hora)
+      destroyChart('chart-curvas-dia');
+      const ctx3 = document.getElementById('chart-curvas-dia')?.getContext('2d');
+      if (ctx3) {
+        // Para cada día, construye serie hora vs vol relativo (desde 0)
+        const datasets = [];
+        const legendEl = document.getElementById('legend-dias');
+        if (legendEl) legendEl.innerHTML = '';
+
+        dias.forEach((dia, dIdx) => {
+          const puntosDelDia = puntos.filter(p => p.fecha === dia);
+          if (puntosDelDia.length < 2) return;
+          const volBase = puntosDelDia[0].vol;
+          const color = DIA_COLORS[dIdx % DIA_COLORS.length];
+          const data = puntosDelDia.map(p => ({ x: +p.hora.toFixed(2), y: +Math.max(0, p.vol - volBase).toFixed(2) }));
+          datasets.push({ label: diaLabels[dIdx], data, borderColor: color, backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, pointHoverRadius: 5, tension: 0.3, fill: false });
+          if (legendEl) {
+            const item = document.createElement('div');
+            item.className = 'legend-item';
+            item.innerHTML = '<div class="legend-dot" style="background:' + color + '"></div>' + diaLabels[dIdx];
+            legendEl.appendChild(item);
+          }
+        });
+
+        chartRegistry['chart-curvas-dia'] = new Chart(ctx3, {
+          type: 'line',
+          data: { datasets },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            animation: { duration: 900, easing: 'easeInOutQuart' },
+            plugins: {
+              legend: { display: false },
+              tooltip: { backgroundColor: '#fff', borderColor: 'rgba(45,159,212,0.3)', borderWidth: 1, titleColor: '#1a7ab5', bodyColor: '#0d2a40', titleFont: { family: "'DM Mono'", size: 10 }, bodyFont: { family: "'DM Sans'", size: 12 }, padding: 10, callbacks: { title: items => { const h = Math.floor(items[0].parsed.x); const m = Math.round((items[0].parsed.x - h) * 60); return String(h).padStart(2,'0') + ':' + String(m).padStart(2,'0'); }, label: c => ' ' + c.dataset.label + ': +' + c.parsed.y + ' L' } }
+            },
+            scales: {
+              x: { type: 'linear', min: 0, max: 24, grid: { color: 'rgba(45,159,212,0.07)' }, border: { color: 'rgba(45,159,212,0.18)' }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 }, callback: v => String(Math.floor(v)).padStart(2,'0') + ':00', stepSize: 3 }, title: { display: true, text: 'Hora del día', color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 } } },
+              y: { grid: { color: 'rgba(45,159,212,0.07)' }, border: { color: 'rgba(45,159,212,0.18)', dash: [3,3] }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 }, callback: v => '+' + v + ' L' }, min: 0, title: { display: true, text: 'Δ Litros desde inicio del día', color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 } } }
+            }
+          }
+        });
+        setText('ts-curvas-dia', 'Actualizado: ' + (document.getElementById('header-ts')?.textContent || '--'));
+      }
+    }
+
     async function renderDashboard() {
       const payload = await fetchData();
       globalPayload = payload;
@@ -672,6 +881,9 @@
       const solarMax = Math.max(...solar.filter(v => v!=null), 100);
       lineChart('chart-solar', labelsClima, solar, '#c47a00', 'W/m²', 0, Math.ceil(solarMax * 1.1));
       barChart('chart-uv', labelsClima, uv, '#0099cc', 'UV');
+
+      // Análisis producción diurna/nocturna
+      renderProduccionAnalisis(rawNivelLabels, nivel);
 
       // Scatter
       scatterChart('chart-corr-hum', hum, nivel, '#2d9fd4', 'Humedad %', 'Nivel L');
