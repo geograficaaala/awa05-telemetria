@@ -5,7 +5,7 @@ import logging
 TRIG = 17
 ECHO = 18
 
-ALTURA_TOTAL    = 70.0
+ALTURA_TOTAL    = 72.5
 ALTURA_MAX_AGUA = 32.5
 RADIO           = 12.9
 AREA_BASE       = 3.14159265 * (RADIO ** 2)
