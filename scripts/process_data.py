@@ -47,7 +47,31 @@ def estado_sistema():
         h, m = divmod(int(uptime_s // 60), 60)
         uptime = f"{h}h {m}m"
     except: uptime = None
-    return {"cpu_temp_c": temp, "voltaje_v": volt, "ram_uso_pct": ram_pct, "disco_uso_pct": disco_pct, "uptime": uptime}
+    try:
+        gpu = float(re.search(r"temp=([\d.]+)", subprocess.check_output(["vcgencmd","measure_temp","core"]).decode()).group(1))
+    except: gpu = None
+    try:
+        freq = int(re.search(r"frequency\(\d+\)=(\d+)", subprocess.check_output(["vcgencmd","measure_clock","arm"]).decode()).group(1)) // 1000000
+    except: freq = None
+    try:
+        thr_hex = re.search(r"throttled=(0x[\da-fA-F]+)", subprocess.check_output(["vcgencmd","get_throttled"]).decode()).group(1)
+        thr_int = int(thr_hex, 16)
+        throttle_ok = thr_int == 0
+        throttle_flags = thr_hex
+    except: throttle_ok = True; throttle_flags = "0x0"
+    try:
+        wifi_out = subprocess.check_output(["iwconfig","wlan0"], stderr=subprocess.DEVNULL).decode()
+        wifi_dbm = int(re.search(r"Signal level=(-\d+)", wifi_out).group(1))
+        wifi_pct = max(0, min(100, 2*(wifi_dbm+100)))
+    except: wifi_dbm = None; wifi_pct = None
+    try:
+        load = open("/proc/loadavg").read().split()
+        load1, load5, load15 = float(load[0]), float(load[1]), float(load[2])
+    except: load1=load5=load15=None
+    try:
+        ip_ts = subprocess.check_output(["tailscale","ip","--4"], stderr=subprocess.DEVNULL).decode().strip()
+    except: ip_ts = None
+    return {"cpu_temp_c": temp, "voltaje_v": volt, "ram_uso_pct": ram_pct, "disco_uso_pct": disco_pct, "uptime": uptime, "gpu_temp_c": gpu, "freq_cpu_mhz": freq, "throttle_ok": throttle_ok, "throttle_flags": throttle_flags, "wifi_dbm": wifi_dbm, "wifi_pct": wifi_pct, "load1": load1, "load5": load5, "load15": load15, "tailscale_ip": ip_ts}
 
 def generar_dashboard_json():
     os.makedirs("data/processed", exist_ok=True)
