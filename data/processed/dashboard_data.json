@@ -19,7 +19,7 @@
     "disco_uso_pct": 10.4,
     "uptime": "19h 43m",
     "gpu_temp_c": null,
-    "freq_cpu_mhz": 1800,
+    "freq_cpu_mhz": 1100,
     "throttle_ok": true,
     "throttle_flags": "0x0",
     "wifi_dbm": -62,
@@ -1422,7 +1422,7 @@
       0.0,
       0.0,
       0.0,
-      0.0
+      1.0
     ]
   }
 }
