@@ -457,7 +457,7 @@
       if(s.disco_uso_pct!==null&&s.disco_uso_pct!==undefined){setText('pi-disco',s.disco_uso_pct);const bar=document.getElementById('pi-disco-bar');const card=document.getElementById('pi-disco-card');const cmt=document.getElementById('pi-disco-comment');bar.style.width=s.disco_uso_pct+'%';if(s.disco_uso_pct<70){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent=(100-s.disco_uso_pct)+'% libre.';}else if(s.disco_uso_pct<90){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='Disco casi lleno.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRÍTICO: Disco lleno.';}}
       if(s.uptime!==null&&s.uptime!==undefined){setText('pi-uptime',s.uptime);const cmt=document.getElementById('pi-uptime-comment');const h=parseInt(s.uptime)||0;if(h<1)cmt.textContent='Recién reiniciado.';else if(h<24)cmt.textContent='Menos de 24h en línea.';else cmt.textContent='Operación continua estable.';}
       // Frecuencia CPU
-      if(s.freq_cpu_mhz!==null&&s.freq_cpu_mhz!==undefined){setText('pi-freq',s.freq_cpu_mhz);const pct=Math.min(100,(s.freq_cpu_mhz/1800)*100);const bar=document.getElementById('pi-freq-bar');const card=document.getElementById('pi-freq-card');const cmt=document.getElementById('pi-freq-comment');bar.style.width=pct+'%';if(s.freq_cpu_mhz>=1800){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent='Frecuencia máxima. Sin throttling de rendimiento.';}else if(s.freq_cpu_mhz>=1200){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='Frecuencia reducida. Posible throttling térmico.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRÍTICO: Frecuencia muy baja. Throttling severo.';}}
+      if(s.freq_cpu_mhz!==null&&s.freq_cpu_mhz!==undefined){setText('pi-freq',s.freq_cpu_mhz);const pct=Math.min(100,(s.freq_cpu_mhz/1800)*100);const bar=document.getElementById('pi-freq-bar');const card=document.getElementById('pi-freq-card');const cmt=document.getElementById('pi-freq-comment');bar.style.width=pct+'%';if(s.freq_cpu_mhz>=1200){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent='Frecuencia alta. Sin throttling.';}else if(s.freq_cpu_mhz>=600){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent='Frecuencia normal en reposo. DVFS activo (eficiencia energética).';}else{bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='Frecuencia muy baja. Verificar alimentación.';}}
       // WiFi
       if(s.wifi_pct!==null&&s.wifi_pct!==undefined){setText('pi-wifi-pct',s.wifi_pct);const bar=document.getElementById('pi-wifi-bar');const card=document.getElementById('pi-wifi-card');const cmt=document.getElementById('pi-wifi-comment');bar.style.width=s.wifi_pct+'%';const dbm=s.wifi_dbm||0;if(s.wifi_pct>=60){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent=dbm+' dBm — Señal buena. Subidas estables.';}else if(s.wifi_pct>=40){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent=dbm+' dBm — Señal moderada. Subidas pueden fallar.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent=dbm+' dBm — Señal débil. Riesgo de pérdida de datos.';}}
       // Throttling
@@ -752,12 +752,12 @@
       const ctx1 = document.getElementById('chart-dia-noche')?.getContext('2d');
       if (ctx1) {
         chartRegistry['chart-dia-noche'] = new Chart(ctx1, {
-          type: 'line',
+          type: 'bar',
           data: {
             labels: diaLabels,
             datasets: [
-              { label: 'Diurno (05:30–18:30)', data: diurnaVals, borderColor: '#b56a00', backgroundColor: 'rgba(181,106,0,0.06)', borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 8, pointBackgroundColor: '#fff', pointBorderColor: '#b56a00', pointBorderWidth: 2, fill: true, tension: 0.3 },
-              { label: 'Nocturno (18:30–05:30)', data: nocturnaVals, borderColor: '#1a4d8a', backgroundColor: 'rgba(26,77,138,0.06)', borderWidth: 2.5, pointRadius: 6, pointHoverRadius: 8, pointBackgroundColor: '#fff', pointBorderColor: '#1a4d8a', pointBorderWidth: 2, fill: true, tension: 0.3 }
+              { label: 'Diurno (05:30–18:30)', data: diurnaVals, backgroundColor: '#f0b42999', borderColor: '#f0b429', borderWidth: 1.5, borderRadius: 4 },
+              { label: 'Nocturno (18:30–05:30)', data: nocturnaVals, backgroundColor: '#1a7ab599', borderColor: '#1a7ab5', borderWidth: 1.5, borderRadius: 4 }
             ]
           },
           options: {
@@ -782,22 +782,15 @@
       if (ctx2) {
         const maxTotal = Math.max(...totalVals, 1);
         chartRegistry['chart-prod-diaria'] = new Chart(ctx2, {
-          type: 'line',
+          type: 'bar',
           data: {
             labels: diaLabels,
             datasets: [{
-              label: 'Producción total diaria',
+              label: 'Producción total',
               data: totalVals,
-              borderColor: '#1a4d8a',
-              backgroundColor: 'rgba(26,77,138,0.05)',
-              borderWidth: 2.5,
-              pointRadius: totalVals.map((v,i) => 7),
-              pointHoverRadius: 9,
-              pointBackgroundColor: totalVals.map((v,i) => DIA_COLORS[i % DIA_COLORS.length]),
-              pointBorderColor: '#fff',
-              pointBorderWidth: 2,
-              fill: true,
-              tension: 0.2
+              backgroundColor: totalVals.map((v,i) => DIA_COLORS[i % DIA_COLORS.length] + 'bb'),
+              borderColor: totalVals.map((v,i) => DIA_COLORS[i % DIA_COLORS.length]),
+              borderWidth: 1.5, borderRadius: 5
             }]
           },
           options: {
