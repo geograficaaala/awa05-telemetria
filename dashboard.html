@@ -461,35 +461,35 @@
 <div class="section-rule"></div>
 
 <!-- ═══════════════════════════════════════════════════════════════
-     SECCIÓN EMPRESARIAL
+     SECCIÓN EMPRESARIAL — ANÁLISIS DE COSTOS
 ════════════════════════════════════════════════════════════════ -->
 <section id="empresa">
-  <div class="section-eyebrow">Modelo financiero · DEOCSA Sololá · Inversión total USD 19,000 · Q7.64/USD</div>
-  <div class="section-title">Análisis <em>empresarial</em> AWA05</div>
-  <div class="section-subtitle">El modelo integra la distribución triangular de consumo eléctrico (600–750–900 W), la tarifa vigente DEOCSA (Q2.05/kWh), el capital invertido y la producción real medida por el sensor para calcular rentabilidad, TIR, VAN y precio óptimo de venta.</div>
+  <div class="section-eyebrow">Análisis de costos · DEOCSA Sololá · T(600,750,900) W · Q2.05/kWh · Q7.64/USD</div>
+  <div class="section-title">¿Cuánto está <em>costando</em> operar la AWA05?</div>
+  <div class="section-subtitle">Todo el análisis se centra en el costo real de operación: energía consumida, costo por litro producido y comparación directa contra lo que costaría comprar el mismo volumen de agua en el mercado de Sololá. No hay proyecciones de venta — solo la realidad del experimento.</div>
 
-  <!-- PANEL OSCURO DE INVERSIÓN -->
+  <!-- PANEL OSCURO — INVERSIÓN ACUMULADA -->
   <div class="inv-display">
     <div class="inv-grid">
       <div class="inv-item">
-        <div class="inv-item-label">Costo energético acumulado</div>
-        <div class="inv-item-val">Q <span id="emp-costo-acum">--</span><span class="inv-item-unit"></span></div>
-        <div class="inv-item-sub" id="emp-costo-rango">-- – -- Q (600–900W)</div>
+        <div class="inv-item-label">Gasto energético acumulado</div>
+        <div class="inv-item-val">Q <span id="emp-costo-acum">--</span></div>
+        <div class="inv-item-sub" id="emp-costo-rango">-- – -- Q (600–900 W)</div>
       </div>
       <div class="inv-item">
-        <div class="inv-item-label">Inversión total (CAPEX)</div>
+        <div class="inv-item-label">Inversión de capital (CAPEX)</div>
         <div class="inv-item-val">Q <span id="emp-capex">145,160</span></div>
-        <div class="inv-item-sub">Máquina Q91,680 + Equipo Q53,480</div>
+        <div class="inv-item-sub">Máquina $12,000 + Equipo $7,000 · Q7.64/USD</div>
       </div>
       <div class="inv-item">
-        <div class="inv-item-label">Costo total acumulado</div>
+        <div class="inv-item-label">Gasto total acumulado</div>
         <div class="inv-item-val">Q <span id="emp-costo-total">--</span></div>
-        <div class="inv-item-sub" id="emp-costo-total-sub">CAPEX + Energía acumulada</div>
+        <div class="inv-item-sub" id="emp-costo-total-sub">CAPEX + energía desde inicio</div>
       </div>
       <div class="inv-item">
         <div class="inv-item-label">Horas en operación</div>
         <div class="inv-item-val"><span id="emp-horas">--</span><span class="inv-item-unit"> h</span></div>
-        <div class="inv-item-sub" id="emp-inicio-label">Desde 23 Abr 2026</div>
+        <div class="inv-item-sub" id="emp-inicio-label">Desde 23 Abr 2026 · 12:29</div>
       </div>
     </div>
     <div class="inv-ticker">
@@ -497,137 +497,130 @@
       <div class="inv-ticker-item">Tarifa DEOCSA: <span>Q2.05/kWh</span></div>
       <div class="inv-ticker-item">Tipo de cambio: <span>Q7.64/USD</span></div>
       <div class="inv-ticker-item">Garrafón AWA05: <span>20 L</span></div>
-      <div class="inv-ticker-item">Inicio experimento: <span>23 Abr 2026</span></div>
+      <div class="inv-ticker-item">Inicio: <span>23 Abr 2026</span></div>
       <div class="inv-ticker-item">Vida útil estimada: <span>10 años</span></div>
     </div>
   </div>
 
-  <!-- KPIs OPERATIVOS -->
+  <!-- KPIs DE COSTO -->
   <div class="kpi-grid">
     <div class="kpi-card accent-cobalt">
-      <div class="kpi-label">Costo por litro producido</div>
+      <div class="kpi-label">Costo energético / litro</div>
       <div class="kpi-value"><span id="emp-costo-litro">--</span><span class="kpi-unit">Q/L</span></div>
-      <div class="kpi-range" id="emp-costo-litro-rango">-- – -- Q/L</div>
-      <div class="kpi-meta">Solo costo energético</div>
+      <div class="kpi-range" id="emp-costo-litro-rango">Rango: -- – -- Q/L</div>
+      <div class="kpi-meta">Energía consumida ÷ litros producidos</div>
     </div>
     <div class="kpi-card accent-amber">
-      <div class="kpi-label">Costo garrafón 20 L</div>
+      <div class="kpi-label">Costo energético / garrafón</div>
       <div class="kpi-value"><span id="emp-costo-garrafon">--</span><span class="kpi-unit">Q</span></div>
-      <div class="kpi-range" id="emp-costo-garrafon-rango">-- – -- Q</div>
-      <div class="kpi-meta">vs Q8–Q19 mercado Sololá</div>
+      <div class="kpi-range" id="emp-costo-garrafon-rango">Rango: -- – -- Q</div>
+      <div class="kpi-meta">Para producir 20 litros</div>
     </div>
     <div class="kpi-card accent-forest">
-      <div class="kpi-label">Ahorro vs mercado</div>
+      <div class="kpi-label">Ahorro vs comprar en mercado</div>
       <div class="kpi-value"><span id="emp-ahorro-pct">--</span><span class="kpi-unit">%</span></div>
-      <div class="kpi-range" id="emp-ahorro-abs">-- Q/garrafón</div>
-      <div class="kpi-meta">vs precio medio Q13.50</div>
+      <div class="kpi-range" id="emp-ahorro-abs">-- Q / garrafón</div>
+      <div class="kpi-meta">vs precio medio Q13.50 Sololá</div>
     </div>
     <div class="kpi-card accent-teal">
       <div class="kpi-label">Eficiencia energética</div>
       <div class="kpi-value"><span id="emp-eficiencia">--</span><span class="kpi-unit">L/kWh</span></div>
-      <div class="kpi-range" id="emp-eficiencia-rango">-- – -- L/kWh</div>
-      <div class="kpi-meta">Litros por kWh consumido</div>
+      <div class="kpi-range" id="emp-eficiencia-rango">Rango: -- – -- L/kWh</div>
+      <div class="kpi-meta">Litros producidos por kWh consumido</div>
     </div>
     <div class="kpi-card accent-gold">
-      <div class="kpi-label">Litros producidos total</div>
+      <div class="kpi-label">Agua producida total</div>
       <div class="kpi-value"><span id="emp-litros-total">--</span><span class="kpi-unit">L</span></div>
-      <div class="kpi-range" id="emp-litros-sub">-- garrafones</div>
-      <div class="kpi-meta">Producción acumulada real</div>
+      <div class="kpi-range" id="emp-litros-sub">-- garrafones completados</div>
+      <div class="kpi-meta">Producción real del sensor</div>
     </div>
     <div class="kpi-card accent-crimson">
       <div class="kpi-label">Energía consumida total</div>
       <div class="kpi-value"><span id="emp-energia-total">--</span><span class="kpi-unit">kWh</span></div>
-      <div class="kpi-range" id="emp-energia-rango">-- – -- kWh</div>
-      <div class="kpi-meta">Acumulado desde inicio</div>
+      <div class="kpi-range" id="emp-energia-rango">Rango: -- – -- kWh</div>
+      <div class="kpi-meta">Acumulado desde el inicio</div>
     </div>
   </div>
 
-  <!-- PRECIO PROPUESTO DE VENTA -->
-  <div class="section-eyebrow" style="margin-bottom:10px">Precio óptimo de venta — Análisis de margen</div>
+  <!-- COMPARATIVA VS MERCADO -->
+  <div class="section-eyebrow" style="margin-bottom:10px">Comparativa de costo — Lo que costaría comprar el mismo volumen en el mercado</div>
   <div class="precio-grid">
     <div class="precio-card">
-      <div class="precio-card-tag">Precio mínimo viable</div>
-      <div class="precio-val" id="precio-min">--</div>
-      <div class="precio-unit">Q / garrafón 20 L</div>
-      <div class="precio-margen neg" id="precio-min-margen">Margen: --</div>
-      <div class="precio-detalle">Cubre solo costo energético. No recupera CAPEX. Útil para estudio piloto.</div>
+      <div class="precio-card-tag">Si compraras en mercado mínimo</div>
+      <div class="precio-val" id="comp-mkt-min">--</div>
+      <div class="precio-unit">Q por el agua producida hasta hoy</div>
+      <div class="precio-detalle">A Q8/garrafón · precio más bajo disponible en Sololá.</div>
     </div>
     <div class="precio-card recomendado">
-      <div class="precio-badge">✦ Recomendado</div>
-      <div class="precio-card-tag">Precio competitivo óptimo</div>
-      <div class="precio-val" id="precio-rec">--</div>
-      <div class="precio-unit">Q / garrafón 20 L</div>
-      <div class="precio-margen pos" id="precio-rec-margen">Margen: --</div>
-      <div class="precio-detalle">20% bajo precio medio de mercado. Competitivo y sostenible. Amortiza CAPEX en proyección.</div>
+      <div class="precio-badge">Referencia principal</div>
+      <div class="precio-card-tag">Si compraras al precio medio</div>
+      <div class="precio-val" id="comp-mkt-med">--</div>
+      <div class="precio-unit">Q por el agua producida hasta hoy</div>
+      <div class="precio-detalle">A Q13.50/garrafón · precio promedio Sololá.</div>
     </div>
     <div class="precio-card">
-      <div class="precio-card-tag">Precio paridad mercado</div>
-      <div class="precio-val" id="precio-mkt">13.50</div>
-      <div class="precio-unit">Q / garrafón 20 L</div>
-      <div class="precio-margen pos" id="precio-mkt-margen">Margen: --</div>
-      <div class="precio-detalle">Precio medio de mercado en Sololá. Maximiza ingreso pero no diferencia por costo.</div>
+      <div class="precio-card-tag">Si compraras al precio máximo</div>
+      <div class="precio-val" id="comp-mkt-max">--</div>
+      <div class="precio-unit">Q por el agua producida hasta hoy</div>
+      <div class="precio-detalle">A Q19/garrafón · precio más alto del mercado local.</div>
     </div>
   </div>
 
-  <!-- TIR / VAN / PAYBACK -->
-  <div class="section-eyebrow" style="margin-bottom:10px">Evaluación financiera — TIR · VAN · Payback</div>
-  <div class="irr-grid">
+  <!-- COMPARATIVA ENERGÍA VS MERCADO DETALLADA -->
+  <div class="irr-grid" style="margin-bottom:16px">
     <div class="irr-card">
-      <div class="irr-card-title">Tasa Interna de Retorno (TIR) — 10 años</div>
-      <div class="irr-card-main" id="emp-tir">--%</div>
-      <div class="irr-card-sub" id="emp-tir-sub">Calculada con flujos netos anuales proyectados a precio recomendado. Tasa de descuento de referencia: 10% anual.</div>
+      <div class="irr-card-title">Costo energético real acumulado</div>
+      <div class="irr-card-main neutral" id="emp-costo-real-display">Q --</div>
+      <div class="irr-card-sub" id="emp-costo-real-sub">Lo que realmente has gastado en electricidad para producir el agua.</div>
     </div>
     <div class="irr-card">
-      <div class="irr-card-title">Valor Actual Neto (VAN) — 10 años · tasa 10%</div>
-      <div class="irr-card-main" id="emp-van">Q --</div>
-      <div class="irr-card-sub" id="emp-van-sub">Suma de flujos futuros descontados menos inversión inicial. VAN &gt; 0 indica proyecto rentable.</div>
+      <div class="irr-card-title">Equivalente en mercado (precio medio)</div>
+      <div class="irr-card-main" id="emp-valor-mkt-display">Q --</div>
+      <div class="irr-card-sub" id="emp-valor-mkt-sub">Lo que habrías pagado comprando el mismo volumen a Q13.50/garrafón.</div>
     </div>
     <div class="irr-card">
-      <div class="irr-card-title">Período de recuperación (Payback)</div>
-      <div class="irr-card-main" id="emp-payback">-- años</div>
-      <div class="irr-card-sub" id="emp-payback-sub">Años necesarios para recuperar CAPEX con los ingresos netos proyectados a precio recomendado.</div>
+      <div class="irr-card-title">Costo energético diario proyectado</div>
+      <div class="irr-card-main neutral" id="emp-costo-dia">Q --</div>
+      <div class="irr-card-sub">Gasto diario en electricidad a 750W · 24h · Q2.05/kWh = Q36.90/día (rango Q22.14–Q44.28).</div>
     </div>
     <div class="irr-card">
-      <div class="irr-card-title">Punto de equilibrio (Break-even)</div>
-      <div class="irr-card-main" id="emp-breakeven">-- L</div>
-      <div class="irr-card-sub" id="emp-breakeven-sub">Litros totales a producir para que el ingreso iguale el CAPEX. A tasa actual: proyección de tiempo.</div>
+      <div class="irr-card-title">Costo energético mensual proyectado</div>
+      <div class="irr-card-main neutral" id="emp-costo-mes">Q --</div>
+      <div class="irr-card-sub">Gasto mensual estimado en electricidad. Solo energía, sin amortizar CAPEX.</div>
     </div>
   </div>
 
-  <!-- TABLA FLUJO PROYECTADO -->
+  <!-- TABLA DE COSTOS ACUMULADOS -->
   <div class="card" style="margin-bottom:16px">
     <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
       <div>
-        <div class="card-title">Flujo de caja proyectado — 10 años</div>
-        <div class="card-sub">Basado en tasa de producción real medida · precio recomendado · costo energético central 750W</div>
+        <div class="card-title">Desglose de costos acumulados</div>
+        <div class="card-sub">Comparación directa entre lo gastado y lo que costaría el agua en el mercado</div>
       </div>
-      <div class="card-badge">Q / año</div>
+      <div class="card-badge">Q acumulado</div>
     </div>
     <div class="card-body" style="padding:0">
       <table class="fin-table">
         <thead>
           <tr>
-            <th>Año</th>
-            <th>Litros prod.</th>
-            <th>Ingreso bruto</th>
-            <th>Costo energía</th>
-            <th>Flujo neto</th>
-            <th>Flujo acum.</th>
-            <th>Flujo desc. (10%)</th>
+            <th>Concepto</th>
+            <th>Escenario mín (600W)</th>
+            <th>Central (750W)</th>
+            <th>Escenario máx (900W)</th>
           </tr>
         </thead>
-        <tbody id="tabla-flujo"></tbody>
+        <tbody id="tabla-costos"></tbody>
       </table>
     </div>
-    <div class="card-foot"><div class="card-ts" id="ts-tabla-flujo">--</div><div class="card-ts">Extrapolación lineal · producción constante · sin inflación</div></div>
+    <div class="card-foot"><div class="card-ts" id="ts-tabla-costos">--</div><div class="card-ts">Basado en producción real del sensor · tarifa DEOCSA Q2.05/kWh</div></div>
   </div>
 
-  <!-- GRÁFICAS ECONÓMICAS -->
+  <!-- GRÁFICAS -->
   <div class="card" style="margin-bottom:16px">
     <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
       <div>
-        <div class="card-title">Inversión acumulada en el tiempo — Costo energético</div>
-        <div class="card-sub">Quetzales gastados en electricidad desde el inicio. Banda = intervalo de incertidumbre distribución triangular T(600,750,900) W.</div>
+        <div class="card-title">Gasto energético acumulado en el tiempo</div>
+        <div class="card-sub">Quetzales gastados en electricidad desde el inicio del experimento. La banda refleja la incertidumbre de potencia T(600, 750, 900) W.</div>
       </div>
       <div class="card-badge">Q acumulado</div>
     </div>
@@ -640,50 +633,38 @@
       <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
         <div>
           <div class="card-title">Costo por litro — evolución</div>
-          <div class="card-sub">Q/L disminuye conforme aumenta la producción acumulada. Sensible a humedad y temperatura.</div>
+          <div class="card-sub">Baja conforme acumula producción. La banda muestra el rango 600–900 W.</div>
         </div>
         <div class="card-badge">Q / L</div>
       </div>
       <div class="chart-wrap tall"><canvas id="chart-eco-costo-litro"></canvas></div>
-      <div class="card-foot"><div class="card-ts" id="ts-eco-costo">--</div><div class="card-ts">Costo energético / litros acumulados</div></div>
+      <div class="card-foot"><div class="card-ts" id="ts-eco-costo">--</div><div class="card-ts">Costo energético acum. ÷ litros acum.</div></div>
     </div>
     <div class="card">
       <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
         <div>
-          <div class="card-title">Costo garrafón vs mercado Sololá</div>
-          <div class="card-sub">Costo propio (banda) vs rango de precios de mercado. La zona verde indica ventaja competitiva.</div>
+          <div class="card-title">Costo propio vs precio de mercado</div>
+          <div class="card-sub">Costo energético por garrafón (banda) vs precios de mercado en Sololá. Por debajo de la línea verde = más barato que comprar.</div>
         </div>
         <div class="card-badge">Q / garrafón</div>
       </div>
       <div class="chart-wrap tall"><canvas id="chart-eco-garrafon"></canvas></div>
-      <div class="card-foot"><div class="card-ts" id="ts-eco-garrafon">--</div><div class="card-ts">Q8 mín · Q13.50 medio · Q19 máx</div></div>
+      <div class="card-foot"><div class="card-ts" id="ts-eco-garrafon">--</div><div class="card-ts">Q8 mín · Q13.50 medio · Q19 máx · mercado Sololá</div></div>
     </div>
-  </div>
-
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
-      <div>
-        <div class="card-title">Flujo de caja proyectado — Visualización</div>
-        <div class="card-sub">Ingresos vs costos proyectados a 10 años. El cruce de líneas indica el punto de equilibrio anual.</div>
-      </div>
-      <div class="card-badge">Q / año</div>
-    </div>
-    <div class="chart-wrap tall"><canvas id="chart-flujo-anual"></canvas></div>
-    <div class="card-foot"><div class="card-ts" id="ts-flujo">--</div><div class="card-ts">Proyección lineal · precio recomendado · costo central 750W</div></div>
   </div>
 
   <div class="card">
     <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
       <div>
-        <div class="card-title">Sensibilidad: costo/litro vs humedad relativa</div>
-        <div class="card-sub">Cada punto = una lectura real. A mayor humedad, mayor producción y menor costo por litro. Correlación directa con variables climáticas.</div>
+        <div class="card-title">Sensibilidad: costo por litro vs humedad relativa</div>
+        <div class="card-sub">Cada punto es una lectura real. A mayor humedad, mayor producción, menor costo por litro. Muestra la dependencia del costo respecto al clima.</div>
       </div>
-      <div class="card-badge">Scatter</div>
+      <div class="card-badge">Scatter · Pearson</div>
     </div>
     <div class="chart-wrap tall"><canvas id="chart-eco-scatter-hum"></canvas></div>
-    <div class="card-foot"><div class="card-ts" id="ts-eco-scatter">--</div><div class="card-ts">Costo energético acum. / litros acum. vs humedad WS-2000</div></div>
+    <div class="card-foot"><div class="card-ts" id="ts-eco-scatter">--</div><div class="card-ts">Q/L acum. vs %HR · regresión lineal</div></div>
   </div>
-</section>
+</section></section>
 
 <div class="section-rule"></div>
 
@@ -784,7 +765,7 @@ const ECO = {
 };
 ECO.CAPEX_Q = ECO.CAPEX_USD * ECO.USD_GTQ;          // Q145,160
 ECO.P_CENTRAL = (ECO.P_MIN + ECO.P_MODA + ECO.P_MAX) / 3;  // 750W exacto
-ECO.PRECIO_REC = +(ECO.PRECIO_MKT_MED * 0.80).toFixed(2);  // Q10.80 — 20% bajo mercado medio
+// Sin precio de venta — el modelo es de costos únicamente
 
 // ─── HELPERS ──────────────────────────────────────────────────────────
 function setText(id, val) {
@@ -1031,245 +1012,314 @@ function renderProduccionAnalisis(rawLabels, nivel) {
   }
 }
 
-// ─── TIR (Newton-Raphson) ─────────────────────────────────────────────
-function calcTIR(flujos, guess=0.1) {
-  // flujos[0] = −CAPEX (inversión inicial), flujos[1..n] = flujos netos anuales
-  let r=guess;
-  for(let iter=0;iter<200;iter++){
-    let f=0,fp=0;
-    flujos.forEach((cf,t)=>{
-      const d=Math.pow(1+r,t);
-      f+=cf/d;
-      fp-=t*cf/Math.pow(1+r,t+1);
-    });
-    const nr=r-f/(fp||1e-10);
-    if(Math.abs(nr-r)<1e-8){return nr;}
-    r=nr;
-    if(r<-0.999) r=-0.999;
-  }
-  return r;
-}
-
-function calcVAN(flujos, tasa) {
-  return flujos.reduce((acc,cf,t)=>acc+cf/Math.pow(1+tasa,t),0);
-}
-
-// ─── MÓDULO ECONÓMICO EMPRESARIAL ─────────────────────────────────────
+// ─── MÓDULO ECONÓMICO — SOLO COSTOS ───────────────────────────────────
 function renderEmpresa(rawLabels, nivel, hum, temp) {
-  if(!rawLabels||rawLabels.length<2||!nivel||nivel.length<2) return;
-  const primerTS=rawLabels.find(l=>l&&l.length>=16)||null;
-  const inicio=primerTS?new Date(primerTS.replace(' ','T')):ECO.INICIO;
-  const ahora=new Date();
-  const horas=Math.max(0.01,(ahora-inicio)/3600000);
+  if (!rawLabels || rawLabels.length < 2 || !nivel || nivel.length < 2) return;
 
-  // Energía
-  const eC=(ECO.P_CENTRAL/1000)*horas;
-  const eMin=(ECO.P_MIN/1000)*horas;
-  const eMax=(ECO.P_MAX/1000)*horas;
-  const costoC=eC*ECO.TARIFA, costoMin=eMin*ECO.TARIFA, costoMax=eMax*ECO.TARIFA;
+  const primerTS = rawLabels.find(l => l && l.length >= 16) || null;
+  const inicio = primerTS ? new Date(primerTS.replace(' ', 'T')) : ECO.INICIO;
+  const ahora = new Date();
+  const horas = Math.max(0.01, (ahora - inicio) / 3600000);
 
-  // Producción
-  let totalL=0;
-  for(let i=1;i<nivel.length;i++){const d=nivel[i]-nivel[i-1];if(d>0&&d<=6) totalL+=d;}
-  totalL=+totalL.toFixed(3);
-  const tasaLh=totalL/horas;
-  const garrafones=Math.floor(totalL/ECO.GARRAFON_L);
+  // ── Energía consumida ──
+  const eC  = (ECO.P_CENTRAL / 1000) * horas;
+  const eMin = (ECO.P_MIN    / 1000) * horas;
+  const eMax = (ECO.P_MAX    / 1000) * horas;
+  const costoC   = eC   * ECO.TARIFA;
+  const costoMin = eMin * ECO.TARIFA;
+  const costoMax = eMax * ECO.TARIFA;
 
-  // Costo por litro
-  const cLC=totalL>0?costoC/totalL:null;
-  const cLMin=totalL>0?costoMin/totalL:null;
-  const cLMax=totalL>0?costoMax/totalL:null;
-  const cGC=cLC?cLC*ECO.GARRAFON_L:null;
-  const cGMin=cLMin?cLMin*ECO.GARRAFON_L:null;
-  const cGMax=cLMax?cLMax*ECO.GARRAFON_L:null;
+  // ── Producción real ──
+  let totalL = 0;
+  for (let i = 1; i < nivel.length; i++) {
+    const d = nivel[i] - nivel[i-1];
+    if (d > 0 && d <= 6) totalL += d;
+  }
+  totalL = +totalL.toFixed(2);
+  const garrafones = totalL / ECO.GARRAFON_L;
 
-  // Ahorro
-  const ahorroAbs=cGC?(ECO.PRECIO_MKT_MED-cGC):null;
-  const ahorroP=cGC?((ahorroAbs/ECO.PRECIO_MKT_MED)*100):null;
+  // ── Costo por litro ──
+  const cLC   = totalL > 0 ? costoC   / totalL : null;
+  const cLMin = totalL > 0 ? costoMin / totalL : null;
+  const cLMax = totalL > 0 ? costoMax / totalL : null;
 
-  // Eficiencia
-  const efC=eC>0?totalL/eC:null;
-  const efMin=eMax>0?totalL/eMax:null;
-  const efMax=eMin>0?totalL/eMin:null;
+  // ── Costo por garrafón ──
+  const cGC   = cLC   != null ? cLC   * ECO.GARRAFON_L : null;
+  const cGMin = cLMin != null ? cLMin * ECO.GARRAFON_L : null;
+  const cGMax = cLMax != null ? cLMax * ECO.GARRAFON_L : null;
 
-  // Proyección anual
-  const horasAnio=365*24;
-  const litrosAnio=tasaLh*horasAnio;
-  const garrafAnio=litrosAnio/ECO.GARRAFON_L;
-  const ingresoAnio=garrafAnio*ECO.PRECIO_REC;
-  const costoEnAnio=(ECO.P_CENTRAL/1000)*horasAnio*ECO.TARIFA;
+  // ── Ahorro vs mercado medio ──
+  const ahorroAbs = cGC != null ? ECO.PRECIO_MKT_MED - cGC : null;
+  const ahorroPct = cGC != null ? (ahorroAbs / ECO.PRECIO_MKT_MED) * 100 : null;
 
-  // Flujos para TIR/VAN
-  const flujos=[-ECO.CAPEX_Q];
-  for(let y=1;y<=ECO.VIDA_UTIL_ANOS;y++) flujos.push(ingresoAnio-costoEnAnio);
-  const tir=calcTIR(flujos);
-  const van=calcVAN(flujos,ECO.TASA_DESC);
-  const flujoNeto=ingresoAnio-costoEnAnio;
-  const payback=flujoNeto>0?ECO.CAPEX_Q/flujoNeto:null;
-  const breakeven=cLC?ECO.CAPEX_Q/cLC:null; // litros para recuperar CAPEX
+  // ── Eficiencia L/kWh ──
+  const efC   = eC   > 0 ? totalL / eC   : null;
+  const efMin = eMax > 0 ? totalL / eMax : null;
+  const efMax = eMin > 0 ? totalL / eMin : null;
 
-  // Precio mínimo viable = costo energético por garrafón
-  const precioMinViable=cGC?+(cGC*1.05).toFixed(2):null; // +5% margen mínimo
-  const precioRec=ECO.PRECIO_REC;
+  // ── Costos diario y mensual (potencia central) ──
+  const costoDia = (ECO.P_CENTRAL / 1000) * 24 * ECO.TARIFA;
+  const costoMes = costoDia * 30;
 
-  // ── KPIs panel oscuro ──
-  setText('emp-costo-acum','Q '+fQ(costoC));
-  setText('emp-costo-rango','Q '+fQ(costoMin)+' – Q '+fQ(costoMax));
-  setText('emp-capex',fQ(ECO.CAPEX_Q,0));
-  setText('emp-costo-total',fQ(costoC+ECO.CAPEX_Q));
-  setText('emp-costo-total-sub','CAPEX Q'+fQ(ECO.CAPEX_Q,0)+' + Energía Q'+fQ(costoC));
-  setText('emp-horas',fQ(horas,1));
-  setText('emp-inicio-label','Desde '+(primerTS?primerTS.substring(0,16):'23 Abr 2026 12:29'));
-  // header
-  setText('h-inversion','Q '+fQ(costoC/horas*24,2)+'/día');
-  setText('sb-inversion',fQ(costoC));
+  // ── Valor equivalente de mercado ──
+  const valorMktMin = garrafones * ECO.PRECIO_MKT_MIN;
+  const valorMktMed = garrafones * ECO.PRECIO_MKT_MED;
+  const valorMktMax = garrafones * ECO.PRECIO_MKT_MAX;
+
+  // Helper formato quetzales — sin decimales absurdos
+  const fQn = (v, d=2) => {
+    if (v == null || !isFinite(v)) return '--';
+    const n = +v;
+    if (d === 0) return n.toFixed(0);
+    // Si el valor es >= 10 usar d=2, si < 1 usar d=3
+    const dec = Math.abs(n) >= 10 ? 2 : Math.abs(n) >= 1 ? 2 : 3;
+    return n.toFixed(dec);
+  };
+
+  // ── Panel oscuro ──
+  setText('emp-costo-acum',   fQn(costoC));
+  setText('emp-costo-rango',  'Q ' + fQn(costoMin) + ' – Q ' + fQn(costoMax) + ' (600–900 W)');
+  setText('emp-capex',        ECO.CAPEX_Q.toLocaleString('es-GT', {maximumFractionDigits: 0}));
+  setText('emp-costo-total',  fQn(costoC + ECO.CAPEX_Q));
+  setText('emp-costo-total-sub', 'CAPEX Q' + ECO.CAPEX_Q.toLocaleString('es-GT', {maximumFractionDigits:0}) + ' + Energía Q' + fQn(costoC));
+  setText('emp-horas',        horas.toFixed(1));
+  setText('emp-inicio-label', 'Desde ' + (primerTS ? primerTS.substring(0, 16) : '23 Abr 2026 12:29'));
+  setText('h-inversion',      'Q ' + fQn(costoC) + ' energía');
+  setText('sb-inversion',     fQn(costoC));
 
   // ── KPIs operativos ──
-  setText('emp-costo-litro',fQ(cLC,3));
-  setText('emp-costo-litro-rango',fQ(cLMin,3)+' – '+fQ(cLMax,3)+' Q/L');
-  const elAh=document.getElementById('emp-ahorro-pct');
-  if(elAh){elAh.textContent=ahorroP!==null?fQ(ahorroP,1)+'%':'--';elAh.closest('.kpi-card').querySelector('.kpi-value').style.color=ahorroP>0?'var(--forest)':'var(--crimson)';}
-  setText('emp-ahorro-abs',ahorroAbs!==null?(ahorroAbs>=0?'+':'')+fQ(ahorroAbs)+' Q/garrafón':'--');
-  setText('emp-costo-garrafon',fQ(cGC));
-  setText('emp-costo-garrafon-rango',fQ(cGMin)+' – '+fQ(cGMax)+' Q');
-  setText('emp-eficiencia',fQ(efC,3));
-  setText('emp-eficiencia-rango',fQ(efMin,3)+' – '+fQ(efMax,3)+' L/kWh');
-  setText('emp-litros-total',fQ(totalL,1));
-  setText('emp-litros-sub',garrafones+' garrafones completos');
-  setText('emp-energia-total',fQ(eC,2));
-  setText('emp-energia-rango',fQ(eMin,2)+' – '+fQ(eMax,2)+' kWh');
+  setText('emp-costo-litro',         cLC  != null ? fQn(cLC,  3) : '--');
+  setText('emp-costo-litro-rango',   cLMin != null ? 'Rango: Q' + fQn(cLMin,3) + ' – Q' + fQn(cLMax,3) + ' /L' : '--');
+  setText('emp-costo-garrafon',      cGC  != null ? fQn(cGC)  : '--');
+  setText('emp-costo-garrafon-rango',cGMin != null ? 'Rango: Q' + fQn(cGMin) + ' – Q' + fQn(cGMax) : '--');
 
-  // ── Precio propuesto ──
-  setText('precio-min',precioMinViable!==null?'Q '+fQ(precioMinViable):'--');
-  const mMin=precioMinViable&&cGC?precioMinViable-cGC:null;
-  setText('precio-min-margen',mMin!==null?'Margen: Q'+fQ(mMin)+'  ('+fQ(mMin/precioMinViable*100,1)+'%)':'--');
-  setText('precio-rec','Q '+fQ(precioRec));
-  const mRec=cGC?precioRec-cGC:null;
-  setText('precio-rec-margen',mRec!==null?'Margen: Q'+fQ(mRec)+'  ('+fQ((mRec/precioRec)*100,1)+'%)':'--');
-  const mMkt=cGC?ECO.PRECIO_MKT_MED-cGC:null;
-  setText('precio-mkt-margen',mMkt!==null?'Margen: Q'+fQ(mMkt)+'  ('+fQ((mMkt/ECO.PRECIO_MKT_MED)*100,1)+'%)':'--');
+  const elAhP = document.getElementById('emp-ahorro-pct');
+  if (elAhP) {
+    elAhP.textContent = ahorroPct != null ? ahorroPct.toFixed(1) + '%' : '--';
+    const card = elAhP.closest('.kpi-card');
+    if (card) card.querySelector('.kpi-value').style.color = (ahorroPct != null && ahorroPct > 0) ? 'var(--forest)' : 'var(--crimson)';
+  }
+  setText('emp-ahorro-abs', ahorroAbs != null
+    ? (ahorroAbs >= 0 ? '+' : '') + fQn(ahorroAbs) + ' Q / garrafón vs mercado medio'
+    : '--');
 
-  // ── TIR / VAN / Payback / Breakeven ──
-  const tirEl=document.getElementById('emp-tir');
-  if(tirEl){
-    const tirPct=tir*100;
-    tirEl.textContent=isFinite(tir)?fQ(tirPct,1)+'%':'N/D';
-    tirEl.className='irr-card-main '+(tirPct>ECO.TASA_DESC*100?'good':tirPct>0?'warn':'bad');
-  }
-  const vanEl=document.getElementById('emp-van');
-  if(vanEl){
-    vanEl.textContent='Q '+fQ(van,0);
-    vanEl.className='irr-card-main '+(van>0?'good':van>-ECO.CAPEX_Q/2?'warn':'bad');
-  }
-  const pbEl=document.getElementById('emp-payback');
-  if(pbEl){
-    pbEl.textContent=payback?fQ(payback,1)+' años':'∞';
-    pbEl.className='irr-card-main '+(payback&&payback<ECO.VIDA_UTIL_ANOS?'good':payback?'warn':'bad');
-  }
-  setText('emp-payback-sub',payback?`A precio Q${fQ(precioRec)}/garrafón con tasa actual de ${fQ(tasaLh*24,1)} L/día.`:'Sin producción suficiente para calcular.');
-  const beEl=document.getElementById('emp-breakeven');
-  if(beEl){
-    beEl.textContent=breakeven?fQ(breakeven,0)+' L':'--';
-    const diasBe=breakeven?breakeven/tasaLh/24:null;
-    beEl.className='irr-card-main '+(diasBe&&diasBe<365*ECO.VIDA_UTIL_ANOS?'good':'warn');
-    setText('emp-breakeven-sub',diasBe?`A la tasa actual (${fQ(tasaLh*24,1)} L/día): ${fQ(diasBe/365,1)} años para recuperar CAPEX.`:'Sin producción suficiente.');
-  }
-  setText('emp-tir-sub',`TIR=${isFinite(tir)?fQ(tir*100,1):'N/D'}% vs WACC referencial 10%. Ingresos proyectados: Q${fQ(ingresoAnio,0)}/año · Costo energía: Q${fQ(costoEnAnio,0)}/año.`);
-  setText('emp-van-sub',`Flujo neto anual: Q${fQ(flujoNeto,0)} · VAN${van>0?'>0 proyecto rentable':'<0 no recupera inversión a 10%'}.`);
+  setText('emp-eficiencia',      efC  != null ? efC.toFixed(3)  : '--');
+  setText('emp-eficiencia-rango',efMin != null ? 'Rango: ' + efMin.toFixed(3) + ' – ' + efMax.toFixed(3) + ' L/kWh' : '--');
+  setText('emp-litros-total',    totalL.toFixed(1));
+  setText('emp-litros-sub',      garrafones.toFixed(1) + ' garrafones equivalentes (÷ 20 L)');
+  setText('emp-energia-total',   eC.toFixed(2));
+  setText('emp-energia-rango',   'Rango: ' + eMin.toFixed(2) + ' – ' + eMax.toFixed(2) + ' kWh');
 
-  // ── Tabla de flujo ──
-  const tbody=document.getElementById('tabla-flujo');
-  const tsTabla=document.getElementById('ts-tabla-flujo');
-  if(tbody){
-    tbody.innerHTML='';
-    let acum=-ECO.CAPEX_Q, acumDesc=-ECO.CAPEX_Q;
-    const firstRow=document.createElement('tr');
-    firstRow.innerHTML=`<td>0 (Inversión)</td><td>--</td><td>--</td><td>--</td><td class="val-neg">−Q ${fQ(ECO.CAPEX_Q,0)}</td><td class="val-neg">−Q ${fQ(ECO.CAPEX_Q,0)}</td><td class="val-neg">−Q ${fQ(ECO.CAPEX_Q,0)}</td>`;
-    tbody.appendChild(firstRow);
-    for(let y=1;y<=ECO.VIDA_UTIL_ANOS;y++){
-      const lA=litrosAnio;const ingB=garrafAnio*ECO.PRECIO_REC;const cE=costoEnAnio;const fn=ingB-cE;
-      acum+=fn; const fd=fn/Math.pow(1+ECO.TASA_DESC,y); acumDesc+=fd;
-      const tr=document.createElement('tr');
-      if(y===ECO.VIDA_UTIL_ANOS) tr.className='row-total';
-      tr.innerHTML=`<td>${y}</td><td>${fQ(lA,0)}</td><td class="val-pos">Q ${fQ(ingB,0)}</td><td class="val-neg">−Q ${fQ(cE,0)}</td><td class="${fn>0?'val-pos':'val-neg'}">${fn>0?'+':''}Q ${fQ(fn,0)}</td><td class="${acum>0?'val-pos':'val-neg'}">${acum>0?'+':''}Q ${fQ(acum,0)}</td><td class="${acumDesc>0?'val-pos':'val-neg'}">${acumDesc>0?'+':''}Q ${fQ(acumDesc,0)}</td>`;
-      tbody.appendChild(tr);
+  // ── Comparativa vs mercado ──
+  setText('comp-mkt-min', 'Q ' + fQn(valorMktMin));
+  setText('comp-mkt-med', 'Q ' + fQn(valorMktMed));
+  setText('comp-mkt-max', 'Q ' + fQn(valorMktMax));
+
+  // ── Paneles de comparativa ──
+  const empCostoEl = document.getElementById('emp-costo-real-display');
+  if (empCostoEl) {
+    empCostoEl.textContent = 'Q ' + fQn(costoC);
+    empCostoEl.className = 'irr-card-main neutral';
+  }
+  setText('emp-costo-real-sub',
+    'Energía consumida: ' + eC.toFixed(2) + ' kWh · ' + horas.toFixed(1) +
+    ' h operando · Q2.05/kWh DEOCSA. Rango: Q' + fQn(costoMin) + ' – Q' + fQn(costoMax) + '.');
+
+  const empMktEl = document.getElementById('emp-valor-mkt-display');
+  if (empMktEl) {
+    empMktEl.textContent = 'Q ' + fQn(valorMktMed);
+    empMktEl.className = 'irr-card-main ' + (ahorroAbs != null && ahorroAbs > 0 ? 'good' : 'bad');
+  }
+  setText('emp-valor-mkt-sub',
+    totalL.toFixed(1) + ' L producidos ÷ 20 L = ' + garrafones.toFixed(2) +
+    ' garrafones × Q13.50 = Q' + fQn(valorMktMed) + '. ' +
+    (ahorroAbs != null
+      ? (ahorroAbs > 0
+          ? 'La máquina es más barata: ahorra Q' + fQn(ahorroAbs) + '/garrafón.'
+          : 'La máquina es más cara: cuesta Q' + fQn(Math.abs(ahorroAbs)) + ' más/garrafón.')
+      : 'Sin producción suficiente.'));
+
+  setText('emp-costo-dia', 'Q ' + fQn(costoDia));
+  setText('emp-costo-mes', 'Q ' + fQn(costoMes));
+
+  // ── Tabla de costos ──
+  const tbody = document.getElementById('tabla-costos');
+  const tsTabla = document.getElementById('ts-tabla-costos');
+  if (tbody) {
+    const rows = [
+      ['Energía consumida (kWh)', fQn(eMin,2), fQn(eC,2), fQn(eMax,2)],
+      ['Costo energético acumulado (Q)', fQn(costoMin), fQn(costoC), fQn(costoMax)],
+      ['Agua producida (L)', totalL.toFixed(1), totalL.toFixed(1), totalL.toFixed(1)],
+      ['Costo por litro (Q/L)', fQn(cLMin,3), fQn(cLC,3), fQn(cLMax,3)],
+      ['Costo por garrafón 20L (Q)', fQn(cGMin), fQn(cGC), fQn(cGMax)],
+      ['Precio mercado mín Q8/garrafón', fQn(valorMktMin), fQn(valorMktMin), fQn(valorMktMin)],
+      ['Precio mercado medio Q13.50/garrafón', fQn(valorMktMed), fQn(valorMktMed), fQn(valorMktMed)],
+      ['Ahorro vs mercado medio (Q/garrafón)', fQn(ECO.PRECIO_MKT_MED-(cGMin||0)), fQn(ahorroAbs), fQn(ECO.PRECIO_MKT_MED-(cGMax||0))],
+      ['CAPEX total (Q)', fQn(ECO.CAPEX_Q,0), fQn(ECO.CAPEX_Q,0), fQn(ECO.CAPEX_Q,0)],
+      ['Costo total acumulado (Q)', fQn(costoMin+ECO.CAPEX_Q), fQn(costoC+ECO.CAPEX_Q), fQn(costoMax+ECO.CAPEX_Q)],
+    ];
+    tbody.innerHTML = rows.map((r, i) => {
+      const isTotal = i === rows.length - 1;
+      const cls = isTotal ? 'class="row-total"' : '';
+      const v1class = (i===7) ? (parseFloat(r[1])>0?'val-pos':'val-neg') : '';
+      const v2class = (i===7) ? (parseFloat(r[2])>0?'val-pos':'val-neg') : '';
+      const v3class = (i===7) ? (parseFloat(r[3])>0?'val-pos':'val-neg') : '';
+      return `<tr ${cls}><td style="font-family:var(--body)">${r[0]}</td><td class="${v1class}">${r[1]}</td><td class="${v2class}">${r[2]}</td><td class="${v3class}">${r[3]}</td></tr>`;
+    }).join('');
+    if (tsTabla) tsTabla.textContent = 'Act: ' + (document.getElementById('header-ts')?.textContent || '--');
+  }
+
+  const tsStr = 'Act: ' + (document.getElementById('header-ts')?.textContent || '--');
+  ['ts-eco-inv','ts-eco-costo','ts-eco-garrafon','ts-eco-scatter'].forEach(id => setText(id, tsStr));
+
+  // ── Series temporales ──
+  const series = [];
+  let acL = 0;
+  for (let i = 0; i < nivel.length; i++) {
+    if (!rawLabels[i] || nivel[i] == null) continue;
+    const ts = new Date(rawLabels[i].replace(' ', 'T'));
+    if (isNaN(ts)) continue;
+    const h = Math.max(0, (ts - inicio) / 3600000);
+    if (i > 0 && nivel[i-1] != null) {
+      const d = nivel[i] - nivel[i-1];
+      if (d > 0 && d <= 6) acL += d;
     }
-    if(tsTabla) tsTabla.textContent='Act: '+(document.getElementById('header-ts')?.textContent||'--');
+    const eAc = { c: (ECO.P_CENTRAL/1000)*h, mn: (ECO.P_MIN/1000)*h, mx: (ECO.P_MAX/1000)*h };
+    const cAc = { c: eAc.c*ECO.TARIFA, mn: eAc.mn*ECO.TARIFA, mx: eAc.mx*ECO.TARIFA };
+    const cL  = acL > 0 ? { c: cAc.c/acL, mn: cAc.mn/acL, mx: cAc.mx/acL } : null;
+    const hFmt = Math.floor(h/24) > 0
+      ? `D${Math.floor(h/24)}+${String(Math.floor(h%24)).padStart(2,'0')}h`
+      : `+${Math.round(h)}h`;
+    series.push({ h, ts, acL, cAc, cL, hFmt });
   }
+  if (!series.length) return;
 
-  const tsStr='Act: '+(document.getElementById('header-ts')?.textContent||'--');
-  ['ts-eco-inv','ts-eco-costo','ts-eco-garrafon','ts-flujo','ts-eco-scatter'].forEach(id=>setText(id,tsStr));
+  const xL = series.map(p => p.hFmt);
 
-  // ── Series temporales para gráficas ──
-  const series=[];let acL=0;
-  for(let i=0;i<nivel.length;i++){
-    if(!rawLabels[i]||nivel[i]==null) continue;
-    const ts=new Date(rawLabels[i].replace(' ','T'));if(isNaN(ts)) continue;
-    const h=Math.max(0,(ts-inicio)/3600000);
-    if(i>0&&nivel[i-1]!=null){const d=nivel[i]-nivel[i-1];if(d>0&&d<=6) acL+=d;}
-    const eAc={c:(ECO.P_CENTRAL/1000)*h,mn:(ECO.P_MIN/1000)*h,mx:(ECO.P_MAX/1000)*h};
-    const cAc={c:eAc.c*ECO.TARIFA,mn:eAc.mn*ECO.TARIFA,mx:eAc.mx*ECO.TARIFA};
-    const cL=acL>0?{c:cAc.c/acL,mn:cAc.mn/acL,mx:cAc.mx/acL}:null;
-    const hFmt=Math.floor(h/24)>0?`D${Math.floor(h/24)}+${String(Math.floor(h%24)).padStart(2,'0')}h`:`+${Math.round(h)}h`;
-    series.push({h,ts,acL,cAc,cL,hFmt});
-  }
-
-  if(!series.length) return;
-  const xL=series.map(p=>p.hFmt);
-  const C_CO='#1c3f6e',C_AM='#b05c00',C_FO='#1a5c38';
-
-  // Gráfica 1: Inversión acumulada con banda
+  // Gráfica 1: Gasto energético acumulado con banda
   destroyChart('chart-eco-inversion');
-  const ctx1=document.getElementById('chart-eco-inversion')?.getContext('2d');
-  if(ctx1){chartRegistry['chart-eco-inversion']=new Chart(ctx1,{type:'line',data:{labels:xL,datasets:[{label:'Máx (900W)',data:series.map(p=>+p.cAc.mx.toFixed(3)),borderColor:'rgba(28,63,110,0.2)',borderWidth:1,borderDash:[4,3],pointRadius:0,fill:'+1',backgroundColor:'rgba(28,63,110,0.07)',tension:0.3},{label:'Central (750W)',data:series.map(p=>+p.cAc.c.toFixed(3)),borderColor:C_CO,borderWidth:2.5,pointRadius:0,pointHoverRadius:6,fill:false,tension:0.3},{label:'Mín (600W)',data:series.map(p=>+p.cAc.mn.toFixed(3)),borderColor:'rgba(28,63,110,0.2)',borderWidth:1,borderDash:[4,3],pointRadius:0,fill:'-1',backgroundColor:'rgba(28,63,110,0.07)',tension:0.3}]},options:mergeOpts({interaction:{mode:'index',intersect:false},plugins:{legend:{display:true,position:'top',labels:{font:{family:"'JetBrains Mono'",size:8},color:'#6b6860',boxWidth:10,padding:12}},tooltip:{...chartDefaults.plugins.tooltip,callbacks:{label:c=>c.dataset.label+': Q '+c.parsed.y.toFixed(2)}}},scales:{x:{...chartDefaults.scales.x,ticks:{...chartDefaults.scales.x.ticks,maxTicksLimit:8}},y:{...chartDefaults.scales.y,ticks:{...chartDefaults.scales.y.ticks,callback:v=>'Q '+v.toFixed(2)}}}})});}
-
-  // Gráfica 2: Costo por litro
-  destroyChart('chart-eco-costo-litro');
-  const ctx2=document.getElementById('chart-eco-costo-litro')?.getContext('2d');
-  if(ctx2){const cLMx=series.map(p=>p.cL?+p.cL.mx.toFixed(4):null);const cLCn=series.map(p=>p.cL?+p.cL.c.toFixed(4):null);const cLMn=series.map(p=>p.cL?+p.cL.mn.toFixed(4):null);chartRegistry['chart-eco-costo-litro']=new Chart(ctx2,{type:'line',data:{labels:xL,datasets:[{label:'Máx Q/L',data:cLMx,borderColor:'rgba(176,92,0,0.25)',borderWidth:1,borderDash:[4,3],pointRadius:0,fill:'+1',backgroundColor:'rgba(176,92,0,0.07)',tension:0.3},{label:'Central Q/L',data:cLCn,borderColor:C_AM,borderWidth:2.5,pointRadius:0,pointHoverRadius:6,fill:false,tension:0.3},{label:'Mín Q/L',data:cLMn,borderColor:'rgba(176,92,0,0.25)',borderWidth:1,borderDash:[4,3],pointRadius:0,fill:'-1',backgroundColor:'rgba(176,92,0,0.07)',tension:0.3}]},options:mergeOpts({interaction:{mode:'index',intersect:false},plugins:{legend:{display:true,position:'top',labels:{font:{family:"'JetBrains Mono'",size:8},color:'#6b6860',boxWidth:10,padding:12}},tooltip:{...chartDefaults.plugins.tooltip,callbacks:{label:c=>c.dataset.label+': Q '+c.parsed.y.toFixed(3)+'/L'}}},scales:{x:{...chartDefaults.scales.x,ticks:{...chartDefaults.scales.x.ticks,maxTicksLimit:8}},y:{...chartDefaults.scales.y,min:0,ticks:{...chartDefaults.scales.y.ticks,callback:v=>'Q '+v.toFixed(3)}}}})});}
-
-  // Gráfica 3: Garrafón vs mercado
-  destroyChart('chart-eco-garrafon');
-  const ctx3=document.getElementById('chart-eco-garrafon')?.getContext('2d');
-  if(ctx3){const n=xL.length;const gMx=series.map(p=>p.cL?+(p.cL.mx*ECO.GARRAFON_L).toFixed(3):null);const gCn=series.map(p=>p.cL?+(p.cL.c*ECO.GARRAFON_L).toFixed(3):null);const gMn=series.map(p=>p.cL?+(p.cL.mn*ECO.GARRAFON_L).toFixed(3):null);chartRegistry['chart-eco-garrafon']=new Chart(ctx3,{type:'line',data:{labels:xL,datasets:[{label:'Costo máx (900W)',data:gMx,borderColor:'rgba(28,63,110,0.2)',borderWidth:1,borderDash:[4,3],pointRadius:0,fill:'+1',backgroundColor:'rgba(28,63,110,0.07)',tension:0.3},{label:'Costo propio (750W)',data:gCn,borderColor:C_CO,borderWidth:2.5,pointRadius:0,pointHoverRadius:6,fill:false,tension:0.3},{label:'Costo mín (600W)',data:gMn,borderColor:'rgba(28,63,110,0.2)',borderWidth:1,borderDash:[4,3],pointRadius:0,fill:'-1',backgroundColor:'rgba(28,63,110,0.07)',tension:0.3},{label:'Mercado máx Q19',data:Array(n).fill(ECO.PRECIO_MKT_MAX),borderColor:'rgba(149,31,31,0.5)',borderWidth:1.5,borderDash:[6,3],pointRadius:0,fill:false},{label:'Precio rec. Q'+fQ(ECO.PRECIO_REC),data:Array(n).fill(ECO.PRECIO_REC),borderColor:'rgba(26,92,56,0.8)',borderWidth:2,borderDash:[6,3],pointRadius:0,fill:false},{label:'Mercado mín Q8',data:Array(n).fill(ECO.PRECIO_MKT_MIN),borderColor:'rgba(149,31,31,0.3)',borderWidth:1,borderDash:[6,3],pointRadius:0,fill:false}]},options:mergeOpts({interaction:{mode:'index',intersect:false},plugins:{legend:{display:true,position:'top',labels:{font:{family:"'JetBrains Mono'",size:8},color:'#6b6860',boxWidth:10,padding:12}},tooltip:{...chartDefaults.plugins.tooltip,callbacks:{label:c=>c.dataset.label+': Q '+c.parsed.y.toFixed(2)}}},scales:{x:{...chartDefaults.scales.x,ticks:{...chartDefaults.scales.x.ticks,maxTicksLimit:8}},y:{...chartDefaults.scales.y,min:0,ticks:{...chartDefaults.scales.y.ticks,callback:v=>'Q '+v.toFixed(2)}}}})});}
-
-  // Gráfica 4: Flujo anual proyectado
-  destroyChart('chart-flujo-anual');
-  const ctx4=document.getElementById('chart-flujo-anual')?.getContext('2d');
-  if(ctx4){const anos=Array.from({length:ECO.VIDA_UTIL_ANOS},(_,i)=>'Año '+(i+1));const ingA=anos.map(()=>+ingresoAnio.toFixed(0));const cEA=anos.map(()=>+costoEnAnio.toFixed(0));let ac=-ECO.CAPEX_Q;const acArr=anos.map(()=>{ac+=flujoNeto;return +ac.toFixed(0);});chartRegistry['chart-flujo-anual']=new Chart(ctx4,{type:'bar',data:{labels:anos,datasets:[{label:'Ingreso bruto',data:ingA,backgroundColor:'rgba(26,92,56,0.6)',borderColor:'#1a5c38',borderWidth:1.5,borderRadius:3},{label:'Costo energía',data:cEA,backgroundColor:'rgba(149,31,31,0.55)',borderColor:'#951f1f',borderWidth:1.5,borderRadius:3},{type:'line',label:'Flujo acumulado',data:acArr,borderColor:'#1c3f6e',borderWidth:2.5,pointRadius:4,pointHoverRadius:7,pointBackgroundColor:'#fff',pointBorderColor:'#1c3f6e',pointBorderWidth:2,fill:false,tension:0.3,yAxisID:'y2'}]},options:mergeOpts({interaction:{mode:'index',intersect:false},plugins:{legend:{display:true,position:'top',labels:{font:{family:"'JetBrains Mono'",size:8},color:'#6b6860',boxWidth:10,padding:12}},tooltip:{...chartDefaults.plugins.tooltip,callbacks:{label:c=>c.dataset.label+': Q '+c.parsed.y.toFixed(0)}}},scales:{x:{...chartDefaults.scales.x},y:{...chartDefaults.scales.y,ticks:{...chartDefaults.scales.y.ticks,callback:v=>'Q '+v.toFixed(0)}},y2:{type:'linear',position:'right',grid:{display:false},ticks:{color:'#1c3f6e',font:{family:"'JetBrains Mono'",size:8},callback:v=>'Q '+v.toFixed(0)},border:{color:'rgba(28,63,110,0.15)'}}}})});}
-
-  // Gráfica 5: Scatter costo/litro vs humedad
-  destroyChart('chart-eco-scatter-hum');
-  const ctx5=document.getElementById('chart-eco-scatter-hum')?.getContext('2d');
-  if(ctx5&&hum&&hum.length){
-    // Emparejar lecturas de nivel con humedad más cercana en el tiempo
-    const pts=[];
-    const humPts=hum.map((h,i)=>({h,i})).filter(p=>p.h!=null);
-    series.filter(s=>s.cL).forEach((s,si)=>{
-      if(humPts.length){const closest=humPts[Math.min(si,humPts.length-1)];pts.push({x:closest.h,y:+s.cL.c.toFixed(4)});}
+  const ctx1 = document.getElementById('chart-eco-inversion')?.getContext('2d');
+  if (ctx1) {
+    chartRegistry['chart-eco-inversion'] = new Chart(ctx1, {
+      type: 'line',
+      data: { labels: xL, datasets: [
+        { label: 'Máx (900W)', data: series.map(p => +p.cAc.mx.toFixed(2)),
+          borderColor: 'rgba(28,63,110,0.2)', borderWidth: 1, borderDash: [4,3],
+          pointRadius: 0, fill: '+1', backgroundColor: 'rgba(28,63,110,0.07)', tension: 0.3 },
+        { label: 'Central (750W)', data: series.map(p => +p.cAc.c.toFixed(2)),
+          borderColor: '#1c3f6e', borderWidth: 2.5, pointRadius: 0, pointHoverRadius: 6,
+          fill: false, tension: 0.3 },
+        { label: 'Mín (600W)', data: series.map(p => +p.cAc.mn.toFixed(2)),
+          borderColor: 'rgba(28,63,110,0.2)', borderWidth: 1, borderDash: [4,3],
+          pointRadius: 0, fill: '-1', backgroundColor: 'rgba(28,63,110,0.07)', tension: 0.3 },
+      ]},
+      options: mergeOpts({ interaction: { mode: 'index', intersect: false },
+        plugins: { legend: { display: true, position: 'top', labels: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6860', boxWidth: 10, padding: 12 } },
+          tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: c => c.dataset.label + ': Q ' + c.parsed.y.toFixed(2) } } },
+        scales: { x: { ...chartDefaults.scales.x, ticks: { ...chartDefaults.scales.x.ticks, maxTicksLimit: 8 } },
+          y: { ...chartDefaults.scales.y, min: 0, ticks: { ...chartDefaults.scales.y.ticks, callback: v => 'Q ' + v.toFixed(2) } } } })
     });
-    if(pts.length>2){
-      const xs=pts.map(p=>p.x),ys=pts.map(p=>p.y);
-      const xm=xs.reduce((a,b)=>a+b,0)/xs.length,ym=ys.reduce((a,b)=>a+b,0)/ys.length;
-      const num=xs.reduce((a,v,i)=>a+(v-xm)*(ys[i]-ym),0),den=xs.reduce((a,v)=>a+(v-xm)**2,0);
-      const slope=den?num/den:0,inter=ym-slope*xm;
-      const xMin=Math.min(...xs),xMax=Math.max(...xs);
-      chartRegistry['chart-eco-scatter-hum']=new Chart(ctx5,{type:'scatter',data:{datasets:[{label:'Q/L vs %HR',data:pts,backgroundColor:'rgba(28,63,110,0.35)',borderColor:'#1c3f6e',borderWidth:1,pointRadius:4,pointHoverRadius:7},{type:'line',label:'Regresión lineal',data:[{x:xMin,y:slope*xMin+inter},{x:xMax,y:slope*xMax+inter}],borderColor:'#b05c00',borderWidth:2,borderDash:[5,3],pointRadius:0,fill:false}]},options:mergeOpts({plugins:{legend:{display:true,position:'top',labels:{font:{family:"'JetBrains Mono'",size:8},color:'#6b6860',boxWidth:10,padding:12}},tooltip:{...chartDefaults.plugins.tooltip,callbacks:{label:c=>c.dataset.label===undefined?c.parsed.y.toFixed(4)+' Q/L @ '+c.parsed.x+'%':c.dataset.label}}},scales:{x:{...chartDefaults.scales.x,title:{display:true,text:'Humedad relativa (%)',color:'#a09e98',font:{family:"'JetBrains Mono'",size:8}}},y:{...chartDefaults.scales.y,min:0,title:{display:true,text:'Costo Q/L',color:'#a09e98',font:{family:"'JetBrains Mono'",size:8}},ticks:{...chartDefaults.scales.y.ticks,callback:v=>'Q '+v.toFixed(3)}}}})});
+  }
+
+  // Gráfica 2: Costo por litro con banda
+  destroyChart('chart-eco-costo-litro');
+  const ctx2 = document.getElementById('chart-eco-costo-litro')?.getContext('2d');
+  if (ctx2) {
+    const cLMx = series.map(p => p.cL ? +p.cL.mx.toFixed(4) : null);
+    const cLCn = series.map(p => p.cL ? +p.cL.c.toFixed(4)  : null);
+    const cLMn = series.map(p => p.cL ? +p.cL.mn.toFixed(4) : null);
+    chartRegistry['chart-eco-costo-litro'] = new Chart(ctx2, {
+      type: 'line',
+      data: { labels: xL, datasets: [
+        { label: 'Máx Q/L (900W)', data: cLMx, borderColor: 'rgba(176,92,0,0.25)', borderWidth: 1,
+          borderDash: [4,3], pointRadius: 0, fill: '+1', backgroundColor: 'rgba(176,92,0,0.07)', tension: 0.3 },
+        { label: 'Central Q/L (750W)', data: cLCn, borderColor: '#b05c00', borderWidth: 2.5,
+          pointRadius: 0, pointHoverRadius: 6, fill: false, tension: 0.3 },
+        { label: 'Mín Q/L (600W)', data: cLMn, borderColor: 'rgba(176,92,0,0.25)', borderWidth: 1,
+          borderDash: [4,3], pointRadius: 0, fill: '-1', backgroundColor: 'rgba(176,92,0,0.07)', tension: 0.3 },
+      ]},
+      options: mergeOpts({ interaction: { mode: 'index', intersect: false },
+        plugins: { legend: { display: true, position: 'top', labels: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6860', boxWidth: 10, padding: 12 } },
+          tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: c => c.dataset.label + ': Q ' + (c.parsed.y||0).toFixed(3) + '/L' } } },
+        scales: { x: { ...chartDefaults.scales.x, ticks: { ...chartDefaults.scales.x.ticks, maxTicksLimit: 8 } },
+          y: { ...chartDefaults.scales.y, min: 0, ticks: { ...chartDefaults.scales.y.ticks, callback: v => 'Q ' + v.toFixed(3) } } } })
+    });
+  }
+
+  // Gráfica 3: Costo garrafón vs mercado
+  destroyChart('chart-eco-garrafon');
+  const ctx3 = document.getElementById('chart-eco-garrafon')?.getContext('2d');
+  if (ctx3) {
+    const n = xL.length;
+    const gMx = series.map(p => p.cL ? +(p.cL.mx * ECO.GARRAFON_L).toFixed(2) : null);
+    const gCn = series.map(p => p.cL ? +(p.cL.c  * ECO.GARRAFON_L).toFixed(2) : null);
+    const gMn = series.map(p => p.cL ? +(p.cL.mn * ECO.GARRAFON_L).toFixed(2) : null);
+    chartRegistry['chart-eco-garrafon'] = new Chart(ctx3, {
+      type: 'line',
+      data: { labels: xL, datasets: [
+        { label: 'Costo máx (900W)', data: gMx, borderColor: 'rgba(28,63,110,0.2)', borderWidth: 1,
+          borderDash: [4,3], pointRadius: 0, fill: '+1', backgroundColor: 'rgba(28,63,110,0.07)', tension: 0.3 },
+        { label: 'Costo propio (750W)', data: gCn, borderColor: '#1c3f6e', borderWidth: 2.5,
+          pointRadius: 0, pointHoverRadius: 6, fill: false, tension: 0.3 },
+        { label: 'Costo mín (600W)', data: gMn, borderColor: 'rgba(28,63,110,0.2)', borderWidth: 1,
+          borderDash: [4,3], pointRadius: 0, fill: '-1', backgroundColor: 'rgba(28,63,110,0.07)', tension: 0.3 },
+        { label: 'Mercado máx Q19', data: Array(n).fill(ECO.PRECIO_MKT_MAX),
+          borderColor: 'rgba(149,31,31,0.45)', borderWidth: 1.5, borderDash: [6,3], pointRadius: 0, fill: false },
+        { label: 'Mercado medio Q13.50', data: Array(n).fill(ECO.PRECIO_MKT_MED),
+          borderColor: 'rgba(26,92,56,0.8)', borderWidth: 2, borderDash: [6,3], pointRadius: 0, fill: false },
+        { label: 'Mercado mín Q8', data: Array(n).fill(ECO.PRECIO_MKT_MIN),
+          borderColor: 'rgba(149,31,31,0.3)', borderWidth: 1, borderDash: [6,3], pointRadius: 0, fill: false },
+      ]},
+      options: mergeOpts({ interaction: { mode: 'index', intersect: false },
+        plugins: { legend: { display: true, position: 'top', labels: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6860', boxWidth: 10, padding: 12 } },
+          tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: c => c.dataset.label + ': Q ' + (c.parsed.y||0).toFixed(2) } } },
+        scales: { x: { ...chartDefaults.scales.x, ticks: { ...chartDefaults.scales.x.ticks, maxTicksLimit: 8 } },
+          y: { ...chartDefaults.scales.y, min: 0, ticks: { ...chartDefaults.scales.y.ticks, callback: v => 'Q ' + v.toFixed(2) } } } })
+    });
+  }
+
+  // Gráfica 4: Scatter costo/litro vs humedad
+  destroyChart('chart-eco-scatter-hum');
+  const ctx5 = document.getElementById('chart-eco-scatter-hum')?.getContext('2d');
+  if (ctx5 && hum && hum.length) {
+    const humValidos = hum.map((h, i) => ({ h, i })).filter(p => p.h != null);
+    const pts = [];
+    series.filter(s => s.cL).forEach((s, si) => {
+      if (humValidos.length) {
+        const closest = humValidos[Math.min(si, humValidos.length - 1)];
+        pts.push({ x: closest.h, y: +s.cL.c.toFixed(4) });
+      }
+    });
+    if (pts.length > 2) {
+      const xs = pts.map(p => p.x), ys = pts.map(p => p.y);
+      const xm = xs.reduce((a,b) => a+b, 0) / xs.length;
+      const ym = ys.reduce((a,b) => a+b, 0) / ys.length;
+      const num = xs.reduce((a,v,i) => a + (v-xm)*(ys[i]-ym), 0);
+      const den = xs.reduce((a,v) => a + (v-xm)**2, 0);
+      const slope = den ? num/den : 0, inter = ym - slope*xm;
+      const xMin = Math.min(...xs), xMax = Math.max(...xs);
+      chartRegistry['chart-eco-scatter-hum'] = new Chart(ctx5, {
+        type: 'scatter',
+        data: { datasets: [
+          { label: 'Q/L vs %HR', data: pts, backgroundColor: 'rgba(28,63,110,0.35)',
+            borderColor: '#1c3f6e', borderWidth: 1, pointRadius: 4, pointHoverRadius: 7 },
+          { type: 'line', label: 'Regresión lineal', data: [{ x: xMin, y: slope*xMin+inter }, { x: xMax, y: slope*xMax+inter }],
+            borderColor: '#b05c00', borderWidth: 2, borderDash: [5,3], pointRadius: 0, fill: false },
+        ]},
+        options: mergeOpts({
+          plugins: { legend: { display: true, position: 'top', labels: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6860', boxWidth: 10, padding: 12 } },
+            tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: c => 'Q ' + (c.parsed.y||0).toFixed(3) + '/L @ ' + (c.parsed.x||0).toFixed(1) + '% HR' } } },
+          scales: {
+            x: { ...chartDefaults.scales.x, title: { display: true, text: 'Humedad relativa (%)', color: '#a09e98', font: { family: "'JetBrains Mono'", size: 8 } } },
+            y: { ...chartDefaults.scales.y, min: 0, title: { display: true, text: 'Costo Q/L', color: '#a09e98', font: { family: "'JetBrains Mono'", size: 8 } },
+              ticks: { ...chartDefaults.scales.y.ticks, callback: v => 'Q ' + v.toFixed(3) } } } })
+      });
     }
   }
-}
-
-// ─── EXPORT XLSX ──────────────────────────────────────────────────────
-function exportXLSX() {
-  if(!globalPayload) return;
-  const s=globalPayload.series;
-  const wb=XLSX.utils.book_new();
-  if(s.labels_nivel&&s.nivel_l){const rows=[['Timestamp','Volumen (L)'],...s.labels_nivel.map((l,i)=>[l,s.nivel_l[i]])];XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(rows),'Nivel');}
-  if(s.labels&&s.temp_c){const rows=[['Timestamp','Temp(°C)','HR(%)','RocioC','PresioninHg','VientoKmh','LluviaMm','SolarWm2','UV'],...s.labels.map((l,i)=>[l,s.temp_c[i],s.humedad_pct[i],s.punto_rocio_c[i],s.presion_inhg[i],s.viento_kmh[i],s.lluvia_hora_mm[i],s.radiacion_solar_wm2[i],s.uv[i]])];XLSX.utils.book_append_sheet(wb,XLSX.utils.aoa_to_sheet(rows),'Clima');}
-  XLSX.writeFile(wb,'AWA05_'+new Date().toISOString().slice(0,10)+'.xlsx');
 }
 
 // ─── RENDER DASHBOARD ─────────────────────────────────────────────────
+
 async function renderDashboard() {
   const payload = await fetchData();
   globalPayload = payload;
