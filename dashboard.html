@@ -141,7 +141,7 @@
     /* Legend */
     .legend-row{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:10px}
     .legend-item{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:8px;color:var(--muted);letter-spacing:0.04em}
-    .legend-dot{width:8px;height:3px;border-radius:1px}
+    .legend-dot{width:18px;height:2px;border-radius:0}
 
     /* CORRELATION */
     .corr-card{background:var(--surface);border:1px solid var(--border);border-radius:3px;padding:20px 22px;box-shadow:var(--shadow-sm)}
@@ -694,23 +694,26 @@
     function renderProduccionAnalisis(rawLabels, nivel) {
       if (!rawLabels || rawLabels.length < 2) return;
 
-      // Agrupa datos por día y período
-      const HORA_DIURNO_INI = 5.5;  // 05:30
-      const HORA_DIURNO_FIN = 18.5; // 18:30
+      const HORA_DIURNO_INI = 5.5;
+      const HORA_DIURNO_FIN = 18.5;
 
-      // Parse timestamps
+      // Parse timestamps — supports "2026-04-23 12:29:11" and "HH:MM"
       const puntos = rawLabels.map((l, i) => {
-        let dt;
-        if (l.length > 5) {
-          dt = new Date(l.replace(' ', 'T'));
+        if (!l || nivel[i] === null || nivel[i] === undefined) return null;
+        let fecha, hora;
+        if (l.length >= 16) {
+          // Full timestamp: "2026-04-23 12:29:11"
+          fecha = l.substring(0, 10);
+          const hh = parseInt(l.substring(11, 13));
+          const mm = parseInt(l.substring(14, 16));
+          hora = hh + mm / 60;
         } else {
+          // HH:MM only — skip, can't assign date
           return null;
         }
-        const hora = dt.getHours() + dt.getMinutes() / 60;
-        const fecha = l.substring(0, 10);
         const diurno = hora >= HORA_DIURNO_INI && hora < HORA_DIURNO_FIN;
         return { fecha, hora, diurno, vol: nivel[i], idx: i };
-      }).filter(p => p !== null && p.vol !== null && p.vol !== undefined);
+      }).filter(p => p !== null);
 
       if (puntos.length < 2) return;
 
