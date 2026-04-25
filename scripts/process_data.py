@@ -78,19 +78,23 @@ def generar_dashboard_json():
             row["volumen_litros"] = str(prev_vol)
         nivel_filtrado.append(row)
     nivel_r = nivel_filtrado
-    labels = [f["timestamp"][11:16] for f in clima_r] if clima_r else [f["timestamp"][11:16] for f in nivel_r]
+    # Labels y series de nivel usan sus propios timestamps
+    labels_nivel = [f["timestamp"][11:16] for f in nivel_r]
     nivel_l = [round(float(f["volumen_litros"]), 2) for f in nivel_r if f.get("volumen_litros")]
-    while len(nivel_l) < len(labels):
-        nivel_l.insert(0, None)
-    humedad  = [round(float(f["humedad"]), 1) for f in clima_r if f.get("humedad") and f["humedad"] != "N/A"]
-    temp_c   = [f_a_c(f["temp_exterior"]) for f in clima_r if f.get("temp_exterior") and f["temp_exterior"] != "N/A"]
-    rocio_c  = [f_a_c(f["punto_rocio"]) for f in clima_r if f.get("punto_rocio") and f["punto_rocio"] != "N/A"]
-    presion  = [round(float(f["presion"]), 3) for f in clima_r if f.get("presion") and f["presion"] != "N/A"]
-    viento   = [mph_a_kmh(f["viento_vel"]) for f in clima_r if f.get("viento_vel") and f["viento_vel"] != "N/A"]
-    dir_v    = [round(float(f["viento_dir"]), 0) for f in clima_r if f.get("viento_dir") and f["viento_dir"] != "N/A"]
-    lluvia   = [round(float(f["lluvia_hora"]), 2) for f in clima_r if f.get("lluvia_hora") and f["lluvia_hora"] != "N/A"]
-    solar    = [round(float(f["radiacion_solar"]), 1) for f in clima_r if f.get("radiacion_solar") and f["radiacion_solar"] != "N/A"]
-    uv       = [round(float(f["uv"]), 1) for f in clima_r if f.get("uv") and f["uv"] != "N/A"]
+
+    # Clima: submuestrear a 1 registro cada 4 (aprox 1 cada hora)
+    paso = max(1, len(clima_r) // 96)
+    clima_sub = clima_r[::paso]
+    labels = [f["timestamp"][11:16] for f in clima_sub] if clima_sub else labels_nivel
+    humedad  = [round(float(f["humedad"]), 1) for f in clima_sub if f.get("humedad") and f["humedad"] != "N/A"]
+    temp_c   = [f_a_c(f["temp_exterior"]) for f in clima_sub if f.get("temp_exterior") and f["temp_exterior"] != "N/A"]
+    rocio_c  = [f_a_c(f["punto_rocio"]) for f in clima_sub if f.get("punto_rocio") and f["punto_rocio"] != "N/A"]
+    presion  = [round(float(f["presion"]), 3) for f in clima_sub if f.get("presion") and f["presion"] != "N/A"]
+    viento   = [mph_a_kmh(f["viento_vel"]) for f in clima_sub if f.get("viento_vel") and f["viento_vel"] != "N/A"]
+    dir_v    = [round(float(f["viento_dir"]), 0) for f in clima_sub if f.get("viento_dir") and f["viento_dir"] != "N/A"]
+    lluvia   = [round(float(f["lluvia_hora"]), 2) for f in clima_sub if f.get("lluvia_hora") and f["lluvia_hora"] != "N/A"]
+    solar    = [round(float(f["radiacion_solar"]), 1) for f in clima_sub if f.get("radiacion_solar") and f["radiacion_solar"] != "N/A"]
+    uv       = [round(float(f["uv"]), 1) for f in clima_sub if f.get("uv") and f["uv"] != "N/A"]
     ultima_nivel  = nivel[-1] if nivel else {}
     ultima_clima  = clima[-1] if clima else {}
     kpis = {
@@ -111,6 +115,7 @@ def generar_dashboard_json():
         "sistema": estado_sistema(),
         "series": {
             "labels":              labels,
+            "labels_nivel":        labels_nivel,
             "nivel_l":             nivel_l,
             "humedad_pct":         humedad,
             "temp_c":              temp_c,
