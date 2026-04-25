@@ -53,9 +53,31 @@ def generar_dashboard_json():
     os.makedirs("data/processed", exist_ok=True)
     nivel = leer_csv(RUTA_NIVEL)
     clima = leer_csv(RUTA_CLIMA)
-    limite = 24
+    limite = 9999
     nivel_r = nivel[-limite:]
     clima_r = clima[-limite:]
+
+    # Filtro outliers: no puede bajar menos de 5L (salvo vaciado) ni subir mas de 6L
+    nivel_filtrado = []
+    for i, row in enumerate(nivel_r):
+        try:
+            vol = float(row["volumen_litros"])
+        except:
+            nivel_filtrado.append(row)
+            continue
+        if i == 0:
+            nivel_filtrado.append(row)
+            continue
+        prev_vol = float(nivel_filtrado[-1]["volumen_litros"])
+        diff = vol - prev_vol
+        if diff > 6:          # pico exagerado hacia arriba
+            row = dict(row)
+            row["volumen_litros"] = str(prev_vol)
+        elif diff < 0 and diff > -5:  # baja poco = outlier por viento
+            row = dict(row)
+            row["volumen_litros"] = str(prev_vol)
+        nivel_filtrado.append(row)
+    nivel_r = nivel_filtrado
     labels = [f["timestamp"][11:16] for f in clima_r] if clima_r else [f["timestamp"][11:16] for f in nivel_r]
     nivel_l = [round(float(f["volumen_litros"]), 2) for f in nivel_r if f.get("volumen_litros")]
     while len(nivel_l) < len(labels):
