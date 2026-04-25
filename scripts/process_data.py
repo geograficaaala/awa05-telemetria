@@ -79,13 +79,13 @@ def generar_dashboard_json():
         nivel_filtrado.append(row)
     nivel_r = nivel_filtrado
     # Labels y series de nivel usan sus propios timestamps
-    labels_nivel = [f["timestamp"][11:16] for f in nivel_r]
+    labels_nivel = [f["timestamp"] for f in nivel_r]
     nivel_l = [round(float(f["volumen_litros"]), 2) for f in nivel_r if f.get("volumen_litros")]
 
     # Clima: submuestrear a 1 registro cada 4 (aprox 1 cada hora)
     paso = max(1, len(clima_r) // 96)
     clima_sub = clima_r[::paso]
-    labels = [f["timestamp"][11:16] for f in clima_sub] if clima_sub else labels_nivel
+    labels = [f["timestamp"] for f in clima_sub] if clima_sub else labels_nivel
     humedad  = [round(float(f["humedad"]), 1) for f in clima_sub if f.get("humedad") and f["humedad"] != "N/A"]
     temp_c   = [f_a_c(f["temp_exterior"]) for f in clima_sub if f.get("temp_exterior") and f["temp_exterior"] != "N/A"]
     rocio_c  = [f_a_c(f["punto_rocio"]) for f in clima_sub if f.get("punto_rocio") and f["punto_rocio"] != "N/A"]
