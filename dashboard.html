@@ -12,47 +12,40 @@
       --bg:#f0f8ff;--bg-alt:#e6f4fc;--surface:#ffffff;--surface-2:#f4fbff;--surface-3:#e8f6fd;
       --border:rgba(100,170,220,0.22);--border-strong:rgba(70,150,210,0.35);
       --primary:#1a7ab5;--primary-mid:#2d9fd4;--primary-light:#5bbde8;--primary-pale:rgba(45,159,212,0.1);
-      --accent:#0099cc;--accent-dim:rgba(0,153,204,0.1);
-      --cyan:#17b8d4;--cyan-pale:rgba(23,184,212,0.1);
-      --green:#1a9e6a;--green-pale:rgba(26,158,106,0.1);
+      --accent:#0099cc;--cyan:#17b8d4;--cyan-pale:rgba(23,184,212,0.1);
+      --green:#1a9e6a;--green-pale:rgba(26,158,106,0.12);
       --yellow:#c47a00;--yellow-pale:rgba(196,122,0,0.1);
       --red:#c0392b;--red-pale:rgba(192,57,43,0.1);
       --text:#0d2a40;--text-mid:#1e5070;--muted:#4a7a9b;
       --mono:'DM Mono',monospace;--sans:'DM Sans',sans-serif;
-      --shadow-sm:0 2px 10px rgba(26,122,181,0.08);--shadow-md:0 6px 24px rgba(26,122,181,0.12);--shadow-lg:0 16px 48px rgba(26,122,181,0.16);
-      --glow:0 0 20px rgba(45,159,212,0.1);
+      --shadow-sm:0 2px 10px rgba(26,122,181,0.08);--shadow-md:0 6px 24px rgba(26,122,181,0.12);
     }
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
     html{scroll-behavior:smooth}
     body{background:var(--bg);color:var(--text);font-family:var(--sans);font-size:13px;overflow-x:hidden}
-
-    /* Subtle grid background */
-    body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(rgba(45,159,212,0.05) 1px,transparent 1px),linear-gradient(90deg,rgba(45,159,212,0.05) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
-    body::after{content:"";position:fixed;inset:0;background:radial-gradient(ellipse 70% 50% at 50% 0%,rgba(45,159,212,0.04) 0%,transparent 60%);pointer-events:none;z-index:0}
-
-    @keyframes gridPulse{0%,100%{opacity:0.5}50%{opacity:1}}
-    @keyframes fadeInUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
-    @keyframes slideInLeft{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
+    body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(rgba(45,159,212,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(45,159,212,0.04) 1px,transparent 1px);background-size:48px 48px;pointer-events:none;z-index:0}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
     @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
-    @keyframes glow{0%,100%{box-shadow:0 0 8px rgba(45,159,212,0.15)}50%{box-shadow:0 0 18px rgba(45,159,212,0.3)}}
 
     /* HEADER */
-    header{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 28px;height:56px;background:rgba(240,248,255,0.95);border-bottom:1px solid var(--border-strong);backdrop-filter:blur(20px);box-shadow:var(--shadow-sm)}
-    .header-left{display:flex;align-items:center;gap:16px}
-    .header-right{display:flex;align-items:center;gap:8px}
-    .h-wordmark{font-family:var(--sans);font-size:15px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary)}
-    .h-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);animation:pulse 2s ease-in-out infinite;box-shadow:0 0 6px var(--cyan)}
-    .h-sep{width:1px;height:20px;background:var(--border-strong)}
-    .h-title{font-family:var(--mono);font-size:10px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase}
-    .h-logo{height:32px;width:auto;object-fit:contain}
-    .btn{display:inline-flex;align-items:center;gap:5px;padding:7px 15px;border-radius:6px;border:1px solid var(--border-strong);background:var(--surface);color:var(--primary);font-family:var(--sans);font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.18s}
-    .btn:hover{background:var(--primary-pale);border-color:var(--primary-mid);color:var(--primary)}
+    header{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify-content:space-between;gap:12px;padding:0 24px;height:54px;background:rgba(240,248,255,0.96);border-bottom:1px solid var(--border-strong);backdrop-filter:blur(20px);box-shadow:var(--shadow-sm)}
+    .header-left{display:flex;align-items:center;gap:14px;flex:1;min-width:0}
+    .header-center{display:flex;align-items:center;gap:8px;flex-shrink:0}
+    .header-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+    .h-wordmark{font-family:var(--sans);font-size:14px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:var(--primary);white-space:nowrap}
+    .h-dot{width:7px;height:7px;border-radius:50%;background:var(--cyan);animation:pulse 2s ease-in-out infinite;flex-shrink:0}
+    .h-sep{width:1px;height:18px;background:var(--border-strong);flex-shrink:0}
+    .h-title{font-family:var(--mono);font-size:9px;color:var(--muted);letter-spacing:0.1em;text-transform:uppercase;white-space:nowrap}
+    .h-ts{font-family:var(--mono);font-size:9px;color:var(--primary);background:var(--primary-pale);border:1px solid var(--border-strong);border-radius:4px;padding:3px 10px;white-space:nowrap}
+    .h-logo{height:30px;width:auto;object-fit:contain}
+    .btn{display:inline-flex;align-items:center;gap:5px;padding:6px 13px;border-radius:6px;border:1px solid var(--border-strong);background:var(--surface);color:var(--primary);font-family:var(--sans);font-size:11px;font-weight:600;cursor:pointer;text-decoration:none;transition:all 0.18s;white-space:nowrap}
+    .btn:hover{background:var(--primary-pale);border-color:var(--primary-mid)}
     .btn-accent{background:var(--primary);color:#fff;border-color:var(--primary)}
     .btn-accent:hover{background:var(--primary-mid);border-color:var(--primary-mid)}
 
     /* LAYOUT */
-    .layout{position:relative;z-index:1;display:grid;grid-template-columns:188px 1fr;min-height:calc(100vh - 56px)}
-    .sidebar{position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;padding:16px 0;border-right:1px solid var(--border);background:var(--surface)}
+    .layout{position:relative;z-index:1;display:grid;grid-template-columns:188px 1fr;min-height:calc(100vh - 54px)}
+    .sidebar{position:sticky;top:54px;height:calc(100vh - 54px);overflow-y:auto;padding:16px 0;border-right:1px solid var(--border);background:var(--surface)}
     .sidebar::-webkit-scrollbar{width:3px}
     .sidebar::-webkit-scrollbar-thumb{background:var(--border-strong);border-radius:999px}
     .sb-section-label{font-family:var(--mono);font-size:8px;font-weight:500;text-transform:uppercase;letter-spacing:0.16em;color:var(--muted);padding:12px 14px 4px}
@@ -60,36 +53,38 @@
     .sb-link::before{content:"";width:5px;height:5px;border-radius:50%;background:var(--border-strong);flex-shrink:0;transition:all 0.15s}
     .sb-link:hover,.sb-link.active{color:var(--primary);background:var(--primary-pale);border-left-color:var(--primary)}
     .sb-link:hover::before,.sb-link.active::before{background:var(--primary)}
-    .sb-kpi{margin:5px 10px;padding:10px 12px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px;transition:border-color 0.2s}
-    .sb-kpi:hover{border-color:var(--border-strong)}
+    .sb-kpi{margin:5px 10px;padding:10px 12px;background:var(--surface-2);border:1px solid var(--border);border-radius:8px}
     .sb-kpi-label{font-family:var(--mono);font-size:8px;font-weight:500;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted)}
     .sb-kpi-val{font-family:var(--sans);font-size:20px;font-weight:700;color:var(--primary);margin-top:2px}
     .sb-kpi-unit{font-family:var(--sans);font-size:12px;color:var(--muted);font-weight:400}
 
     /* MAIN */
-    main{padding:22px 26px;display:flex;flex-direction:column;gap:24px}
+    main{padding:20px 24px;display:flex;flex-direction:column;gap:22px}
     section{animation:fadeInUp 0.5s ease both}
     section:nth-child(2){animation-delay:0.07s}section:nth-child(3){animation-delay:0.12s}
     section:nth-child(4){animation-delay:0.17s}section:nth-child(5){animation-delay:0.22s}
-    section:nth-child(6){animation-delay:0.27s}section:nth-child(7){animation-delay:0.32s}
+    section:nth-child(6){animation-delay:0.27s}
 
     .section-tag{font-family:var(--mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.18em;color:var(--accent);margin-bottom:3px}
-    .section-title{font-family:var(--sans);font-size:20px;font-weight:700;color:var(--text)}
-    .section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:14px;gap:12px}
+    .section-title{font-family:var(--sans);font-size:19px;font-weight:700;color:var(--text)}
+    .section-header{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:13px;gap:12px}
 
     /* HERO */
-    .hero-panel{background:var(--surface);border:1px solid var(--border-strong);border-radius:14px;padding:24px 26px;box-shadow:var(--shadow-md);position:relative;overflow:hidden}
+    .hero-panel{background:var(--surface);border:1px solid var(--border-strong);border-radius:14px;padding:22px 24px;box-shadow:var(--shadow-md);position:relative;overflow:hidden}
     .hero-panel::before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--primary),var(--cyan),var(--primary-light))}
-    .hero-panel::after{content:"";position:absolute;top:0;right:0;width:35%;height:100%;background:radial-gradient(ellipse at 80% 30%,rgba(45,159,212,0.04) 0%,transparent 70%);pointer-events:none}
-    .hero-panel h1{font-family:var(--sans);font-size:clamp(22px,3vw,36px);font-weight:700;color:var(--text);margin-bottom:4px}
+    .hero-panel h1{font-family:var(--sans);font-size:clamp(20px,3vw,34px);font-weight:700;color:var(--text);margin-bottom:4px}
     .hero-panel h1 span{color:var(--primary)}
-    .hero-sub{font-family:var(--sans);font-size:12px;color:var(--muted);margin-bottom:18px;max-width:560px;line-height:1.7}
-    .hero-tag-row{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap}
+    .hero-sub{font-family:var(--sans);font-size:12px;color:var(--muted);margin-bottom:16px;max-width:560px;line-height:1.7}
+    .hero-tag-row{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap}
     .hero-tag{font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:3px 10px;border-radius:4px;border:1px solid var(--border-strong);color:var(--muted);background:var(--surface-2)}
+    /* Garrafones counter */
+    .garrafon-badge{display:inline-flex;align-items:center;gap:8px;background:var(--green-pale);border:1px solid rgba(26,158,106,0.3);border-radius:8px;padding:8px 16px;margin-bottom:14px}
+    .garrafon-count{font-family:var(--sans);font-size:28px;font-weight:700;color:var(--green);line-height:1}
+    .garrafon-label{font-family:var(--mono);font-size:9px;color:var(--green);text-transform:uppercase;letter-spacing:0.1em}
 
     /* KPI CARDS */
-    .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
-    .kpi-card{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:14px 16px;position:relative;overflow:hidden;transition:all 0.2s;cursor:default}
+    .kpi-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:9px}
+    .kpi-card{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;padding:13px 15px;position:relative;overflow:hidden;transition:all 0.2s;cursor:default}
     .kpi-card:hover{border-color:var(--border-strong);box-shadow:var(--shadow-sm);transform:translateY(-2px)}
     .kpi-card::after{content:"";position:absolute;bottom:0;left:0;right:0;height:2px}
     .kc-1::after{background:linear-gradient(90deg,var(--primary),var(--cyan))}
@@ -98,18 +93,18 @@
     .kc-4::after{background:linear-gradient(90deg,var(--cyan),var(--primary))}
     .kc-5::after{background:linear-gradient(90deg,var(--primary),#6ab8d8)}
     .kc-6::after{background:linear-gradient(90deg,var(--primary-mid),var(--cyan))}
-    .kpi-label{font-family:var(--mono);font-size:8px;font-weight:500;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:6px}
-    .kpi-val{font-family:var(--sans);font-size:28px;font-weight:700;color:var(--primary);line-height:1}
-    .kpi-unit{font-family:var(--sans);font-size:13px;color:var(--muted);font-weight:400}
-    .kpi-meta{font-family:var(--mono);font-size:9px;color:var(--muted);margin-top:5px}
+    .kpi-label{font-family:var(--mono);font-size:8px;font-weight:500;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:5px}
+    .kpi-val{font-family:var(--sans);font-size:26px;font-weight:700;color:var(--primary);line-height:1}
+    .kpi-unit{font-family:var(--sans);font-size:12px;color:var(--muted);font-weight:400}
+    .kpi-meta{font-family:var(--mono);font-size:8px;color:var(--muted);margin-top:5px}
     .trend-up{color:var(--green)}.trend-down{color:var(--red)}
 
     /* PI PANEL */
-    .pi-panel{background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow-sm)}
-    .pi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:10px;margin-top:14px}
-    .pi-metric{background:var(--surface-2);border:1px solid var(--border);border-radius:9px;padding:12px 14px;transition:border-color 0.2s}
+    .pi-panel{background:var(--surface);border:1px solid var(--border-strong);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow-sm)}
+    .pi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:9px;margin-top:12px}
+    .pi-metric{background:var(--surface-2);border:1px solid var(--border);border-radius:9px;padding:11px 13px;transition:border-color 0.2s}
     .pi-metric-label{font-family:var(--mono);font-size:8px;text-transform:uppercase;letter-spacing:0.12em;color:var(--muted);margin-bottom:6px}
-    .pi-metric-val{font-family:var(--sans);font-size:22px;font-weight:700;color:var(--primary)}
+    .pi-metric-val{font-family:var(--sans);font-size:21px;font-weight:700;color:var(--primary)}
     .pi-metric-unit{font-family:var(--sans);font-size:11px;color:var(--muted);font-weight:400}
     .pi-bar-wrap{height:3px;background:var(--surface-3);border-radius:999px;margin-top:8px;overflow:hidden}
     .pi-bar-fill{height:100%;border-radius:999px;transition:width 1s cubic-bezier(0.4,0,0.2,1)}
@@ -121,44 +116,48 @@
     .badge-crit{background:var(--red-pale);color:var(--red);border:1px solid rgba(192,57,43,0.25)}
 
     /* EXPORT */
-    .export-bar{display:flex;align-items:center;gap:8px;padding:12px 18px;background:var(--surface);border:1px solid var(--border-strong);border-radius:10px;flex-wrap:wrap;box-shadow:var(--shadow-sm)}
+    .export-bar{display:flex;align-items:center;gap:8px;padding:11px 16px;background:var(--surface);border:1px solid var(--border-strong);border-radius:10px;flex-wrap:wrap;box-shadow:var(--shadow-sm)}
     .export-label{font-family:var(--mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);margin-right:4px}
 
     /* CHARTS */
-    .chart-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+    .chart-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:13px}
     .chart-grid.single{grid-template-columns:1fr}
-    .chart-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow-sm);transition:all 0.2s;position:relative;overflow:hidden}
+    .chart-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow-sm);transition:all 0.2s;position:relative;overflow:hidden}
     .chart-card::before{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,rgba(45,159,212,0.3),transparent);opacity:0;transition:opacity 0.2s}
     .chart-card:hover{border-color:var(--border-strong);box-shadow:var(--shadow-md)}
     .chart-card:hover::before{opacity:1}
     .chart-card.wide{grid-column:span 2}
-    .chart-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:12px}
-    .chart-title{font-family:var(--sans);font-size:14px;font-weight:600;color:var(--text);margin-bottom:3px}
-    .chart-subtitle{font-family:var(--sans);font-size:11px;color:var(--muted);line-height:1.5;max-width:340px}
-    .chart-badge{font-family:var(--mono);font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;padding:4px 10px;border-radius:4px;background:var(--primary-pale);border:1px solid var(--border-strong);color:var(--primary);white-space:nowrap;flex-shrink:0}
-    .chart-wrap{position:relative;height:220px}
-    .chart-wrap.tall{height:280px}
-    .chart-wrap.rose{height:300px}
-    .chart-footer{display:flex;justify-content:space-between;align-items:center;margin-top:8px}
-    .chart-ts{font-family:var(--mono);font-size:9px;color:var(--muted)}
+    .chart-header{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:11px}
+    .chart-title{font-family:var(--sans);font-size:13px;font-weight:600;color:var(--text);margin-bottom:2px}
+    .chart-subtitle{font-family:var(--sans);font-size:11px;color:var(--muted);line-height:1.5;max-width:360px}
+    .chart-badge{font-family:var(--mono);font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.08em;padding:3px 9px;border-radius:4px;background:var(--primary-pale);border:1px solid var(--border-strong);color:var(--primary);white-space:nowrap;flex-shrink:0}
+    .chart-wrap{position:relative;height:210px}
+    .chart-wrap.tall{height:270px}
+    .chart-wrap.rose{height:290px}
+    .chart-footer{display:flex;justify-content:space-between;align-items:center;margin-top:7px}
+    .chart-ts{font-family:var(--mono);font-size:8px;color:var(--muted)}
+    /* Legend pill */
+    .legend-row{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:8px}
+    .legend-item{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:9px;color:var(--muted)}
+    .legend-dot{width:8px;height:8px;border-radius:50%}
 
     /* CORRELATION */
-    .corr-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;box-shadow:var(--shadow-sm)}
+    .corr-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:16px 18px;box-shadow:var(--shadow-sm)}
     .corr-table{width:100%;border-collapse:collapse;margin-top:10px}
-    .corr-table th{font-family:var(--mono);font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);padding:8px 10px;border-bottom:1px solid var(--border-strong);text-align:left}
-    .corr-table td{font-family:var(--mono);font-size:11px;padding:8px 10px;border-bottom:1px solid var(--border);color:var(--text-mid);transition:background 0.15s}
+    .corr-table th{font-family:var(--mono);font-size:8px;font-weight:600;text-transform:uppercase;letter-spacing:0.1em;color:var(--muted);padding:7px 9px;border-bottom:1px solid var(--border-strong);text-align:left}
+    .corr-table td{font-family:var(--mono);font-size:10px;padding:7px 9px;border-bottom:1px solid var(--border);color:var(--text-mid);transition:background 0.15s}
     .corr-table tr:hover td{background:var(--primary-pale)}
     .bar-wrap{width:80px;height:4px;background:var(--surface-3);border-radius:999px;overflow:hidden}
     .bar-fill{height:100%;border-radius:999px;transition:width 0.8s ease}
     .r-pos{color:var(--green)!important}.r-neg{color:var(--red)!important}.r-neu{color:var(--muted)!important}
 
     /* FOOTER */
-    .dash-footer{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;padding:14px 28px 20px;border-top:1px solid var(--border);background:var(--surface)}
-    .footer-copy{font-family:var(--mono);font-size:9px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em}
-    .footer-ts{font-family:var(--mono);font-size:9px;color:var(--muted)}
+    .dash-footer{position:relative;z-index:1;display:flex;justify-content:space-between;align-items:center;padding:12px 24px 18px;border-top:1px solid var(--border);background:var(--surface)}
+    .footer-copy{font-family:var(--mono);font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em}
+    .footer-ts{font-family:var(--mono);font-size:8px;color:var(--muted)}
 
-    @media(max-width:1100px){.layout{grid-template-columns:1fr}.sidebar{display:none}.chart-grid{grid-template-columns:1fr}.chart-card.wide{grid-column:auto}}
-    @media(max-width:700px){main{padding:14px}header{padding:0 14px}.kpi-row{grid-template-columns:1fr 1fr}}
+    @media(max-width:1100px){.layout{grid-template-columns:1fr}.sidebar{display:none}.chart-grid{grid-template-columns:1fr}.chart-card.wide{grid-column:auto}.header-center{display:none}}
+    @media(max-width:700px){main{padding:12px}header{padding:0 12px}.kpi-row{grid-template-columns:1fr 1fr}}
   </style>
 </head>
 <body>
@@ -167,10 +166,14 @@
       <div class="h-wordmark">AWA05</div>
       <div class="h-dot"></div>
       <div class="h-sep"></div>
-      <div class="h-title">Tablero de Telemetría Ambiental</div>
+      <div class="h-title">Telemetría Ambiental</div>
+    </div>
+    <div class="header-center">
+      <span style="font-family:var(--mono);font-size:8px;color:var(--muted);text-transform:uppercase;letter-spacing:0.1em">Actualizado:</span>
+      <span class="h-ts" id="header-ts">--</span>
     </div>
     <div class="header-right">
-      <button class="btn btn-accent" onclick="exportarExcel()">↓ Exportar Excel</button>
+      <button class="btn btn-accent" onclick="exportarExcel()">↓ Excel</button>
       <a href="index.html" class="btn">← Inicio</a>
       <img src="aala_logo.png" alt="AALA" class="h-logo">
     </div>
@@ -182,7 +185,7 @@
         <div class="sb-section-label">Navegación</div>
         <a class="sb-link active" href="#resumen">Resumen</a>
         <a class="sb-link" href="#salud-pi">Salud del nodo</a>
-        <a class="sb-link" href="#nivel">Nivel de agua</a>
+        <a class="sb-link" href="#nivel">Producción de agua</a>
         <a class="sb-link" href="#clima-base">Clima base</a>
         <a class="sb-link" href="#clima-avanzado">Clima avanzado</a>
         <a class="sb-link" href="#correlacion">Correlación</a>
@@ -190,6 +193,7 @@
       <div style="margin-top:10px">
         <div class="sb-section-label">Valores en vivo</div>
         <div class="sb-kpi"><div class="sb-kpi-label">Nivel</div><div class="sb-kpi-val"><span id="sb-nivel">--</span><span class="sb-kpi-unit"> L</span></div></div>
+        <div class="sb-kpi"><div class="sb-kpi-label">Garrafones</div><div class="sb-kpi-val"><span id="sb-garrafones">--</span><span class="sb-kpi-unit"> llenos</span></div></div>
         <div class="sb-kpi"><div class="sb-kpi-label">Humedad</div><div class="sb-kpi-val"><span id="sb-hum">--</span><span class="sb-kpi-unit"> %</span></div></div>
         <div class="sb-kpi"><div class="sb-kpi-label">Temperatura</div><div class="sb-kpi-val"><span id="sb-temp">--</span><span class="sb-kpi-unit"> °C</span></div></div>
         <div class="sb-kpi"><div class="sb-kpi-label">Presión</div><div class="sb-kpi-val"><span id="sb-pres">--</span><span class="sb-kpi-unit"> inHg</span></div></div>
@@ -207,10 +211,17 @@
             <span class="hero-tag">WS-2000</span>
             <span class="hero-tag">RPi 4B</span>
             <span class="hero-tag">15 min</span>
+            <span class="hero-tag">Atitlán</span>
           </div>
-          <div style="margin-bottom:10px"><div class="section-tag">KPIs Actuales</div></div>
+          <div class="garrafon-badge">
+            <div>
+              <div class="garrafon-count" id="kpi-garrafones">--</div>
+              <div class="garrafon-label">🫙 garrafones producidos</div>
+            </div>
+          </div>
+          <div style="margin-bottom:9px"><div class="section-tag">KPIs Actuales</div></div>
           <div class="kpi-row">
-            <div class="kpi-card kc-1"><div class="kpi-label">Nivel de agua</div><div class="kpi-val"><span id="kpi-nivel">--</span><span class="kpi-unit"> L</span></div><div class="kpi-meta" id="trend-nivel">--</div></div>
+            <div class="kpi-card kc-1"><div class="kpi-label">Nivel actual</div><div class="kpi-val"><span id="kpi-nivel">--</span><span class="kpi-unit"> L</span></div><div class="kpi-meta" id="trend-nivel">--</div></div>
             <div class="kpi-card kc-2"><div class="kpi-label">Humedad relativa</div><div class="kpi-val"><span id="kpi-hum">--</span><span class="kpi-unit"> %</span></div><div class="kpi-meta" id="trend-hum">--</div></div>
             <div class="kpi-card kc-3"><div class="kpi-label">Temperatura</div><div class="kpi-val"><span id="kpi-temp">--</span><span class="kpi-unit"> °C</span></div><div class="kpi-meta" id="trend-temp">--</div></div>
             <div class="kpi-card kc-4"><div class="kpi-label">Punto de rocío</div><div class="kpi-val"><span id="kpi-dew">--</span><span class="kpi-unit"> °C</span></div><div class="kpi-meta" id="trend-dew">--</div></div>
@@ -247,12 +258,25 @@
       </section>
 
       <section id="nivel">
-        <div class="section-header"><div><div class="section-tag">JSN-SR04T — Sensor ultrasónico</div><div class="section-title">Nivel de agua</div></div></div>
+        <div class="section-header"><div><div class="section-tag">JSN-SR04T — Sensor ultrasónico</div><div class="section-title">Producción de agua</div></div></div>
         <div class="chart-grid single">
           <div class="chart-card">
-            <div class="chart-header"><div><div class="chart-title">Volumen acumulado en el tiempo</div><div class="chart-subtitle">Serie temporal del contenedor. Conversión geométrica cilíndrica. ALTURA 70cm · RADIO 12.9cm · 11 muestras mediana.</div></div><div class="chart-badge">Litros</div></div>
+            <div class="chart-header">
+              <div>
+                <div class="chart-title">Volumen acumulado en el tiempo</div>
+                <div class="chart-subtitle">Serie temporal del contenedor. Cada caída brusca indica vaciado (garrafón lleno). Puntos verdes = garrafón completado. ALTURA 72.5cm · RADIO 12.9cm · Mediana 11 muestras.</div>
+              </div>
+              <div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end">
+                <div class="chart-badge">Litros</div>
+                <div style="font-family:var(--mono);font-size:9px;color:var(--green);background:var(--green-pale);border:1px solid rgba(26,158,106,0.25);border-radius:3px;padding:2px 7px;" id="garrafones-label">-- garrafones</div>
+              </div>
+            </div>
+            <div class="legend-row">
+              <div class="legend-item"><div class="legend-dot" style="background:#1a7ab5"></div>Nivel de agua</div>
+              <div class="legend-item"><div class="legend-dot" style="background:#1a9e6a"></div>Garrafón completado</div>
+            </div>
             <div class="chart-wrap tall"><canvas id="chart-nivel"></canvas></div>
-            <div class="chart-footer"><div class="chart-ts" id="ts-nivel">--</div><div class="chart-ts">Mediana de 11 muestras · 15 min</div></div>
+            <div class="chart-footer"><div class="chart-ts" id="ts-nivel">--</div><div class="chart-ts">Mediana 11 muestras · 15 min · Zona horaria Guatemala CST</div></div>
           </div>
         </div>
       </section>
@@ -260,34 +284,35 @@
       <section id="clima-base">
         <div class="section-header"><div><div class="section-tag">WS-2000 — Variables primarias</div><div class="section-title">Temperatura, humedad, rocío y presión</div></div></div>
         <div class="chart-grid">
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Humedad relativa</div><div class="chart-subtitle">% HR. Umbral de condensación ≥70%.</div></div><div class="chart-badge">% HR</div></div><div class="chart-wrap"><canvas id="chart-hum"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-hum">--</div><div class="chart-ts">WS-2000 · 60s</div></div></div>
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Temperatura exterior</div><div class="chart-subtitle">°C. Influye en tasa de evaporación y condensación nocturna.</div></div><div class="chart-badge">°C</div></div><div class="chart-wrap"><canvas id="chart-temp"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-temp">--</div><div class="chart-ts">WS-2000 · 60s</div></div></div>
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Punto de rocío</div><div class="chart-subtitle">°C Td. Cuando Td → T, HR → 100%.</div></div><div class="chart-badge">°C Td</div></div><div class="chart-wrap"><canvas id="chart-dew"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-dew">--</div><div class="chart-ts">WS-2000 · 60s</div></div></div>
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Presión barométrica</div><div class="chart-subtitle">inHg. Variaciones indican frentes de aire.</div></div><div class="chart-badge">inHg</div></div><div class="chart-wrap"><canvas id="chart-pres"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-pres">--</div><div class="chart-ts">WS-2000 · 60s</div></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Humedad relativa</div><div class="chart-subtitle">% HR · Umbral de condensación ≥70% (línea ref.)</div></div><div class="chart-badge">% HR</div></div><div class="chart-wrap"><canvas id="chart-hum"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-hum">--</div><div class="chart-ts">WS-2000 · submuestreo 1h</div></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Temperatura exterior</div><div class="chart-subtitle">°C · Influye en evaporación y condensación nocturna.</div></div><div class="chart-badge">°C</div></div><div class="chart-wrap"><canvas id="chart-temp"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-temp">--</div><div class="chart-ts">WS-2000 · submuestreo 1h</div></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Punto de rocío</div><div class="chart-subtitle">°C Td · Cuando Td → T, HR → 100%.</div></div><div class="chart-badge">°C Td</div></div><div class="chart-wrap"><canvas id="chart-dew"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-dew">--</div><div class="chart-ts">WS-2000 · submuestreo 1h</div></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Presión barométrica</div><div class="chart-subtitle">inHg · Variaciones indican frentes de aire.</div></div><div class="chart-badge">inHg</div></div><div class="chart-wrap"><canvas id="chart-pres"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-pres">--</div><div class="chart-ts">WS-2000 · submuestreo 1h</div></div></div>
         </div>
       </section>
 
       <section id="clima-avanzado">
         <div class="section-header"><div><div class="section-tag">WS-2000 — Variables secundarias</div><div class="section-title">Viento, lluvia, radiación y UV</div></div></div>
         <div class="chart-grid">
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Velocidad del viento</div><div class="chart-subtitle">km/h. Afecta tasa de evaporación del sistema.</div></div><div class="chart-badge">km/h</div></div><div class="chart-wrap"><canvas id="chart-wind"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-wind">--</div><div class="chart-ts">WS-2000 · 60s</div></div></div>
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Rosa de vientos</div><div class="chart-subtitle">Frecuencia por sector de 22.5°. N=0°, E=90°, S=180°, O=270°.</div></div><div class="chart-badge">Rosa</div></div><div class="chart-wrap rose"><canvas id="chart-wind-rose"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-dir">--</div><div class="chart-ts">WS-2000 · 60s</div></div></div>
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Precipitación acumulada</div><div class="chart-subtitle">mm/h. Eventos discretos de lluvia. Diferencia captación vs lluvia directa.</div></div><div class="chart-badge">mm/h</div></div><div class="chart-wrap"><canvas id="chart-rain"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-rain">--</div><div class="chart-ts">WS-2000 · 60s</div></div></div>
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Radiación solar</div><div class="chart-subtitle">W/m². Carga energética. Correlaciona negativamente con captación nocturna.</div></div><div class="chart-badge">W/m²</div></div><div class="chart-wrap"><canvas id="chart-solar"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-solar">--</div><div class="chart-ts">WS-2000 · 60s</div></div></div>
-          <div class="chart-card wide"><div class="chart-header"><div><div class="chart-title">Índice UV</div><div class="chart-subtitle">Escala 0–11+. 0–2 bajo · 3–5 moderado · 6–7 alto · 8–10 muy alto · 11+ extremo.</div></div><div class="chart-badge">UV Index</div></div><div class="chart-wrap"><canvas id="chart-uv"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-uv">--</div><div class="chart-ts">WS-2000 · 60s</div></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Velocidad del viento</div><div class="chart-subtitle">km/h · Afecta tasa de evaporación del sistema.</div></div><div class="chart-badge">km/h</div></div><div class="chart-wrap"><canvas id="chart-wind"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-wind">--</div><div class="chart-ts">WS-2000 · submuestreo 1h</div></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Rosa de vientos</div><div class="chart-subtitle">Frecuencia por sector de 22.5°. N=0° E=90° S=180° O=270°.</div></div><div class="chart-badge">Rosa</div></div><div class="chart-wrap rose"><canvas id="chart-wind-rose"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-dir">--</div><div class="chart-ts">WS-2000 · acumulado</div></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Precipitación por hora</div><div class="chart-subtitle">mm/h · Permite distinguir captación vs lluvia directa.</div></div><div class="chart-badge">mm/h</div></div><div class="chart-wrap"><canvas id="chart-rain"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-rain">--</div><div class="chart-ts">WS-2000 · submuestreo 1h</div></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Radiación solar</div><div class="chart-subtitle">W/m² · Carga energética. Correlaciona negativamente con captación nocturna.</div></div><div class="chart-badge">W/m²</div></div><div class="chart-wrap"><canvas id="chart-solar"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-solar">--</div><div class="chart-ts">WS-2000 · submuestreo 1h</div></div></div>
+          <div class="chart-card wide"><div class="chart-header"><div><div class="chart-title">Índice UV</div><div class="chart-subtitle">0–2 bajo · 3–5 moderado · 6–7 alto · 8–10 muy alto · 11+ extremo.</div></div><div class="chart-badge">UV</div></div><div class="chart-wrap"><canvas id="chart-uv"></canvas></div><div class="chart-footer"><div class="chart-ts" id="ts-uv">--</div><div class="chart-ts">WS-2000 · submuestreo 1h</div></div></div>
         </div>
       </section>
 
       <section id="correlacion">
         <div class="section-header"><div><div class="section-tag">Análisis estadístico — Pearson</div><div class="section-title">Correlación nivel de agua vs variables</div></div></div>
         <div class="chart-grid">
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Nivel vs Humedad</div><div class="chart-subtitle">Dispersión con regresión lineal. Eje X: % HR · Eje Y: L</div></div><div class="chart-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-hum"></canvas></div></div>
-          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Nivel vs Temperatura</div><div class="chart-subtitle">Dispersión con regresión lineal. Eje X: °C · Eje Y: L</div></div><div class="chart-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-temp"></canvas></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Nivel vs Humedad</div><div class="chart-subtitle">Dispersión + regresión lineal. Eje X: % HR · Eje Y: L</div></div><div class="chart-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-hum"></canvas></div></div>
+          <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Nivel vs Temperatura</div><div class="chart-subtitle">Dispersión + regresión lineal. Eje X: °C · Eje Y: L</div></div><div class="chart-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-temp"></canvas></div></div>
           <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Nivel vs Punto de rocío</div><div class="chart-subtitle">Temperatura de condensación como predictor.</div></div><div class="chart-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-dew"></canvas></div></div>
           <div class="chart-card"><div class="chart-header"><div><div class="chart-title">Nivel vs Radiación solar</div><div class="chart-subtitle">Carga energética como predictor inverso.</div></div><div class="chart-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-solar"></canvas></div></div>
-          <div class="chart-card wide"><div class="chart-header"><div><div class="chart-title">Coeficientes de correlación de Pearson</div><div class="chart-subtitle">r: correlación lineal −1 a 1 · R²: varianza explicada · Directa: a mayor X mayor nivel · Inversa: a mayor X menor nivel</div></div><div class="chart-badge">r · R²</div></div>
+          <div class="corr-card wide">
+            <div class="chart-header"><div><div class="chart-title">Coeficientes de correlación de Pearson</div><div class="chart-subtitle">r: correlación −1 a 1 · R²: varianza explicada · p-valor aproximado con distribución t (n−2 gl)</div></div><div class="chart-badge">r · R²</div></div>
             <table class="corr-table">
-              <thead><tr><th>Variable</th><th>r</th><th>R²</th><th>Tendencia</th><th>p-valor aprox.</th><th>Magnitud</th></tr></thead>
+              <thead><tr><th>Variable</th><th>r</th><th>R²</th><th>Tendencia</th><th>p-valor</th><th>Magnitud</th></tr></thead>
               <tbody id="corr-body"></tbody>
             </table>
           </div>
@@ -305,12 +330,7 @@
     const chartRegistry = {};
     let globalPayload = null;
 
-    function setText(id, val) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.textContent = (val !== null && val !== undefined) ? val : '--';
-    }
-
+    function setText(id, val) { const el = document.getElementById(id); if (el) el.textContent = (val !== null && val !== undefined) ? val : '--'; }
     function setTs(id, ts) { setText(id, ts || '--'); }
 
     function setTrend(id, arr, unit) {
@@ -325,89 +345,138 @@
       el.className = 'kpi-meta ' + (diff > 0 ? 'trend-up' : diff < 0 ? 'trend-down' : '');
     }
 
-    function buildFallback() {
-      // Use real timestamps from Pi timezone (Guatemala CST = UTC-6)
-      const labels = [], now = new Date();
-      for (let i = 23; i >= 0; i--) {
-        const d = new Date(now.getTime() - i * 3600000);
-        labels.push(String(d.getHours()).padStart(2,'0') + ':00');
+    // Detecta cuántos garrafones se han llenado (caídas de >5L)
+    function contarGarrafones(nivel) {
+      let count = 0;
+      for (let i = 1; i < nivel.length; i++) {
+        const v = nivel[i], p = nivel[i-1];
+        if (v !== null && p !== null && (p - v) > 5) count++;
       }
-      const n=[],h=[],t=[],d=[],p=[],w=[],dr=[],r=[],s=[],u=[];
-      for(let i=0;i<24;i++){n.push(+(10+Math.sin(i/4)*2.2+(Math.random()-.5)*.4).toFixed(2));h.push(+(70+Math.sin(i/3)*9+(Math.random()-.5)*2).toFixed(1));t.push(+(21-Math.sin(i/4)*3+(Math.random()-.5)*.6).toFixed(1));d.push(+(t[i]-(100-h[i])/5).toFixed(1));p.push(+(24.75+Math.sin(i/6)*.07+(Math.random()-.5)*.02).toFixed(3));w.push(+(6+Math.abs(Math.sin(i/3))*8+Math.random()).toFixed(1));dr.push(+((120+i*11+Math.random()*25)%360).toFixed(0));r.push(+(Math.max(0,Math.sin(i/5)>.7?Math.random()*2:Math.random()*.2)).toFixed(2));s.push(+(Math.max(0,Math.sin((i-6)/12*Math.PI)*750+Math.random()*40)).toFixed(1));u.push(+(Math.max(0,Math.sin((i-6)/12*Math.PI)*10+Math.random()*.5)).toFixed(1));}
-      return {actualizado:new Date().toLocaleString('es-GT'),kpis:{nivel_l:n.at(-1),humedad_pct:h.at(-1),temp_c:t.at(-1),punto_rocio_c:d.at(-1),presion_inhg:p.at(-1),viento_kmh:w.at(-1)},sistema:{cpu_temp_c:null,voltaje_v:null,ram_uso_pct:null,disco_uso_pct:null,uptime:null},series:{labels,nivel_l:n,humedad_pct:h,temp_c:t,punto_rocio_c:d,presion_inhg:p,viento_kmh:w,viento_dir_deg:dr,lluvia_hora_mm:r,radiacion_solar_wm2:s,uv:u}};
+      return count;
     }
 
-    // Use timestamps from JSON labels directly (Pi writes Guatemala time)
-    function formatLabels(labels) {
-      return labels.map(l => {
+    // Índices donde se completó un garrafón (punto antes de la caída)
+    function indicesGarrafones(nivel) {
+      const idx = [];
+      for (let i = 1; i < nivel.length; i++) {
+        const v = nivel[i], p = nivel[i-1];
+        if (v !== null && p !== null && (p - v) > 5) idx.push(i - 1);
+      }
+      return idx;
+    }
+
+    // Formatea labels: incluye fecha cuando cambia el día
+    function formatLabels(rawLabels) {
+      let lastDate = '';
+      return rawLabels.map(l => {
         if (!l) return '--';
-        // labels like "12:30" or full timestamps "2026-04-23 12:30:00"
         if (l.length <= 5) return l;
-        return l.substring(11, 16); // extract HH:MM from full timestamp
+        const date = l.substring(0, 10); // YYYY-MM-DD
+        const time = l.substring(11, 16); // HH:MM
+        if (date !== lastDate) { lastDate = date; return date.substring(5) + ' ' + time; } // MM-DD HH:MM
+        return time;
       });
+    }
+
+    function buildFallback() {
+      const labels = [], now = new Date();
+      for (let i = 47; i >= 0; i--) { const d = new Date(now.getTime() - i * 1800000); labels.push(d.toISOString().slice(11,16)); }
+      const n=[],h=[],t=[],d=[],p=[],w=[],dr=[],r=[],s=[],u=[];
+      for(let i=0;i<48;i++){n.push(+(Math.min(19,(i%16)*1.2+(Math.random()*.3))).toFixed(2));h.push(+(70+Math.sin(i/3)*9+(Math.random()-.5)*2).toFixed(1));t.push(+(21-Math.sin(i/4)*3+(Math.random()-.5)*.6).toFixed(1));d.push(+(t[i]-(100-h[i])/5).toFixed(1));p.push(+(24.75+Math.sin(i/6)*.07+(Math.random()-.5)*.02).toFixed(3));w.push(+(6+Math.abs(Math.sin(i/3))*8+Math.random()).toFixed(1));dr.push(+((120+i*11+Math.random()*25)%360).toFixed(0));r.push(+(Math.max(0,Math.sin(i/5)>.7?Math.random()*2:0)).toFixed(2));s.push(+(Math.max(0,Math.sin((i%24-6)/12*Math.PI)*750)).toFixed(1));u.push(+(Math.max(0,Math.sin((i%24-6)/12*Math.PI)*10)).toFixed(1));}
+      return {actualizado:new Date().toLocaleString('es-GT'),kpis:{nivel_l:n.at(-1),humedad_pct:h.at(-1),temp_c:t.at(-1),punto_rocio_c:d.at(-1),presion_inhg:p.at(-1),viento_kmh:w.at(-1)},sistema:{cpu_temp_c:null,voltaje_v:null,ram_uso_pct:null,disco_uso_pct:null,uptime:null},series:{labels,labels_nivel:labels,nivel_l:n,humedad_pct:h,temp_c:t,punto_rocio_c:d,presion_inhg:p,viento_kmh:w,viento_dir_deg:dr,lluvia_hora_mm:r,radiacion_solar_wm2:s,uv:u}};
     }
 
     function interpretarPi(s){
       if(!s)return;
       const{cpu_temp_c,voltaje_v,ram_uso_pct,disco_uso_pct,uptime}=s;
-      if(cpu_temp_c!==null){setText('pi-cpu-temp',cpu_temp_c);const pct=Math.min(100,(cpu_temp_c/85)*100);const bar=document.getElementById('pi-temp-bar');const card=document.getElementById('pi-temp-card');const cmt=document.getElementById('pi-temp-comment');bar.style.width=pct+'%';if(cpu_temp_c<50){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent='Temperatura nominal. Procesador sin estrés térmico.';}else if(cpu_temp_c<70){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='Temperatura elevada. Revisar ventilación del gabinete.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRÍTICO: Riesgo de throttling térmico.';}}
-      if(voltaje_v!==null){setText('pi-voltaje',voltaje_v);const pct=Math.min(100,Math.max(0,((voltaje_v-0.8)/0.2)*100));const bar=document.getElementById('pi-volt-bar');const card=document.getElementById('pi-volt-card');const cmt=document.getElementById('pi-volt-comment');bar.style.width=pct+'%';if(voltaje_v>=0.92){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent='Alimentación estable. Voltaje del núcleo adecuado.';}else if(voltaje_v>=0.85){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='Voltaje bajo. Posible fuente de alimentación débil.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRÍTICO: Subvoltaje. La Pi puede reiniciarse.';}}
-      if(ram_uso_pct!==null){setText('pi-ram',ram_uso_pct);const bar=document.getElementById('pi-ram-bar');const card=document.getElementById('pi-ram-card');const cmt=document.getElementById('pi-ram-comment');bar.style.width=ram_uso_pct+'%';if(ram_uso_pct<60){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent=(100-ram_uso_pct)+'% libre. Uso de RAM normal.';}else if(ram_uso_pct<85){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='RAM moderadamente ocupada.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRÍTICO: RAM casi agotada.';}}
-      if(disco_uso_pct!==null){setText('pi-disco',disco_uso_pct);const bar=document.getElementById('pi-disco-bar');const card=document.getElementById('pi-disco-card');const cmt=document.getElementById('pi-disco-comment');bar.style.width=disco_uso_pct+'%';if(disco_uso_pct<70){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent=(100-disco_uso_pct)+'% libre para acumular datos.';}else if(disco_uso_pct<90){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='Disco casi lleno.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRÍTICO: Disco lleno.';}}
-      if(uptime!==null){setText('pi-uptime',uptime);const cmt=document.getElementById('pi-uptime-comment');const h=parseInt(uptime)||0;if(h<1)cmt.textContent='Nodo recién reiniciado. Verificar servicios.';else if(h<24)cmt.textContent='Menos de 24h en línea. Operación normal.';else cmt.textContent='Operación continua estable. Sin reinicios recientes.';}
+      if(cpu_temp_c!==null){setText('pi-cpu-temp',cpu_temp_c);const pct=Math.min(100,(cpu_temp_c/85)*100);const bar=document.getElementById('pi-temp-bar');const card=document.getElementById('pi-temp-card');const cmt=document.getElementById('pi-temp-comment');bar.style.width=pct+'%';if(cpu_temp_c<50){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent='Temperatura nominal. Procesador sin estrés térmico.';}else if(cpu_temp_c<70){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='Temperatura elevada. Revisar ventilación.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRÍTICO: Riesgo de throttling térmico.';}}
+      if(voltaje_v!==null){setText('pi-voltaje',voltaje_v);const pct=Math.min(100,Math.max(0,((voltaje_v-0.8)/0.2)*100));const bar=document.getElementById('pi-volt-bar');const card=document.getElementById('pi-volt-card');const cmt=document.getElementById('pi-volt-comment');bar.style.width=pct+'%';if(voltaje_v>=0.92){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent='Alimentación estable.';}else if(voltaje_v>=0.85){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='Voltaje bajo.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRÍTICO: Subvoltaje.';}}
+      if(ram_uso_pct!==null){setText('pi-ram',ram_uso_pct);const bar=document.getElementById('pi-ram-bar');const card=document.getElementById('pi-ram-card');const cmt=document.getElementById('pi-ram-comment');bar.style.width=ram_uso_pct+'%';if(ram_uso_pct<60){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent=(100-ram_uso_pct)+'% libre.';}else if(ram_uso_pct<85){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='RAM moderada.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRÍTICO: RAM agotada.';}}
+      if(disco_uso_pct!==null){setText('pi-disco',disco_uso_pct);const bar=document.getElementById('pi-disco-bar');const card=document.getElementById('pi-disco-card');const cmt=document.getElementById('pi-disco-comment');bar.style.width=disco_uso_pct+'%';if(disco_uso_pct<70){bar.style.background='var(--green)';card.className='pi-metric pi-ok';cmt.textContent=(100-disco_uso_pct)+'% libre.';}else if(disco_uso_pct<90){bar.style.background='var(--yellow)';card.className='pi-metric pi-warn';cmt.textContent='Disco casi lleno.';}else{bar.style.background='var(--red)';card.className='pi-metric pi-crit';cmt.textContent='CRÍTICO: Disco lleno.';}}
+      if(uptime!==null){setText('pi-uptime',uptime);const cmt=document.getElementById('pi-uptime-comment');const h=parseInt(uptime)||0;if(h<1)cmt.textContent='Recién reiniciado.';else if(h<24)cmt.textContent='Menos de 24h en línea.';else cmt.textContent='Operación continua estable.';}
       const badge=document.getElementById('pi-badge');const crit=(cpu_temp_c>=70)||(voltaje_v<0.85)||(ram_uso_pct>=85)||(disco_uso_pct>=90);const warn=(cpu_temp_c>=50)||(voltaje_v<0.92)||(ram_uso_pct>=60)||(disco_uso_pct>=70);if(crit){badge.className='status-badge badge-crit';badge.textContent='CRÍTICO';}else if(warn){badge.className='status-badge badge-warn';badge.textContent='ADVERTENCIA';}else{badge.className='status-badge badge-ok';badge.textContent='OK';}
     }
 
     function gradient(ctx, color, h) {
       const g = ctx.createLinearGradient(0, 0, 0, h || 220);
-      g.addColorStop(0, color + '28');
-      g.addColorStop(0.5, color + '10');
-      g.addColorStop(1, color + '02');
+      g.addColorStop(0, color + '25'); g.addColorStop(0.6, color + '0e'); g.addColorStop(1, color + '02');
       return g;
     }
     function destroyChart(id) { if (chartRegistry[id]) { chartRegistry[id].destroy(); delete chartRegistry[id]; } }
 
-    function sciOptions(unit, minY, maxY) {
+    function baseOptions(unit, minY, maxY, maxTicks) {
       return {
         responsive: true, maintainAspectRatio: false,
-        animation: { duration: 800, easing: 'easeInOutQuart' },
+        animation: { duration: 700, easing: 'easeInOutQuart' },
         plugins: {
           legend: { display: false },
-          tooltip: {
-            backgroundColor: '#ffffff', borderColor: 'rgba(45,159,212,0.3)', borderWidth: 1,
-            titleColor: '#1a7ab5', bodyColor: '#0d2a40',
-            titleFont: { family: "'DM Mono'", size: 10 }, bodyFont: { family: "'DM Sans'", size: 12 },
-            padding: 10, cornerRadius: 6,
-            callbacks: { label: (c) => ' ' + c.parsed.y + ' ' + unit }
-          }
+          tooltip: { backgroundColor: '#fff', borderColor: 'rgba(45,159,212,0.3)', borderWidth: 1, titleColor: '#1a7ab5', bodyColor: '#0d2a40', titleFont: { family: "'DM Mono'", size: 10 }, bodyFont: { family: "'DM Sans'", size: 12 }, padding: 10, cornerRadius: 6 }
         },
         scales: {
-          x: { grid: { color: 'rgba(45,159,212,0.08)', lineWidth: 1 }, border: { color: 'rgba(45,159,212,0.2)' }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 }, maxRotation: 0, maxTicksLimit: 12 } },
-          y: { min: minY, max: maxY, grid: { color: 'rgba(45,159,212,0.08)', lineWidth: 1 }, border: { color: 'rgba(45,159,212,0.2)', dash: [3, 3] }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 }, callback: (v) => v + ' ' + unit } }
+          x: { grid: { color: 'rgba(45,159,212,0.07)' }, border: { color: 'rgba(45,159,212,0.18)' }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 8 }, maxRotation: 35, maxTicksLimit: maxTicks || 14, autoSkip: true } },
+          y: { min: minY, max: maxY, grid: { color: 'rgba(45,159,212,0.07)' }, border: { color: 'rgba(45,159,212,0.18)', dash: [3,3] }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 8 }, callback: v => v + ' ' + unit } }
         }
       };
+    }
+
+    // Gráfica de nivel con puntos verdes en garrafones completados
+    function nivelChart(id, labels, data, garrafonIdx) {
+      destroyChart(id);
+      const ctx = document.getElementById(id)?.getContext('2d');
+      if (!ctx) return;
+      const pointColors = data.map((_, i) => garrafonIdx.includes(i) ? '#1a9e6a' : '#1a7ab5');
+      const pointSizes = data.map((_, i) => garrafonIdx.includes(i) ? 7 : (data.length <= 80 ? 2.5 : 0));
+      const pointBorder = data.map((_, i) => garrafonIdx.includes(i) ? '#fff' : '#1a7ab5');
+      const pointBorderW = data.map((_, i) => garrafonIdx.includes(i) ? 2 : 1);
+
+      const opts = baseOptions('L', 0, null, 14);
+      opts.plugins.tooltip.callbacks = {
+        label: (c) => {
+          const isGarrafon = garrafonIdx.includes(c.dataIndex);
+          return isGarrafon ? ` ${c.parsed.y} L ← ✅ Garrafón completado` : ` ${c.parsed.y} L`;
+        }
+      };
+      // Annotation line at 20L
+      opts.scales.y.max = 22;
+
+      chartRegistry[id] = new Chart(ctx, {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [{
+            data, borderColor: '#1a7ab5', backgroundColor: gradient(ctx, '#1a7ab5', 270),
+            borderWidth: 1.8, fill: true, tension: 0.3,
+            pointRadius: pointSizes, pointHoverRadius: 6,
+            pointBackgroundColor: pointColors, pointBorderColor: pointBorder, pointBorderWidth: pointBorderW
+          }]
+        },
+        options: opts
+      });
     }
 
     function lineChart(id, labels, data, color, unit, minY, maxY) {
       destroyChart(id);
       const ctx = document.getElementById(id)?.getContext('2d');
       if (!ctx) return;
-      const datasets = [{
-        data, borderColor: color, backgroundColor: gradient(ctx, color),
-        borderWidth: 1.5, pointRadius: data.length <= 48 ? 2.5 : 1, pointHoverRadius: 5,
-        pointBackgroundColor: '#060e18', pointBorderColor: color, pointBorderWidth: 1.5,
-        fill: true, tension: 0.4
-      }];
-      chartRegistry[id] = new Chart(ctx, { type: 'line', data: { labels, datasets }, options: sciOptions(unit, minY, maxY) });
+      const opts = baseOptions(unit, minY, maxY, 12);
+      opts.plugins.tooltip.callbacks = { label: c => ' ' + c.parsed.y + ' ' + unit };
+      chartRegistry[id] = new Chart(ctx, {
+        type: 'line',
+        data: { labels, datasets: [{ data, borderColor: color, backgroundColor: gradient(ctx, color), borderWidth: 1.5, pointRadius: data.length <= 60 ? 2 : 0, pointHoverRadius: 5, pointBackgroundColor: '#f0f8ff', pointBorderColor: color, pointBorderWidth: 1.5, fill: true, tension: 0.35 }] },
+        options: opts
+      });
     }
 
     function barChart(id, labels, data, color, unit) {
       destroyChart(id);
       const ctx = document.getElementById(id)?.getContext('2d');
       if (!ctx) return;
+      const opts = baseOptions(unit, 0, null, 12);
+      opts.plugins.tooltip.callbacks = { label: c => ' ' + c.parsed.y + ' ' + unit };
       chartRegistry[id] = new Chart(ctx, {
-        type: 'bar', data: { labels, datasets: [{ data, backgroundColor: color + 'aa', borderColor: color, borderWidth: 1, borderRadius: 3, maxBarThickness: 20 }] },
-        options: { ...sciOptions(unit), animation: { duration: 900, easing: 'easeOutQuart' } }
+        type: 'bar',
+        data: { labels, datasets: [{ data, backgroundColor: color + '99', borderColor: color, borderWidth: 1, borderRadius: 3, maxBarThickness: 18 }] },
+        options: { ...opts, animation: { duration: 800, easing: 'easeOutQuart' } }
       });
     }
 
@@ -415,110 +484,81 @@
       destroyChart(id);
       const ctx = document.getElementById(id)?.getContext('2d');
       if (!ctx) return;
-      const validPairs = xData.map((x, i) => ({ x, y: yData[i] })).filter(p => p.x !== null && p.y !== null && p.x !== undefined && p.y !== undefined);
-      const datasets = [{
-        data: validPairs, backgroundColor: color + '88', borderColor: color,
-        borderWidth: 1, pointRadius: 4, pointHoverRadius: 6, pointStyle: 'circle'
-      }];
+      const validPairs = xData.map((x, i) => ({ x, y: yData[i] })).filter(p => p.x != null && p.y != null);
+      const datasets = [{ data: validPairs, backgroundColor: color + '88', borderColor: color, borderWidth: 1, pointRadius: 3.5, pointHoverRadius: 6 }];
       if (validPairs.length >= 3) {
         const xs = validPairs.map(p => p.x), ys = validPairs.map(p => p.y);
-        const n = xs.length, mx = xs.reduce((a, b) => a + b, 0) / n, my = ys.reduce((a, b) => a + b, 0) / n;
+        const n = xs.length, mx = xs.reduce((a,b) => a+b, 0)/n, my = ys.reduce((a,b) => a+b, 0)/n;
         let num = 0, den = 0;
-        xs.forEach((x, i) => { num += (x - mx) * (ys[i] - my); den += (x - mx) ** 2; });
-        const m = den ? num / den : 0, b2 = my - m * mx;
+        xs.forEach((x, i) => { num += (x-mx)*(ys[i]-my); den += (x-mx)**2; });
+        const m = den ? num/den : 0, b2 = my - m*mx;
         const xMin = Math.min(...xs), xMax = Math.max(...xs);
-        datasets.push({ type: 'line', data: [{ x: xMin, y: m * xMin + b2 }, { x: xMax, y: m * xMax + b2 }], borderColor: color + '99', borderWidth: 2, borderDash: [5, 4], pointRadius: 0, fill: false, tension: 0 });
+        const r = pearson(xData, yData);
+        datasets.push({ type: 'line', data: [{x:xMin,y:m*xMin+b2},{x:xMax,y:m*xMax+b2}], borderColor: color, borderWidth: 1.5, borderDash: [5,4], pointRadius: 0, fill: false, tension: 0, label: `r=${r.toFixed(3)}` });
       }
       chartRegistry[id] = new Chart(ctx, {
         type: 'scatter', data: { datasets },
         options: {
-          responsive: true, maintainAspectRatio: false, animation: { duration: 800, easing: 'easeInOutQuart' },
-          plugins: { legend: { display: false }, tooltip: { backgroundColor: '#ffffff', borderColor: 'rgba(45,159,212,0.3)', borderWidth: 1, titleColor: '#1a7ab5', bodyColor: '#0d2a40', titleFont: { family: "'DM Mono'", size: 9 }, bodyFont: { family: "'DM Sans'", size: 11 }, padding: 9, cornerRadius: 6, callbacks: { label: (c) => xLabel + ': ' + c.parsed.x + ' | ' + yLabel + ': ' + c.parsed.y } } },
+          responsive: true, maintainAspectRatio: false, animation: { duration: 700 },
+          plugins: {
+            legend: { display: datasets.length > 1, labels: { font: { family: "'DM Mono'", size: 8 }, color: '#4a7a9b', boxWidth: 20 } },
+            tooltip: { backgroundColor: '#fff', borderColor: 'rgba(45,159,212,0.3)', borderWidth: 1, titleColor: '#1a7ab5', bodyColor: '#0d2a40', titleFont: { family: "'DM Mono'", size: 9 }, bodyFont: { family: "'DM Sans'", size: 11 }, padding: 8, cornerRadius: 6, callbacks: { label: c => xLabel + ': ' + c.parsed.x + ' | ' + yLabel + ': ' + c.parsed.y } }
+          },
           scales: {
-            x: { grid: { color: 'rgba(45,159,212,0.08)' }, border: { color: 'rgba(45,159,212,0.2)' }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 } }, title: { display: true, text: xLabel, color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 } } },
-            y: { grid: { color: 'rgba(45,159,212,0.08)' }, border: { color: 'rgba(45,159,212,0.2)' }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 } }, title: { display: true, text: yLabel, color: '#4a7a9b', font: { family: "'DM Mono'", size: 9 } } }
+            x: { grid: { color: 'rgba(45,159,212,0.07)' }, border: { color: 'rgba(45,159,212,0.18)' }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 8 } }, title: { display: true, text: xLabel, color: '#4a7a9b', font: { family: "'DM Mono'", size: 8 } } },
+            y: { grid: { color: 'rgba(45,159,212,0.07)' }, border: { color: 'rgba(45,159,212,0.18)' }, ticks: { color: '#4a7a9b', font: { family: "'DM Mono'", size: 8 } }, title: { display: true, text: yLabel, color: '#4a7a9b', font: { family: "'DM Mono'", size: 8 } } }
           }
         }
       });
     }
 
-    // WIND ROSE — replaces the direction line chart
-    function windRoseChart(id, directions, speeds) {
+    function windRoseChart(id, directions) {
       destroyChart(id);
       const ctx = document.getElementById(id)?.getContext('2d');
       if (!ctx) return;
-      const sectors = 16;
-      const sectorSize = 360 / sectors;
+      const sectors = 16, sectorSize = 360/sectors;
       const labels = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSO','SO','OSO','O','ONO','NO','NNO'];
       const counts = new Array(sectors).fill(0);
-      const valid = directions.filter(d => d !== null && d !== undefined);
-      valid.forEach(deg => {
-        const idx = Math.floor(((deg + sectorSize / 2) % 360) / sectorSize);
-        counts[idx]++;
-      });
+      const valid = directions.filter(d => d != null);
+      valid.forEach(deg => { const idx = Math.floor(((deg + sectorSize/2) % 360) / sectorSize); counts[idx]++; });
       const total = valid.length || 1;
-      const pcts = counts.map(c => +((c / total) * 100).toFixed(1));
-      const palette = pcts.map(p => {
-        const intensity = p / Math.max(...pcts);
-        return `rgba(26,122,181,${0.15 + intensity * 0.65})`;
-      });
+      const pcts = counts.map(c => +((c/total)*100).toFixed(1));
+      const maxP = Math.max(...pcts);
+      const palette = pcts.map(p => { const intensity = p/maxP; return `rgba(26,122,181,${0.12 + intensity * 0.7})`; });
       chartRegistry[id] = new Chart(ctx, {
-        type: 'polarArea',
-        data: { labels, datasets: [{ data: pcts, backgroundColor: palette, borderColor: 'rgba(58,159,212,0.4)', borderWidth: 1 }] },
-        options: {
-          responsive: true, maintainAspectRatio: false,
-          animation: { duration: 1000, easing: 'easeInOutQuart' },
-          plugins: {
-            legend: { display: false },
-            tooltip: { backgroundColor: '#ffffff', borderColor: 'rgba(45,159,212,0.3)', borderWidth: 1, titleColor: '#1a7ab5', bodyColor: '#0d2a40', titleFont: { family: "'DM Mono'", size: 9 }, bodyFont: { family: "'DM Sans'", size: 11 }, padding: 9, cornerRadius: 6, callbacks: { label: (c) => ' ' + c.parsed.r + '% de mediciones' } }
-          },
-          scales: {
-            r: {
-              grid: { color: 'rgba(45,159,212,0.15)' },
-              ticks: { display: false },
-              pointLabels: { font: { family: "'DM Mono'", size: 9 }, color: '#4a7a9b' }
-            }
-          }
+        type: 'polarArea', data: { labels, datasets: [{ data: pcts, backgroundColor: palette, borderColor: 'rgba(45,159,212,0.35)', borderWidth: 1 }] },
+        options: { responsive: true, maintainAspectRatio: false, animation: { duration: 900 },
+          plugins: { legend: { display: false }, tooltip: { backgroundColor: '#fff', borderColor: 'rgba(45,159,212,0.3)', borderWidth: 1, titleColor: '#1a7ab5', bodyColor: '#0d2a40', titleFont: { family: "'DM Mono'", size: 9 }, bodyFont: { family: "'DM Sans'", size: 11 }, padding: 8, callbacks: { label: c => ' ' + c.parsed.r + '% de mediciones' } } },
+          scales: { r: { grid: { color: 'rgba(45,159,212,0.12)' }, ticks: { display: false }, pointLabels: { font: { family: "'DM Mono'", size: 8 }, color: '#4a7a9b' } } }
         }
       });
     }
 
     function pearson(xs, ys) {
-      const pairs = xs.map((x, i) => [x, ys[i]]).filter(([x, y]) => x !== null && y !== null && x !== undefined && y !== undefined);
-      const n = pairs.length;
-      if (n < 3) return 0;
-      const mx = pairs.reduce((a, [x]) => a + x, 0) / n;
-      const my = pairs.reduce((a, [, y]) => a + y, 0) / n;
-      let num = 0, dx = 0, dy = 0;
-      pairs.forEach(([x, y]) => { const vx = x - mx, vy = y - my; num += vx * vy; dx += vx * vx; dy += vy * vy; });
-      return dx && dy ? num / Math.sqrt(dx * dy) : 0;
+      const pairs = xs.map((x,i) => [x,ys[i]]).filter(([x,y]) => x!=null && y!=null);
+      const n = pairs.length; if (n < 3) return 0;
+      const mx = pairs.reduce((a,[x])=>a+x,0)/n, my = pairs.reduce((a,[,y])=>a+y,0)/n;
+      let num=0,dx=0,dy=0;
+      pairs.forEach(([x,y])=>{const vx=x-mx,vy=y-my;num+=vx*vy;dx+=vx*vx;dy+=vy*vy;});
+      return dx&&dy ? num/Math.sqrt(dx*dy) : 0;
     }
 
-    // Approximate p-value using t-distribution for n-2 df
     function pValue(r, n) {
       if (n < 4) return '--';
-      const t = r * Math.sqrt((n - 2) / (1 - r * r + 1e-10));
-      const absT = Math.abs(t);
-      if (absT > 5) return '<0.001';
-      if (absT > 3.5) return '<0.005';
-      if (absT > 2.8) return '<0.01';
-      if (absT > 2.0) return '<0.05';
-      if (absT > 1.5) return '<0.15';
-      return '>0.15';
+      const t = r * Math.sqrt((n-2)/(1-r*r+1e-10)), absT = Math.abs(t);
+      if (absT > 5) return '<0.001'; if (absT > 3.5) return '<0.005';
+      if (absT > 2.8) return '<0.01'; if (absT > 2.0) return '<0.05';
+      if (absT > 1.5) return '<0.15'; return '>0.15';
     }
 
     function updateCorrTable(nivel, variables) {
-      const tbody = document.getElementById('corr-body');
-      tbody.innerHTML = '';
-      const nValid = nivel.filter(v => v !== null && v !== undefined).length;
+      const tbody = document.getElementById('corr-body'); tbody.innerHTML = '';
+      const nValid = nivel.filter(v => v!=null).length;
       variables.forEach(item => {
-        const r = pearson(item.data, nivel);
-        const r2 = (r * r).toFixed(3);
-        const pct = Math.round(Math.abs(r) * 100);
-        const pv = pValue(r, nValid);
+        const r = pearson(item.data, nivel), r2 = (r*r).toFixed(3), pct = Math.round(Math.abs(r)*100), pv = pValue(r, nValid);
         const rClass = Math.abs(r) > 0.5 ? (r >= 0 ? 'r-pos' : 'r-neg') : 'r-neu';
         const tr = document.createElement('tr');
-        tr.innerHTML = `<td><strong>${item.name}</strong></td><td class="${rClass}">${r.toFixed(3)}</td><td>${r2}</td><td style="color:${r >= 0 ? 'var(--accent)' : 'var(--red)'}">${r >= 0 ? '↑ Directa' : '↓ Inversa'}</td><td style="color:var(--muted);font-size:9px">${pv}</td><td><div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${item.color}"></div></div></td>`;
+        tr.innerHTML = `<td><strong>${item.name}</strong></td><td class="${rClass}">${r.toFixed(3)}</td><td>${r2}</td><td style="color:${r>=0?'var(--green)':'var(--red)'}">${r>=0?'↑ Directa':'↓ Inversa'}</td><td style="color:var(--muted);font-size:9px">${pv}</td><td><div class="bar-wrap"><div class="bar-fill" style="width:${pct}%;background:${item.color}"></div></div></td>`;
         tbody.appendChild(tr);
       });
     }
@@ -537,38 +577,44 @@
       if (!globalPayload) { alert('Sin datos.'); return; }
       const wb = XLSX.utils.book_new();
       const s = globalPayload.series, k = globalPayload.kpis, sis = globalPayload.sistema || {};
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(s.labels.map((label, i) => ({'Hora': label,'Nivel (L)': s.nivel_l?.[i] ?? '','Humedad (%)': s.humedad_pct?.[i] ?? '','Temperatura (C)': s.temp_c?.[i] ?? '','Punto Rocio (C)': s.punto_rocio_c?.[i] ?? '','Presion (inHg)': s.presion_inhg?.[i] ?? '','Viento (km/h)': s.viento_kmh?.[i] ?? '','Dir. Viento (deg)': s.viento_dir_deg?.[i] ?? '','Lluvia (mm/h)': s.lluvia_hora_mm?.[i] ?? '','Rad. Solar (W/m2)': s.radiacion_solar_wm2?.[i] ?? '','UV Index': s.uv?.[i] ?? ''}))), 'Series Temporales');
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet([{Indicador:'Nivel de agua',Valor:k.nivel_l,Unidad:'L'},{Indicador:'Humedad relativa',Valor:k.humedad_pct,Unidad:'%'},{Indicador:'Temperatura',Valor:k.temp_c,Unidad:'C'},{Indicador:'Punto de rocio',Valor:k.punto_rocio_c,Unidad:'C'},{Indicador:'Presion',Valor:k.presion_inhg,Unidad:'inHg'},{Indicador:'Viento',Valor:k.viento_kmh,Unidad:'km/h'},{Indicador:'Actualizado',Valor:globalPayload.actualizado,Unidad:''}]), 'KPIs Actuales');
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet([{Metrica:'CPU temp',Valor:sis.cpu_temp_c,Unidad:'C'},{Metrica:'Voltaje',Valor:sis.voltaje_v,Unidad:'V'},{Metrica:'RAM uso',Valor:sis.ram_uso_pct,Unidad:'%'},{Metrica:'Disco uso',Valor:sis.disco_uso_pct,Unidad:'%'},{Metrica:'Uptime',Valor:sis.uptime,Unidad:''}]), 'Sistema Pi');
-      const corrVars = [{name:'Humedad',data:s.humedad_pct},{name:'Temperatura',data:s.temp_c},{name:'Punto de rocio',data:s.punto_rocio_c},{name:'Presion',data:s.presion_inhg},{name:'Viento',data:s.viento_kmh},{name:'Lluvia',data:s.lluvia_hora_mm},{name:'Rad. solar',data:s.radiacion_solar_wm2},{name:'UV',data:s.uv}];
-      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(corrVars.map(v => { const r = pearson(v.data || [], s.nivel_l || []); return { Variable: v.name, 'r (Pearson)': r.toFixed(4), 'R2': (r * r).toFixed(4), Tendencia: r >= 0 ? 'Directa' : 'Inversa', 'Magnitud (%)': Math.round(Math.abs(r) * 100) }; })), 'Correlaciones');
-      XLSX.writeFile(wb, 'AWA05_telemetria_' + new Date().toISOString().slice(0, 10) + '.xlsx');
+      const nivelLabels = s.labels_nivel || s.labels;
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(nivelLabels.map((label,i) => ({'Timestamp':label,'Nivel (L)':s.nivel_l?.[i]??''}))), 'Nivel de agua');
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet(s.labels.map((label,i) => ({'Timestamp':label,'Humedad (%)':s.humedad_pct?.[i]??'','Temperatura (C)':s.temp_c?.[i]??'','Punto Rocio (C)':s.punto_rocio_c?.[i]??'','Presion (inHg)':s.presion_inhg?.[i]??'','Viento (km/h)':s.viento_kmh?.[i]??'','Dir. Viento (deg)':s.viento_dir_deg?.[i]??'','Lluvia (mm/h)':s.lluvia_hora_mm?.[i]??'','Rad. Solar (W/m2)':s.radiacion_solar_wm2?.[i]??'','UV':s.uv?.[i]??''}))), 'Clima');
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet([{Indicador:'Nivel actual',Valor:k.nivel_l,Unidad:'L'},{Indicador:'Garrafones producidos',Valor:contarGarrafones(s.nivel_l||[]),Unidad:'uds'},{Indicador:'Humedad',Valor:k.humedad_pct,Unidad:'%'},{Indicador:'Temperatura',Valor:k.temp_c,Unidad:'C'},{Indicador:'Actualizado',Valor:globalPayload.actualizado,Unidad:''}]), 'KPIs');
+      XLSX.utils.book_append_sheet(wb, XLSX.utils.json_to_sheet([{Metrica:'CPU temp',Valor:sis.cpu_temp_c,Unidad:'C'},{Metrica:'Voltaje',Valor:sis.voltaje_v,Unidad:'V'},{Metrica:'RAM',Valor:sis.ram_uso_pct,Unidad:'%'},{Metrica:'Disco',Valor:sis.disco_uso_pct,Unidad:'%'},{Metrica:'Uptime',Valor:sis.uptime,Unidad:''}]), 'Sistema Pi');
+      XLSX.writeFile(wb, 'AWA05_' + new Date().toISOString().slice(0,10) + '.xlsx');
     }
 
     function exportarCSV(tipo) {
       if (!globalPayload) { alert('Sin datos.'); return; }
-      const s = globalPayload.series, sis = globalPayload.sistema || {};
-      const fecha = new Date().toISOString().slice(0, 10);
-      let csv = '', fn = '';
-      if (tipo === 'nivel') { csv = 'hora,nivel_l\n' + s.labels.map((l, i) => `${l},${s.nivel_l?.[i] ?? ''}`).join('\n'); fn = 'AWA05_nivel_' + fecha + '.csv'; }
-      else if (tipo === 'clima') { csv = 'hora,humedad_pct,temp_c,punto_rocio_c,presion_inhg,viento_kmh,viento_dir_deg,lluvia_hora_mm,radiacion_solar_wm2,uv\n' + s.labels.map((l, i) => `${l},${s.humedad_pct?.[i] ?? ''},${s.temp_c?.[i] ?? ''},${s.punto_rocio_c?.[i] ?? ''},${s.presion_inhg?.[i] ?? ''},${s.viento_kmh?.[i] ?? ''},${s.viento_dir_deg?.[i] ?? ''},${s.lluvia_hora_mm?.[i] ?? ''},${s.radiacion_solar_wm2?.[i] ?? ''},${s.uv?.[i] ?? ''}`).join('\n'); fn = 'AWA05_clima_' + fecha + '.csv'; }
-      else if (tipo === 'sistema') { csv = 'metrica,valor,unidad\ncpu_temp_c,' + (sis.cpu_temp_c ?? '') + ',C\nvoltaje_v,' + (sis.voltaje_v ?? '') + ',V\nram_uso_pct,' + (sis.ram_uso_pct ?? '') + ',%\ndisco_uso_pct,' + (sis.disco_uso_pct ?? '') + ',%\nuptime,' + (sis.uptime ?? '') + ','; fn = 'AWA05_sistema_' + fecha + '.csv'; }
-      const a = document.createElement('a'); a.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv); a.download = fn; a.click();
+      const s = globalPayload.series, sis = globalPayload.sistema || {}, fecha = new Date().toISOString().slice(0,10);
+      let csv='', fn='';
+      const nivelLabels = s.labels_nivel || s.labels;
+      if (tipo==='nivel') { csv='timestamp,nivel_l\n'+nivelLabels.map((l,i)=>`${l},${s.nivel_l?.[i]??''}`).join('\n'); fn='AWA05_nivel_'+fecha+'.csv'; }
+      else if (tipo==='clima') { csv='timestamp,humedad_pct,temp_c,punto_rocio_c,presion_inhg,viento_kmh,viento_dir_deg,lluvia_hora_mm,radiacion_solar_wm2,uv\n'+s.labels.map((l,i)=>`${l},${s.humedad_pct?.[i]??''},${s.temp_c?.[i]??''},${s.punto_rocio_c?.[i]??''},${s.presion_inhg?.[i]??''},${s.viento_kmh?.[i]??''},${s.viento_dir_deg?.[i]??''},${s.lluvia_hora_mm?.[i]??''},${s.radiacion_solar_wm2?.[i]??''},${s.uv?.[i]??''}`).join('\n'); fn='AWA05_clima_'+fecha+'.csv'; }
+      else if (tipo==='sistema') { csv='metrica,valor,unidad\ncpu_temp_c,'+(sis.cpu_temp_c??'')+',C\nvoltaje_v,'+(sis.voltaje_v??'')+',V\nram_uso_pct,'+(sis.ram_uso_pct??'')+',%\ndisco_uso_pct,'+(sis.disco_uso_pct??'')+',%\nuptime,'+(sis.uptime??'')+','; fn='AWA05_sistema_'+fecha+'.csv'; }
+      const a = document.createElement('a'); a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv); a.download=fn; a.click();
     }
 
     async function renderDashboard() {
       const payload = await fetchData();
       globalPayload = payload;
       const s = payload.series;
-      const rawLabels = s.labels || [];
-      const labels = formatLabels(rawLabels);
+      const rawNivelLabels = s.labels_nivel || s.labels;
+      const labelsNivel = formatLabels(rawNivelLabels);
+      const labelsClima = formatLabels(s.labels || []);
       const nivel = s.nivel_l || [], hum = s.humedad_pct || [], temp = s.temp_c || [];
       const dew = s.punto_rocio_c || [], pres = s.presion_inhg || [], wind = s.viento_kmh || [];
       const dir = s.viento_dir_deg || [], rain = s.lluvia_hora_mm || [];
       const solar = s.radiacion_solar_wm2 || [], uv = s.uv || [];
       const ts = payload.actualizado || '--';
+
+      // Header timestamp
+      setText('header-ts', ts);
       setText('footer-ts', 'Actualizado: ' + ts);
       ['ts-nivel','ts-hum','ts-temp','ts-dew','ts-pres','ts-wind','ts-dir','ts-rain','ts-solar','ts-uv'].forEach(id => setTs(id, ts));
+
+      // KPIs
       setText('kpi-nivel', payload.kpis?.nivel_l); setText('kpi-hum', payload.kpis?.humedad_pct);
       setText('kpi-temp', payload.kpis?.temp_c); setText('kpi-dew', payload.kpis?.punto_rocio_c);
       setText('kpi-pres', payload.kpis?.presion_inhg); setText('kpi-wind', payload.kpis?.viento_kmh);
@@ -577,29 +623,32 @@
       setTrend('trend-nivel', nivel, 'L'); setTrend('trend-hum', hum, '%');
       setTrend('trend-temp', temp, '°C'); setTrend('trend-dew', dew, '°C');
       setTrend('trend-pres', pres, 'inHg'); setTrend('trend-wind', wind, 'km/h');
+
+      // Garrafones
+      const garrafones = contarGarrafones(nivel);
+      const garrafonIdx = indicesGarrafones(nivel);
+      setText('kpi-garrafones', garrafones);
+      setText('sb-garrafones', garrafones);
+      setText('garrafones-label', garrafones + ' garrafón' + (garrafones !== 1 ? 'es' : '') + ' producido' + (garrafones !== 1 ? 's' : ''));
+
       interpretarPi(payload.sistema);
 
-      // Level chart — dynamic Y axis
-      const _nd = nivel.filter(v => v !== null && v !== undefined && v > 0);
-      const nivelMax = _nd.length ? Math.max(..._nd) : 5;
-      lineChart('chart-nivel', labels, nivel, '#1a7ab5', 'L', 0, Math.ceil(nivelMax * 1.2));
+      // Nivel con puntos verdes
+      nivelChart('chart-nivel', labelsNivel, nivel, garrafonIdx);
 
-      lineChart('chart-hum', labels, hum, '#2d9fd4', '%', 0, 100);
-      lineChart('chart-temp', labels, temp, '#17b8d4', '°C');
-      lineChart('chart-dew', labels, dew, '#0099cc', '°C');
-      lineChart('chart-pres', labels, pres, '#5bbde8', 'inHg');
-      lineChart('chart-wind', labels, wind, '#1a7ab5', 'km/h', 0);
+      // Clima
+      lineChart('chart-hum', labelsClima, hum, '#2d9fd4', '%', 0, 100);
+      lineChart('chart-temp', labelsClima, temp, '#17b8d4', '°C');
+      lineChart('chart-dew', labelsClima, dew, '#0099cc', '°C');
+      lineChart('chart-pres', labelsClima, pres, '#5bbde8', 'inHg');
+      lineChart('chart-wind', labelsClima, wind, '#1a7ab5', 'km/h', 0);
+      windRoseChart('chart-wind-rose', dir);
+      barChart('chart-rain', labelsClima, rain, '#2d9fd4', 'mm');
+      const solarMax = Math.max(...solar.filter(v => v!=null), 100);
+      lineChart('chart-solar', labelsClima, solar, '#c47a00', 'W/m²', 0, Math.ceil(solarMax * 1.1));
+      barChart('chart-uv', labelsClima, uv, '#0099cc', 'UV');
 
-      // Wind rose instead of direction line chart
-      windRoseChart('chart-wind-rose', dir, wind);
-
-      // Rain and solar with dynamic scale
-      barChart('chart-rain', labels, rain, '#2d9fd4', 'mm');
-      const solarMax = Math.max(...solar.filter(v => v !== null && v !== undefined), 100);
-      lineChart('chart-solar', labels, solar, '#c47a00', 'W/m²', 0, Math.ceil(solarMax * 1.1));
-      barChart('chart-uv', labels, uv, '#0099cc', 'UV');
-
-      // Scatter correlations
+      // Scatter
       scatterChart('chart-corr-hum', hum, nivel, '#2d9fd4', 'Humedad %', 'Nivel L');
       scatterChart('chart-corr-temp', temp, nivel, '#17b8d4', 'Temperatura °C', 'Nivel L');
       scatterChart('chart-corr-dew', dew, nivel, '#0099cc', 'Punto rocío °C', 'Nivel L');
@@ -621,12 +670,10 @@
     window.addEventListener('scroll', () => {
       const ids = ['resumen','salud-pi','nivel','clima-base','clima-avanzado','correlacion'];
       ids.forEach(id => {
-        const sec = document.getElementById(id);
-        const link = document.querySelector('.sb-link[href="#' + id + '"]');
+        const sec = document.getElementById(id), link = document.querySelector('.sb-link[href="#'+id+'"]');
         if (!sec || !link) return;
         const r = sec.getBoundingClientRect();
-        if (r.top < 180 && r.bottom > 120) link.classList.add('active');
-        else link.classList.remove('active');
+        if (r.top < 180 && r.bottom > 120) link.classList.add('active'); else link.classList.remove('active');
       });
     });
 
