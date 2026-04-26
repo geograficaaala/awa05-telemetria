@@ -131,22 +131,32 @@
       transform:translateX(-50%);
     }
 
-    @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeUp { from{opacity:0;transform:translateY(18px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
 
-    .hero-eyebrow { font-family:var(--mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.22em;color:var(--ink-faint);margin-bottom:24px;animation:fadeUp .5s ease both }
-    .hero-welcome { font-family:var(--display);font-size:clamp(14px,1.8vw,18px);font-weight:400;font-style:italic;color:var(--ink-soft);margin-bottom:4px;animation:fadeUp .5s .06s ease both;letter-spacing:.01em }
-    .hero-name    { font-family:var(--display);font-size:clamp(52px,9vw,108px);font-weight:900;line-height:1.0;color:var(--cobalt);letter-spacing:-0.025em;margin-bottom:10px;animation:fadeUp .5s .10s ease both }
-    .hero-thanks  { font-family:var(--body);font-size:clamp(14px,1.6vw,17px);font-weight:300;font-style:italic;color:var(--ink-soft);margin-bottom:36px;animation:fadeUp .5s .15s ease both;max-width:560px }
-    .hero-rule    { width:48px;height:1px;background:var(--cobalt-rim);margin:0 auto 32px;animation:fadeUp .5s .18s ease both }
-    .hero-desc    { max-width:640px;font-size:14px;color:var(--ink-soft);line-height:1.75;margin-bottom:48px;animation:fadeUp .5s .22s ease both;font-weight:300 }
+    .hero-eyebrow { font-family:var(--mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.22em;color:var(--ink-faint);margin-bottom:24px;animation:fadeUp .55s cubic-bezier(.22,.68,0,1.2) both }
+    .hero-welcome { font-family:var(--display);font-size:clamp(14px,1.8vw,18px);font-weight:400;font-style:italic;color:var(--ink-soft);margin-bottom:4px;animation:fadeUp .55s .07s cubic-bezier(.22,.68,0,1.2) both;letter-spacing:.01em }
+    .hero-name    { font-family:var(--display);font-size:clamp(52px,9vw,108px);font-weight:900;line-height:1.0;color:var(--cobalt);letter-spacing:-0.025em;margin-bottom:10px;animation:fadeUp .6s .12s cubic-bezier(.22,.68,0,1.2) both }
+    .hero-thanks  { font-family:var(--body);font-size:clamp(14px,1.6vw,17px);font-weight:300;font-style:italic;color:var(--ink-soft);margin-bottom:36px;animation:fadeUp .55s .18s cubic-bezier(.22,.68,0,1.2) both;max-width:560px }
+    .hero-rule    { width:48px;height:1px;background:var(--cobalt-rim);margin:0 auto 32px;animation:fadeUp .5s .22s cubic-bezier(.22,.68,0,1.2) both }
+    .hero-desc    { max-width:640px;font-size:14px;color:var(--ink-soft);line-height:1.75;margin-bottom:48px;animation:fadeUp .55s .26s cubic-bezier(.22,.68,0,1.2) both;font-weight:300 }
     .hero-desc strong { color:var(--ink-mid);font-weight:500 }
-    .hero-actions { display:flex;gap:12px;flex-wrap:wrap;justify-content:center;animation:fadeUp .5s .28s ease both }
+    .hero-actions { display:flex;gap:12px;flex-wrap:wrap;justify-content:center;animation:fadeUp .55s .32s cubic-bezier(.22,.68,0,1.2) both }
 
-    .btn-hero { display:inline-flex;align-items:center;justify-content:center;min-width:190px;padding:14px 28px;border-radius:var(--radius);font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;transition:all .2s }
+    /* Scroll-triggered — estado inicial invisible */
+    .module-card,.var-card,.hw-item,.pipe-step,.stat-cell{opacity:0;transform:translateY(16px);transition:opacity .45s cubic-bezier(.22,.68,0,1.2),transform .45s cubic-bezier(.22,.68,0,1.2),background .15s,box-shadow .2s}
+    .module-card.visible,.var-card.visible,.hw-item.visible,.pipe-step.visible,.stat-cell.visible{opacity:1;transform:translateY(0)}
+    .module-card.visible:hover{background:var(--surface2);box-shadow:var(--shadow-md);transform:translateY(-3px)}
+    .var-card.visible:hover,.hw-item.visible:hover{box-shadow:var(--shadow-md);transform:translateY(-2px)}
+
+    /* KPI strip shimmer */
+    .strip-val.loading{background:linear-gradient(90deg,var(--surface3) 25%,var(--surface2) 50%,var(--surface3) 75%);background-size:400px 100%;animation:shimmer 1.4s ease infinite;border-radius:3px;color:transparent!important}
+
+    .btn-hero { display:inline-flex;align-items:center;justify-content:center;min-width:190px;padding:14px 28px;border-radius:var(--radius);font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;transition:all .22s cubic-bezier(.22,.68,0,1.2) }
     .btn-primary   { background:var(--cobalt);color:#fff;border:1px solid var(--cobalt);box-shadow:var(--shadow-md) }
-    .btn-primary:hover { background:var(--cobalt-mid);transform:translateY(-2px);box-shadow:var(--shadow-lg) }
+    .btn-primary:hover   { background:var(--cobalt-mid);transform:translateY(-3px);box-shadow:var(--shadow-lg) }
     .btn-secondary { background:var(--surface);color:var(--cobalt);border:1px solid var(--rule-strong) }
-    .btn-secondary:hover { background:var(--cobalt-pale);border-color:var(--cobalt) }
+    .btn-secondary:hover { background:var(--cobalt-pale);border-color:var(--cobalt);transform:translateY(-2px) }
 
     /* ═══════════════════════════════════════════════════════════
        STATS BAR
@@ -563,6 +573,22 @@
 </footer>
 
 <script>
+  // ── INTERSECTION OBSERVER — scroll animations ─────────────────
+  (function() {
+    const obs = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          const siblings = Array.from(e.target.parentElement?.children || [e.target]);
+          const idx = siblings.indexOf(e.target);
+          setTimeout(() => e.target.classList.add('visible'), idx * 70);
+          obs.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.module-card,.var-card,.hw-item,.pipe-step,.stat-cell').forEach(el => obs.observe(el));
+  })();
+
+  // ── DATA FETCH ────────────────────────────────────────────────
   async function fetchData() {
     try {
       const r = await fetch('./data/processed/dashboard_data.json?t=' + Date.now());
