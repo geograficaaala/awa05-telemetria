@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>AWA05 · Sistema de Telemetría — José Toriello</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
   <style>
@@ -218,8 +218,17 @@
     /* ═══════════════════════════════════════════════════════════
        FOOTER
     ═══════════════════════════════════════════════════════════ */
-    footer { display:flex;justify-content:space-between;align-items:center;padding:20px 48px;border-top:1px solid var(--rule);background:var(--surface) }
-    .footer-copy { font-family:var(--mono);font-size:8.5px;color:var(--ink-faint);letter-spacing:.06em }
+    footer{position:relative;overflow:hidden;background:linear-gradient(135deg,#1c3f6e 0%,#0f2a50 100%);padding:0 36px;height:52px;display:flex;align-items:center;justify-content:space-between;border-top:none}
+    footer::before{content:"AWA05";position:absolute;right:-10px;top:-18px;font-family:var(--display);font-size:96px;font-weight:900;color:rgba(255,255,255,0.04);letter-spacing:-4px;pointer-events:none;user-select:none}
+    footer::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:rgba(255,255,255,0.10)}
+    .footer-left{font-family:var(--mono);font-size:7.5px;color:rgba(255,255,255,0.30);letter-spacing:.08em;position:relative;z-index:1}
+    .footer-center{display:flex;align-items:center;position:absolute;left:50%;transform:translateX(-50%);z-index:1}
+    .footer-org{font-family:var(--display);font-size:14px;font-weight:700;font-style:italic;color:rgba(255,255,255,0.90);letter-spacing:0.01em;white-space:nowrap}
+    .footer-org sup{font-family:var(--body);font-size:9px;font-style:normal;vertical-align:super;opacity:0.65;margin-left:1px}
+    .footer-right{display:flex;align-items:center;gap:10px;position:relative;z-index:1;flex-shrink:0}
+    .footer-powered-label{font-family:var(--mono);font-size:7px;color:rgba(255,255,255,0.30);letter-spacing:.14em;text-transform:uppercase}
+    .footer-pi-logo{height:26px;width:auto;transition:opacity .2s}
+    .footer-pi-logo:hover{opacity:0.9}
 
     /* ═══════════════════════════════════════════════════════════
        RESPONSIVE
@@ -230,20 +239,51 @@
       .pipeline{grid-template-columns:1fr 1fr}
       .pipeline::before{display:none}
       nav{padding:0 20px}
+      .section{padding:60px 32px}
     }
     @media(max-width:700px){
+      /* Nav */
       nav{height:auto;padding:12px 16px;flex-wrap:wrap;gap:10px}
       nav::before{display:none}
-      .hero{padding:160px 24px 80px}
-      .section{padding:56px 24px}
-      .stats-bar{grid-template-columns:1fr}
-      .stat-cell{border-right:none;border-bottom:1px solid var(--rule)}
-      .hw-item{grid-template-columns:1fr}
-      .pipeline{grid-template-columns:1fr}
+      .nav-subtitle{display:none}
+      .nav-sep{display:none}
+      /* KPI strip */
+      .kpi-strip{top:auto}
+      /* Hero */
+      .hero{padding:120px 20px 60px}
+      .hero-name{font-size:clamp(40px,12vw,72px)}
+      .hero-desc{font-size:13px}
       .hero-actions{flex-direction:column;align-items:stretch}
       .btn-hero{min-width:unset;width:100%}
-      footer{flex-direction:column;gap:8px;padding:16px 24px}
-      .rule{margin:0 24px}
+      /* Sections */
+      .section{padding:44px 18px}
+      .rule{margin:0 18px}
+      /* Stats */
+      .stats-bar{grid-template-columns:1fr 1fr}
+      .stat-cell{border-right:none;border-bottom:1px solid var(--rule);padding:18px 20px}
+      .stat-val{font-size:26px}
+      /* Hardware */
+      .hw-item{grid-template-columns:1fr;gap:8px;padding:14px 16px}
+      .hw-detail{white-space:normal}
+      /* Pipeline */
+      .pipeline{grid-template-columns:1fr 1fr;gap:24px}
+      /* Módulos */
+      .modules-grid{grid-template-columns:1fr}
+      /* Footer */
+      footer{height:auto;padding:14px 16px;flex-wrap:wrap;gap:8px;justify-content:center}
+      .footer-center{position:static;transform:none;order:-1;width:100%;justify-content:center;text-align:center}
+      .footer-org{font-size:12px}
+      .footer-left{width:100%;text-align:center;order:1}
+      .footer-right{order:0}
+    }
+    @media(max-width:480px){
+      .stats-bar{grid-template-columns:1fr}
+      .stat-cell:nth-child(2){border-right:none}
+      .pipeline{grid-template-columns:1fr}
+      nav{gap:8px}
+      .nav-logo{height:26px}
+      .hero{padding:100px 16px 50px}
+      .section{padding:36px 14px}
     }
   </style>
 </head>
@@ -521,8 +561,14 @@
      FOOTER
 ═══════════════════════════════════════════════════════════ -->
 <footer>
-  <div class="footer-copy">AWA05 · Amigos del Lago de Atitlán · Telemetría Ambiental · Santa Catarina Palopó, Sololá</div>
-  <div class="footer-copy" id="footer-ts">—</div>
+  <div class="footer-left" id="footer-ts">--</div>
+  <div class="footer-center">
+    <div class="footer-org">Asociación Amigos del Lago de Atitlán<sup>®</sup> &nbsp;·&nbsp; 2026</div>
+  </div>
+  <div class="footer-right">
+    <span class="footer-powered-label">Powered by</span>
+    <img src="Raspberry_Pi-Logo.wine.png" alt="Raspberry Pi" class="footer-pi-logo" title="Raspberry Pi 4B — AWA05">
+  </div>
 </footer>
 
 <script>
