@@ -358,9 +358,7 @@
     <div class="hd-logo-ring"><div class="hd-logo-dot"></div></div>
     <span class="hd-name">AWA05</span>
     <div class="hd-sep"></div>
-    <span class="hd-sub">Telemetría · Atitlán</span>
-    <div class="hd-sep hd-hide-sm"></div>
-    <a href="index.html" class="hd-back hd-hide-sm">← Inicio</a>
+    <span class="hd-sub">Telemetría Ambiental · Atitlán</span>
   </div>
   <div class="hd-center">
     <div class="hd-stat"><div class="hd-stat-val" id="h-nivel">-- L</div><div class="hd-stat-lbl">Nivel cisterna</div></div>
@@ -374,9 +372,10 @@
     <div class="hd-stat"><div class="hd-stat-val" id="h-inversion">Q --</div><div class="hd-stat-lbl">Energía hoy</div></div>
   </div>
   <div class="hd-right">
-    <img src="aala_logo.png" alt="AALA" class="hd-logo hd-hide-sm">
+    <a href="index.html" class="nav-btn hd-hide-sm" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:4px;border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:0.10em;text-decoration:none;text-transform:uppercase;transition:all 0.15s;">← Inicio</a>
+    <button class="btn hd-hide-sm" onclick="exportXLSX()" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:4px;border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.92);color:#1c3f6e;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:0.10em;cursor:pointer;text-transform:uppercase;">↓ Exportar</button>
+    <img src="aala_logo.png" alt="AALA" class="hd-logo hd-hide-sm" style="height:30px;opacity:0.92;filter:none;">
     <div class="hd-ts" id="header-ts">--</div>
-    <button class="btn hd-hide-sm" onclick="exportXLSX()">↓ Exportar</button>
     <button class="btn hd-mobile-menu" id="btn-mobile-menu" onclick="toggleMobileMenu()" aria-label="Menú">☰</button>
   </div>
 </header>
@@ -811,7 +810,35 @@
     <div class="card"><div class="card-head" style="display:flex;justify-content:space-between"><div><div class="card-title">Rosa de vientos</div><div class="card-sub">Frecuencia por sector 22.5° · N=0° E=90°</div></div><div class="card-badge">Rosa</div></div><div class="rose-wrap"><canvas id="chart-wind-rose"></canvas></div><div class="card-foot"><div class="card-ts" id="ts-dir">--</div><div class="card-ts">WS-2000 · acumulado</div></div></div>
   </div>
   <div class="grid-2">
-    <div class="card"><div class="card-head" style="display:flex;justify-content:space-between"><div><div class="card-title">Precipitación por hora</div><div class="card-sub">mm/h · Distingue captación vs lluvia directa</div></div><div class="card-badge">mm/h</div></div><div class="chart-wrap"><canvas id="chart-rain"></canvas></div><div class="card-foot"><div class="card-ts" id="ts-rain">--</div><div class="card-ts">WS-2000</div></div></div>
+    <div class="card">
+      <div class="card-head" style="display:flex;justify-content:space-between">
+        <div><div class="card-title">Lluvia acumulada</div><div class="card-sub">mm · Datos confiables desde Ambient Weather API</div></div>
+        <div class="card-badge">Ambient</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:0;border:1px solid var(--rule);border-radius:var(--radius);overflow:hidden;margin:12px 0 10px">
+        <div style="padding:12px 10px;text-align:center;border-right:1px solid var(--rule)">
+          <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--cobalt)" id="rain-hora">--</div>
+          <div style="font-family:var(--mono);font-size:7.5px;color:var(--ink-faint);letter-spacing:.10em;text-transform:uppercase;margin-top:3px">Esta hora</div>
+        </div>
+        <div style="padding:12px 10px;text-align:center;border-right:1px solid var(--rule)">
+          <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--teal)" id="rain-dia">--</div>
+          <div style="font-family:var(--mono);font-size:7.5px;color:var(--ink-faint);letter-spacing:.10em;text-transform:uppercase;margin-top:3px">Hoy</div>
+        </div>
+        <div style="padding:12px 10px;text-align:center;border-right:1px solid var(--rule)">
+          <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--forest)" id="rain-semana">--</div>
+          <div style="font-family:var(--mono);font-size:7.5px;color:var(--ink-faint);letter-spacing:.10em;text-transform:uppercase;margin-top:3px">Esta semana</div>
+        </div>
+        <div style="padding:12px 10px;text-align:center">
+          <div style="font-family:var(--mono);font-size:18px;font-weight:700;color:var(--amber)" id="rain-mes">--</div>
+          <div style="font-family:var(--mono);font-size:7.5px;color:var(--ink-faint);letter-spacing:.10em;text-transform:uppercase;margin-top:3px">Este mes</div>
+        </div>
+      </div>
+      <div class="chart-wrap"><canvas id="chart-rain-dia"></canvas></div>
+      <div class="card-foot">
+        <div class="card-ts" id="ts-rain">--</div>
+        <div class="card-ts">Ambient Weather API · acumulado diario mm</div>
+      </div>
+    </div>
     <div class="card"><div class="card-head" style="display:flex;justify-content:space-between"><div><div class="card-title">Radiación solar</div><div class="card-sub">W/m² · Carga energética</div></div><div class="card-badge">W/m²</div></div><div class="chart-wrap"><canvas id="chart-solar"></canvas></div><div class="card-foot"><div class="card-ts" id="ts-solar">--</div><div class="card-ts">WS-2000</div></div></div>
   </div>
 </section>
@@ -1234,44 +1261,70 @@ function windRoseChart(id, directions) {
     ctx.fill();
 
     // ── Etiquetas puntos cardinales ──
-    const FONT_SIZE = Math.max(9, Math.min(11, W / 22));
-    ctx.font = `600 ${FONT_SIZE}px 'JetBrains Mono', monospace`;
+    const FONT_SIZE = Math.max(9, Math.min(12, W / 20));
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
     CARD_IDX.forEach(i => {
       const label = SECTOR_LABELS[i];
       const ang   = (i / NSECTORS) * 2 * Math.PI - Math.PI / 2;
-      const dist  = R + 16;
+      const dist  = R + 18;
       const x = cx + Math.cos(ang) * dist;
       const y = cy + Math.sin(ang) * dist;
 
-      // Fondo blanco pequeño detrás del texto
-      const tw = ctx.measureText(label).width;
-      ctx.fillStyle = 'rgba(247,246,241,0.85)';
-      ctx.fillRect(x - tw/2 - 3, y - FONT_SIZE/2 - 2, tw + 6, FONT_SIZE + 4);
-
-      // Texto — cardinales principales en cobalto, intermedios más suaves
       const isMainCard = ['N','E','S','O'].includes(label);
+      const fs = isMainCard ? FONT_SIZE + 1 : FONT_SIZE - 1;
+      const fw = isMainCard ? 700 : 500;
+      ctx.font = `${fw} ${fs}px 'JetBrains Mono', monospace`;
+
+      // Fondo pill detrás del texto
+      const tw = ctx.measureText(label).width;
+      const pad = isMainCard ? 5 : 3;
+      const bh = fs + 5;
+      ctx.fillStyle = isMainCard ? 'rgba(28,63,110,0.10)' : 'rgba(247,246,241,0.90)';
+      const rx = x - tw/2 - pad, ry = y - bh/2;
+      const rw = tw + pad*2, rh = bh;
+      ctx.beginPath();
+      ctx.roundRect(rx, ry, rw, rh, 2);
+      ctx.fill();
+
+      // Borde para cardinales principales
+      if (isMainCard) {
+        ctx.strokeStyle = 'rgba(28,63,110,0.25)';
+        ctx.lineWidth = 0.8;
+        ctx.stroke();
+      }
+
       ctx.fillStyle = isMainCard ? '#1c3f6e' : '#6b6860';
-      ctx.font = `${isMainCard ? 700 : 500} ${isMainCard ? FONT_SIZE + 1 : FONT_SIZE - 1}px 'JetBrains Mono', monospace`;
       ctx.fillText(label, x, y);
     });
 
-    // ── Leyenda de escala (máx lecturas) ──
-    ctx.font = `400 8px 'JetBrains Mono', monospace`;
-    ctx.fillStyle = 'rgba(40,38,30,0.35)';
+    // ── Leyenda de escala (% del máximo en anillos) ──
+    ctx.font = `400 7.5px 'JetBrains Mono', monospace`;
+    ctx.fillStyle = 'rgba(40,38,30,0.30)';
     ctx.textAlign = 'left';
-    ctx.fillText(`máx ${maxBin} obs.`, 6, H - 8);
+    ctx.fillText(`máx: ${maxBin} obs.`, 6, H - 8);
+
+    // Porcentajes en los anillos
+    [0.25, 0.5, 0.75].forEach(f => {
+      const pct = Math.round(f * maxBin);
+      const lx = cx + 3;
+      const ly = cy - R * f - 2;
+      ctx.font = `400 7px 'JetBrains Mono', monospace`;
+      ctx.fillStyle = 'rgba(40,38,30,0.25)';
+      ctx.textAlign = 'left';
+      ctx.fillText(`${pct}`, lx, ly);
+    });
 
     // ── Flecha norte decorativa ──
-    const northAng = -Math.PI / 2; // arriba
-    const arrowR = R + 4;
+    const northAng = -Math.PI / 2;
+    const arrowTip = R - 2;
+    const arrowBase = R - 14;
     ctx.beginPath();
-    ctx.moveTo(cx + Math.cos(northAng) * (R - 6), cy + Math.sin(northAng) * (R - 6));
-    ctx.lineTo(cx + Math.cos(northAng) * arrowR, cy + Math.sin(northAng) * arrowR);
+    ctx.moveTo(cx + Math.cos(northAng) * arrowBase, cy + Math.sin(northAng) * arrowBase);
+    ctx.lineTo(cx + Math.cos(northAng) * arrowTip,  cy + Math.sin(northAng) * arrowTip);
     ctx.strokeStyle = '#1c3f6e';
-    ctx.lineWidth = 1.5;
+    ctx.lineWidth = 2;
     ctx.stroke();
   }
 
@@ -1690,6 +1743,72 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
 function updateCorrTable() {}
 
 
+function interpretHeatCell(nameA, nameB, r, i, j) {
+  const panel = document.getElementById('hm-interp');
+  if (!panel) return;
+
+  // Magnitud
+  const absR = Math.abs(r);
+  let mag, magColor;
+  if (absR >= 0.7)      { mag = 'Fuerte';   magColor = r > 0 ? '#951f1f' : '#1c3f6e'; }
+  else if (absR >= 0.4) { mag = 'Moderada'; magColor = r > 0 ? '#b05c00' : '#2558a0'; }
+  else if (absR >= 0.2) { mag = 'Débil';    magColor = '#6b6860'; }
+  else                  { mag = 'Nula';      magColor = '#a09e98'; }
+
+  const dir = r > 0 ? 'positiva' : r < 0 ? 'negativa' : 'sin correlación';
+
+  // Interpretaciones contextuales para captación de niebla
+  const INTERP = {
+    'HR%_Temp°C':        'A mayor temperatura, menor humedad relativa. Relación típica: el aire caliente retiene más humedad sin saturarse.',
+    'Temp°C_HR%':        'A mayor temperatura, menor humedad relativa. Relación típica: el aire caliente retiene más humedad sin saturarse.',
+    'HR%_Rocio°C':       'Humedad y punto de rocío están estrechamente ligados. Alta correlación esperada.',
+    'Rocio°C_HR%':       'Humedad y punto de rocío están estrechamente ligados. Alta correlación esperada.',
+    'HR%_V km/h':        'Viento alto tiende a reducir la humedad local por mezcla de masas de aire.',
+    'V km/h_HR%':        'Viento alto tiende a reducir la humedad local por mezcla de masas de aire.',
+    'HR%_Rad W/m²':      'Radiación solar alta seca el ambiente y reduce la humedad relativa.',
+    'Rad W/m²_HR%':      'Radiación solar alta seca el ambiente y reduce la humedad relativa.',
+    'HR%_Nivel':         'Correlación clave para captación de niebla: mayor humedad favorece la condensación.',
+    'Nivel_HR%':         'Correlación clave para captación de niebla: mayor humedad favorece la condensación.',
+    'Temp°C_Rocio°C':    'Temperatura y punto de rocío correlacionan fuerte — ambas suben y bajan juntas.',
+    'Rocio°C_Temp°C':    'Temperatura y punto de rocío correlacionan fuerte — ambas suben y bajan juntas.',
+    'Temp°C_Nivel':      'Temperaturas altas reducen la captación (menos niebla). Relación negativa esperada.',
+    'Nivel_Temp°C':      'Temperaturas altas reducen la captación (menos niebla). Relación negativa esperada.',
+    'Rocio°C_Nivel':     'Punto de rocío alto indica aire saturado — condición ideal para captación de niebla.',
+    'Nivel_Rocio°C':     'Punto de rocío alto indica aire saturado — condición ideal para captación de niebla.',
+    'V km/h_Rad W/m²':   'Viento y radiación solar tienden a correlacionar positivamente en días despejados.',
+    'Rad W/m²_V km/h':   'Viento y radiación solar tienden a correlacionar positivamente en días despejados.',
+    'V km/h_Nivel':      'El viento es el motor de captación de niebla — empuja las gotas contra la malla.',
+    'Nivel_V km/h':      'El viento es el motor de captación de niebla — empuja las gotas contra la malla.',
+    'Rad W/m²_Nivel':    'Radiación solar alta implica cielos despejados — menos niebla, menos captación.',
+    'Nivel_Rad W/m²':    'Radiación solar alta implica cielos despejados — menos niebla, menos captación.',
+    'PresInHg_Nivel':    'Presión alta suele asociarse con cielos despejados y menos niebla disponible.',
+    'Nivel_PresInHg':    'Presión alta suele asociarse con cielos despejados y menos niebla disponible.',
+  };
+
+  const key = `${nameA}_${nameB}`;
+  const texto = INTERP[key] || `Relación entre <strong>${nameA}</strong> y <strong>${nameB}</strong>. Con r=${r.toFixed(3)}, la correlación ${dir} es ${mag.toLowerCase()} — considerar factores confundentes y tamaño muestral.`;
+
+  // Advertencia si diagonal
+  const esDiag = nameA === nameB;
+
+  panel.innerHTML = `
+    <div class="hm-interp-header">
+      <div class="hm-interp-vars">${nameA} <span style="color:var(--ink-faint);font-weight:400">vs</span> ${nameB}</div>
+      <div class="hm-interp-r">
+        <span class="hm-interp-rval" style="color:${magColor}">${r >= 0 ? '+' : ''}${r.toFixed(3)}</span>
+        <span class="hm-interp-rmag">${mag.toUpperCase()} · ${dir.toUpperCase()}</span>
+      </div>
+    </div>
+    <div class="hm-interp-body">
+      ${esDiag
+        ? '<p>Correlación consigo misma — siempre r = 1.00 por definición.</p>'
+        : `<p>${texto}</p>
+           <p style="color:var(--ink-faint);font-size:11.5px">Pearson r mide únicamente la relación <em>lineal</em>. No implica causalidad ni descarta relaciones no lineales.</p>`
+      }
+      <span class="hm-interp-tag">${mag} · Pearson r</span>
+    </div>`;
+}
+
 function interpretarPi(sistema) {
   if (!sistema) return;
   const set=(id,val,warn,crit,unit,reverse=false)=>{
@@ -2094,6 +2213,21 @@ async function renderDashboard() {
   setText('footer-ts','Actualizado: '+ts);
   ['ts-nivel','ts-hum','ts-temp','ts-dew','ts-pres','ts-wind','ts-dir','ts-rain','ts-solar','ts-uv'].forEach(id=>setTs(id,ts));
 
+  // Lluvia desde Ambient Weather
+  const kpis = payload.kpis || {};
+  const setText2 = (id, val, suf='') => { const el=document.getElementById(id); if(el) el.textContent=(val!=null?val+suf:'--'); };
+  setText2('rain-hora', kpis.lluvia_hora_mm != null ? kpis.lluvia_hora_mm : '--', kpis.lluvia_hora_mm != null ? ' mm' : '');
+  setText2('rain-dia',  kpis.lluvia_dia_mm  != null ? kpis.lluvia_dia_mm  : '--', kpis.lluvia_dia_mm  != null ? ' mm' : '');
+  setText2('rain-semana', kpis.lluvia_semana_mm != null ? kpis.lluvia_semana_mm : '--', kpis.lluvia_semana_mm != null ? ' mm' : '');
+  setText2('rain-mes',  kpis.lluvia_mes_mm  != null ? kpis.lluvia_mes_mm  : '--', kpis.lluvia_mes_mm  != null ? ' mm' : '');
+  if (kpis.lluvia_ambient_ts) setTs('ts-rain', 'Ambient · ' + kpis.lluvia_ambient_ts);
+  // Gráfica acumulado diario desde Ambient
+  const rainDiaLabels = formatLabels(s.lluvia_dia_labels || []);
+  const rainDiaVals   = s.lluvia_dia_mm || [];
+  if (rainDiaLabels.length && rainDiaVals.length) {
+    barChart('chart-rain-dia', rainDiaLabels, rainDiaVals, '#0f6b60', 'mm');
+  }
+
   // Header
   setText('h-nivel',(payload.kpis?.nivel_l||'--')+' L');
   setText('h-hum',(payload.kpis?.humedad_pct||'--')+'%');
@@ -2125,7 +2259,6 @@ async function renderDashboard() {
   lineChart('chart-pres',labelsClima,pres,'#1a5c38','inHg');
   lineChart('chart-wind',labelsClima,wind,'#1c3f6e','km/h',0);
   windRoseChart('chart-wind-rose',dir);
-  barChart('chart-rain',labelsClima,rain,'#1c3f6e','mm');
   lineChart('chart-solar',labelsClima,solar,'#b05c00','W/m²',0);
 
   renderProduccionAnalisis(rawNivelLabels,nivel);
