@@ -57,9 +57,6 @@
     header::before{content:"AWA05";position:absolute;right:-10px;top:-18px;font-family:var(--display);font-size:96px;font-weight:900;color:rgba(255,255,255,0.04);letter-spacing:-4px;pointer-events:none;user-select:none}
     header::after{content:"";position:absolute;bottom:0;left:0;right:0;height:1px;background:rgba(255,255,255,0.10)}
     .hd-brand{display:flex;align-items:center;gap:12px;flex-shrink:0;position:relative;z-index:1}
-    .hd-logo-ring{width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center}
-    .hd-logo-dot{width:8px;height:8px;border-radius:50%;background:#fff;animation:live-pulse 2.8s ease-in-out infinite}
-    @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.7)}}
     .hd-name{font-family:var(--display);font-size:15px;font-weight:700;color:#fff;letter-spacing:0.02em;font-style:italic}
     .hd-sep{width:1px;height:18px;background:rgba(255,255,255,0.18)}
     .hd-sub{font-family:var(--mono);font-size:8.5px;color:rgba(255,255,255,0.50);letter-spacing:0.14em;text-transform:uppercase}
@@ -127,11 +124,18 @@
       /* Tablas — scroll horizontal */
       .fin-table,.corr-table{font-size:10.5px}
       .card-body{overflow-x:auto;-webkit-overflow-scrolling:touch}
-      /* Heatmap — scroll y reducción */
+      /* Heatmap — scroll y apilado vertical */
       #heatmap-corr{overflow-x:auto;-webkit-overflow-scrolling:touch}
-      .hm-cell{width:40px!important;height:40px!important;font-size:7.5px!important}
-      .hm-label-row{max-width:40px!important;font-size:7px!important}
-      .hm-interp{max-width:100%!important;min-width:0!important}
+      #hm-container{flex-direction:column!important;gap:16px!important}
+      .hm-cell{width:38px!important;height:38px!important;font-size:7px!important}
+      .hm-label-col{font-size:7px!important;padding:0 4px 0 0!important}
+      .hm-label-row{max-width:38px!important;font-size:6.5px!important}
+      .hm-interp{max-width:100%!important;min-width:0!important;width:100%!important}
+      /* Header móvil */
+      header{padding:0 12px!important;height:48px!important}
+      .hd-brand img{height:24px!important}
+      .hd-name{font-size:13px!important}
+      .hd-ts{display:none!important}
       /* Producción */
       .garrafon-display{flex-direction:column!important;gap:8px}
       /* Lluvia — 2 columnas en móvil */
@@ -389,10 +393,11 @@
 ════════════════════════════════════════════════════════════════ -->
 <header>
   <div class="hd-brand">
-    <div class="hd-logo-ring"><div class="hd-logo-dot"></div></div>
-    <span class="hd-name">AWA05</span>
+    <img src="aala_logo.png" alt="AALA" style="height:30px;width:auto;opacity:0.92;filter:none;flex-shrink:0;">
     <div class="hd-sep"></div>
-    <span class="hd-sub">Telemetría Ambiental · Atitlán</span>
+    <span class="hd-name">AWA05</span>
+    <div class="hd-sep hd-hide-sm"></div>
+    <span class="hd-sub hd-hide-sm">Telemetría Ambiental · Atitlán</span>
   </div>
   <div class="hd-center">
     <div class="hd-stat"><div class="hd-stat-val" id="h-nivel">-- L</div><div class="hd-stat-lbl">Nivel cisterna</div></div>
@@ -406,9 +411,8 @@
     <div class="hd-stat"><div class="hd-stat-val" id="h-inversion">Q --</div><div class="hd-stat-lbl">Energía hoy</div></div>
   </div>
   <div class="hd-right">
-    <a href="index.html" class="nav-btn hd-hide-sm" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:4px;border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:0.10em;text-decoration:none;text-transform:uppercase;transition:all 0.15s;">← Inicio</a>
+    <a href="index.html" class="hd-hide-sm" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:4px;border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:0.10em;text-decoration:none;text-transform:uppercase;transition:all 0.15s;">← Inicio</a>
     <button class="btn hd-hide-sm" onclick="exportXLSX()" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:4px;border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.92);color:#1c3f6e;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:0.10em;cursor:pointer;text-transform:uppercase;">↓ Exportar</button>
-    <img src="aala_logo.png" alt="AALA" class="hd-logo hd-hide-sm" style="height:30px;opacity:0.92;filter:none;">
     <div class="hd-ts" id="header-ts">--</div>
     <button class="btn hd-mobile-menu" id="btn-mobile-menu" onclick="toggleMobileMenu()" aria-label="Menú">☰</button>
   </div>
@@ -427,8 +431,8 @@
     <a class="mobile-nav-link" href="#correlacion">Evaluación estadística</a>
   </nav>
   <div class="mobile-nav-foot">
-    <button class="btn" onclick="exportXLSX()" style="width:100%">↓ Exportar datos XLSX</button>
-    <a href="index.html" style="display:block;text-align:center;font-family:var(--mono);font-size:9px;color:var(--ink-faint);text-decoration:none;margin-top:10px;letter-spacing:.08em">← Volver al inicio</a>
+    <a href="index.html" style="display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--mono);font-size:9px;color:var(--cobalt);text-decoration:none;padding:10px 14px;border:1px solid var(--cobalt-rim);border-radius:var(--radius);background:var(--cobalt-pale);letter-spacing:.08em;margin-bottom:10px">← Volver al inicio</a>
+    <button class="btn-solid btn" onclick="exportXLSX()" style="width:100%;background:var(--cobalt);color:#fff;border-color:var(--cobalt);">↓ Exportar datos XLSX</button>
   </div>
 </div>
 
@@ -983,11 +987,11 @@
       </div>
       <div class="card-badge">Heatmap r</div>
     </div>
-    <div style="padding:16px 20px;display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap">
-      <div style="overflow-x:auto;flex-shrink:0">
-        <div id="heatmap-corr" style="display:inline-block;min-width:420px"></div>
+    <div style="padding:16px 20px;display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap" id="hm-container">
+      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;flex-shrink:0;max-width:100%">
+        <div id="heatmap-corr" style="display:inline-block;min-width:380px"></div>
       </div>
-      <div class="hm-interp" id="hm-interp">
+      <div class="hm-interp" id="hm-interp" style="flex:1;min-width:200px">
         <div class="hm-interp-empty">Haz clic en una celda<br>para interpretar la correlación</div>
       </div>
     </div>
