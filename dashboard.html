@@ -52,24 +52,92 @@
     body::after{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.5}
 
     /* ── HEADER ─────────────────────────────────────────────────── */
-    header{position:sticky;top:0;z-index:200;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:rgba(247,246,241,0.96);border-bottom:1px solid var(--rule-strong);backdrop-filter:blur(16px);gap:16px}
-    .hd-brand{display:flex;align-items:center;gap:12px;flex-shrink:0}
-    .hd-logo-ring{width:32px;height:32px;border-radius:50%;border:1.5px solid var(--cobalt-rim);display:flex;align-items:center;justify-content:center;position:relative}
-    .hd-logo-dot{width:8px;height:8px;border-radius:50%;background:var(--cobalt);animation:live-pulse 2.8s ease-in-out infinite}
+    header{position:sticky;top:0;z-index:200;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:linear-gradient(135deg,var(--cobalt) 0%,#0f2a50 100%);overflow:hidden;gap:16px}
+    /* Marca de agua */
+    header::before{content:"AWA05";position:absolute;right:-10px;top:-18px;font-family:var(--display);font-size:96px;font-weight:900;color:rgba(255,255,255,0.04);letter-spacing:-4px;pointer-events:none;user-select:none}
+    header::after{content:"";position:absolute;bottom:0;left:0;right:0;height:1px;background:rgba(255,255,255,0.10)}
+    .hd-brand{display:flex;align-items:center;gap:12px;flex-shrink:0;position:relative;z-index:1}
+    .hd-logo-ring{width:32px;height:32px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center}
+    .hd-logo-dot{width:8px;height:8px;border-radius:50%;background:#fff;animation:live-pulse 2.8s ease-in-out infinite}
     @keyframes live-pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.3;transform:scale(0.7)}}
-    .hd-name{font-family:var(--display);font-size:15px;font-weight:700;color:var(--cobalt);letter-spacing:0.02em;font-style:italic}
-    .hd-sep{width:1px;height:18px;background:var(--rule-strong)}
-    .hd-sub{font-family:var(--mono);font-size:8.5px;color:var(--ink-soft);letter-spacing:0.14em;text-transform:uppercase}
-    .hd-center{flex:1;display:flex;align-items:center;justify-content:center;gap:24px}
+    .hd-name{font-family:var(--display);font-size:15px;font-weight:700;color:#fff;letter-spacing:0.02em;font-style:italic}
+    .hd-sep{width:1px;height:18px;background:rgba(255,255,255,0.18)}
+    .hd-sub{font-family:var(--mono);font-size:8.5px;color:rgba(255,255,255,0.50);letter-spacing:0.14em;text-transform:uppercase}
+    .hd-back{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,0.45);text-decoration:none;letter-spacing:.08em;transition:color .13s}
+    .hd-back:hover{color:rgba(255,255,255,0.85)}
+    .hd-logo{height:28px;width:auto;object-fit:contain;opacity:0.80;filter:brightness(0) invert(1)}
+    .hd-center{flex:1;display:flex;align-items:center;justify-content:center;gap:24px;position:relative;z-index:1}
     .hd-stat{text-align:center}
-    .hd-stat-val{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--cobalt)}
-    .hd-stat-lbl{font-family:var(--mono);font-size:7.5px;color:var(--ink-faint);letter-spacing:.10em;text-transform:uppercase;margin-top:1px}
-    .hd-right{display:flex;align-items:center;gap:10px;flex-shrink:0}
-    .hd-ts{font-family:var(--mono);font-size:8px;color:var(--cobalt);background:var(--cobalt-pale);border:1px solid var(--cobalt-rim);border-radius:2px;padding:4px 10px;letter-spacing:.04em}
-    .btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:var(--radius);border:1px solid var(--rule-strong);background:var(--surface);color:var(--ink-mid);font-family:var(--mono);font-size:8.5px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all 0.13s}
-    .btn:hover{background:var(--surface3);border-color:var(--cobalt);color:var(--cobalt)}
-    .btn-solid{background:var(--cobalt);color:#fff;border-color:var(--cobalt)}
-    .btn-solid:hover{background:var(--cobalt-mid)}
+    .hd-stat-val{font-family:var(--mono);font-size:11px;font-weight:500;color:#fff}
+    .hd-stat-lbl{font-family:var(--mono);font-size:7.5px;color:rgba(255,255,255,0.45);letter-spacing:.10em;text-transform:uppercase;margin-top:1px}
+    .hd-right{display:flex;align-items:center;gap:10px;flex-shrink:0;position:relative;z-index:1}
+    .hd-ts{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,0.70);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);border-radius:2px;padding:4px 10px;letter-spacing:.04em}
+    /* ── Botón menú móvil (oculto en desktop) ── */
+    .hd-mobile-menu{display:none!important}
+    /* ── Menú móvil desplegable ── */
+    .mobile-menu{position:fixed;top:56px;left:0;right:0;z-index:198;background:var(--surface);border-bottom:1px solid var(--rule-strong);padding:16px 20px 20px;box-shadow:var(--shadow-md)}
+    .mobile-nav{display:flex;flex-direction:column;gap:2px;margin-bottom:16px}
+    .mobile-nav-link{font-family:var(--body);font-size:13px;color:var(--ink-soft);text-decoration:none;padding:10px 14px;border-radius:var(--radius);border-left:2px solid transparent;transition:all .12s}
+    .mobile-nav-link:hover,.mobile-nav-link.active{color:var(--cobalt);background:var(--cobalt-pale);border-left-color:var(--cobalt)}
+    .mobile-nav-foot{border-top:1px solid var(--rule);padding-top:14px;display:flex;flex-direction:column;gap:0}
+    /* ── RESPONSIVE ── */
+    @media(max-width:768px){
+      /* Header */
+      header{padding:0 16px;height:52px}
+      .hd-hide-sm{display:none!important}
+      .hd-mobile-menu{display:inline-flex!important}
+      .hd-center{display:none!important}
+      .hd-ts{font-size:7.5px;padding:3px 8px;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+      /* Layout — colapsa sidebar */
+      .layout{grid-template-columns:1fr!important}
+      .sidebar{display:none!important}
+      /* Main — menos padding */
+      main{padding:20px 14px 60px!important}
+      /* Secciones */
+      .section-title{font-size:22px!important}
+      .section-subtitle{font-size:12px!important}
+      /* Grids — todo a 1 columna */
+      .grid-2,.grid-3,.grid-4,.kpi-grid,.pi-grid,.irr-grid,.precio-grid{grid-template-columns:1fr!important}
+      .col-span-2,.col-span-3,.col-span-4{grid-column:span 1!important}
+      /* Cards */
+      .card-head{flex-direction:column!important;gap:8px}
+      .card-badge{align-self:flex-start}
+      /* KPI cards — más compactas */
+      .kpi-card{padding:14px 12px!important}
+      .kpi-value{font-size:22px!important}
+      /* Panel oscuro inversión */
+      .inv-display{padding:20px 18px 44px!important}
+      .inv-grid{grid-template-columns:1fr 1fr!important}
+      .inv-item{border-right:none!important;border-bottom:1px solid rgba(255,255,255,0.10);padding:10px 0!important}
+      .inv-ticker{padding:0 18px!important;gap:16px!important;flex-wrap:wrap;height:auto!important;padding:8px 18px!important}
+      .inv-item-val{font-size:20px!important}
+      /* Precio cards */
+      .precio-grid{grid-template-columns:1fr!important}
+      /* Charts — altura reducida */
+      .chart-wrap{height:180px!important}
+      .chart-wrap.tall{height:240px!important}
+      .chart-wrap.short{height:130px!important}
+      /* Tablas — scroll horizontal */
+      .fin-table,.corr-table{font-size:11px}
+      .card-body{overflow-x:auto}
+      /* Heatmap scroll */
+      #heatmap-corr{overflow-x:auto}
+      /* Producción */
+      .garrafon-display{flex-direction:column!important;gap:8px}
+      /* Footer */
+      .dash-footer{flex-direction:column;gap:6px;padding:12px 16px}
+      /* Rule */
+      .section-rule{margin:24px 0 20px!important}
+    }
+    @media(max-width:480px){
+      .inv-grid{grid-template-columns:1fr!important}
+      .kpi-grid{grid-template-columns:1fr 1fr!important}
+      main{padding:16px 10px 60px!important}
+    }
+    .btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);font-family:var(--mono);font-size:8.5px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all 0.13s;backdrop-filter:blur(4px)}
+    .btn:hover{background:rgba(255,255,255,0.16);border-color:rgba(255,255,255,0.40);color:#fff}
+    .btn-solid{background:rgba(255,255,255,0.92);color:var(--cobalt);border-color:transparent;font-weight:600}
+    .btn-solid:hover{background:#fff;color:#0f2a50}
 
     /* ── LAYOUT ─────────────────────────────────────────────────── */
     .layout{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:calc(100vh - 56px)}
@@ -259,6 +327,18 @@
     .hm-cell:hover{opacity:0.75;outline:2px solid var(--ink-mid)}
     .hm-label-col{font-family:var(--mono);font-size:8px;color:var(--ink-soft);padding:0 8px 0 0;text-align:right;white-space:nowrap;font-weight:400}
     .hm-label-row{font-family:var(--mono);font-size:8px;color:var(--ink-soft);padding:4px 2px 0;text-align:center;white-space:nowrap;font-weight:400;max-width:52px;overflow:hidden;text-overflow:ellipsis}
+    /* Panel interpretación heatmap */
+    .hm-interp{flex:1;min-width:220px;max-width:380px;background:var(--surface2);border:1px solid var(--rule);border-radius:var(--radius);padding:20px;align-self:flex-start;transition:all 0.2s}
+    .hm-interp-empty{color:var(--ink-faint);font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:32px 0}
+    .hm-interp-header{margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+    .hm-interp-vars{font-family:var(--display);font-size:15px;font-weight:700;color:var(--cobalt);margin-bottom:4px}
+    .hm-interp-r{display:flex;align-items:center;gap:8px;margin-bottom:2px}
+    .hm-interp-rval{font-family:var(--mono);font-size:20px;font-weight:700}
+    .hm-interp-rmag{font-family:var(--mono);font-size:8.5px;color:var(--ink-soft);letter-spacing:.06em}
+    .hm-interp-body{font-family:var(--body);font-size:12.5px;color:var(--ink-soft);line-height:1.65}
+    .hm-interp-body p{margin-bottom:8px}
+    .hm-interp-body p:last-child{margin-bottom:0}
+    .hm-interp-tag{display:inline-block;font-family:var(--mono);font-size:7.5px;letter-spacing:.10em;text-transform:uppercase;border:1px solid var(--rule-strong);padding:3px 8px;border-radius:2px;color:var(--ink-faint);margin-top:10px}
     /* ── IMPORTANCIA BARS ────────────────────────────────────────── */
     .imp-bar-wrap{display:flex;flex-direction:column;gap:8px;padding:16px 20px}
     .imp-row{display:flex;align-items:center;gap:10px}
@@ -279,6 +359,8 @@
     <span class="hd-name">AWA05</span>
     <div class="hd-sep"></div>
     <span class="hd-sub">Telemetría · Atitlán</span>
+    <div class="hd-sep hd-hide-sm"></div>
+    <a href="index.html" class="hd-back hd-hide-sm">← Inicio</a>
   </div>
   <div class="hd-center">
     <div class="hd-stat"><div class="hd-stat-val" id="h-nivel">-- L</div><div class="hd-stat-lbl">Nivel cisterna</div></div>
@@ -289,13 +371,33 @@
     <div class="hd-sep"></div>
     <div class="hd-stat"><div class="hd-stat-val" id="h-temp">-- °C</div><div class="hd-stat-lbl">Temperatura</div></div>
     <div class="hd-sep"></div>
-    <div class="hd-stat"><div class="hd-stat-val" id="h-inversion">Q --</div><div class="hd-stat-lbl">Invertido hoy</div></div>
+    <div class="hd-stat"><div class="hd-stat-val" id="h-inversion">Q --</div><div class="hd-stat-lbl">Energía hoy</div></div>
   </div>
   <div class="hd-right">
+    <img src="aala_logo.png" alt="AALA" class="hd-logo hd-hide-sm">
     <div class="hd-ts" id="header-ts">--</div>
-    <button class="btn" onclick="exportXLSX()">↓ Exportar</button>
+    <button class="btn hd-hide-sm" onclick="exportXLSX()">↓ Exportar</button>
+    <button class="btn hd-mobile-menu" id="btn-mobile-menu" onclick="toggleMobileMenu()" aria-label="Menú">☰</button>
   </div>
 </header>
+
+<!-- MENÚ MÓVIL (solo visible en pantallas pequeñas cuando se abre) -->
+<div id="mobile-menu" class="mobile-menu" style="display:none">
+  <nav class="mobile-nav">
+    <a class="mobile-nav-link active" href="#resumen">Resumen ejecutivo</a>
+    <a class="mobile-nav-link" href="#salud-pi">Nodo Pi</a>
+    <a class="mobile-nav-link" href="#nivel">Producción hídrica</a>
+    <a class="mobile-nav-link" href="#produccion-analisis">Diurno / Nocturno</a>
+    <a class="mobile-nav-link" href="#empresa">Análisis empresarial</a>
+    <a class="mobile-nav-link" href="#clima-base">Clima base</a>
+    <a class="mobile-nav-link" href="#clima-avanzado">Viento y radiación</a>
+    <a class="mobile-nav-link" href="#correlacion">Evaluación estadística</a>
+  </nav>
+  <div class="mobile-nav-foot">
+    <button class="btn" onclick="exportXLSX()" style="width:100%">↓ Exportar datos XLSX</button>
+    <a href="index.html" style="display:block;text-align:center;font-family:var(--mono);font-size:9px;color:var(--ink-faint);text-decoration:none;margin-top:10px;letter-spacing:.08em">← Volver al inicio</a>
+  </div>
+</div>
 
 <div class="layout">
 <!-- ═══════════════════════════════════════════════════════════════
@@ -820,8 +922,13 @@
       </div>
       <div class="card-badge">Heatmap r</div>
     </div>
-    <div style="padding:16px 20px;overflow-x:auto">
-      <div id="heatmap-corr" style="display:inline-block;min-width:500px"></div>
+    <div style="padding:16px 20px;display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap">
+      <div style="overflow-x:auto;flex-shrink:0">
+        <div id="heatmap-corr" style="display:inline-block;min-width:420px"></div>
+      </div>
+      <div class="hm-interp" id="hm-interp">
+        <div class="hm-interp-empty">Haz clic en una celda<br>para interpretar la correlación</div>
+      </div>
     </div>
     <div class="card-foot"><div class="card-ts" id="ts-heatmap">--</div><div class="card-ts">Pearson r · celda roja = correlación positiva · azul = negativa · blanco = sin correlación</div></div>
   </div>
@@ -1045,13 +1152,133 @@ function nivelChart(id, labels, nivel, garrafonIdx) {
 }
 
 function windRoseChart(id, directions) {
-  destroyChart(id);
-  const ctx=document.getElementById(id)?.getContext('2d');
-  if(!ctx||!directions||!directions.length) return;
-  const bins=Array(16).fill(0);
-  directions.forEach(d=>{if(d!==null&&d!==undefined){const b=Math.round((d/360)*16)%16;bins[b]++;}});
-  const labels=['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSO','SO','OSO','O','ONO','NO','NNO'];
-  chartRegistry[id]=new Chart(ctx,{type:'polarArea',data:{labels,datasets:[{data:bins,backgroundColor:DIA_COLORS.concat(DIA_COLORS).slice(0,16).map(c=>c+'aa'),borderColor:'rgba(255,255,255,0.5)',borderWidth:1}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{r:{ticks:{display:false},grid:{color:'rgba(40,38,30,0.08)'}}}}});
+  // Usamos canvas 2D directo para tener control total sobre puntos cardinales
+  const canvas = document.getElementById(id);
+  if (!canvas || !directions || !directions.length) return;
+  const ctx = canvas.getContext('2d');
+
+  // Bins de 16 sectores de 22.5° cada uno, empezando en N=0°
+  const NSECTORS = 16;
+  const bins = Array(NSECTORS).fill(0);
+  directions.forEach(d => {
+    if (d === null || d === undefined) return;
+    // Sector: redondeamos al sector más cercano, con N arriba
+    const b = Math.round(((+d + 11.25) % 360) / 22.5) % NSECTORS;
+    bins[b]++;
+  });
+  const maxBin = Math.max(...bins, 1);
+
+  // Labels de los 16 sectores (N en índice 0)
+  const SECTOR_LABELS = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSO','SO','OSO','O','ONO','NO','NNO'];
+  // Solo los 8 principales se muestran en la rosa
+  const CARD_IDX = [0, 2, 4, 6, 8, 10, 12, 14]; // N,NE,E,SE,S,SO,O,NO
+
+  function drawRose() {
+    const W = canvas.offsetWidth || 240;
+    const H = canvas.offsetHeight || 240;
+    canvas.width  = W * window.devicePixelRatio;
+    canvas.height = H * window.devicePixelRatio;
+    ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+
+    const cx = W / 2, cy = H / 2;
+    const R  = Math.min(W, H) / 2 - 28; // radio máximo de los pétalos
+    const SECTOR_RAD = (2 * Math.PI) / NSECTORS;
+
+    ctx.clearRect(0, 0, W, H);
+
+    // ── Círculos de referencia ──
+    [0.25, 0.5, 0.75, 1.0].forEach(f => {
+      ctx.beginPath();
+      ctx.arc(cx, cy, R * f, 0, 2 * Math.PI);
+      ctx.strokeStyle = 'rgba(40,38,30,0.08)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
+
+    // ── Líneas de ejes (8 direcciones principales) ──
+    CARD_IDX.forEach(i => {
+      const ang = (i / NSECTORS) * 2 * Math.PI - Math.PI / 2;
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.lineTo(cx + Math.cos(ang) * R, cy + Math.sin(ang) * R);
+      ctx.strokeStyle = 'rgba(40,38,30,0.07)';
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
+
+    // ── Pétalos ──
+    const COLORS = ['#1c3f6e','#2558a0','#0f6b60','#b05c00','#1a5c38','#7a4a9e','#951f1f','#c4960a',
+                    '#1c3f6e','#2558a0','#0f6b60','#b05c00','#1a5c38','#7a4a9e','#951f1f','#c4960a'];
+    bins.forEach((count, i) => {
+      if (!count) return;
+      const pct = count / maxBin;
+      const startAng = (i / NSECTORS) * 2 * Math.PI - Math.PI / 2 - SECTOR_RAD / 2;
+      const endAng   = startAng + SECTOR_RAD;
+      const r = R * pct;
+
+      ctx.beginPath();
+      ctx.moveTo(cx, cy);
+      ctx.arc(cx, cy, r, startAng, endAng);
+      ctx.closePath();
+      ctx.fillStyle = COLORS[i] + 'bb';
+      ctx.fill();
+      ctx.strokeStyle = COLORS[i];
+      ctx.lineWidth = 1;
+      ctx.stroke();
+    });
+
+    // ── Punto central ──
+    ctx.beginPath();
+    ctx.arc(cx, cy, 3, 0, 2 * Math.PI);
+    ctx.fillStyle = 'var(--ink-mid, #3a3830)';
+    ctx.fill();
+
+    // ── Etiquetas puntos cardinales ──
+    const FONT_SIZE = Math.max(9, Math.min(11, W / 22));
+    ctx.font = `600 ${FONT_SIZE}px 'JetBrains Mono', monospace`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+
+    CARD_IDX.forEach(i => {
+      const label = SECTOR_LABELS[i];
+      const ang   = (i / NSECTORS) * 2 * Math.PI - Math.PI / 2;
+      const dist  = R + 16;
+      const x = cx + Math.cos(ang) * dist;
+      const y = cy + Math.sin(ang) * dist;
+
+      // Fondo blanco pequeño detrás del texto
+      const tw = ctx.measureText(label).width;
+      ctx.fillStyle = 'rgba(247,246,241,0.85)';
+      ctx.fillRect(x - tw/2 - 3, y - FONT_SIZE/2 - 2, tw + 6, FONT_SIZE + 4);
+
+      // Texto — cardinales principales en cobalto, intermedios más suaves
+      const isMainCard = ['N','E','S','O'].includes(label);
+      ctx.fillStyle = isMainCard ? '#1c3f6e' : '#6b6860';
+      ctx.font = `${isMainCard ? 700 : 500} ${isMainCard ? FONT_SIZE + 1 : FONT_SIZE - 1}px 'JetBrains Mono', monospace`;
+      ctx.fillText(label, x, y);
+    });
+
+    // ── Leyenda de escala (máx lecturas) ──
+    ctx.font = `400 8px 'JetBrains Mono', monospace`;
+    ctx.fillStyle = 'rgba(40,38,30,0.35)';
+    ctx.textAlign = 'left';
+    ctx.fillText(`máx ${maxBin} obs.`, 6, H - 8);
+
+    // ── Flecha norte decorativa ──
+    const northAng = -Math.PI / 2; // arriba
+    const arrowR = R + 4;
+    ctx.beginPath();
+    ctx.moveTo(cx + Math.cos(northAng) * (R - 6), cy + Math.sin(northAng) * (R - 6));
+    ctx.lineTo(cx + Math.cos(northAng) * arrowR, cy + Math.sin(northAng) * arrowR);
+    ctx.strokeStyle = '#1c3f6e';
+    ctx.lineWidth = 1.5;
+    ctx.stroke();
+  }
+
+  // Dibujar ahora y al redimensionar
+  drawRose();
+  const ro = new ResizeObserver(() => drawRose());
+  ro.observe(canvas);
 }
 
 function scatterChart(id, x, y, color, xLabel, yLabel) {
@@ -1347,7 +1574,7 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
         const bg=heatColor(r);
         const txt=i===j?'1.00':r.toFixed(2);
         const txtCol=Math.abs(r)>0.5?'#fff':'#1a1914';
-        html+=`<td class="hm-cell" style="background:${bg};color:${txtCol}" title="${va.name} vs ${vb.name}: r=${r.toFixed(3)}">${txt}</td>`;
+        html+=`<td class="hm-cell" style="background:${bg};color:${txtCol}" title="${va.name} vs ${vb.name}: r=${r.toFixed(3)}" onclick="interpretHeatCell('${va.name}','${vb.name}',${r.toFixed(4)},${i},${j})">${txt}</td>`;
       });
       html+='</tr>';
     });
@@ -1534,7 +1761,7 @@ function renderProduccionAnalisis(rawLabels, nivel) {
       if(pts.length<2) return;
       const volBase=Math.min(...pts.map(p=>p.vol));
       const color=DIA_COLORS[dIdx%DIA_COLORS.length];
-      datasets.push({label:diaLabels[dIdx],data:pts.map(p=>({x:+p.hora.toFixed(2),y:+Math.max(0,p.vol-volBase).toFixed(2)})),borderColor:color,backgroundColor:'transparent',borderWidth:2,pointRadius:3,pointHoverRadius:5,tension:0.3,fill:false});
+      datasets.push({label:diaLabels[dIdx],data:pts.map(p=>({x:+p.hora.toFixed(2),y:+Math.max(0,p.vol-volBase).toFixed(2)})),borderColor:color,backgroundColor:'transparent',borderWidth:2,pointRadius:0,pointHoverRadius:6,pointHoverBackgroundColor:'#fff',pointHoverBorderColor:color,pointHoverBorderWidth:2,tension:0.3,fill:false});
       if(legendEl){const item=document.createElement('div');item.className='legend-item';item.innerHTML=`<div class="legend-dot" style="background:${color}"></div>${diaLabels[dIdx]}`;legendEl.appendChild(item);}
     });
     chartRegistry['chart-curvas-dia']=new Chart(ctx3,{type:'line',data:{datasets},options:mergeOpts({plugins:{legend:{display:datasets.length<=5,position:'top',labels:{font:{family:"'JetBrains Mono'",size:8},color:'#6b6860',boxWidth:10,padding:12}}},scales:{x:{type:'linear',min:0,max:24,...chartDefaults.scales.x,ticks:{...chartDefaults.scales.x.ticks,callback:v=>String(Math.floor(v)).padStart(2,'0')+':00',stepSize:3}},y:{...chartDefaults.scales.y,min:0,ticks:{...chartDefaults.scales.y.ticks,callback:v=>'+'+v+' L'}}}})});
