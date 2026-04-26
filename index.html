@@ -81,13 +81,6 @@
 
     .nav-left  { display:flex;align-items:center;gap:14px;position:relative;z-index:1 }
     .nav-right { display:flex;align-items:center;gap:12px;position:relative;z-index:1 }
-
-    /* Anillo pulsante */
-    .nav-ring { width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0 }
-    .nav-dot  { width:9px;height:9px;border-radius:50%;background:#fff;animation:nav-pulse 2.8s ease-in-out infinite }
-    @keyframes nav-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.65)} }
-
-    .nav-wordmark { font-family:var(--display);font-size:17px;font-weight:700;font-style:italic;letter-spacing:0.02em;color:#fff }
     .nav-sep      { width:1px;height:18px;background:rgba(255,255,255,0.18) }
     .nav-subtitle { font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.50);letter-spacing:0.14em;text-transform:uppercase }
 
@@ -294,15 +287,13 @@
 ═══════════════════════════════════════════════════════════ -->
 <nav>
   <div class="nav-left">
-    <div class="nav-ring"><div class="nav-dot"></div></div>
-    <div class="nav-wordmark">AWA05</div>
+    <img src="aala_logo.png" alt="AALA" class="nav-logo">
     <div class="nav-sep"></div>
     <div class="nav-subtitle">Telemetría Ambiental · Atitlán</div>
   </div>
   <div class="nav-right">
     <a href="dashboard.html" class="nav-btn nav-btn-primary">Tablero ↗</a>
     <a href="https://github.com/geograficaaala/awa05-telemetria" target="_blank" rel="noopener" class="nav-btn">Repositorio</a>
-    <img src="aala_logo.png" alt="AALA" class="nav-logo">
   </div>
 </nav>
 
