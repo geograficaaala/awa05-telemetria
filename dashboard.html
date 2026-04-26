@@ -1072,6 +1072,26 @@ ECO.P_CENTRAL = (ECO.P_MIN + ECO.P_MODA + ECO.P_MAX) / 3;  // 750W exacto
 // Sin precio de venta — el modelo es de costos únicamente
 
 // ─── HELPERS ──────────────────────────────────────────────────────────
+function toggleMobileMenu() {
+  const menu = document.getElementById('mobile-menu');
+  const btn  = document.getElementById('btn-mobile-menu');
+  if (!menu) return;
+  const open = menu.style.display === 'block';
+  menu.style.display = open ? 'none' : 'block';
+  if (btn) btn.textContent = open ? '☰' : '✕';
+}
+// Cierra el menú al hacer click en un link interno
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.mobile-nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+      const menu = document.getElementById('mobile-menu');
+      const btn  = document.getElementById('btn-mobile-menu');
+      if (menu) menu.style.display = 'none';
+      if (btn)  btn.textContent = '☰';
+    });
+  });
+});
+
 function setText(id, val) {
   const el = document.getElementById(id);
   if (el) el.textContent = (val !== null && val !== undefined) ? val : '--';
@@ -1793,49 +1813,142 @@ function interpretHeatCell(nameA, nameB, r, i, j) {
   const panel = document.getElementById('hm-interp');
   if (!panel) return;
 
-  // Magnitud
   const absR = Math.abs(r);
-  let mag, magColor;
-  if (absR >= 0.7)      { mag = 'Fuerte';   magColor = r > 0 ? '#951f1f' : '#1c3f6e'; }
-  else if (absR >= 0.4) { mag = 'Moderada'; magColor = r > 0 ? '#b05c00' : '#2558a0'; }
-  else if (absR >= 0.2) { mag = 'Débil';    magColor = '#6b6860'; }
-  else                  { mag = 'Nula';      magColor = '#a09e98'; }
+  let mag, magColor, magEmoji;
+  if (absR >= 0.7)      { mag = 'Fuerte';   magColor = r > 0 ? '#951f1f' : '#1c3f6e'; magEmoji = '🔴'; }
+  else if (absR >= 0.4) { mag = 'Moderada'; magColor = r > 0 ? '#b05c00' : '#2558a0'; magEmoji = '🟡'; }
+  else if (absR >= 0.2) { mag = 'Débil';    magColor = '#6b6860'; magEmoji = '⚪'; }
+  else                  { mag = 'Nula';      magColor = '#a09e98'; magEmoji = '⚪'; }
 
   const dir = r > 0 ? 'positiva' : r < 0 ? 'negativa' : 'sin correlación';
+  const esDiag = nameA === nameB;
 
-  // Interpretaciones contextuales para captación de niebla
+  // Interpretaciones en lenguaje sencillo — par a par
   const INTERP = {
-    'HR%_Temp°C':        'A mayor temperatura, menor humedad relativa. Relación típica: el aire caliente retiene más humedad sin saturarse.',
-    'Temp°C_HR%':        'A mayor temperatura, menor humedad relativa. Relación típica: el aire caliente retiene más humedad sin saturarse.',
-    'HR%_Rocio°C':       'Humedad y punto de rocío están estrechamente ligados. Alta correlación esperada.',
-    'Rocio°C_HR%':       'Humedad y punto de rocío están estrechamente ligados. Alta correlación esperada.',
-    'HR%_V km/h':        'Viento alto tiende a reducir la humedad local por mezcla de masas de aire.',
-    'V km/h_HR%':        'Viento alto tiende a reducir la humedad local por mezcla de masas de aire.',
-    'HR%_Rad W/m²':      'Radiación solar alta seca el ambiente y reduce la humedad relativa.',
-    'Rad W/m²_HR%':      'Radiación solar alta seca el ambiente y reduce la humedad relativa.',
-    'HR%_Nivel':         'Correlación clave para captación de niebla: mayor humedad favorece la condensación.',
-    'Nivel_HR%':         'Correlación clave para captación de niebla: mayor humedad favorece la condensación.',
-    'Temp°C_Rocio°C':    'Temperatura y punto de rocío correlacionan fuerte — ambas suben y bajan juntas.',
-    'Rocio°C_Temp°C':    'Temperatura y punto de rocío correlacionan fuerte — ambas suben y bajan juntas.',
-    'Temp°C_Nivel':      'Temperaturas altas reducen la captación (menos niebla). Relación negativa esperada.',
-    'Nivel_Temp°C':      'Temperaturas altas reducen la captación (menos niebla). Relación negativa esperada.',
-    'Rocio°C_Nivel':     'Punto de rocío alto indica aire saturado — condición ideal para captación de niebla.',
-    'Nivel_Rocio°C':     'Punto de rocío alto indica aire saturado — condición ideal para captación de niebla.',
-    'V km/h_Rad W/m²':   'Viento y radiación solar tienden a correlacionar positivamente en días despejados.',
-    'Rad W/m²_V km/h':   'Viento y radiación solar tienden a correlacionar positivamente en días despejados.',
-    'V km/h_Nivel':      'El viento es el motor de captación de niebla — empuja las gotas contra la malla.',
-    'Nivel_V km/h':      'El viento es el motor de captación de niebla — empuja las gotas contra la malla.',
-    'Rad W/m²_Nivel':    'Radiación solar alta implica cielos despejados — menos niebla, menos captación.',
-    'Nivel_Rad W/m²':    'Radiación solar alta implica cielos despejados — menos niebla, menos captación.',
-    'PresInHg_Nivel':    'Presión alta suele asociarse con cielos despejados y menos niebla disponible.',
-    'Nivel_PresInHg':    'Presión alta suele asociarse con cielos despejados y menos niebla disponible.',
+    'HR%_Temp°C': {
+      titulo: '¿La temperatura afecta la humedad?',
+      simple: 'Sí, y al revés de lo que uno esperaría. Cuando hace más calor, el aire "aguanta" más humedad sin sentirse húmedo, así que el porcentaje de humedad baja. Es como una esponja: cuanto más grande es la esponja (más calor), menos llena parece aunque tenga la misma cantidad de agua.',
+      implicacion: 'Los días calurosos probablemente producen menos niebla, aunque no llueva.'
+    },
+    'Temp°C_HR%': {
+      titulo: '¿La temperatura afecta la humedad?',
+      simple: 'Sí, y al revés de lo que uno esperaría. Cuando hace más calor, el aire "aguanta" más humedad sin sentirse húmedo, así que el porcentaje de humedad baja. Es como una esponja: cuanto más grande es la esponja (más calor), menos llena parece aunque tenga la misma cantidad de agua.',
+      implicacion: 'Los días calurosos probablemente producen menos niebla, aunque no llueva.'
+    },
+    'HR%_Rocio°C': {
+      titulo: '¿Humedad y punto de rocío van juntos?',
+      simple: 'Totalmente. El punto de rocío es la temperatura a la que el aire se satura y forma gotas. Si hay mucha humedad, eso pasa a temperaturas más altas. Son dos formas de medir lo mismo: cuánta agua hay en el aire.',
+      implicacion: 'Cuando la humedad sube, el punto de rocío sube también — más cerca estamos de que se forme niebla.'
+    },
+    'Rocio°C_HR%': {
+      titulo: '¿Humedad y punto de rocío van juntos?',
+      simple: 'Totalmente. El punto de rocío es la temperatura a la que el aire se satura y forma gotas. Si hay mucha humedad, eso pasa a temperaturas más altas. Son dos formas de medir lo mismo: cuánta agua hay en el aire.',
+      implicacion: 'Cuando la humedad sube, el punto de rocío sube también — más cerca estamos de que se forme niebla.'
+    },
+    'HR%_V km/h': {
+      titulo: '¿El viento seca el ambiente?',
+      simple: 'Sí. Cuando el viento sopla fuerte, mezcla el aire húmedo local con aire más seco de otras partes, bajando la humedad. Como cuando abres una ventana en un cuarto húmedo y el aire entra y lo seca.',
+      implicacion: 'Viento fuerte puede significar menos humedad — pero aún puede haber buena captación si el viento trae niebla consigo.'
+    },
+    'V km/h_HR%': {
+      titulo: '¿El viento seca el ambiente?',
+      simple: 'Sí. Cuando el viento sopla fuerte, mezcla el aire húmedo local con aire más seco de otras partes, bajando la humedad. Como cuando abres una ventana en un cuarto húmedo y el aire entra y lo seca.',
+      implicacion: 'Viento fuerte puede significar menos humedad — pero aún puede haber buena captación si el viento trae niebla consigo.'
+    },
+    'HR%_Rad W/m²': {
+      titulo: '¿El sol reduce la humedad?',
+      simple: 'Sí. Cuando hay mucho sol, la radiación solar calienta el suelo y evapora el agua, pero ese vapor sube y se dispersa. El resultado es que la humedad relativa baja durante el día soleado.',
+      implicacion: 'Las horas con más sol son las horas con menos niebla. La captación probablemente es mejor en la madrugada o días nublados.'
+    },
+    'Rad W/m²_HR%': {
+      titulo: '¿El sol reduce la humedad?',
+      simple: 'Sí. Cuando hay mucho sol, la radiación solar calienta el suelo y evapora el agua, pero ese vapor sube y se dispersa. El resultado es que la humedad relativa baja durante el día soleado.',
+      implicacion: 'Las horas con más sol son las horas con menos niebla. La captación probablemente es mejor en la madrugada o días nublados.'
+    },
+    'HR%_Nivel': {
+      titulo: '¿Más humedad = más agua captada?',
+      simple: 'Esta es la relación más importante del sistema. La niebla se forma cuando el aire está muy saturado de humedad. Si la humedad es alta, hay más gotas de agua flotando en el aire, y la malla del cosechador las puede atrapar. A más humedad, más cosecha.',
+      implicacion: `Con r = ${r.toFixed(2)}, la relación es ${absR >= 0.4 ? 'significativa' : 'débil'} — ${absR >= 0.4 ? 'la humedad sí influye en la producción' : 'hay otros factores más importantes que la humedad sola'}.`
+    },
+    'Nivel_HR%': {
+      titulo: '¿Más humedad = más agua captada?',
+      simple: 'Esta es la relación más importante del sistema. La niebla se forma cuando el aire está muy saturado de humedad. Si la humedad es alta, hay más gotas de agua flotando en el aire, y la malla del cosechador las puede atrapar. A más humedad, más cosecha.',
+      implicacion: `Con r = ${r.toFixed(2)}, la relación es ${absR >= 0.4 ? 'significativa' : 'débil'} — ${absR >= 0.4 ? 'la humedad sí influye en la producción' : 'hay otros factores más importantes que la humedad sola'}.`
+    },
+    'Temp°C_Rocio°C': {
+      titulo: '¿Temperatura y punto de rocío van de la mano?',
+      simple: 'Sí, fuertemente. Ambas variables suben y bajan juntas a lo largo del día: cuando hace más calor, el punto de rocío también sube. Es como si fueran sombras una de la otra — rara vez se separan mucho.',
+      implicacion: 'No aportan información independiente. Para predecir producción, usar una u otra da resultados similares.'
+    },
+    'Rocio°C_Temp°C': {
+      titulo: '¿Temperatura y punto de rocío van de la mano?',
+      simple: 'Sí, fuertemente. Ambas variables suben y bajan juntas a lo largo del día: cuando hace más calor, el punto de rocío también sube. Es como si fueran sombras una de la otra — rara vez se separan mucho.',
+      implicacion: 'No aportan información independiente. Para predecir producción, usar una u otra da resultados similares.'
+    },
+    'Temp°C_Nivel': {
+      titulo: '¿El calor reduce la cosecha?',
+      simple: 'Sí. Los días calurosos son días soleados y despejados — sin niebla. La niebla necesita que el aire esté frío y húmedo para condensarse en la malla. Cuando hace calor, ese proceso no ocurre.',
+      implicacion: `La temperatura es un buen predictor negativo de producción (r = ${r.toFixed(2)}). Días fríos → más niebla → más agua.`
+    },
+    'Nivel_Temp°C': {
+      titulo: '¿El calor reduce la cosecha?',
+      simple: 'Sí. Los días calurosos son días soleados y despejados — sin niebla. La niebla necesita que el aire esté frío y húmedo para condensarse en la malla. Cuando hace calor, ese proceso no ocurre.',
+      implicacion: `La temperatura es un buen predictor negativo de producción (r = ${r.toFixed(2)}). Días fríos → más niebla → más agua.`
+    },
+    'Rocio°C_Nivel': {
+      titulo: '¿El punto de rocío predice la cosecha?',
+      simple: 'El punto de rocío mide qué tan cerca está el aire de saturarse y formar gotas. Cuando el punto de rocío es alto (cercano a la temperatura ambiente), el aire está casi listo para condensarse. Eso es exactamente lo que necesita el cosechador de niebla para funcionar.',
+      implicacion: `Con r = ${r.toFixed(2)}, el punto de rocío es ${absR >= 0.4 ? 'un buen indicador' : 'un indicador débil'} de cuánta agua se va a cosechar.`
+    },
+    'Nivel_Rocio°C': {
+      titulo: '¿El punto de rocío predice la cosecha?',
+      simple: 'El punto de rocío mide qué tan cerca está el aire de saturarse y formar gotas. Cuando el punto de rocío es alto (cercano a la temperatura ambiente), el aire está casi listo para condensarse. Eso es exactamente lo que necesita el cosechador de niebla para funcionar.',
+      implicacion: `Con r = ${r.toFixed(2)}, el punto de rocío es ${absR >= 0.4 ? 'un buen indicador' : 'un indicador débil'} de cuánta agua se va a cosechar.`
+    },
+    'V km/h_Nivel': {
+      titulo: '¿El viento ayuda a cosechar agua?',
+      simple: 'El viento es el motor del cosechador de niebla. Sin viento, la niebla simplemente se queda flotando y no choca contra la malla. Con viento, las gotitas son empujadas contra la malla, se juntan y caen. Más viento = más impactos = más agua cosechada.',
+      implicacion: `Con r = ${r.toFixed(2)}, el viento ${absR >= 0.3 ? 'sí tiene efecto en la producción' : 'tiene poco efecto — quizás el viento en el sitio es siempre bajo o hay otros factores dominantes'}.`
+    },
+    'Nivel_V km/h': {
+      titulo: '¿El viento ayuda a cosechar agua?',
+      simple: 'El viento es el motor del cosechador de niebla. Sin viento, la niebla simplemente se queda flotando y no choca contra la malla. Con viento, las gotitas son empujadas contra la malla, se juntan y caen. Más viento = más impactos = más agua cosechada.',
+      implicacion: `Con r = ${r.toFixed(2)}, el viento ${absR >= 0.3 ? 'sí tiene efecto en la producción' : 'tiene poco efecto — quizás el viento en el sitio es siempre bajo o hay otros factores dominantes'}.`
+    },
+    'Rad W/m²_Nivel': {
+      titulo: '¿El sol reduce la cosecha?',
+      simple: 'Sí. Radiación solar alta significa cielos despejados — y sin nubes ni niebla. El cosechador funciona mejor de noche y en días nublados o de llovizna, cuando el sol no está quemando la niebla antes de que llegue a la malla.',
+      implicacion: `r = ${r.toFixed(2)} confirma que los días soleados producen menos agua. Revisar si la mayor captación ocurre de noche o al amanecer.`
+    },
+    'Nivel_Rad W/m²': {
+      titulo: '¿El sol reduce la cosecha?',
+      simple: 'Sí. Radiación solar alta significa cielos despejados — y sin nubes ni niebla. El cosechador funciona mejor de noche y en días nublados o de llovizna, cuando el sol no está quemando la niebla antes de que llegue a la malla.',
+      implicacion: `r = ${r.toFixed(2)} confirma que los días soleados producen menos agua. Revisar si la mayor captación ocurre de noche o al amanecer.`
+    },
+    'V km/h_Rad W/m²': {
+      titulo: '¿El viento y el sol se relacionan?',
+      simple: 'Un poco. Los días con mucho sol suelen tener más viento (el calor mueve el aire), así que tienden a subir juntos. Pero no es una relación tan directa como las demás — depende mucho de la geografía del lugar.',
+      implicacion: 'Esta relación no es crítica para la cosecha. Es más una curiosidad meteorológica del sitio.'
+    },
+    'Rad W/m²_V km/h': {
+      titulo: '¿El viento y el sol se relacionan?',
+      simple: 'Un poco. Los días con mucho sol suelen tener más viento (el calor mueve el aire), así que tienden a subir juntos. Pero no es una relación tan directa como las demás — depende mucho de la geografía del lugar.',
+      implicacion: 'Esta relación no es crítica para la cosecha. Es más una curiosidad meteorológica del sitio.'
+    },
+    'PresInHg_Nivel': {
+      titulo: '¿La presión atmosférica afecta la cosecha?',
+      simple: 'La presión alta generalmente significa buen tiempo — cielos despejados, sin nubes. La presión baja trae mal tiempo: nubes, lluvia y niebla. Para un cosechador de niebla, el "mal tiempo" es buena noticia.',
+      implicacion: `r = ${r.toFixed(2)} sugiere que ${absR >= 0.3 ? 'la presión sí influye' : 'la presión no influye mucho'} en la producción del sitio AWA05.`
+    },
+    'Nivel_PresInHg': {
+      titulo: '¿La presión atmosférica afecta la cosecha?',
+      simple: 'La presión alta generalmente significa buen tiempo — cielos despejados, sin nubes. La presión baja trae mal tiempo: nubes, lluvia y niebla. Para un cosechador de niebla, el "mal tiempo" es buena noticia.',
+      implicacion: `r = ${r.toFixed(2)} sugiere que ${absR >= 0.3 ? 'la presión sí influye' : 'la presión no influye mucho'} en la producción del sitio AWA05.`
+    },
   };
 
   const key = `${nameA}_${nameB}`;
-  const texto = INTERP[key] || `Relación entre <strong>${nameA}</strong> y <strong>${nameB}</strong>. Con r=${r.toFixed(3)}, la correlación ${dir} es ${mag.toLowerCase()} — considerar factores confundentes y tamaño muestral.`;
-
-  // Advertencia si diagonal
-  const esDiag = nameA === nameB;
+  const info = INTERP[key];
 
   panel.innerHTML = `
     <div class="hm-interp-header">
@@ -1847,11 +1960,15 @@ function interpretHeatCell(nameA, nameB, r, i, j) {
     </div>
     <div class="hm-interp-body">
       ${esDiag
-        ? '<p>Correlación consigo misma — siempre r = 1.00 por definición.</p>'
-        : `<p>${texto}</p>
-           <p style="color:var(--ink-faint);font-size:11.5px">Pearson r mide únicamente la relación <em>lineal</em>. No implica causalidad ni descarta relaciones no lineales.</p>`
+        ? '<p>Esta variable se compara consigo misma — la correlación siempre es 1.00 por definición matemática.</p>'
+        : info
+          ? `<p style="font-weight:600;color:var(--ink-mid);margin-bottom:6px">${info.titulo}</p>
+             <p>${info.simple}</p>
+             <p style="background:var(--cobalt-pale);border-left:3px solid var(--cobalt);padding:8px 10px;border-radius:2px;color:var(--cobalt);font-size:11.5px;margin-top:8px"><strong>¿Qué significa para AWA05?</strong><br>${info.implicacion}</p>`
+          : `<p>Relación entre <strong>${nameA}</strong> y <strong>${nameB}</strong>.</p>
+             <p>Con r = ${r.toFixed(3)}, la correlación ${dir} es ${mag.toLowerCase()}. ${absR >= 0.5 ? 'Estas variables se mueven juntas de forma consistente.' : absR >= 0.3 ? 'Hay una tendencia, pero con bastante variación.' : 'Prácticamente no se influyen entre sí.'}</p>`
       }
-      <span class="hm-interp-tag">${mag} · Pearson r</span>
+      <span class="hm-interp-tag">${magEmoji} ${mag} · Pearson r = ${r.toFixed(3)}</span>
     </div>`;
 }
 
