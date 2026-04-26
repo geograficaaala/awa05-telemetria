@@ -3,95 +3,74 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AWA05 · Telemetría Ambiental</title>
-  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@300;400;500;600;700&family=Fraunces:ital,wght@0,300;0,600;0,700;1,300;1,600&display=swap" rel="stylesheet">
+  <title>AWA05 · Sistema de Telemetría — José Toriello</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:           #f0f6fc;
-      --bg-alt:       #e6f0f9;
-      --surface:      #ffffff;
-      --surface-2:    #f7fafd;
-      --border:       #ccdff0;
-      --border-strong:#a8c8e8;
-      --primary:      #1a5f8f;
-      --primary-mid:  #2d7ab5;
-      --primary-light:#5ba3d0;
-      --primary-pale: #d4eaf7;
-      --accent:       #0a8fc7;
-      --text:         #0d2a40;
-      --text-mid:     #2c5672;
-      --muted:        #5d87a6;
-      --mono:         'IBM Plex Mono', monospace;
-      --serif:        'Fraunces', serif;
-      --shadow-sm:    0 2px 8px rgba(26,95,143,0.08);
-      --shadow-md:    0 8px 28px rgba(26,95,143,0.12);
-      --shadow-lg:    0 20px 60px rgba(26,95,143,0.15);
+      --bg:         #f7f6f1;
+      --surface:    #ffffff;
+      --surface2:   #faf9f5;
+      --surface3:   #f2f0e8;
+      --ink:        #1a1914;
+      --ink-mid:    #3a3830;
+      --ink-soft:   #6b6860;
+      --ink-faint:  #a09e98;
+      --rule:       rgba(40,38,30,0.10);
+      --rule-strong:rgba(40,38,30,0.18);
+      --cobalt:     #1c3f6e;
+      --cobalt-mid: #2558a0;
+      --cobalt-pale:rgba(28,63,110,0.07);
+      --cobalt-rim: rgba(28,63,110,0.22);
+      --amber:      #b05c00;
+      --forest:     #1a5c38;
+      --teal:       #0f6b60;
+      --shadow-sm:  0 1px 3px rgba(0,0,0,0.05),0 2px 8px rgba(0,0,0,0.04);
+      --shadow-md:  0 2px 6px rgba(0,0,0,0.06),0 8px 24px rgba(0,0,0,0.06);
+      --shadow-lg:  0 4px 16px rgba(0,0,0,0.07),0 20px 48px rgba(0,0,0,0.08);
+      --mono:       'JetBrains Mono', monospace;
+      --display:    'Playfair Display', serif;
+      --body:       'DM Sans', sans-serif;
+      --radius:     4px;
     }
 
-    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: var(--mono);
-      font-size: 13px;
-      line-height: 1.7;
-      overflow-x: hidden;
-    }
+    /* Grain sutil */
+    body::after{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.5}
 
-    body::before {
-      content: "";
-      position: fixed;
-      inset: 0;
-      background-image:
-        linear-gradient(rgba(26,95,143,0.035) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(26,95,143,0.035) 1px, transparent 1px);
-      background-size: 48px 48px;
-      pointer-events: none;
-      z-index: 0;
-    }
-
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(18px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to   { opacity: 1; }
-    }
-
-    /* ── NAV OSCURO — estilo panel AWA05 ──────────────────────── */
+    /* ═══════════════════════════════════════════════════════════
+       NAV — Header oscuro estilo panel AWA05
+    ═══════════════════════════════════════════════════════════ */
     nav {
       position: fixed;
       top: 0; left: 0; right: 0;
       z-index: 200;
+      height: 64px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding: 0 36px;
-      height: 68px;
       background: linear-gradient(135deg, #1c3f6e 0%, #0f2a50 100%);
       overflow: hidden;
     }
 
-    /* Marca de agua AWA05 */
+    /* Marca de agua */
     nav::before {
       content: "AWA05";
       position: absolute;
-      right: -12px;
-      top: -18px;
-      font-family: 'Fraunces', serif;
+      right: -10px; top: -18px;
+      font-family: var(--display);
       font-size: 96px;
-      font-weight: 700;
+      font-weight: 900;
       color: rgba(255,255,255,0.04);
       letter-spacing: -4px;
       pointer-events: none;
       user-select: none;
     }
 
-    /* Barra inferior tipo ticker */
+    /* Línea base sutil */
     nav::after {
       content: "";
       position: absolute;
@@ -100,760 +79,485 @@
       background: rgba(255,255,255,0.10);
     }
 
-    .nav-left { display: flex; align-items: center; gap: 14px; position: relative; z-index: 1; }
-    .nav-right { display: flex; align-items: center; gap: 12px; position: relative; z-index: 1; }
+    .nav-left  { display:flex;align-items:center;gap:14px;position:relative;z-index:1 }
+    .nav-right { display:flex;align-items:center;gap:12px;position:relative;z-index:1 }
 
     /* Anillo pulsante */
-    .nav-ring {
-      width: 34px; height: 34px;
-      border-radius: 50%;
-      border: 1.5px solid rgba(255,255,255,0.25);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .nav-dot {
-      width: 9px; height: 9px;
-      border-radius: 50%;
-      background: #fff;
-      animation: nav-pulse 2.8s ease-in-out infinite;
-    }
-    @keyframes nav-pulse {
-      0%,100% { opacity: 1; transform: scale(1); }
-      50%      { opacity: 0.3; transform: scale(0.65); }
-    }
+    .nav-ring { width:34px;height:34px;border-radius:50%;border:1.5px solid rgba(255,255,255,0.25);display:flex;align-items:center;justify-content:center;flex-shrink:0 }
+    .nav-dot  { width:9px;height:9px;border-radius:50%;background:#fff;animation:nav-pulse 2.8s ease-in-out infinite }
+    @keyframes nav-pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.3;transform:scale(0.65)} }
 
-    .nav-wordmark {
-      font-family: 'Fraunces', serif;
-      font-size: 17px;
-      font-weight: 700;
-      font-style: italic;
-      letter-spacing: 0.02em;
-      color: #fff;
-    }
+    .nav-wordmark { font-family:var(--display);font-size:17px;font-weight:700;font-style:italic;letter-spacing:0.02em;color:#fff }
+    .nav-sep      { width:1px;height:18px;background:rgba(255,255,255,0.18) }
+    .nav-subtitle { font-family:var(--mono);font-size:9px;color:rgba(255,255,255,0.50);letter-spacing:0.14em;text-transform:uppercase }
 
-    .nav-sep {
-      width: 1px;
-      height: 18px;
-      background: rgba(255,255,255,0.18);
-    }
+    /* Logo — sin filtros, se muestra en su color original */
+    .nav-logo { height:34px;width:auto;object-fit:contain;opacity:0.92 }
 
-    .nav-subtitle {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: rgba(255,255,255,0.5);
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    .nav-logo {
-      height: 34px;
-      width: auto;
-      object-fit: contain;
-      opacity: 0.85;
-      filter: brightness(0) invert(1);
-    }
-
+    /* Botones sobre fondo oscuro */
     .nav-btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 7px 16px;
-      border-radius: 4px;
-      border: 1px solid rgba(255,255,255,0.22);
-      background: rgba(255,255,255,0.08);
-      color: rgba(255,255,255,0.85);
-      font-family: var(--mono);
-      font-size: 9px;
-      font-weight: 500;
-      letter-spacing: 0.10em;
-      text-decoration: none;
-      text-transform: uppercase;
-      transition: all 0.15s;
-      backdrop-filter: blur(4px);
+      display:inline-flex;align-items:center;gap:6px;
+      padding:7px 16px;border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,0.22);
+      background:rgba(255,255,255,0.08);
+      color:rgba(255,255,255,0.85);
+      font-family:var(--mono);font-size:9px;font-weight:500;
+      letter-spacing:0.10em;text-decoration:none;text-transform:uppercase;
+      transition:all 0.15s;backdrop-filter:blur(4px);
     }
+    .nav-btn:hover { background:rgba(255,255,255,0.16);border-color:rgba(255,255,255,0.40);color:#fff }
+    .nav-btn-primary { background:rgba(255,255,255,0.92);color:#1c3f6e;border-color:transparent;font-weight:600 }
+    .nav-btn-primary:hover { background:#fff;color:#0f2a50 }
 
-    .nav-btn:hover {
-      background: rgba(255,255,255,0.16);
-      border-color: rgba(255,255,255,0.4);
-      color: #fff;
-    }
+    /* ═══════════════════════════════════════════════════════════
+       KPI STRIP
+    ═══════════════════════════════════════════════════════════ */
+    .kpi-strip { position:fixed;top:64px;left:0;right:0;z-index:199;display:flex;overflow-x:auto;background:var(--surface);border-bottom:1px solid var(--rule);scrollbar-width:none }
+    .kpi-strip::-webkit-scrollbar { display:none }
+    .strip-item { display:flex;flex-direction:column;align-items:center;justify-content:center;padding:7px 22px;border-right:1px solid var(--rule);min-width:110px;flex-shrink:0 }
+    .strip-lbl  { font-family:var(--mono);font-size:7.5px;font-weight:500;text-transform:uppercase;letter-spacing:.13em;color:var(--ink-faint) }
+    .strip-val  { font-family:var(--mono);font-size:13px;font-weight:500;color:var(--cobalt);margin-top:1px }
+    .strip-ts   { font-size:8px;color:var(--ink-faint);padding:7px 18px;display:flex;align-items:center;white-space:nowrap;margin-left:auto;border-left:1px solid var(--rule);flex-shrink:0;font-family:var(--mono) }
 
-    .nav-btn-primary {
-      background: rgba(255,255,255,0.92);
-      color: #1c3f6e;
-      border-color: transparent;
-      font-weight: 600;
-    }
-
-    .nav-btn-primary:hover {
-      background: #fff;
-      color: #0f2a50;
-    }
-
-    .kpi-strip {
-      position: fixed;
-      top: 68px; left: 0; right: 0;
-      z-index: 199;
-      display: flex;
-      gap: 0;
-      overflow-x: auto;
-      background: var(--surface);
-      border-bottom: 1px solid var(--border);
-      box-shadow: var(--shadow-sm);
-      scrollbar-width: none;
-    }
-
-    .kpi-strip::-webkit-scrollbar { display: none; }
-
-    .strip-item {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 8px 24px;
-      border-right: 1px solid var(--border);
-      min-width: 120px;
-      flex-shrink: 0;
-    }
-
-    .strip-label {
-      font-family: var(--mono);
-      font-size: 8px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--muted);
-    }
-
-    .strip-val {
-      font-family: var(--mono);
-      font-size: 14px;
-      font-weight: 700;
-      color: var(--primary);
-      margin-top: 1px;
-    }
-
-    .strip-ts {
-      font-size: 9px;
-      color: var(--muted);
-      padding: 8px 20px;
-      display: flex;
-      align-items: center;
-      white-space: nowrap;
-      margin-left: auto;
-      border-left: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-
+    /* ═══════════════════════════════════════════════════════════
+       HERO
+    ═══════════════════════════════════════════════════════════ */
     .hero {
-      position: relative;
-      z-index: 1;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 148px 40px 80px;
+      min-height:100vh;
+      display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;
+      padding:152px 40px 100px;
+      position:relative;
     }
 
-    .hero-eyebrow {
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.2em;
-      color: var(--primary-light);
-      margin-bottom: 20px;
-      animation: fadeUp 0.5s ease both;
+    /* Línea decorativa vertical */
+    .hero::before {
+      content:"";position:absolute;top:80px;left:50%;
+      width:1px;height:60px;
+      background:linear-gradient(to bottom,transparent,rgba(28,63,110,0.25));
+      transform:translateX(-50%);
     }
 
-    .hero-name {
-      font-family: var(--serif);
-      font-size: clamp(56px, 9vw, 110px);
-      font-weight: 700;
-      line-height: 1.0;
-      color: var(--primary);
-      letter-spacing: -0.02em;
-      margin-bottom: 10px;
-      animation: fadeUp 0.5s 0.08s ease both;
+    @keyframes fadeUp { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+
+    .hero-eyebrow { font-family:var(--mono);font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:.22em;color:var(--ink-faint);margin-bottom:24px;animation:fadeUp .5s ease both }
+    .hero-welcome { font-family:var(--display);font-size:clamp(14px,1.8vw,18px);font-weight:400;font-style:italic;color:var(--ink-soft);margin-bottom:4px;animation:fadeUp .5s .06s ease both;letter-spacing:.01em }
+    .hero-name    { font-family:var(--display);font-size:clamp(52px,9vw,108px);font-weight:900;line-height:1.0;color:var(--cobalt);letter-spacing:-0.025em;margin-bottom:10px;animation:fadeUp .5s .10s ease both }
+    .hero-thanks  { font-family:var(--body);font-size:clamp(14px,1.6vw,17px);font-weight:300;font-style:italic;color:var(--ink-soft);margin-bottom:36px;animation:fadeUp .5s .15s ease both;max-width:560px }
+    .hero-rule    { width:48px;height:1px;background:var(--cobalt-rim);margin:0 auto 32px;animation:fadeUp .5s .18s ease both }
+    .hero-desc    { max-width:640px;font-size:14px;color:var(--ink-soft);line-height:1.75;margin-bottom:48px;animation:fadeUp .5s .22s ease both;font-weight:300 }
+    .hero-desc strong { color:var(--ink-mid);font-weight:500 }
+    .hero-actions { display:flex;gap:12px;flex-wrap:wrap;justify-content:center;animation:fadeUp .5s .28s ease both }
+
+    .btn-hero { display:inline-flex;align-items:center;justify-content:center;min-width:190px;padding:14px 28px;border-radius:var(--radius);font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;transition:all .2s }
+    .btn-primary   { background:var(--cobalt);color:#fff;border:1px solid var(--cobalt);box-shadow:var(--shadow-md) }
+    .btn-primary:hover { background:var(--cobalt-mid);transform:translateY(-2px);box-shadow:var(--shadow-lg) }
+    .btn-secondary { background:var(--surface);color:var(--cobalt);border:1px solid var(--rule-strong) }
+    .btn-secondary:hover { background:var(--cobalt-pale);border-color:var(--cobalt) }
+
+    /* ═══════════════════════════════════════════════════════════
+       STATS BAR
+    ═══════════════════════════════════════════════════════════ */
+    .stats-bar { display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--rule-strong);border-bottom:1px solid var(--rule-strong);background:var(--surface) }
+    .stat-cell { padding:28px 32px;border-right:1px solid var(--rule) }
+    .stat-cell:last-child { border-right:none }
+    .stat-lbl  { font-family:var(--mono);font-size:8px;font-weight:500;text-transform:uppercase;letter-spacing:.14em;color:var(--ink-faint);margin-bottom:8px }
+    .stat-val  { font-family:var(--display);font-size:34px;font-weight:700;color:var(--cobalt);line-height:1 }
+    .stat-unit { font-family:var(--mono);font-size:11px;color:var(--ink-soft);margin-left:4px;font-weight:400 }
+
+    /* ═══════════════════════════════════════════════════════════
+       SECTIONS
+    ═══════════════════════════════════════════════════════════ */
+    .section         { padding:80px 48px;max-width:1160px;margin:0 auto }
+    .section-eyebrow { font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:8px }
+    .section-title   { font-family:var(--display);font-size:clamp(26px,3vw,38px);font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:8px }
+    .section-title em { font-style:italic;color:var(--cobalt) }
+    .section-intro   { max-width:680px;font-size:13.5px;color:var(--ink-soft);line-height:1.7;margin-bottom:36px;font-weight:300 }
+    .rule { height:1px;background:linear-gradient(to right,var(--rule-strong),transparent);margin:0 48px }
+
+    /* ═══════════════════════════════════════════════════════════
+       MÓDULOS GRID
+    ═══════════════════════════════════════════════════════════ */
+    .modules-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule) }
+    .module-card  { background:var(--surface);padding:28px 24px;transition:background .15s }
+    .module-card:hover { background:var(--surface2) }
+    .module-num   { font-family:var(--mono);font-size:8px;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:14px }
+    .module-icon  { font-size:22px;margin-bottom:10px;display:block }
+    .module-title { font-family:var(--display);font-size:17px;font-weight:700;color:var(--cobalt);margin-bottom:8px;line-height:1.2 }
+    .module-desc  { font-size:12.5px;color:var(--ink-soft);line-height:1.6;font-weight:300 }
+    .module-tag   { display:inline-block;margin-top:10px;font-family:var(--mono);font-size:7.5px;letter-spacing:.10em;text-transform:uppercase;color:var(--ink-faint);border:1px solid var(--rule);padding:3px 8px;border-radius:2px }
+
+    /* ═══════════════════════════════════════════════════════════
+       PIPELINE
+    ═══════════════════════════════════════════════════════════ */
+    .pipeline { display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative }
+    .pipeline::before { content:"";position:absolute;top:24px;left:12.5%;right:12.5%;height:1px;background:var(--rule-strong);z-index:0 }
+    .pipe-step  { padding:0 16px;text-align:center;position:relative;z-index:1 }
+    .pipe-dot   { width:48px;height:48px;border-radius:50%;border:1.5px solid var(--cobalt-rim);background:var(--surface);display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:var(--mono);font-size:9px;font-weight:500;color:var(--cobalt) }
+    .pipe-title { font-family:var(--display);font-size:14px;font-weight:700;color:var(--ink);margin-bottom:8px }
+    .pipe-desc  { font-size:11.5px;color:var(--ink-soft);line-height:1.6;font-weight:300 }
+
+    /* ═══════════════════════════════════════════════════════════
+       VARIABLES
+    ═══════════════════════════════════════════════════════════ */
+    .vars-grid { display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px }
+    .var-card  { background:var(--surface);border:1px solid var(--rule);padding:18px 20px;border-radius:var(--radius) }
+    .var-name  { font-family:var(--display);font-size:14px;font-weight:700;color:var(--ink);margin-bottom:3px }
+    .var-source{ font-family:var(--mono);font-size:8px;font-weight:500;text-transform:uppercase;letter-spacing:.12em;color:var(--cobalt);margin-bottom:8px }
+    .var-desc  { font-size:12px;color:var(--ink-soft);line-height:1.6;font-weight:300 }
+
+    /* ═══════════════════════════════════════════════════════════
+       HARDWARE
+    ═══════════════════════════════════════════════════════════ */
+    .hw-list { display:grid;gap:10px }
+    .hw-item  { background:var(--surface);border:1px solid var(--rule);padding:18px 24px;display:grid;grid-template-columns:160px 1fr auto;gap:20px;align-items:center;border-radius:var(--radius) }
+    .hw-badge { font-family:var(--mono);font-size:8.5px;font-weight:500;text-transform:uppercase;letter-spacing:.10em;padding:5px 12px;border-radius:2px;background:var(--cobalt-pale);color:var(--cobalt);border:1px solid var(--cobalt-rim);width:fit-content }
+    .hw-name  { font-size:13px;color:var(--ink-mid);line-height:1.5 }
+    .hw-detail{ font-family:var(--mono);font-size:9px;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.08em;white-space:nowrap }
+
+    /* ═══════════════════════════════════════════════════════════
+       FOOTER
+    ═══════════════════════════════════════════════════════════ */
+    footer { display:flex;justify-content:space-between;align-items:center;padding:20px 48px;border-top:1px solid var(--rule);background:var(--surface) }
+    .footer-copy { font-family:var(--mono);font-size:8.5px;color:var(--ink-faint);letter-spacing:.06em }
+
+    /* ═══════════════════════════════════════════════════════════
+       RESPONSIVE
+    ═══════════════════════════════════════════════════════════ */
+    @media(max-width:960px){
+      .stats-bar{grid-template-columns:repeat(2,1fr)}
+      .stat-cell:nth-child(2){border-right:none}
+      .pipeline{grid-template-columns:1fr 1fr}
+      .pipeline::before{display:none}
+      nav{padding:0 20px}
     }
-
-    .hero-system {
-      font-family: var(--serif);
-      font-style: italic;
-      font-size: clamp(18px, 3vw, 28px);
-      font-weight: 300;
-      color: var(--text-mid);
-      margin-bottom: 28px;
-      animation: fadeUp 0.5s 0.14s ease both;
-    }
-
-    .hero-desc {
-      max-width: 620px;
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.8;
-      margin-bottom: 36px;
-      animation: fadeUp 0.5s 0.2s ease both;
-    }
-
-    .hero-actions {
-      display: flex;
-      gap: 14px;
-      flex-wrap: wrap;
-      justify-content: center;
-      animation: fadeUp 0.5s 0.26s ease both;
-    }
-
-    .btn-hero {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 200px;
-      padding: 14px 28px;
-      border-radius: 6px;
-      font-family: var(--mono);
-      font-size: 10px;
-      font-weight: 700;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      text-decoration: none;
-      transition: all 0.2s;
-    }
-
-    .btn-hero-primary {
-      background: var(--primary);
-      color: #fff;
-      border: 1px solid var(--primary);
-      box-shadow: var(--shadow-md);
-    }
-
-    .btn-hero-primary:hover {
-      background: var(--primary-mid);
-      transform: translateY(-2px);
-      box-shadow: var(--shadow-lg);
-    }
-
-    .btn-hero-secondary {
-      background: var(--surface);
-      color: var(--primary);
-      border: 1px solid var(--border-strong);
-    }
-
-    .btn-hero-secondary:hover {
-      background: var(--primary-pale);
-      border-color: var(--primary-mid);
-    }
-
-    .stats-row {
-      position: relative;
-      z-index: 1;
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
-    }
-
-    .stat-cell {
-      padding: 30px 36px;
-      border-right: 1px solid var(--border);
-    }
-
-    .stat-cell:last-child { border-right: none; }
-
-    .stat-label {
-      font-family: var(--mono);
-      font-size: 9px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--muted);
-      margin-bottom: 8px;
-    }
-
-    .stat-val {
-      font-family: var(--serif);
-      font-size: 36px;
-      font-weight: 700;
-      color: var(--primary);
-      line-height: 1;
-    }
-
-    .stat-unit {
-      font-family: var(--mono);
-      font-size: 11px;
-      color: var(--muted);
-      margin-left: 4px;
-    }
-
-    section {
-      position: relative;
-      z-index: 1;
-      padding: 80px 40px;
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    section.full { max-width: none; padding-left: 0; padding-right: 0; }
-
-    .section-tag {
-      font-family: var(--mono);
-      font-size: 9px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.18em;
-      color: var(--accent);
-      margin-bottom: 10px;
-    }
-
-    .section-title {
-      font-family: var(--serif);
-      font-size: clamp(26px, 3.5vw, 38px);
-      font-weight: 700;
-      color: var(--text);
-      letter-spacing: -0.02em;
-      margin-bottom: 14px;
-    }
-
-    .section-intro {
-      max-width: 680px;
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.8;
-      margin-bottom: 36px;
-    }
-
-    .pipeline {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 16px;
-    }
-
-    .pipeline-step {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 26px 22px;
-      box-shadow: var(--shadow-sm);
-      transition: box-shadow 0.2s, transform 0.2s;
-    }
-
-    .pipeline-step:hover {
-      box-shadow: var(--shadow-md);
-      transform: translateY(-3px);
-    }
-
-    .step-num {
-      font-family: var(--mono);
-      font-size: 9px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
-      color: var(--accent);
-      margin-bottom: 14px;
-    }
-
-    .step-title {
-      font-family: var(--serif);
-      font-size: 16px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 8px;
-    }
-
-    .step-desc {
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .overview-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-      gap: 16px;
-    }
-
-    .overview-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 26px 24px;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .overview-val {
-      font-family: var(--serif);
-      font-size: 40px;
-      font-weight: 700;
-      color: var(--primary);
-      line-height: 1;
-      margin-bottom: 6px;
-    }
-
-    .overview-title {
-      font-family: var(--mono);
-      font-size: 11px;
-      font-weight: 700;
-      color: var(--text-mid);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 8px;
-    }
-
-    .overview-desc {
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.7;
-    }
-
-    .vars-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-      gap: 14px;
-    }
-
-    .var-card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 20px 20px;
-      border-left: 3px solid var(--primary-light);
-      box-shadow: var(--shadow-sm);
-    }
-
-    .var-name {
-      font-family: var(--serif);
-      font-size: 14px;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: 3px;
-    }
-
-    .var-source {
-      font-family: var(--mono);
-      font-size: 9px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--accent);
-      margin-bottom: 8px;
-    }
-
-    .var-desc {
-      font-size: 11px;
-      color: var(--muted);
-      line-height: 1.6;
-    }
-
-    .hw-list { display: grid; gap: 12px; }
-
-    .hw-item {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: 18px 24px;
-      display: grid;
-      grid-template-columns: 160px 1fr auto;
-      gap: 20px;
-      align-items: center;
-      box-shadow: var(--shadow-sm);
-    }
-
-    .hw-badge {
-      font-family: var(--mono);
-      font-size: 9px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      padding: 6px 12px;
-      border-radius: 4px;
-      background: var(--primary-pale);
-      color: var(--primary);
-      border: 1px solid var(--border-strong);
-      width: fit-content;
-    }
-
-    .hw-name {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--text);
-    }
-
-    .hw-detail {
-      font-family: var(--mono);
-      font-size: 10px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      white-space: nowrap;
-    }
-
-    footer {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 20px 36px 28px;
-      border-top: 1px solid var(--border);
-      background: var(--surface);
-    }
-
-    .footer-copy {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--muted);
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-    }
-
-    .footer-ts {
-      font-family: var(--mono);
-      font-size: 9px;
-      color: var(--muted);
-    }
-
-    @media (max-width: 960px) {
-      .stats-row { grid-template-columns: repeat(2, 1fr); }
-      .stat-cell:nth-child(2) { border-right: none; }
-      nav { padding: 0 18px; }
-    }
-
-    @media (max-width: 700px) {
-      nav { flex-wrap: wrap; height: auto; padding: 12px 18px; }
-      .hero { padding: 160px 20px 60px; }
-      section { padding: 60px 20px; }
-      .stats-row { grid-template-columns: 1fr; }
-      .stat-cell { border-right: none; border-bottom: 1px solid var(--border); }
-      .hw-item { grid-template-columns: 1fr; }
-      .hero-actions { flex-direction: column; align-items: stretch; }
-      .btn-hero { min-width: unset; width: 100%; }
+    @media(max-width:700px){
+      nav{height:auto;padding:12px 16px;flex-wrap:wrap;gap:10px}
+      nav::before{display:none}
+      .hero{padding:160px 24px 80px}
+      .section{padding:56px 24px}
+      .stats-bar{grid-template-columns:1fr}
+      .stat-cell{border-right:none;border-bottom:1px solid var(--rule)}
+      .hw-item{grid-template-columns:1fr}
+      .pipeline{grid-template-columns:1fr}
+      .hero-actions{flex-direction:column;align-items:stretch}
+      .btn-hero{min-width:unset;width:100%}
+      footer{flex-direction:column;gap:8px;padding:16px 24px}
+      .rule{margin:0 24px}
     }
   </style>
 </head>
 <body>
-  <nav>
-    <div class="nav-left">
-      <div class="nav-ring"><div class="nav-dot"></div></div>
-      <div class="nav-wordmark">AWA05</div>
-      <div class="nav-sep"></div>
-      <div class="nav-subtitle">Telemetría Ambiental · Atitlán</div>
-    </div>
-    <div class="nav-right">
-      <a href="dashboard.html" class="nav-btn nav-btn-primary">Tablero ↗</a>
-      <a href="https://github.com/geograficaaala/awa05-telemetria" target="_blank" rel="noopener" class="nav-btn">Repositorio</a>
-      <img src="aala_logo.png" alt="AALA" class="nav-logo">
-    </div>
-  </nav>
 
-  <div class="kpi-strip">
-    <div class="strip-item">
-      <div class="strip-label">Nivel</div>
-      <div class="strip-val"><span id="t-nivel">—</span> L</div>
-    </div>
-    <div class="strip-item">
-      <div class="strip-label">Humedad</div>
-      <div class="strip-val"><span id="t-hum">—</span> %</div>
-    </div>
-    <div class="strip-item">
-      <div class="strip-label">Temperatura</div>
-      <div class="strip-val"><span id="t-temp">—</span> °C</div>
-    </div>
-    <div class="strip-item">
-      <div class="strip-label">Punto de rocío</div>
-      <div class="strip-val"><span id="t-dew">—</span> °C</div>
-    </div>
-    <div class="strip-item">
-      <div class="strip-label">Presión</div>
-      <div class="strip-val"><span id="t-pres">—</span> inHg</div>
-    </div>
-    <div class="strip-item">
-      <div class="strip-label">Viento</div>
-      <div class="strip-val"><span id="t-wind">—</span> km/h</div>
-    </div>
-    <div class="strip-item">
-      <div class="strip-label">UV</div>
-      <div class="strip-val"><span id="t-uv">—</span></div>
-    </div>
-    <div class="strip-ts" id="strip-ts">—</div>
+<!-- ═══════════════════════════════════════════════════════════
+     HEADER
+═══════════════════════════════════════════════════════════ -->
+<nav>
+  <div class="nav-left">
+    <div class="nav-ring"><div class="nav-dot"></div></div>
+    <div class="nav-wordmark">AWA05</div>
+    <div class="nav-sep"></div>
+    <div class="nav-subtitle">Telemetría Ambiental · Atitlán</div>
   </div>
+  <div class="nav-right">
+    <a href="dashboard.html" class="nav-btn nav-btn-primary">Tablero ↗</a>
+    <a href="https://github.com/geograficaaala/awa05-telemetria" target="_blank" rel="noopener" class="nav-btn">Repositorio</a>
+    <img src="aala_logo.png" alt="AALA" class="nav-logo">
+  </div>
+</nav>
 
-  <section class="hero">
-    <div class="hero-eyebrow">Nodo AWA05 · Lago de Atitlán · Guatemala</div>
-    <h1 class="hero-name">Jose Toriello</h1>
-    <div class="hero-system">Sistema de Telemetría Ambiental</div>
-    <p class="hero-desc">
-      Monitoreo continuo de nivel de captación de agua y variables microclimáticas mediante Raspberry Pi 4B, sensor ultrasónico JSN-SR04T y estación meteorológica Ambient Weather WS-2000. Datos procesados localmente y publicados en tiempo real.
-    </p>
-    <div class="hero-actions">
-      <a href="dashboard.html" class="btn-hero btn-hero-primary">Abrir tablero</a>
-      <a href="https://github.com/geograficaaala/awa05-telemetria" target="_blank" rel="noopener" class="btn-hero btn-hero-secondary">Ver repositorio</a>
-    </div>
-  </section>
+<!-- ═══════════════════════════════════════════════════════════
+     KPI STRIP
+═══════════════════════════════════════════════════════════ -->
+<div class="kpi-strip">
+  <div class="strip-item"><div class="strip-lbl">Nivel</div><div class="strip-val"><span id="t-nivel">—</span> L</div></div>
+  <div class="strip-item"><div class="strip-lbl">Humedad</div><div class="strip-val"><span id="t-hum">—</span> %</div></div>
+  <div class="strip-item"><div class="strip-lbl">Temperatura</div><div class="strip-val"><span id="t-temp">—</span> °C</div></div>
+  <div class="strip-item"><div class="strip-lbl">Punto de rocío</div><div class="strip-val"><span id="t-dew">—</span> °C</div></div>
+  <div class="strip-item"><div class="strip-lbl">Presión</div><div class="strip-val"><span id="t-pres">—</span> inHg</div></div>
+  <div class="strip-item"><div class="strip-lbl">Viento</div><div class="strip-val"><span id="t-wind">—</span> km/h</div></div>
+  <div class="strip-item"><div class="strip-lbl">UV</div><div class="strip-val"><span id="t-uv">—</span></div></div>
+  <div class="strip-ts" id="strip-ts">—</div>
+</div>
 
-  <div class="stats-row">
-    <div class="stat-cell">
-      <div class="stat-label">Frecuencia de lectura</div>
-      <div class="stat-val">1<span class="stat-unit">/ hora</span></div>
+<!-- ═══════════════════════════════════════════════════════════
+     HERO
+═══════════════════════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-eyebrow">Nodo AWA05 · Santa Catarina Palopó · Lago de Atitlán · Guatemala</div>
+  <div class="hero-welcome">Bienvenido,</div>
+  <h1 class="hero-name">José Toriello</h1>
+  <p class="hero-thanks">Gracias por hacer posible la creación del nodo de telemetría</p>
+  <div class="hero-rule"></div>
+  <p class="hero-desc">
+    Este tablero es el resultado de su apoyo. Desde una <strong>Raspberry Pi 4B</strong> en el campo,
+    la máquina cosechadora de agua AWA05 registra en tiempo real el nivel de captación,
+    nueve variables microclimáticas y el estado del hardware, publicándolos aquí de forma automática
+    cada quince minutos. Cada dato que ve en pantalla viajó del sensor al servidor, procesado
+    sin intervención humana, mientras la máquina continúa trabajando.
+  </p>
+  <div class="hero-actions">
+    <a href="dashboard.html" class="btn-hero btn-primary">Abrir tablero completo</a>
+    <a href="https://github.com/geograficaaala/awa05-telemetria" target="_blank" rel="noopener" class="btn-hero btn-secondary">Ver repositorio</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     STATS BAR
+═══════════════════════════════════════════════════════════ -->
+<div class="stats-bar">
+  <div class="stat-cell">
+    <div class="stat-lbl">Frecuencia de captura</div>
+    <div class="stat-val">15<span class="stat-unit">min</span></div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-lbl">Variables monitoreadas</div>
+    <div class="stat-val">9<span class="stat-unit">series</span></div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-lbl">KPIs del nodo Pi</div>
+    <div class="stat-val">15<span class="stat-unit">indicadores</span></div>
+  </div>
+  <div class="stat-cell">
+    <div class="stat-lbl">Sitio de monitoreo</div>
+    <div class="stat-val" style="font-size:26px">AWA05</div>
+  </div>
+</div>
+
+<div class="rule"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     LO QUE ENCONTRARÁ
+═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-eyebrow">Contenido del tablero</div>
+  <div class="section-title">Lo que encontrará <em>adentro</em></div>
+  <p class="section-intro">El tablero está organizado en ocho módulos. Cada uno responde una pregunta concreta sobre la máquina, el clima o el costo de operar el sistema.</p>
+
+  <div class="modules-grid">
+    <div class="module-card">
+      <div class="module-num">01</div>
+      <span class="module-icon">⬡</span>
+      <div class="module-title">Resumen ejecutivo</div>
+      <div class="module-desc">Seis indicadores en tiempo real: nivel de cisterna, garrafones producidos, humedad, temperatura, punto de rocío y viento. La primera pantalla que verá al abrir el tablero.</div>
+      <span class="module-tag">Tiempo real</span>
     </div>
-    <div class="stat-cell">
-      <div class="stat-label">Variables meteorológicas</div>
-      <div class="stat-val">9<span class="stat-unit">series</span></div>
+    <div class="module-card">
+      <div class="module-num">02</div>
+      <span class="module-icon">◈</span>
+      <div class="module-title">Salud del nodo Pi</div>
+      <div class="module-desc">Temperatura de CPU, voltaje, uso de RAM y disco, uptime, señal WiFi e IP Tailscale. El sistema emite alerta de apagado a 75 °C para proteger el hardware.</div>
+      <span class="module-tag">Hardware</span>
     </div>
-    <div class="stat-cell">
-      <div class="stat-label">KPIs del nodo Pi</div>
-      <div class="stat-val">15<span class="stat-unit">min</span></div>
+    <div class="module-card">
+      <div class="module-num">03</div>
+      <span class="module-icon">◉</span>
+      <div class="module-title">Producción hídrica</div>
+      <div class="module-desc">Gráfica del nivel de agua en la cisterna a lo largo del tiempo. Los puntos verdes marcan cada momento en que se completó un garrafón de 20 litros.</div>
+      <span class="module-tag">Sensor JSN-SR04T</span>
     </div>
-    <div class="stat-cell">
-      <div class="stat-label">Sitio de monitoreo</div>
-      <div class="stat-val">AWA05</div>
+    <div class="module-card">
+      <div class="module-num">04</div>
+      <span class="module-icon">◑</span>
+      <div class="module-title">Análisis diurno / nocturno</div>
+      <div class="module-desc">La captación de niebla en el lago de Atitlán es predominantemente nocturna. Este módulo descompone la producción por franja horaria y por día de experimento.</div>
+      <span class="module-tag">Análisis temporal</span>
+    </div>
+    <div class="module-card">
+      <div class="module-num">05</div>
+      <span class="module-icon">◎</span>
+      <div class="module-title">Análisis empresarial</div>
+      <div class="module-desc">¿Cuánto cuesta producir un litro de agua? ¿Un garrafón? ¿Cuánto se ahorra versus comprarlo en el mercado? Calculado con la tarifa real de DEOCSA Sololá y distribución triangular de consumo eléctrico.</div>
+      <span class="module-tag">Costos · Q/L · Q/garrafón</span>
+    </div>
+    <div class="module-card">
+      <div class="module-num">06</div>
+      <span class="module-icon">◐</span>
+      <div class="module-title">Variables climáticas base</div>
+      <div class="module-desc">Series de temperatura, humedad relativa, punto de rocío y presión barométrica registradas por la estación meteorológica WS-2000, submuestreadas a una lectura por hora.</div>
+      <span class="module-tag">WS-2000</span>
+    </div>
+    <div class="module-card">
+      <div class="module-num">07</div>
+      <span class="module-icon">◒</span>
+      <div class="module-title">Viento, lluvia y radiación</div>
+      <div class="module-desc">Velocidad y dirección del viento con rosa de vientos y puntos cardinales, precipitación horaria y radiación solar. El viento es el motor principal de la captación de niebla.</div>
+      <span class="module-tag">WS-2000 · Rosa de vientos</span>
+    </div>
+    <div class="module-card">
+      <div class="module-num">08</div>
+      <span class="module-icon">◓</span>
+      <div class="module-title">Evaluación estadística</div>
+      <div class="module-desc">Regresión OLS multivariable, importancia de variables por permutación de R², análisis de umbral de humedad, diagnóstico de residuales y heatmap de correlación interactivo entre todas las variables.</div>
+      <span class="module-tag">OLS · Pearson · VIF · ΔR²</span>
     </div>
   </div>
+</div>
 
-  <section>
-    <div class="section-tag">Arquitectura del sistema</div>
-    <h2 class="section-title">Flujo de adquisición y publicación</h2>
-    <p class="section-intro">
-      El nodo opera sobre Raspberry Pi 4B ejecutando un servicio systemd persistente que coordina la adquisición de nivel por ultrasonido, la ingesta meteorológica por HTTP y la sincronización periódica con GitHub Pages.
-    </p>
-    <div class="pipeline">
-      <div class="pipeline-step">
-        <div class="step-num">Etapa 01</div>
-        <div class="step-title">Adquisición de nivel</div>
-        <div class="step-desc">Lectura por eco ultrasónico JSN-SR04T con promediado de mediana en 5 muestras. Conversión geométrica a volumen en litros.</div>
-      </div>
-      <div class="pipeline-step">
-        <div class="step-num">Etapa 02</div>
-        <div class="step-title">Ingreso meteorológico</div>
-        <div class="step-desc">Servidor Flask en puerto 7777 recibe datos de la WS-2000 vía protocolo Wunderground. Persistencia en CSV local.</div>
-      </div>
-      <div class="pipeline-step">
-        <div class="step-num">Etapa 03</div>
-        <div class="step-title">Procesamiento</div>
-        <div class="step-desc">Pipeline Python genera dashboard_data.json con series temporales, KPIs actuales y diagnóstico del hardware.</div>
-      </div>
-      <div class="pipeline-step">
-        <div class="step-num">Etapa 04</div>
-        <div class="step-title">Publicación web</div>
-        <div class="step-desc">Sincronización con GitHub vía PyGithub API. Tablero estático desplegado en GitHub Pages con actualización automática.</div>
-      </div>
+<div class="rule"></div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     PIPELINE
+═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-eyebrow">Arquitectura del sistema</div>
+  <div class="section-title">Del sensor a su <em>pantalla</em></div>
+  <p class="section-intro">Cuatro etapas automáticas entre la medición física y el dato que usted ve. Sin intervención manual, sin servidor en la nube: solo la Raspberry Pi y GitHub.</p>
+
+  <div class="pipeline">
+    <div class="pipe-step">
+      <div class="pipe-dot">01</div>
+      <div class="pipe-title">Adquisición</div>
+      <div class="pipe-desc">El sensor JSN-SR04T mide el nivel cada 15 minutos. La WS-2000 envía clima cada 60 segundos al servidor Flask interno.</div>
     </div>
-  </section>
-
-  <section style="padding-top:0">
-    <div class="section-tag">Cobertura de datos</div>
-    <h2 class="section-title">Variables monitoreadas</h2>
-    <div class="vars-grid">
-      <div class="var-card">
-        <div class="var-name">Nivel de agua</div>
-        <div class="var-source">JSN-SR04T</div>
-        <div class="var-desc">Distancia convertida a volumen aplicando geometría cilíndrica del contenedor.</div>
-      </div>
-      <div class="var-card">
-        <div class="var-name">Temperatura exterior</div>
-        <div class="var-source">WS-2000</div>
-        <div class="var-desc">Serie térmica ambiental. Referencia para evaluación de condiciones de condensación.</div>
-      </div>
-      <div class="var-card">
-        <div class="var-name">Humedad relativa</div>
-        <div class="var-source">WS-2000</div>
-        <div class="var-desc">Indicador central para el potencial de captación de agua atmosférica.</div>
-      </div>
-      <div class="var-card">
-        <div class="var-name">Punto de rocío</div>
-        <div class="var-source">WS-2000</div>
-        <div class="var-desc">Temperatura de condensación. Variable crítica para interpretar la captación.</div>
-      </div>
-      <div class="var-card">
-        <div class="var-name">Presión barométrica</div>
-        <div class="var-source">WS-2000</div>
-        <div class="var-desc">Seguimiento de variaciones para interpretación de patrones atmosféricos locales.</div>
-      </div>
-      <div class="var-card">
-        <div class="var-name">Viento</div>
-        <div class="var-source">WS-2000</div>
-        <div class="var-desc">Velocidad y dirección independientes para análisis de intercambio de masa.</div>
-      </div>
-      <div class="var-card">
-        <div class="var-name">Precipitación horaria</div>
-        <div class="var-source">WS-2000</div>
-        <div class="var-desc">Registro mm/h para distinguir captación por condensación de lluvia directa.</div>
-      </div>
-      <div class="var-card">
-        <div class="var-name">Radiación solar y UV</div>
-        <div class="var-source">WS-2000</div>
-        <div class="var-desc">Carga radiativa instantánea para contextualizar el desempeño térmico del sistema.</div>
-      </div>
+    <div class="pipe-step">
+      <div class="pipe-dot">02</div>
+      <div class="pipe-title">Procesamiento</div>
+      <div class="pipe-desc">Python filtra outliers, convierte unidades (°F→°C, mph→km/h), calcula KPIs y genera el archivo JSON del tablero.</div>
     </div>
-  </section>
-
-  <section style="padding-top:0">
-    <div class="section-tag">Infraestructura</div>
-    <h2 class="section-title">Componentes del nodo</h2>
-    <div class="hw-list">
-      <div class="hw-item">
-        <div class="hw-badge">Raspberry Pi 4B</div>
-        <div class="hw-name">Unidad de procesamiento central. Ejecuta scheduler, servidor Flask y cliente GitHub bajo servicio systemd.</div>
-        <div class="hw-detail">Debian Trixie · 64-bit</div>
-      </div>
-      <div class="hw-item">
-        <div class="hw-badge">JSN-SR04T</div>
-        <div class="hw-name">Transductor ultrasónico de nivel. Pines BCM 17 (TRIG) y 18 (ECHO) con divisor de voltaje 5V a 3.3V.</div>
-        <div class="hw-detail">GPIO BCM · Mediana 5 muestras</div>
-      </div>
-      <div class="hw-item">
-        <div class="hw-badge">WS-2000</div>
-        <div class="hw-name">Estación meteorológica Ambient Weather. Transmite por WiFi al endpoint Flask en puerto 7777 vía Wunderground.</div>
-        <div class="hw-detail">Puerto 7777 · Intervalo 60 s</div>
-      </div>
-      <div class="hw-item">
-        <div class="hw-badge">GitHub Pages</div>
-        <div class="hw-name">Publicación del sitio estático desde la raíz de la rama main. Actualización automática por push desde la Pi.</div>
-        <div class="hw-detail">Rama main · Raíz /</div>
-      </div>
+    <div class="pipe-step">
+      <div class="pipe-dot">03</div>
+      <div class="pipe-title">Publicación</div>
+      <div class="pipe-desc">PyGithub sube el JSON al repositorio. GitHub Pages despliega automáticamente los nuevos datos en este sitio.</div>
     </div>
-  </section>
+    <div class="pipe-step">
+      <div class="pipe-dot">04</div>
+      <div class="pipe-title">Visualización</div>
+      <div class="pipe-desc">El tablero carga el JSON al abrirse y se refresca cada 60 segundos. No requiere servidor: es HTML estático puro.</div>
+    </div>
+  </div>
+</div>
 
-  <footer>
-    <div class="footer-copy">AWA05 · Amigos del Lago de Atitlán · Telemetría Ambiental</div>
-    <div class="footer-ts" id="footer-ts">—</div>
-  </footer>
+<div class="rule"></div>
 
-  <script>
-    async function fetchData() {
-      try {
-        const r = await fetch('./data/processed/dashboard_data.json?t=' + Date.now());
-        if (!r.ok) throw new Error();
-        return await r.json();
-      } catch { return null; }
-    }
+<!-- ═══════════════════════════════════════════════════════════
+     VARIABLES
+═══════════════════════════════════════════════════════════ -->
+<div class="section" style="padding-bottom:0">
+  <div class="section-eyebrow">Cobertura de datos</div>
+  <div class="section-title">Variables <em>monitoreadas</em></div>
+  <p class="section-intro">Nueve series climáticas más la medición de nivel. Cada variable tiene un rol en explicar cuándo y cuánto agua produce la máquina.</p>
 
-    function setText(id, v, suf) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.textContent = (v !== null && v !== undefined && v !== '') ? (v + (suf || '')) : '—';
-    }
+  <div class="vars-grid">
+    <div class="var-card" style="border-left:2.5px solid var(--cobalt)">
+      <div class="var-name">Nivel de agua</div><div class="var-source">JSN-SR04T</div>
+      <div class="var-desc">Distancia ultrasónica convertida a volumen cilíndrico. Radio 12.9 cm · Altura útil 38.3 cm · Máx 20 L.</div>
+    </div>
+    <div class="var-card" style="border-left:2.5px solid var(--teal)">
+      <div class="var-name">Humedad relativa</div><div class="var-source">WS-2000</div>
+      <div class="var-desc">Variable más determinante para la captación. La niebla se forma con HR ≥ 70%. Umbral analizado en el módulo estadístico.</div>
+    </div>
+    <div class="var-card" style="border-left:2.5px solid var(--amber)">
+      <div class="var-name">Temperatura exterior</div><div class="var-source">WS-2000</div>
+      <div class="var-desc">Serie térmica ambiental. Influye en la tasa de evaporación y la condensación nocturna. Convertida de °F a °C.</div>
+    </div>
+    <div class="var-card" style="border-left:2.5px solid var(--cobalt)">
+      <div class="var-name">Punto de rocío</div><div class="var-source">WS-2000</div>
+      <div class="var-desc">Temperatura de condensación. Cuando Td se acerca a T, la humedad relativa tiende a 100% y la captación se activa.</div>
+    </div>
+    <div class="var-card" style="border-left:2.5px solid var(--forest)">
+      <div class="var-name">Presión barométrica</div><div class="var-source">WS-2000</div>
+      <div class="var-desc">Variaciones de presión indican frentes de aire. Los frentes húmedos del lago generan los eventos de mayor captación.</div>
+    </div>
+    <div class="var-card" style="border-left:2.5px solid var(--cobalt)">
+      <div class="var-name">Velocidad del viento</div><div class="var-source">WS-2000</div>
+      <div class="var-desc">Motor físico de la captación de niebla. La velocidad superficial empuja las gotitas hacia la malla colectora.</div>
+    </div>
+    <div class="var-card" style="border-left:2.5px solid var(--ink-soft)">
+      <div class="var-name">Dirección del viento</div><div class="var-source">WS-2000</div>
+      <div class="var-desc">Analizada en rosa de vientos por sectores de 22.5° con puntos cardinales. Determina la exposición efectiva al flujo de niebla.</div>
+    </div>
+    <div class="var-card" style="border-left:2.5px solid var(--cobalt)">
+      <div class="var-name">Precipitación horaria</div><div class="var-source">WS-2000</div>
+      <div class="var-desc">Registro en mm/h. Permite distinguir el agua captada por condensación de la lluvia directa que entra al contenedor.</div>
+    </div>
+    <div class="var-card" style="border-left:2.5px solid var(--amber)">
+      <div class="var-name">Radiación solar y UV</div><div class="var-source">WS-2000</div>
+      <div class="var-desc">Predictor inverso de la producción. A mayor radiación diurna, menor captación. Confirma el patrón nocturno del sistema.</div>
+    </div>
+  </div>
+</div>
 
-    async function update() {
-      const d = await fetchData();
-      if (!d) return;
-      const k = d.kpis || {};
-      setText('t-nivel', k.nivel_l);
-      setText('t-hum', k.humedad_pct);
-      setText('t-temp', k.temp_c);
-      setText('t-dew', k.punto_rocio_c);
-      setText('t-pres', k.presion_inhg);
-      setText('t-wind', k.viento_kmh);
-      setText('t-uv', k.uv);
-      const ts = d.actualizado || '—';
-      document.getElementById('strip-ts').textContent = 'Actualizado: ' + ts;
-      document.getElementById('footer-ts').textContent = ts;
-    }
+<div class="rule" style="margin-top:80px"></div>
 
-    update();
-    setInterval(update, 60000);
-  </script>
+<!-- ═══════════════════════════════════════════════════════════
+     HARDWARE
+═══════════════════════════════════════════════════════════ -->
+<div class="section">
+  <div class="section-eyebrow">Infraestructura de campo</div>
+  <div class="section-title">Componentes del <em>nodo</em></div>
+  <p class="section-intro">Hardware de bajo consumo diseñado para operar 24/7 en condiciones de campo. El nodo completo consume menos de 10W de corriente de bajo voltaje.</p>
+
+  <div class="hw-list">
+    <div class="hw-item">
+      <div class="hw-badge">Raspberry Pi 4B</div>
+      <div class="hw-name">Unidad central de procesamiento. Ejecuta el scheduler, el servidor Flask y el cliente GitHub bajo servicio systemd persistente. Supervisión térmica activa con apagado a 75 °C.</div>
+      <div class="hw-detail">Debian Trixie · 64-bit · ARM</div>
+    </div>
+    <div class="hw-item">
+      <div class="hw-badge">JSN-SR04T</div>
+      <div class="hw-name">Transductor ultrasónico sumergible para medición de nivel. Mediana de 11 muestras por lectura para filtrar ruido. Conectado a pines GPIO BCM 17 (TRIG) y 18 (ECHO) con divisor de voltaje 5V→3.3V.</div>
+      <div class="hw-detail">GPIO BCM · Mediana 11 muestras</div>
+    </div>
+    <div class="hw-item">
+      <div class="hw-badge">WS-2000</div>
+      <div class="hw-name">Estación meteorológica Ambient Weather. Transmite por WiFi al endpoint Flask interno en puerto 7777 usando protocolo Wunderground. Intervalo de transmisión de 60 segundos.</div>
+      <div class="hw-detail">Puerto 7777 · Cada 60 s</div>
+    </div>
+    <div class="hw-item">
+      <div class="hw-badge">Tailscale VPN</div>
+      <div class="hw-name">Acceso remoto seguro al nodo desde cualquier red. Permite administración SSH sin exponer puertos públicos. IP visible en el módulo de salud del sistema en el tablero.</div>
+      <div class="hw-detail">WireGuard · Mesh VPN</div>
+    </div>
+    <div class="hw-item">
+      <div class="hw-badge">GitHub Pages</div>
+      <div class="hw-name">Publicación del tablero estático desde la raíz de la rama main. El JSON de datos se actualiza por push automático desde la Pi cada 15 minutos sin intervención manual.</div>
+      <div class="hw-detail">Rama main · Raíz / · Estático</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════════════════ -->
+<footer>
+  <div class="footer-copy">AWA05 · Amigos del Lago de Atitlán · Telemetría Ambiental · Santa Catarina Palopó, Sololá</div>
+  <div class="footer-copy" id="footer-ts">—</div>
+</footer>
+
+<script>
+  async function fetchData() {
+    try {
+      const r = await fetch('./data/processed/dashboard_data.json?t=' + Date.now());
+      if (!r.ok) throw new Error();
+      return await r.json();
+    } catch { return null; }
+  }
+
+  function setText(id, v) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.textContent = (v !== null && v !== undefined && v !== '') ? v : '—';
+  }
+
+  async function update() {
+    const d = await fetchData();
+    if (!d) return;
+    const k = d.kpis || {};
+    setText('t-nivel',  k.nivel_l);
+    setText('t-hum',    k.humedad_pct);
+    setText('t-temp',   k.temp_c);
+    setText('t-dew',    k.punto_rocio_c);
+    setText('t-pres',   k.presion_inhg);
+    setText('t-wind',   k.viento_kmh);
+    setText('t-uv',     k.uv);
+    const ts = d.actualizado || '—';
+    document.getElementById('strip-ts').textContent = 'Act: ' + ts;
+    document.getElementById('footer-ts').textContent = ts;
+  }
+
+  update();
+  setInterval(update, 60000);
+</script>
 </body>
 </html>
