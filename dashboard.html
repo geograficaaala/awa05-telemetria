@@ -336,12 +336,47 @@
     }
 
     /* ── ANIMATIONS ─────────────────────────────────────────────── */
-    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
-    section{animation:fadeUp 0.5s ease both}
-    section:nth-child(2){animation-delay:0.05s}
-    section:nth-child(3){animation-delay:0.10s}
-    section:nth-child(4){animation-delay:0.15s}
-    section:nth-child(5){animation-delay:0.20s}
+    /* ── ANIMACIONES ─────────────────────────────────────────────── */
+    @keyframes fadeUp   {from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes fadeIn   {from{opacity:0}to{opacity:1}}
+    @keyframes scaleIn  {from{opacity:0;transform:scale(0.97)}to{opacity:1;transform:scale(1)}}
+    @keyframes slideRight{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
+
+    /* Estado inicial — todo invisible hasta que IntersectionObserver lo activa */
+    section{opacity:0}
+    .card{opacity:0;transform:translateY(18px);transition:opacity 0.45s cubic-bezier(.22,.68,0,1.2),transform 0.45s cubic-bezier(.22,.68,0,1.2)}
+    .kpi-card{opacity:0;transform:translateY(14px);transition:opacity 0.4s cubic-bezier(.22,.68,0,1.2),transform 0.4s cubic-bezier(.22,.68,0,1.2)}
+
+    /* Estado visible */
+    section.visible{opacity:1;animation:fadeUp 0.55s cubic-bezier(.22,.68,0,1.2) both}
+    .card.visible{opacity:1;transform:translateY(0)}
+    .kpi-card.visible{opacity:1;transform:translateY(0)}
+
+    /* Hover en cards */
+    .card{will-change:transform}
+    .card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)!important}
+    .kpi-card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px)!important}
+
+    /* Sidebar links */
+    .sb-link{transition:all 0.18s cubic-bezier(.22,.68,0,1.2)}
+
+    /* Smooth scroll nativo */
+    html{scroll-behavior:smooth}
+
+    /* Skeleton loader para KPIs mientras carga */
+    @keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
+    .loading .kpi-value,.loading .hd-stat-val{
+      background:linear-gradient(90deg,var(--surface3) 25%,var(--surface2) 50%,var(--surface3) 75%);
+      background-size:400px 100%;
+      animation:shimmer 1.4s ease infinite;
+      border-radius:4px;color:transparent!important;
+    }
+
+    /* Transición del panel de interpretación heatmap */
+    .hm-interp{transition:all 0.25s cubic-bezier(.22,.68,0,1.2)}
+
+    /* Transición menú móvil */
+    .mobile-menu{animation:fadeIn 0.18s ease both}
 
     /* ── RESPONSIVE TABLET ──────────────────────────────────────── */
     @media(max-width:1100px){
@@ -2436,19 +2471,179 @@ async function renderDashboard() {
   // Estadística avanzada — ver renderEstadistica()
 }
 
-// ─── SCROLL WATCHER ────────────────────────────────────────────────────
-window.addEventListener('scroll',()=>{
-  const ids=['resumen','salud-pi','nivel','produccion-analisis','empresa','clima-base','clima-avanzado','correlacion'];
-  ids.forEach(id=>{
-    const sec=document.getElementById(id),link=document.querySelector('.sb-link[href="#'+id+'"]');
-    if(!sec||!link) return;
-    const r=sec.getBoundingClientRect();
-    if(r.top<180&&r.bottom>120) link.classList.add('active'); else link.classList.remove('active');
+// ─── INTERSECTION OBSERVER — animaciones al hacer scroll ───────────
+(function initAnimations() {
+  const secObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); secObs.unobserve(e.target); } });
+  }, { threshold: 0.06 });
+  document.querySelectorAll('section').forEach(s => secObs.observe(s));
+
+  const cardObs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        const siblings = Array.from(e.target.parentElement?.children || [e.target]);
+        const idx = siblings.indexOf(e.target);
+        setTimeout(() => e.target.classList.add('visible'), idx * 60);
+        cardObs.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.card, .kpi-card').forEach(c => cardObs.observe(c));
+})();
+
+// ─── SCROLL WATCHER sidebar ────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const ids = ['resumen','salud-pi','nivel','produccion-analisis','empresa','clima-base','clima-avanzado','correlacion'];
+  ids.forEach(id => {
+    const sec  = document.getElementById(id);
+    const link = document.querySelector('.sb-link[href="#' + id + '"]');
+    if (!sec || !link) return;
+    const r = sec.getBoundingClientRect();
+    if (r.top < 180 && r.bottom > 120) link.classList.add('active');
+    else link.classList.remove('active');
   });
-});
+}, { passive: true });
+
+// ─── EXPORT XLSX COMPLETO ──────────────────────────────────────────
+async function exportXLSX() {
+  if (typeof XLSX === 'undefined') { alert('Librería XLSX no disponible.'); return; }
+  const btns = document.querySelectorAll('[onclick="exportXLSX()"]');
+  btns.forEach(b => { b.textContent = '⏳ Generando...'; b.disabled = true; });
+
+  try {
+    const wb = XLSX.utils.book_new();
+
+    // ── Hoja 1: Metadatos ─────────────────────────────────────────
+    const meta = [
+      ['AWA05 — Exportación de datos crudos'],
+      ['Sitio', 'Santa Catarina Palopó, Sololá, Guatemala'],
+      ['Generado', new Date().toLocaleString('es-GT')],
+      ['Fuente JSON', 'dashboard_data.json (GitHub Pages)'],
+      ['Fuente clima', 'Estación WS-2000 vía servidor Flask Pi'],
+      ['Fuente nivel', 'Sensor ultrasónico JSN-SR04T'],
+      ['Fuente lluvia', 'Ambient Weather API'],
+      [''],
+      ['VARIABLE', 'DESCRIPCIÓN', 'UNIDAD'],
+      ['timestamp',           'Fecha y hora local Guatemala (UTC-6)',              ''],
+      ['volumen_litros',      'Volumen de agua en cisterna calculado',             'L'],
+      ['temp_c',              'Temperatura exterior',                              '°C'],
+      ['humedad_pct',         'Humedad relativa',                                 '%'],
+      ['punto_rocio_c',       'Punto de rocío',                                   '°C'],
+      ['presion_inhg',        'Presión barométrica',                              'inHg'],
+      ['viento_kmh',          'Velocidad del viento',                             'km/h'],
+      ['viento_dir_deg',      'Dirección del viento (0=Norte)',                   '°'],
+      ['lluvia_hora_mm',      'Precipitación última hora — Ambient API',          'mm'],
+      ['lluvia_dia_mm',       'Precipitación acumulada hoy — Ambient API',        'mm'],
+      ['lluvia_semana_mm',    'Precipitación acumulada semana — Ambient API',     'mm'],
+      ['lluvia_mes_mm',       'Precipitación acumulada mes — Ambient API',        'mm'],
+      ['radiacion_solar_wm2', 'Radiación solar',                                  'W/m²'],
+      ['uv',                  'Índice UV',                                         ''],
+      ['cpu_temp_c',          'Temperatura CPU Raspberry Pi',                     '°C'],
+      ['ram_uso_pct',         'Uso de RAM Pi',                                    '%'],
+      ['disco_uso_pct',       'Uso de disco Pi',                                  '%'],
+      ['wifi_dbm',            'Señal WiFi',                                       'dBm'],
+      ['uptime',              'Tiempo encendida la Pi',                           ''],
+    ];
+    const wsMeta = XLSX.utils.aoa_to_sheet(meta);
+    wsMeta['!cols'] = [{wch:26},{wch:52},{wch:10}];
+    XLSX.utils.book_append_sheet(wb, wsMeta, 'Metadatos');
+
+    const p = globalPayload;
+    const s = p?.series || {};
+
+    // ── Hoja 2: Nivel de agua ─────────────────────────────────────
+    const labelsN  = s.labels_nivel || [];
+    const nivelVals= s.nivel_l || [];
+    const nivelRows = [['timestamp','volumen_litros']];
+    labelsN.forEach((ts, i) => { if (nivelVals[i] !== undefined) nivelRows.push([ts, nivelVals[i]]); });
+    const wsNivel = XLSX.utils.aoa_to_sheet(nivelRows);
+    wsNivel['!cols'] = [{wch:22},{wch:16}];
+    XLSX.utils.book_append_sheet(wb, wsNivel, 'Nivel_agua');
+
+    // ── Hoja 3: Clima WS-2000 ─────────────────────────────────────
+    const labelsC = s.labels || [];
+    const climaRows = [['timestamp','humedad_pct','temp_c','punto_rocio_c','presion_inhg','viento_kmh','viento_dir_deg','lluvia_hora_mm','radiacion_solar_wm2','uv']];
+    labelsC.forEach((ts, i) => {
+      climaRows.push([
+        ts,
+        s.humedad_pct?.[i]         ?? '',
+        s.temp_c?.[i]              ?? '',
+        s.punto_rocio_c?.[i]       ?? '',
+        s.presion_inhg?.[i]        ?? '',
+        s.viento_kmh?.[i]          ?? '',
+        s.viento_dir_deg?.[i]      ?? '',
+        s.lluvia_hora_mm?.[i]      ?? '',
+        s.radiacion_solar_wm2?.[i] ?? '',
+        s.uv?.[i]                  ?? '',
+      ]);
+    });
+    const wsClima = XLSX.utils.aoa_to_sheet(climaRows);
+    wsClima['!cols'] = [{wch:22},{wch:12},{wch:10},{wch:16},{wch:14},{wch:12},{wch:16},{wch:16},{wch:20},{wch:8}];
+    XLSX.utils.book_append_sheet(wb, wsClima, 'Clima_WS2000');
+
+    // ── Hoja 4: Lluvia Ambient API ────────────────────────────────
+    const llLabels = s.lluvia_dia_labels || [];
+    const llVals   = s.lluvia_dia_mm     || [];
+    const llRows   = [['timestamp','lluvia_dia_acumulada_mm']];
+    llLabels.forEach((ts, i) => { if (llVals[i] !== undefined) llRows.push([ts, llVals[i]]); });
+    const wsLluvia = XLSX.utils.aoa_to_sheet(llRows);
+    wsLluvia['!cols'] = [{wch:22},{wch:26}];
+    XLSX.utils.book_append_sheet(wb, wsLluvia, 'Lluvia_Ambient');
+
+    // ── Hoja 5: KPIs actuales ─────────────────────────────────────
+    const k = p?.kpis || {};
+    const kpiRows = [
+      ['KPI', 'Valor', 'Unidad', 'Fuente'],
+      ['Nivel cisterna',           k.nivel_l,             'L',     'JSN-SR04T'],
+      ['Humedad relativa',         k.humedad_pct,         '%',     'WS-2000'],
+      ['Temperatura',              k.temp_c,              '°C',    'WS-2000'],
+      ['Punto de rocío',           k.punto_rocio_c,       '°C',    'WS-2000'],
+      ['Presión barométrica',      k.presion_inhg,        'inHg',  'WS-2000'],
+      ['Velocidad del viento',     k.viento_kmh,          'km/h',  'WS-2000'],
+      ['Dirección del viento',     k.viento_dir_deg,      '°',     'WS-2000'],
+      ['Radiación solar',          k.radiacion_solar_wm2, 'W/m²',  'WS-2000'],
+      ['Índice UV',                k.uv,                  '',      'WS-2000'],
+      ['Lluvia esta hora',         k.lluvia_hora_mm,      'mm',    'Ambient API'],
+      ['Lluvia acumulada hoy',     k.lluvia_dia_mm,       'mm',    'Ambient API'],
+      ['Lluvia acumulada semana',  k.lluvia_semana_mm,    'mm',    'Ambient API'],
+      ['Lluvia acumulada mes',     k.lluvia_mes_mm,       'mm',    'Ambient API'],
+      ['Lluvia evento activo',     k.lluvia_evento_mm,    'mm',    'Ambient API'],
+      [''],
+      ['SISTEMA PI', '', '', ''],
+      ['CPU temperatura',          p?.sistema?.cpu_temp_c,    '°C',  'vcgencmd'],
+      ['GPU temperatura',          p?.sistema?.gpu_temp_c,    '°C',  'vcgencmd'],
+      ['Voltaje',                  p?.sistema?.voltaje_v,     'V',   'vcgencmd'],
+      ['RAM uso',                  p?.sistema?.ram_uso_pct,   '%',   '/proc/meminfo'],
+      ['Disco uso',                p?.sistema?.disco_uso_pct, '%',   'statvfs'],
+      ['WiFi señal dBm',           p?.sistema?.wifi_dbm,      'dBm', 'iwconfig'],
+      ['WiFi señal %',             p?.sistema?.wifi_pct,      '%',   'iwconfig'],
+      ['Carga CPU 1min',           p?.sistema?.load1,         '',    '/proc/loadavg'],
+      ['Carga CPU 5min',           p?.sistema?.load5,         '',    '/proc/loadavg'],
+      ['Carga CPU 15min',          p?.sistema?.load15,        '',    '/proc/loadavg'],
+      ['Uptime',                   p?.sistema?.uptime,        '',    '/proc/uptime'],
+      ['Frecuencia CPU',           p?.sistema?.freq_cpu_mhz,  'MHz', 'vcgencmd'],
+      ['Throttling OK',            p?.sistema?.throttle_ok ? 'SÍ' : 'NO', '', 'vcgencmd'],
+      ['Throttle flags',           p?.sistema?.throttle_flags,'',    'vcgencmd'],
+      ['IP Tailscale',             p?.sistema?.tailscale_ip,  '',    'tailscale'],
+      ['Actualizado',              p?.actualizado,             '',    'dashboard_data.json'],
+    ];
+    const wsKPIs = XLSX.utils.aoa_to_sheet(kpiRows);
+    wsKPIs['!cols'] = [{wch:26},{wch:16},{wch:10},{wch:18}];
+    XLSX.utils.book_append_sheet(wb, wsKPIs, 'KPIs_actuales');
+
+    const fecha = new Date().toISOString().slice(0,10);
+    XLSX.writeFile(wb, `AWA05_datos_${fecha}.xlsx`);
+
+  } catch(err) {
+    console.error('Error exportando:', err);
+    alert('Error al generar el archivo: ' + err.message);
+  } finally {
+    btns.forEach(b => { b.textContent = '↓ Exportar'; b.disabled = false; });
+  }
+}
 
 renderDashboard();
-setInterval(renderDashboard,60000);
+setInterval(renderDashboard, 60000);
 </script>
 </body>
 </html>
