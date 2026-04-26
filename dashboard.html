@@ -281,7 +281,7 @@
     .pi-stat-val.crit{color:var(--crimson)}
 
     /* ── WIND ROSE ──────────────────────────────────────────────── */
-    .rose-wrap{position:relative;height:240px;display:flex;align-items:center;justify-content:center}
+    .rose-wrap{position:relative;height:280px;display:flex;align-items:center;justify-content:center;overflow:hidden}
 
     /* ── GARRAFON COUNTER ───────────────────────────────────────── */
     .garrafon-display{display:flex;align-items:center;gap:20px;padding:20px}
@@ -1201,14 +1201,16 @@ function windRoseChart(id, directions) {
   const CARD_IDX = [0, 2, 4, 6, 8, 10, 12, 14]; // N,NE,E,SE,S,SO,O,NO
 
   function drawRose() {
-    const W = canvas.offsetWidth || 240;
-    const H = canvas.offsetHeight || 240;
+    const W = canvas.parentElement ? (canvas.parentElement.clientWidth || 240) : 240;
+    const H = Math.min(W, 280);
+    canvas.style.width  = W + 'px';
+    canvas.style.height = H + 'px';
     canvas.width  = W * window.devicePixelRatio;
     canvas.height = H * window.devicePixelRatio;
     ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 
     const cx = W / 2, cy = H / 2;
-    const R  = Math.min(W, H) / 2 - 28; // radio máximo de los pétalos
+    const R  = Math.min(W, H) / 2 - 36; // radio máximo de los pétalos
     const SECTOR_RAD = (2 * Math.PI) / NSECTORS;
 
     ctx.clearRect(0, 0, W, H);
@@ -2215,11 +2217,11 @@ async function renderDashboard() {
 
   // Lluvia desde Ambient Weather
   const kpis = payload.kpis || {};
-  const setText2 = (id, val, suf='') => { const el=document.getElementById(id); if(el) el.textContent=(val!=null?val+suf:'--'); };
-  setText2('rain-hora', kpis.lluvia_hora_mm != null ? kpis.lluvia_hora_mm : '--', kpis.lluvia_hora_mm != null ? ' mm' : '');
-  setText2('rain-dia',  kpis.lluvia_dia_mm  != null ? kpis.lluvia_dia_mm  : '--', kpis.lluvia_dia_mm  != null ? ' mm' : '');
-  setText2('rain-semana', kpis.lluvia_semana_mm != null ? kpis.lluvia_semana_mm : '--', kpis.lluvia_semana_mm != null ? ' mm' : '');
-  setText2('rain-mes',  kpis.lluvia_mes_mm  != null ? kpis.lluvia_mes_mm  : '--', kpis.lluvia_mes_mm  != null ? ' mm' : '');
+  const setText2 = (id, val, suf='') => { const el=document.getElementById(id); if(el) el.textContent=(val !== null && val !== undefined ? val+suf : '--'); };
+  setText2('rain-hora',   kpis.lluvia_hora_mm   !== null && kpis.lluvia_hora_mm   !== undefined ? kpis.lluvia_hora_mm   : null, ' mm');
+  setText2('rain-dia',    kpis.lluvia_dia_mm    !== null && kpis.lluvia_dia_mm    !== undefined ? kpis.lluvia_dia_mm    : null, ' mm');
+  setText2('rain-semana', kpis.lluvia_semana_mm !== null && kpis.lluvia_semana_mm !== undefined ? kpis.lluvia_semana_mm : null, ' mm');
+  setText2('rain-mes',    kpis.lluvia_mes_mm    !== null && kpis.lluvia_mes_mm    !== undefined ? kpis.lluvia_mes_mm    : null, ' mm');
   if (kpis.lluvia_ambient_ts) setTs('ts-rain', 'Ambient · ' + kpis.lluvia_ambient_ts);
   // Gráfica acumulado diario desde Ambient
   const rainDiaLabels = formatLabels(s.lluvia_dia_labels || []);
