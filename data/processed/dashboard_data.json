@@ -1,37 +1,37 @@
 {
-  "actualizado": "2026-04-28 10:31:46",
+  "actualizado": "2026-04-28 10:50:55",
   "kpis": {
-    "nivel_l": 13.59,
-    "humedad_pct": 57.0,
-    "temp_c": 23.6,
-    "punto_rocio_c": 14.6,
+    "nivel_l": 20.02,
+    "humedad_pct": 58.0,
+    "temp_c": 24.5,
+    "punto_rocio_c": 15.7,
     "presion_inhg": 25.012,
     "viento_kmh": 0.0,
-    "viento_dir_deg": 44.0,
-    "radiacion_solar_wm2": 28.9,
-    "uv": 0.0,
+    "viento_dir_deg": 359.0,
+    "radiacion_solar_wm2": 196.2,
+    "uv": 1.0,
     "lluvia_hora_mm": 0.0,
     "lluvia_dia_mm": 0.0,
     "lluvia_semana_mm": 0.0,
     "lluvia_mes_mm": 12.19,
     "lluvia_evento_mm": 0.0,
-    "lluvia_ambient_ts": "2026-04-28 10:30:00"
+    "lluvia_ambient_ts": "2026-04-28 10:50:00"
   },
   "sistema": {
-    "cpu_temp_c": 37.0,
+    "cpu_temp_c": 38.4,
     "voltaje_v": 0.946,
-    "ram_uso_pct": 11.3,
+    "ram_uso_pct": 10.7,
     "disco_uso_pct": 10.4,
-    "uptime": "87h 54m",
+    "uptime": "0h 10m",
     "gpu_temp_c": null,
     "freq_cpu_mhz": 1800,
     "throttle_ok": true,
     "throttle_flags": "0x0",
-    "wifi_dbm": -66,
-    "wifi_pct": 68,
-    "load1": 0.0,
-    "load5": 0.0,
-    "load15": 0.0,
+    "wifi_dbm": -67,
+    "wifi_pct": 66,
+    "load1": 0.14,
+    "load5": 0.06,
+    "load15": 0.05,
     "tailscale_ip": "100.110.98.27"
   },
   "series": {
@@ -605,7 +605,8 @@
       "2026-04-28 09:46:06",
       "2026-04-28 10:01:16",
       "2026-04-28 10:16:25",
-      "2026-04-28 10:31:41"
+      "2026-04-28 10:31:41",
+      "2026-04-28 10:50:45"
     ],
     "nivel_l": [
       16.99,
@@ -1078,7 +1079,8 @@
       15.06,
       15.06,
       15.06,
-      15.06
+      15.06,
+      20.02
     ],
     "humedad_pct": [
       69.0,
@@ -2951,9 +2953,17 @@
       "2026-04-28 10:15:00",
       "2026-04-28 10:20:00",
       "2026-04-28 10:25:00",
-      "2026-04-28 10:30:00"
+      "2026-04-28 10:30:00",
+      "2026-04-28 10:35:00",
+      "2026-04-28 10:40:00",
+      "2026-04-28 10:45:00",
+      "2026-04-28 10:50:00"
     ],
     "lluvia_dia_mm": [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
       0.0,
       0.0,
       0.0,
