@@ -1,7 +1,7 @@
 {
-  "actualizado": "2026-05-01 10:26:02",
+  "actualizado": "2026-05-01 10:41:59",
   "kpis": {
-    "nivel_l": 0.0,
+    "nivel_l": 2.46,
     "humedad_pct": 52.0,
     "temp_c": 16.3,
     "punto_rocio_c": 6.4,
@@ -13,17 +13,17 @@
     "uv": 0.0
   },
   "sistema": {
-    "cpu_temp_c": 38.9,
+    "cpu_temp_c": 40.4,
     "voltaje_v": 0.946,
-    "ram_uso_pct": 11.2,
+    "ram_uso_pct": 11.0,
     "disco_uso_pct": 10.4,
-    "uptime": "23h 41m",
+    "uptime": "23h 57m",
     "gpu_temp_c": null,
     "freq_cpu_mhz": 1800,
     "throttle_ok": true,
     "throttle_flags": "0x0",
-    "wifi_dbm": -62,
-    "wifi_pct": 76,
+    "wifi_dbm": -59,
+    "wifi_pct": 82,
     "load1": 0.0,
     "load5": 0.0,
     "load15": 0.0,
@@ -615,7 +615,8 @@
       "2026-05-01 09:38:43",
       "2026-05-01 09:55:13",
       "2026-05-01 10:10:29",
-      "2026-05-01 10:25:52"
+      "2026-05-01 10:25:52",
+      "2026-05-01 10:41:07"
     ],
     "nivel_l": [
       16.99,
@@ -1103,7 +1104,8 @@
       0.0,
       0.0,
       0.0,
-      0.0
+      0.0,
+      2.46
     ],
     "humedad_pct": [
       69.0,
