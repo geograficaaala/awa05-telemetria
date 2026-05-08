@@ -1,0 +1,1870 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>AWA05 · Análisis Estadístico Científico</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
+
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['\\(', '\\)'], ['$', '$']],
+        displayMath: [['\\[', '\\]']]
+      },
+      svg: { fontCache: 'global' }
+    };
+  </script>
+  <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
+  <script defer src="https://cdn.plot.ly/plotly-2.35.2.min.js"></script>
+
+  <style>
+    :root {
+      --bg: #f7f6f1;
+      --surface: #ffffff;
+      --surface2: #faf9f5;
+      --surface3: #f2f0e8;
+      --ink: #1a1914;
+      --ink-mid: #3a3830;
+      --ink-soft: #6b6860;
+      --ink-faint: #a09e98;
+      --rule: rgba(40, 38, 30, .10);
+      --rule-strong: rgba(40, 38, 30, .18);
+      --cobalt: #1c3f6e;
+      --cobalt-mid: #2558a0;
+      --cobalt-pale: rgba(28, 63, 110, .07);
+      --cobalt-rim: rgba(28, 63, 110, .22);
+      --amber: #b05c00;
+      --forest: #1a5c38;
+      --teal: #0f6b60;
+      --danger: #9b2c2c;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,.05), 0 2px 8px rgba(0,0,0,.04);
+      --shadow-md: 0 2px 6px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.06);
+      --mono: 'JetBrains Mono', monospace;
+      --display: 'Playfair Display', serif;
+      --body: 'DM Sans', sans-serif;
+      --radius: 4px;
+      --sidebar-w: 248px;
+    }
+
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--body);
+      font-size: 13.5px;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.55;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 200;
+      height: 56px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 32px;
+      background: linear-gradient(135deg, var(--cobalt) 0%, #0f2a50 100%);
+      overflow: hidden;
+      gap: 16px;
+    }
+
+    header::before {
+      content: "AWA05";
+      position: absolute;
+      right: -10px;
+      top: -18px;
+      font-family: var(--display);
+      font-size: 96px;
+      font-weight: 900;
+      color: rgba(255,255,255,.04);
+      letter-spacing: -4px;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    header::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(255,255,255,.10);
+    }
+
+    .hd-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hd-name {
+      font-family: var(--display);
+      font-size: 15px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: .02em;
+      font-style: italic;
+    }
+
+    .hd-sep {
+      width: 1px;
+      height: 18px;
+      background: rgba(255,255,255,.18);
+    }
+
+    .hd-sub {
+      font-family: var(--mono);
+      font-size: 8.5px;
+      color: rgba(255,255,255,.50);
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .hd-center {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hd-stat {
+      text-align: center;
+    }
+
+    .hd-stat-val {
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .hd-stat-lbl {
+      font-family: var(--mono);
+      font-size: 7.5px;
+      color: rgba(255,255,255,.45);
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      margin-top: 1px;
+    }
+
+    .hd-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hd-ts {
+      font-family: var(--mono);
+      font-size: 8px;
+      color: rgba(255,255,255,.70);
+      background: rgba(255,255,255,.08);
+      border: 1px solid rgba(255,255,255,.18);
+      border-radius: 2px;
+      padding: 4px 10px;
+      letter-spacing: .04em;
+    }
+
+    .top-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 4px;
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.85);
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: .10em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: all .15s;
+    }
+
+    .top-link:hover,
+    .top-link.active {
+      background: rgba(255,255,255,.92);
+      color: #1c3f6e;
+      border-color: transparent;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: var(--sidebar-w) 1fr;
+      min-height: calc(100vh - 56px);
+    }
+
+    .sidebar {
+      position: sticky;
+      top: 56px;
+      height: calc(100vh - 56px);
+      overflow-y: auto;
+      padding: 24px 0;
+      border-right: 1px solid var(--rule);
+      background: var(--surface);
+      scrollbar-width: thin;
+      scrollbar-color: var(--rule-strong) transparent;
+    }
+
+    .sb-label {
+      font-family: var(--mono);
+      font-size: 7.5px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      padding: 12px 20px 4px;
+      display: block;
+    }
+
+    .sb-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 20px;
+      text-decoration: none;
+      color: var(--ink-soft);
+      font-family: var(--body);
+      font-size: 12px;
+      border-left: 2px solid transparent;
+      transition: all .12s;
+    }
+
+    .sb-link:hover,
+    .sb-link.active {
+      color: var(--cobalt);
+      background: var(--cobalt-pale);
+      border-left-color: var(--cobalt);
+    }
+
+    .sb-link::before {
+      content: "";
+      width: 4px;
+      height: 4px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: .4;
+      flex-shrink: 0;
+    }
+
+    .sb-divider {
+      height: 1px;
+      background: var(--rule);
+      margin: 12px 20px;
+    }
+
+    .sb-kpis {
+      padding: 0 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .sb-kpi {
+      background: var(--surface2);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+    }
+
+    .sb-kpi-lbl {
+      font-family: var(--mono);
+      font-size: 7.5px;
+      letter-spacing: .10em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      margin-bottom: 3px;
+    }
+
+    .sb-kpi-val {
+      font-family: var(--mono);
+      font-size: 13px;
+      color: var(--cobalt);
+      font-weight: 600;
+    }
+
+    main {
+      padding: 32px 32px 90px;
+      max-width: 1500px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .hero {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      box-shadow: var(--shadow-sm);
+      padding: 32px 36px 30px;
+      margin-bottom: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at 85% 20%, rgba(28,63,110,.09), transparent 36%),
+        linear-gradient(135deg, rgba(28,63,110,.05), transparent 35%);
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .eyebrow {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .20em;
+      text-transform: uppercase;
+      color: var(--cobalt);
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .hero h1 {
+      font-family: var(--display);
+      font-size: clamp(34px, 5vw, 72px);
+      font-weight: 900;
+      letter-spacing: -.035em;
+      line-height: .98;
+      color: var(--ink);
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      max-width: 930px;
+      color: var(--ink-soft);
+      font-weight: 300;
+      font-size: 15px;
+      line-height: 1.75;
+    }
+
+    .pill-row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-top: 18px;
+    }
+
+    .pill {
+      font-family: var(--mono);
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: .10em;
+      border: 1px solid var(--rule-strong);
+      background: var(--surface2);
+      border-radius: 999px;
+      padding: 6px 10px;
+      color: var(--ink-soft);
+    }
+
+    .pill.warn {
+      color: var(--amber);
+      border-color: rgba(176,92,0,.22);
+      background: rgba(176,92,0,.06);
+    }
+
+    .pill.ok {
+      color: var(--forest);
+      border-color: rgba(26,92,56,.22);
+      background: rgba(26,92,56,.06);
+    }
+
+    .section {
+      margin: 34px 0 0;
+    }
+
+    .section-head {
+      margin-bottom: 16px;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      gap: 18px;
+    }
+
+    .section-title {
+      font-family: var(--display);
+      font-size: 28px;
+      line-height: 1.1;
+      letter-spacing: -.02em;
+      color: var(--ink);
+    }
+
+    .section-sub {
+      color: var(--ink-soft);
+      font-size: 12.5px;
+      max-width: 850px;
+      margin-top: 6px;
+    }
+
+    .section-rule {
+      height: 1px;
+      background: linear-gradient(90deg, var(--rule-strong), transparent);
+      margin-top: 14px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .col-span-2 {
+      grid-column: span 2;
+    }
+
+    .col-span-3 {
+      grid-column: span 3;
+    }
+
+    .col-span-4 {
+      grid-column: span 4;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow-sm);
+      padding: 18px;
+      min-width: 0;
+    }
+
+    .card-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .card-title {
+      font-family: var(--mono);
+      font-size: 10.5px;
+      font-weight: 600;
+      color: var(--ink-mid);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+    }
+
+    .card-sub {
+      font-size: 11.5px;
+      color: var(--ink-faint);
+      margin-top: 2px;
+    }
+
+    .badge {
+      font-family: var(--mono);
+      font-size: 7.5px;
+      text-transform: uppercase;
+      letter-spacing: .10em;
+      color: var(--cobalt);
+      background: var(--cobalt-pale);
+      border: 1px solid var(--cobalt-rim);
+      padding: 4px 7px;
+      border-radius: 2px;
+      white-space: nowrap;
+    }
+
+    .badge.warn {
+      color: var(--amber);
+      border-color: rgba(176,92,0,.26);
+      background: rgba(176,92,0,.07);
+    }
+
+    .badge.danger {
+      color: var(--danger);
+      border-color: rgba(155,44,44,.26);
+      background: rgba(155,44,44,.07);
+    }
+
+    .badge.ok {
+      color: var(--forest);
+      border-color: rgba(26,92,56,.26);
+      background: rgba(26,92,56,.07);
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      padding: 15px 16px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .kpi-card::before {
+      content: "";
+      position: absolute;
+      inset: 0 auto 0 0;
+      width: 3px;
+      background: var(--cobalt);
+      opacity: .75;
+    }
+
+    .kpi-label {
+      font-family: var(--mono);
+      font-size: 7.5px;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      letter-spacing: .12em;
+      margin-bottom: 5px;
+    }
+
+    .kpi-value {
+      font-family: var(--display);
+      font-size: 28px;
+      line-height: 1;
+      color: var(--ink);
+      font-weight: 900;
+      letter-spacing: -.03em;
+    }
+
+    .kpi-unit {
+      font-family: var(--mono);
+      font-size: 8px;
+      color: var(--ink-soft);
+      margin-top: 6px;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    .equation-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0,1fr));
+      gap: 16px;
+    }
+
+    .equation-card {
+      background: linear-gradient(180deg, #fff, #faf9f5);
+      border: 1px solid var(--rule);
+      box-shadow: var(--shadow-sm);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      min-height: 150px;
+    }
+
+    .equation-title {
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      color: var(--cobalt);
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .equation-desc {
+      color: var(--ink-soft);
+      font-size: 12px;
+      margin-top: 8px;
+    }
+
+    .chart {
+      width: 100%;
+      min-height: 330px;
+    }
+
+    .chart.tall {
+      min-height: 430px;
+    }
+
+    .table-wrap {
+      width: 100%;
+      overflow: auto;
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    th {
+      position: sticky;
+      top: 0;
+      z-index: 1;
+      background: var(--surface3);
+      color: var(--ink-mid);
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      text-align: left;
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--rule-strong);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 8px 10px;
+      border-bottom: 1px solid var(--rule);
+      color: var(--ink-soft);
+      vertical-align: top;
+      white-space: nowrap;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    td.num {
+      font-family: var(--mono);
+      color: var(--ink-mid);
+      text-align: right;
+    }
+
+    .compact-list {
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+      padding-left: 18px;
+      color: var(--ink-soft);
+      font-size: 12.5px;
+    }
+
+    .compact-list li::marker {
+      color: var(--cobalt);
+    }
+
+    .note {
+      padding: 12px 14px;
+      border-radius: var(--radius);
+      border: 1px solid rgba(176,92,0,.22);
+      background: rgba(176,92,0,.06);
+      color: #6f3c00;
+      font-size: 12.5px;
+    }
+
+    .dash-footer {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 42px;
+      background: linear-gradient(135deg, #0f2a50 0%, var(--cobalt) 100%);
+      color: rgba(255,255,255,.82);
+      z-index: 180;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      align-items: center;
+      padding: 0 24px;
+      border-top: 1px solid rgba(255,255,255,.12);
+    }
+
+    .footer-left,
+    .footer-right {
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,.55);
+    }
+
+    .footer-center {
+      text-align: center;
+      font-family: var(--display);
+      font-size: 12px;
+      font-style: italic;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .footer-right {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .footer-pi-logo {
+      height: 20px;
+      width: auto;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: .78;
+    }
+
+    .error-box {
+      margin: 40px auto;
+      max-width: 860px;
+      background: #fff;
+      border: 1px solid rgba(155,44,44,.25);
+      color: var(--danger);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+      border-radius: var(--radius);
+    }
+
+    @media (max-width: 1180px) {
+      .hd-center {
+        display: none;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .kpi-grid,
+      .grid-4 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid-3 {
+        grid-template-columns: 1fr;
+      }
+
+      .col-span-3,
+      .col-span-4 {
+        grid-column: auto;
+      }
+    }
+
+    @media (max-width: 760px) {
+      header {
+        padding: 0 14px;
+      }
+
+      .hd-sub,
+      .hd-ts {
+        display: none;
+      }
+
+      .hd-right {
+        gap: 5px;
+      }
+
+      .top-link {
+        padding: 6px 8px;
+        font-size: 7.5px;
+      }
+
+      main {
+        padding: 22px 14px 78px;
+      }
+
+      .hero {
+        padding: 24px 18px;
+      }
+
+      .grid-2,
+      .grid-3,
+      .grid-4,
+      .kpi-grid,
+      .equation-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .col-span-2 {
+        grid-column: auto;
+      }
+
+      .dash-footer {
+        grid-template-columns: 1fr;
+        height: 38px;
+        padding: 0 14px;
+      }
+
+      .footer-left,
+      .footer-right {
+        display: none;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<header>
+  <div class="hd-brand">
+    <div class="hd-name">AWA05</div>
+    <div class="hd-sep"></div>
+    <div class="hd-sub">Análisis estadístico</div>
+  </div>
+
+  <div class="hd-center">
+    <div class="hd-stat">
+      <div class="hd-stat-val" id="h-prod">—</div>
+      <div class="hd-stat-lbl">Producción</div>
+    </div>
+    <div class="hd-stat">
+      <div class="hd-stat-val" id="h-modelo">—</div>
+      <div class="hd-stat-lbl">Ventanas</div>
+    </div>
+    <div class="hd-stat">
+      <div class="hd-stat-val" id="h-overlap">—</div>
+      <div class="hd-stat-lbl">Solapamiento</div>
+    </div>
+    <div class="hd-stat">
+      <div class="hd-stat-val" id="h-rho">—</div>
+      <div class="hd-stat-lbl">Mejor ρ</div>
+    </div>
+  </div>
+
+  <div class="hd-right">
+    <a class="top-link" href="index.html">Inicio</a>
+    <a class="top-link" href="dashboard.html">Dashboard</a>
+    <a class="top-link active" href="analisis-estadistico.html">Análisis</a>
+    <a class="top-link" href="comparativo-calidad-agua.html">Calidad</a>
+    <div class="hd-ts" id="header-ts">—</div>
+  </div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <span class="sb-label">Navegación</span>
+    <a class="sb-link active" href="#resumen">Resumen</a>
+    <a class="sb-link" href="#datos">Datos y bloque</a>
+    <a class="sb-link" href="#ecuaciones">Ecuaciones</a>
+    <a class="sb-link" href="#descriptivos">Descriptivos</a>
+    <a class="sb-link" href="#supuestos">Supuestos</a>
+    <a class="sb-link" href="#correlaciones">Correlaciones</a>
+    <a class="sb-link" href="#anova">ANOVA / Post hoc</a>
+    <a class="sb-link" href="#modelos">Modelos</a>
+    <a class="sb-link" href="#diagnostico">Diagnóstico</a>
+    <a class="sb-link" href="#conclusiones">Conclusiones</a>
+
+    <div class="sb-divider"></div>
+
+    <span class="sb-label">Bloque activo</span>
+    <div class="sb-kpis">
+      <div class="sb-kpi">
+        <div class="sb-kpi-lbl">ID</div>
+        <div class="sb-kpi-val" id="sb-block">B01</div>
+      </div>
+      <div class="sb-kpi">
+        <div class="sb-kpi-lbl">Agua</div>
+        <div class="sb-kpi-val" id="sb-water">—</div>
+      </div>
+      <div class="sb-kpi">
+        <div class="sb-kpi-lbl">Clima</div>
+        <div class="sb-kpi-val" id="sb-climate">—</div>
+      </div>
+    </div>
+  </aside>
+
+  <main>
+    <section id="resumen" class="hero">
+      <div class="hero-inner">
+        <div class="eyebrow">Informe técnico precalculado</div>
+        <h1>Análisis Estadístico Inferencial y Modelado Climático</h1>
+        <p>
+          Evaluación científica del sistema AWA05 usando producción de agua como variable dependiente
+          y condiciones climáticas como variables explicativas. Este HTML no ejecuta estadística pesada:
+          solo despliega resultados generados previamente por Python.
+        </p>
+        <div class="pill-row">
+          <span class="pill ok">MathJax</span>
+          <span class="pill ok">Plotly</span>
+          <span class="pill">ANOVA</span>
+          <span class="pill">Welch</span>
+          <span class="pill">Kruskal-Wallis</span>
+          <span class="pill">Post hoc</span>
+          <span class="pill">HAC/Newey-West</span>
+          <span class="pill warn">1 bloque activo</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="kpi-grid" id="kpi-grid"></div>
+    </section>
+
+    <section id="datos" class="section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Auditoría de datos</div>
+          <h2 class="section-title">Bloque experimental, cobertura y solapamiento real</h2>
+          <p class="section-sub">
+            El bloque actual usa todos los datos disponibles. La inferencia producción–clima se limita
+            al periodo en el que ambas fuentes tienen datos simultáneos.
+          </p>
+        </div>
+        <span class="badge">Bloque B01</span>
+      </div>
+      <div class="section-rule"></div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Ficha técnica del bloque</div>
+              <div class="card-sub">Fechas, duración y registros</div>
+            </div>
+            <span class="badge ok">Datos reales</span>
+          </div>
+          <div id="block-table" class="table-wrap"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Control de calidad</div>
+              <div class="card-sub">Filtrado, eventos y cobertura</div>
+            </div>
+            <span class="badge warn">QC</span>
+          </div>
+          <div id="quality-table" class="table-wrap"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="ecuaciones" class="section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Marco matemático</div>
+          <h2 class="section-title">Definición formal de variables y estimadores</h2>
+          <p class="section-sub">
+            Las ecuaciones están renderizadas con MathJax para mantener presentación de informe técnico.
+          </p>
+        </div>
+        <span class="badge">LaTeX</span>
+      </div>
+      <div class="section-rule"></div>
+
+      <div class="equation-grid">
+        <div class="equation-card">
+          <div class="equation-title">Producción por bloque</div>
+          \[
+            Y_b = V_{b,final} - V_{b,inicial}
+          \]
+          <p class="equation-desc">
+            Producción total del bloque experimental \(b\), estimada como diferencia de volumen.
+          </p>
+        </div>
+
+        <div class="equation-card">
+          <div class="equation-title">Producción normalizada</div>
+          \[
+            P_b = \frac{Y_b}{D_b}
+          \]
+          <p class="equation-desc">
+            Producción media diaria del bloque, expresada en litros por día válido.
+          </p>
+        </div>
+
+        <div class="equation-card">
+          <div class="equation-title">Agregación climática</div>
+          \[
+            \bar{X}_{j,b} = \frac{1}{n_b}\sum_{i=1}^{n_b}X_{j,i}
+          \]
+          <p class="equation-desc">
+            Promedio de la variable climática \(j\) durante el bloque \(b\).
+          </p>
+        </div>
+
+        <div class="equation-card">
+          <div class="equation-title">Varianza muestral</div>
+          \[
+            s^2 = \frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2
+          \]
+          <p class="equation-desc">
+            Medida de dispersión usada para caracterizar estabilidad de producción y clima.
+          </p>
+        </div>
+
+        <div class="equation-card">
+          <div class="equation-title">Modelo lineal climático</div>
+          \[
+            Y_t = \beta_0 + \beta_1T_t + \beta_2RH_t + \beta_3VPD_t + \beta_4S_t + \varepsilon_t
+          \]
+          <p class="equation-desc">
+            Modelo interpretable de producción horaria a partir de temperatura, humedad, déficit de presión de vapor y radiación.
+          </p>
+        </div>
+
+        <div class="equation-card">
+          <div class="equation-title">Durbin-Watson</div>
+          \[
+            DW = \frac{\sum_{t=2}^{n}(e_t-e_{t-1})^2}{\sum_{t=1}^{n}e_t^2}
+          \]
+          <p class="equation-desc">
+            Diagnóstico de autocorrelación en residuos del modelo.
+          </p>
+        </div>
+
+        <div class="equation-card">
+          <div class="equation-title">Eta cuadrado</div>
+          \[
+            \eta^2 = \frac{SS_{between}}{SS_{total}}
+          \]
+          <p class="equation-desc">
+            Tamaño de efecto para diferencias entre grupos climáticos o franjas horarias.
+          </p>
+        </div>
+
+        <div class="equation-card">
+          <div class="equation-title">Cliff's delta</div>
+          \[
+            \delta = \frac{\#(x_i > y_j)-\#(x_i < y_j)}{mn}
+          \]
+          <p class="equation-desc">
+            Tamaño de efecto no paramétrico para comparaciones post hoc.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="descriptivos" class="section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Estadística descriptiva</div>
+          <h2 class="section-title">Distribuciones de producción y clima</h2>
+          <p class="section-sub">
+            Resumen de medias, medianas, varianzas, intervalos de confianza, asimetría y curtosis.
+          </p>
+        </div>
+        <span class="badge">Descriptivos</span>
+      </div>
+      <div class="section-rule"></div>
+
+      <div class="grid-2">
+        <div class="card col-span-2">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Tabla descriptiva</div>
+              <div class="card-sub">Producción y variables climáticas principales</div>
+            </div>
+            <span class="badge">n, media, varianza</span>
+          </div>
+          <div id="descriptive-table" class="table-wrap"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Producción diaria</div>
+              <div class="card-sub">Litros por día calendario</div>
+            </div>
+            <span class="badge">Diario</span>
+          </div>
+          <div class="chart" id="chart-daily-production"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Perfil horario</div>
+              <div class="card-sub">Producción promedio por hora del día</div>
+            </div>
+            <span class="badge">24 h</span>
+          </div>
+          <div class="chart" id="chart-hourly-profile"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="supuestos" class="section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Rigor inferencial</div>
+          <h2 class="section-title">Pruebas de supuestos estadísticos</h2>
+          <p class="section-sub">
+            Normalidad, homogeneidad de varianzas, autocorrelación, estacionariedad, heterocedasticidad y multicolinealidad.
+          </p>
+        </div>
+        <span class="badge warn">Validación</span>
+      </div>
+      <div class="section-rule"></div>
+
+      <div class="grid-2">
+        <div class="card col-span-2">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Supuestos</div>
+              <div class="card-sub">Pruebas paramétricas y robustas</div>
+            </div>
+            <span class="badge">p-values</span>
+          </div>
+          <div id="assumptions-table" class="table-wrap"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Distribución de producción horaria</div>
+              <div class="card-sub">Histograma analítico</div>
+            </div>
+            <span class="badge">Hist</span>
+          </div>
+          <div class="chart" id="chart-prod-hist"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">QQ Plot</div>
+              <div class="card-sub">Normalidad visual</div>
+            </div>
+            <span class="badge">QQ</span>
+          </div>
+          <div class="chart" id="chart-qq"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="correlaciones" class="section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Asociación climática</div>
+          <h2 class="section-title">Correlaciones, parciales y rezagos</h2>
+          <p class="section-sub">
+            Pearson, Spearman, Kendall, correlaciones parciales y lags climáticos de 0 a 12 horas.
+          </p>
+        </div>
+        <span class="badge">Correlación</span>
+      </div>
+      <div class="section-rule"></div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Ranking de asociación</div>
+              <div class="card-sub">Producción horaria vs variables climáticas</div>
+            </div>
+            <span class="badge">Pearson/Spearman</span>
+          </div>
+          <div class="chart" id="chart-corr-bar"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Correlación parcial</div>
+              <div class="card-sub">Controlando temperatura, humedad o solar</div>
+            </div>
+            <span class="badge">Parcial</span>
+          </div>
+          <div id="partial-table" class="table-wrap"></div>
+        </div>
+
+        <div class="card col-span-2">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Tabla de correlaciones y rezagos</div>
+              <div class="card-sub">Matriz de asociaciones principales</div>
+            </div>
+            <span class="badge">Lag 0–12 h</span>
+          </div>
+          <div id="correlation-table" class="table-wrap"></div>
+          <br />
+          <div id="lag-table" class="table-wrap"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="anova" class="section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Inferencia por escenarios</div>
+          <h2 class="section-title">ANOVA, Welch, Kruskal-Wallis y post hoc</h2>
+          <p class="section-sub">
+            Comparación intra-bloque de producción por franja horaria y terciles climáticos.
+          </p>
+        </div>
+        <span class="badge warn">Intra-bloque</span>
+      </div>
+      <div class="section-rule"></div>
+
+      <div class="grid-2">
+        <div class="card col-span-2">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Resumen de pruebas globales</div>
+              <div class="card-sub">ANOVA clásico, Welch ANOVA, Kruskal-Wallis, Levene y Brown-Forsythe</div>
+            </div>
+            <span class="badge">Global</span>
+          </div>
+          <div id="anova-summary-table" class="table-wrap"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Grupos por franja horaria</div>
+              <div class="card-sub">Medias, IC y dispersión</div>
+            </div>
+            <span class="badge">Daypart</span>
+          </div>
+          <div id="daypart-table" class="table-wrap"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Post hoc destacado</div>
+              <div class="card-sub">Games-Howell / Mann-Whitney Holm</div>
+            </div>
+            <span class="badge">Post hoc</span>
+          </div>
+          <div id="posthoc-table" class="table-wrap"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="modelos" class="section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Modelado matemático</div>
+          <h2 class="section-title">Regresión, regularización y modelos no lineales</h2>
+          <p class="section-sub">
+            OLS con errores robustos HAC/Newey-West, Ridge, Lasso, Random Forest y Gradient Boosting.
+          </p>
+        </div>
+        <span class="badge">Modelos</span>
+      </div>
+      <div class="section-rule"></div>
+
+      <div class="grid-2">
+        <div class="card col-span-2">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Coeficientes OLS robustos HAC</div>
+              <div class="card-sub">Modelo interpretable con autocorrelación robusta</div>
+            </div>
+            <span class="badge">Newey-West</span>
+          </div>
+          <div id="ols-table" class="table-wrap"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Comparación de modelos</div>
+              <div class="card-sub">R², MAE, RMSE, CV</div>
+            </div>
+            <span class="badge">CV</span>
+          </div>
+          <div id="model-table" class="table-wrap"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Importancia de variables</div>
+              <div class="card-sub">Random Forest / Gradient Boosting</div>
+            </div>
+            <span class="badge">Importancia</span>
+          </div>
+          <div class="chart" id="chart-feature-importance"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="diagnostico" class="section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Diagnóstico del modelo</div>
+          <h2 class="section-title">Residuos, predicción y puntos influyentes</h2>
+          <p class="section-sub">
+            Predicho vs observado, residuos, Ljung-Box, Breusch-Pagan, Durbin-Watson y distancia de Cook.
+          </p>
+        </div>
+        <span class="badge warn">Diagnóstico</span>
+      </div>
+      <div class="section-rule"></div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Observado vs predicho</div>
+              <div class="card-sub">OLS interpretable</div>
+            </div>
+            <span class="badge">Fit</span>
+          </div>
+          <div class="chart" id="chart-obs-pred"></div>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Residuos OLS</div>
+              <div class="card-sub">Serie residual</div>
+            </div>
+            <span class="badge">Residuals</span>
+          </div>
+          <div class="chart" id="chart-residuals"></div>
+        </div>
+
+        <div class="card col-span-2">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Pruebas y Cook’s distance</div>
+              <div class="card-sub">Autocorrelación, heterocedasticidad e influencia</div>
+            </div>
+            <span class="badge">Diagnóstico</span>
+          </div>
+          <div id="diagnostics-table" class="table-wrap"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="conclusiones" class="section">
+      <div class="section-head">
+        <div>
+          <div class="eyebrow">Lectura técnica</div>
+          <h2 class="section-title">Conclusiones y limitaciones</h2>
+          <p class="section-sub">
+            Interpretación conservadora para un solo bloque experimental.
+          </p>
+        </div>
+        <span class="badge ok">Reproducible</span>
+      </div>
+      <div class="section-rule"></div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Conclusiones automáticas</div>
+              <div class="card-sub">Derivadas de resultados del script</div>
+            </div>
+            <span class="badge">Conclusión</span>
+          </div>
+          <ul id="conclusion-list" class="compact-list"></ul>
+        </div>
+
+        <div class="card">
+          <div class="card-head">
+            <div>
+              <div class="card-title">Limitaciones</div>
+              <div class="card-sub">Control metodológico</div>
+            </div>
+            <span class="badge warn">Cautela</span>
+          </div>
+          <ul id="limitation-list" class="compact-list"></ul>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<div class="dash-footer">
+  <div class="footer-left" id="footer-ts">—</div>
+  <div class="footer-center">
+    <div class="footer-org">Asociación Amigos del Lago de Atitlán<sup>®</sup> &nbsp;·&nbsp; 2026</div>
+  </div>
+  <div class="footer-right">
+    <span class="footer-powered-label">Powered by</span>
+    <img src="Raspberry_Pi-Logo.wine.png" alt="Raspberry Pi" class="footer-pi-logo" title="Raspberry Pi 4B — AWA05">
+  </div>
+</div>
+
+<script>
+const fmt = {
+  num: (v, d = 2) => v === null || v === undefined || Number.isNaN(Number(v))
+    ? '—'
+    : Number(v).toLocaleString('es-GT', { maximumFractionDigits: d, minimumFractionDigits: d }),
+  int: v => v === null || v === undefined
+    ? '—'
+    : Number(v).toLocaleString('es-GT', { maximumFractionDigits: 0 }),
+  p: v => {
+    if (v === null || v === undefined || Number.isNaN(Number(v))) return '—';
+    return Number(v) < 0.001 ? 'p<0.001' : Number(v).toFixed(4);
+  },
+  date: s => s ? String(s).replace('T', ' ') : '—'
+};
+
+const labelMap = {
+  temp_c: 'Temperatura (°C)',
+  humidity_pct: 'Humedad (%)',
+  dew_point_c: 'Punto de rocío (°C)',
+  dew_point_calc_c: 'Rocío calculado (°C)',
+  pressure_hpa: 'Presión (hPa)',
+  wind_kmh: 'Viento (km/h)',
+  rain_mm_h: 'Lluvia (mm/h)',
+  solar_wm2: 'Radiación solar (W/m²)',
+  uv: 'UV',
+  vpd_kpa: 'VPD (kPa)',
+  abs_humidity_gm3: 'Humedad absoluta (g/m³)',
+  production_lph: 'Producción (L/h)',
+  hourly_production_lph: 'Producción horaria (L/h)',
+  daily_production_l: 'Producción diaria (L)'
+};
+
+function label(x) {
+  return labelMap[x] || x;
+}
+
+function table(headers, rows) {
+  return `
+    <table>
+      <thead>
+        <tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr>
+      </thead>
+      <tbody>
+        ${rows.map(r => `
+          <tr>
+            ${r.map(c => {
+              const isNum = typeof c === 'number' || String(c).match(/^-?\d+(\.\d+)?$/);
+              return `<td class="${isNum ? 'num' : ''}">${c ?? '—'}</td>`;
+            }).join('')}
+          </tr>
+        `).join('')}
+      </tbody>
+    </table>
+  `;
+}
+
+function setHTML(id, html) {
+  const el = document.getElementById(id);
+  if (el) el.innerHTML = html;
+}
+
+function pBadge(p) {
+  if (p === null || p === undefined || Number.isNaN(Number(p))) return '<span class="badge">NA</span>';
+  return Number(p) < 0.05
+    ? '<span class="badge ok">p&lt;.05</span>'
+    : '<span class="badge warn">NS</span>';
+}
+
+function layout(title) {
+  return {
+    margin: { l: 52, r: 22, t: 30, b: 48 },
+    paper_bgcolor: 'rgba(0,0,0,0)',
+    plot_bgcolor: 'rgba(0,0,0,0)',
+    font: { family: 'DM Sans', size: 11, color: '#3a3830' },
+    title: { text: title, font: { family: 'JetBrains Mono', size: 11, color: '#6b6860' }, x: 0 },
+    xaxis: { gridcolor: 'rgba(40,38,30,.08)', zerolinecolor: 'rgba(40,38,30,.12)' },
+    yaxis: { gridcolor: 'rgba(40,38,30,.08)', zerolinecolor: 'rgba(40,38,30,.12)' },
+    legend: { orientation: 'h', y: -.22 }
+  };
+}
+
+async function loadAnalysis() {
+  const res = await fetch('data/processed/statistical_analysis.json', { cache: 'no-store' });
+  if (!res.ok) throw new Error('No se pudo cargar data/processed/statistical_analysis.json');
+  return await res.json();
+}
+
+function renderHeader(data) {
+  const b = data.block || {};
+  const q = data.data_quality || {};
+  const corr = data.correlations?.hourly_production_vs_climate || [];
+  const best = corr[0];
+
+  document.getElementById('h-prod').textContent = `${fmt.num(b.water_production_l_valid, 1)} L`;
+  document.getElementById('h-modelo').textContent = fmt.int(q.hourly_windows_with_water_and_climate);
+  document.getElementById('h-overlap').textContent = q.analytical_overlap?.days ? `${fmt.num(q.analytical_overlap.days, 2)} d` : '—';
+  document.getElementById('h-rho').textContent = best ? `ρ ${fmt.num(best.spearman_rho, 2)}` : 'ρ —';
+  document.getElementById('header-ts').textContent = (data.metadata?.generated_at || '—').slice(0,16);
+
+  document.getElementById('footer-ts').textContent = 'Análisis generado · ' + (data.metadata?.generated_at || '—').slice(0,19);
+  document.getElementById('sb-block').textContent = b.block_id || 'B01';
+  document.getElementById('sb-water').textContent = `${fmt.int(q.water_records_total)} registros`;
+  document.getElementById('sb-climate').textContent = `${fmt.int(q.climate_records_total)} registros`;
+}
+
+function renderKPIs(data) {
+  const b = data.block || {};
+  const q = data.data_quality || {};
+  const bestCorr = data.correlations?.hourly_production_vs_climate?.[0];
+
+  const kpis = [
+    ['Producción total', fmt.num(b.water_production_l_valid, 2), 'L válidos'],
+    ['Producción diaria', fmt.num(b.water_l_per_day_overlap, 2), 'L/día en solapamiento'],
+    ['Registros agua', fmt.int(q.water_records_total), 'nivel_raw.csv'],
+    ['Registros clima', fmt.int(q.climate_records_total), 'clima_raw.csv'],
+    ['Solapamiento', fmt.num(q.analytical_overlap?.days, 2), 'días analizables'],
+    ['Ventanas modelo', fmt.int(q.hourly_windows_with_water_and_climate), 'horarias'],
+    ['Mejor asociación', bestCorr ? label(bestCorr.variable) : '—', 'variable climática'],
+    ['Spearman máximo', bestCorr ? fmt.num(bestCorr.spearman_rho, 3) : '—', 'ρ'],
+    ['R² OLS', fmt.num(data.models?.ols_hac?.r2, 3), 'modelo lineal'],
+    ['RMSE OLS', fmt.num(data.models?.ols_hac?.rmse, 3), 'L/h']
+  ];
+
+  setHTML('kpi-grid', kpis.map(k => `
+    <div class="kpi-card">
+      <div class="kpi-label">${k[0]}</div>
+      <div class="kpi-value">${k[1]}</div>
+      <div class="kpi-unit">${k[2]}</div>
+    </div>
+  `).join(''));
+}
+
+function renderDataTables(data) {
+  const b = data.block || {};
+  const q = data.data_quality || {};
+
+  setHTML('block-table', table(
+    ['Campo', 'Valor'],
+    [
+      ['ID bloque', b.block_id],
+      ['Inicio agua', fmt.date(b.water_start)],
+      ['Fin agua', fmt.date(b.water_end)],
+      ['Inicio clima', fmt.date(b.climate_start)],
+      ['Fin clima', fmt.date(b.climate_end)],
+      ['Inicio solapamiento', fmt.date(q.analytical_overlap?.start)],
+      ['Fin solapamiento', fmt.date(q.analytical_overlap?.end)],
+      ['Días solapados', fmt.num(q.analytical_overlap?.days, 3)]
+    ]
+  ));
+
+  setHTML('quality-table', table(
+    ['Métrica', 'Valor'],
+    [
+      ['Registros agua totales', fmt.int(q.water_records_total)],
+      ['Registros clima totales', fmt.int(q.climate_records_total)],
+      ['Registros clima sin timestamp', fmt.int(q.climate_records_invalid_timestamp)],
+      ['Eventos positivos de producción', fmt.int(q.positive_water_events)],
+      ['Ventanas horarias con agua+clima', fmt.int(q.hourly_windows_with_water_and_climate)],
+      ['Outliers removidos', fmt.int(q.outliers_removed)],
+      ['Producción válida', `${fmt.num(b.water_production_l_valid, 2)} L`]
+    ]
+  ));
+}
+
+function renderDescriptives(data) {
+  const stats = data.descriptive_statistics || {};
+  const rows = Object.entries(stats).map(([varName, s]) => [
+    label(varName),
+    fmt.int(s.n),
+    fmt.num(s.mean, 4),
+    fmt.num(s.median, 4),
+    fmt.num(s.std, 4),
+    fmt.num(s.variance, 4),
+    fmt.num(s.min, 4),
+    fmt.num(s.max, 4),
+    fmt.num(s.skewness, 4),
+    fmt.num(s.kurtosis, 4),
+    `${fmt.num(s.ci95_low, 4)} – ${fmt.num(s.ci95_high, 4)}`
+  ]);
+
+  setHTML('descriptive-table', table(
+    ['Variable', 'n', 'Media', 'Mediana', 'DE', 'Varianza', 'Min', 'Max', 'Asimetría', 'Curtosis', 'IC95%'],
+    rows
+  ));
+}
+
+function renderAssumptions(data) {
+  const a = data.assumption_tests || {};
+  const rows = [];
+
+  for (const [key, val] of Object.entries(a.normality || {})) {
+    rows.push([`Normalidad · ${label(key)}`, 'Shapiro-Wilk', fmt.num(val.shapiro_w, 4), fmt.p(val.shapiro_p), pBadge(val.shapiro_p)]);
+    rows.push([`Normalidad · ${label(key)}`, "D'Agostino-Pearson", fmt.num(val.normaltest_stat, 4), fmt.p(val.normaltest_p), pBadge(val.normaltest_p)]);
+  }
+
+  for (const [key, val] of Object.entries(a.stationarity || {})) {
+    rows.push([`Estacionariedad · ${label(key)}`, 'ADF', fmt.num(val.adf_stat, 4), fmt.p(val.adf_p), pBadge(val.adf_p)]);
+    rows.push([`Estacionariedad · ${label(key)}`, 'KPSS', fmt.num(val.kpss_stat, 4), fmt.p(val.kpss_p), pBadge(val.kpss_p)]);
+  }
+
+  for (const [key, val] of Object.entries(a.variance_homogeneity || {})) {
+    rows.push([`Varianzas · ${key}`, 'Levene', fmt.num(val.levene_stat, 4), fmt.p(val.levene_p), pBadge(val.levene_p)]);
+    rows.push([`Varianzas · ${key}`, 'Brown-Forsythe', fmt.num(val.brown_forsythe_stat, 4), fmt.p(val.brown_forsythe_p), pBadge(val.brown_forsythe_p)]);
+  }
+
+  const vif = a.vif || {};
+  for (const [key, value] of Object.entries(vif)) {
+    rows.push([`Multicolinealidad · ${label(key)}`, 'VIF', fmt.num(value, 3), '—', Number(value) > 5 ? '<span class="badge warn">alto</span>' : '<span class="badge ok">ok</span>']);
+  }
+
+  setHTML('assumptions-table', table(['Supuesto', 'Prueba', 'Estadístico', 'p-value', 'Estado'], rows));
+}
+
+function renderCorrelations(data) {
+  const corr = data.correlations?.hourly_production_vs_climate || [];
+  const partial = data.correlations?.partial_correlations || [];
+  const lags = data.correlations?.lag_correlations || [];
+
+  setHTML('correlation-table', table(
+    ['Variable', 'Pearson r', 'p', 'Spearman ρ', 'p', 'Kendall τ', 'p'],
+    corr.map(c => [
+      label(c.variable),
+      fmt.num(c.pearson_r, 4),
+      fmt.p(c.pearson_p),
+      fmt.num(c.spearman_rho, 4),
+      fmt.p(c.spearman_p),
+      fmt.num(c.kendall_tau, 4),
+      fmt.p(c.kendall_p)
+    ])
+  ));
+
+  setHTML('partial-table', table(
+    ['Variable X', 'Variable Y', 'Control', 'r parcial', 'p'],
+    partial.map(c => [
+      label(c.x),
+      label(c.y),
+      label(c.control),
+      fmt.num(c.partial_r, 4),
+      fmt.p(c.p_value)
+    ])
+  ));
+
+  setHTML('lag-table', table(
+    ['Variable', 'Lag horas', 'Spearman ρ', 'p'],
+    lags.map(c => [
+      label(c.variable),
+      fmt.num(c.lag_hours, 0),
+      fmt.num(c.spearman_rho, 4),
+      fmt.p(c.p_value)
+    ])
+  ));
+}
+
+function renderAnova(data) {
+  const anova = data.anova || {};
+  const rows = [];
+
+  for (const [group, val] of Object.entries(anova.global_tests || {})) {
+    rows.push([group, 'ANOVA', fmt.num(val.anova_f, 4), fmt.p(val.anova_p), fmt.num(val.eta_squared, 4), fmt.num(val.omega_squared, 4)]);
+    rows.push([group, 'Welch ANOVA', fmt.num(val.welch_f, 4), fmt.p(val.welch_p), '—', '—']);
+    rows.push([group, 'Kruskal-Wallis', fmt.num(val.kruskal_h, 4), fmt.p(val.kruskal_p), fmt.num(val.epsilon_squared, 4), '—']);
+  }
+
+  setHTML('anova-summary-table', table(
+    ['Agrupación', 'Prueba', 'Estadístico', 'p-value', 'η² / ε²', 'ω²'],
+    rows
+  ));
+
+  const daypart = anova.group_summaries?.daypart || [];
+  setHTML('daypart-table', table(
+    ['Grupo', 'n', 'Media', 'Mediana', 'DE', 'IC95%'],
+    daypart.map(g => [
+      g.group,
+      fmt.int(g.n),
+      fmt.num(g.mean, 4),
+      fmt.num(g.median, 4),
+      fmt.num(g.std, 4),
+      `${fmt.num(g.ci95_low, 4)} – ${fmt.num(g.ci95_high, 4)}`
+    ])
+  ));
+
+  const posthoc = anova.posthoc?.slice(0, 18) || [];
+  setHTML('posthoc-table', table(
+    ['Agrupación', 'Comparación', 'Método', 'Diferencia', 'p ajustado', 'Efecto'],
+    posthoc.map(p => [
+      p.grouping,
+      `${p.group_a} vs ${p.group_b}`,
+      p.method,
+      fmt.num(p.mean_diff, 4),
+      fmt.p(p.p_adjusted),
+      p.effect_size !== undefined ? fmt.num(p.effect_size, 4) : '—'
+    ])
+  ));
+}
+
+function renderModels(data) {
+  const ols = data.models?.ols_hac || {};
+  const rows = Object.entries(ols.coefficients || {}).map(([name, c]) => [
+    label(name),
+    fmt.num(c.coef, 6),
+    fmt.num(c.std_err, 6),
+    fmt.num(c.t, 4),
+    fmt.p(c.p_value),
+    `${fmt.num(c.ci95_low, 6)} – ${fmt.num(c.ci95_high, 6)}`
+  ]);
+
+  setHTML('ols-table', table(
+    ['Variable', 'Coeficiente', 'Error estándar', 't', 'p-value', 'IC95%'],
+    rows
+  ));
+
+  const models = data.models?.comparison || [];
+  setHTML('model-table', table(
+    ['Modelo', 'R²', 'MAE', 'RMSE', 'CV R² medio', 'CV RMSE medio'],
+    models.map(m => [
+      m.model,
+      fmt.num(m.r2, 4),
+      fmt.num(m.mae, 4),
+      fmt.num(m.rmse, 4),
+      fmt.num(m.cv_r2_mean, 4),
+      fmt.num(m.cv_rmse_mean, 4)
+    ])
+  ));
+}
+
+function renderDiagnostics(data) {
+  const d = data.diagnostics || {};
+
+  const rows = [
+    ['Durbin-Watson', fmt.num(d.durbin_watson, 4), 'Autocorrelación residual'],
+    ['Ljung-Box Q', fmt.num(d.ljung_box_stat, 4), fmt.p(d.ljung_box_p)],
+    ['Breusch-Pagan LM', fmt.num(d.breusch_pagan_lm, 4), fmt.p(d.breusch_pagan_p)],
+    ['Cook máximo', fmt.num(d.cooks_distance_max, 6), 'Influencia máxima'],
+    ['Puntos influyentes', fmt.int(d.influential_points_count), 'Cook > 4/n']
+  ];
+
+  setHTML('diagnostics-table', table(['Diagnóstico', 'Valor', 'Interpretación'], rows));
+}
+
+function renderConclusions(data) {
+  const conclusions = data.scientific_conclusions || [];
+  const limitations = data.limitations || [];
+
+  setHTML('conclusion-list', conclusions.map(x => `<li>${x}</li>`).join(''));
+  setHTML('limitation-list', limitations.map(x => `<li>${x}</li>`).join(''));
+}
+
+function renderPlots(data) {
+  const daily = data.visualization_data?.daily_production || [];
+  Plotly.newPlot('chart-daily-production', [{
+    x: daily.map(d => d.date),
+    y: daily.map(d => d.production_l),
+    type: 'bar',
+    name: 'Producción diaria'
+  }], layout('Producción diaria'), { responsive: true, displayModeBar: false });
+
+  const profile = data.visualization_data?.hourly_profile || [];
+  Plotly.newPlot('chart-hourly-profile', [{
+    x: profile.map(d => d.hour),
+    y: profile.map(d => d.mean_production_lph),
+    type: 'scatter',
+    mode: 'lines+markers',
+    name: 'L/h promedio'
+  }], layout('Perfil horario'), { responsive: true, displayModeBar: false });
+
+  const hist = data.visualization_data?.production_hourly_values || [];
+  Plotly.newPlot('chart-prod-hist', [{
+    x: hist,
+    type: 'histogram',
+    nbinsx: 24,
+    name: 'Producción horaria'
+  }], layout('Histograma de producción'), { responsive: true, displayModeBar: false });
+
+  const qq = data.visualization_data?.qq_plot || [];
+  Plotly.newPlot('chart-qq', [
+    {
+      x: qq.map(d => d.theoretical),
+      y: qq.map(d => d.sample),
+      mode: 'markers',
+      type: 'scatter',
+      name: 'Cuantiles'
+    },
+    {
+      x: qq.map(d => d.theoretical),
+      y: qq.map(d => d.theoretical),
+      mode: 'lines',
+      type: 'scatter',
+      name: 'Normal teórica'
+    }
+  ], layout('QQ plot'), { responsive: true, displayModeBar: false });
+
+  const corr = data.correlations?.hourly_production_vs_climate || [];
+  Plotly.newPlot('chart-corr-bar', [{
+    x: corr.map(c => c.spearman_rho),
+    y: corr.map(c => label(c.variable)),
+    type: 'bar',
+    orientation: 'h',
+    name: 'Spearman ρ'
+  }], layout('Ranking de correlación Spearman'), { responsive: true, displayModeBar: false });
+
+  const imp = data.models?.feature_importance || [];
+  Plotly.newPlot('chart-feature-importance', [{
+    x: imp.map(d => d.importance),
+    y: imp.map(d => label(d.variable)),
+    type: 'bar',
+    orientation: 'h',
+    name: 'Importancia'
+  }], layout('Importancia de variables'), { responsive: true, displayModeBar: false });
+
+  const pred = data.visualization_data?.observed_vs_predicted || [];
+  Plotly.newPlot('chart-obs-pred', [{
+    x: pred.map(d => d.predicted),
+    y: pred.map(d => d.observed),
+    mode: 'markers',
+    type: 'scatter',
+    name: 'Observado'
+  }], layout('Observado vs predicho'), { responsive: true, displayModeBar: false });
+
+  const residuals = data.visualization_data?.residuals || [];
+  Plotly.newPlot('chart-residuals', [{
+    x: residuals.map((_, i) => i + 1),
+    y: residuals,
+    mode: 'lines+markers',
+    type: 'scatter',
+    name: 'Residuo'
+  }], layout('Residuos del modelo'), { responsive: true, displayModeBar: false });
+}
+
+function showError(err) {
+  document.querySelector('main').innerHTML = `
+    <div class="error-box">
+      <h2>No se pudo cargar el análisis estadístico</h2>
+      <p>${err.message}</p>
+      <p style="margin-top:10px;">
+        Verifica que exista <code>data/processed/statistical_analysis.json</code>
+        y que estés abriendo la página desde un servidor local o desde GitHub Pages.
+      </p>
+    </div>
+  `;
+}
+
+loadAnalysis()
+  .then(data => {
+    renderHeader(data);
+    renderKPIs(data);
+    renderDataTables(data);
+    renderDescriptives(data);
+    renderAssumptions(data);
+    renderCorrelations(data);
+    renderAnova(data);
+    renderModels(data);
+    renderDiagnostics(data);
+    renderConclusions(data);
+    renderPlots(data);
+
+    if (window.MathJax && MathJax.typesetPromise) {
+      MathJax.typesetPromise();
+    }
+  })
+  .catch(showError);
+</script>
+</body>
+</html>
