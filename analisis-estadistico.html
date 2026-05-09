@@ -3,17 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
-  <title>AWA05 · Análisis Estadístico Científico</title>
+  <title>AWA05 · Análisis Estadístico Científico Avanzado</title>
 
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet" />
 
   <script>
     window.MathJax = {
       tex: {
         inlineMath: [['\\(', '\\)'], ['$', '$']],
-        displayMath: [['\\[', '\\]']]
+        displayMath: [['\\[', '\\]']],
+        processEscapes: true
       },
-      svg: { fontCache: 'global' }
+      svg: {
+        fontCache: 'global'
+      }
     };
   </script>
   <script defer src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js"></script>
@@ -22,6 +25,7 @@
   <style>
     :root {
       --bg: #f7f6f1;
+      --bg-warm: #f0ede4;
       --surface: #ffffff;
       --surface2: #faf9f5;
       --surface3: #f2f0e8;
@@ -29,29 +33,43 @@
       --ink-mid: #3a3830;
       --ink-soft: #6b6860;
       --ink-faint: #a09e98;
-      --rule: rgba(40, 38, 30, .10);
-      --rule-strong: rgba(40, 38, 30, .18);
+      --rule: rgba(40, 38, 30, 0.10);
+      --rule-strong: rgba(40, 38, 30, 0.18);
       --cobalt: #1c3f6e;
+      --cobalt-deep: #0f2a50;
       --cobalt-mid: #2558a0;
-      --cobalt-pale: rgba(28, 63, 110, .07);
-      --cobalt-rim: rgba(28, 63, 110, .22);
+      --cobalt-pale: rgba(28, 63, 110, 0.07);
+      --cobalt-rim: rgba(28, 63, 110, 0.22);
       --amber: #b05c00;
+      --amber-pale: rgba(176, 92, 0, 0.08);
+      --crimson: #951f1f;
+      --crimson-pale: rgba(149, 31, 31, 0.08);
       --forest: #1a5c38;
+      --forest-pale: rgba(26, 92, 56, 0.09);
       --teal: #0f6b60;
-      --danger: #9b2c2c;
-      --shadow-sm: 0 1px 3px rgba(0,0,0,.05), 0 2px 8px rgba(0,0,0,.04);
-      --shadow-md: 0 2px 6px rgba(0,0,0,.06), 0 8px 24px rgba(0,0,0,.06);
+      --teal-pale: rgba(15, 107, 96, 0.08);
+      --gold: #c4960a;
+      --gold-pale: rgba(196, 150, 10, 0.10);
+      --violet: #4d3d8f;
+      --violet-pale: rgba(77, 61, 143, 0.08);
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.04);
+      --shadow-md: 0 2px 6px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.06);
+      --shadow-lg: 0 4px 16px rgba(0,0,0,0.07), 0 20px 48px rgba(0,0,0,0.07);
       --mono: 'JetBrains Mono', monospace;
       --display: 'Playfair Display', serif;
       --body: 'DM Sans', sans-serif;
+      --serif: 'Libre Baskerville', serif;
       --radius: 4px;
       --sidebar-w: 248px;
+      --insight-w: 360px;
     }
 
-    *, *::before, *::after {
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
     }
 
     html {
@@ -59,27 +77,51 @@
     }
 
     body {
+      min-height: 100vh;
       background: var(--bg);
       color: var(--ink);
       font-family: var(--body);
       font-size: 13.5px;
+      line-height: 1.55;
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
-      line-height: 1.55;
     }
 
+    body::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      pointer-events: none;
+      opacity: 0.50;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+    }
+
+    a {
+      color: inherit;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       HEADER CONSERVANDO EL LENGUAJE DEL DASHBOARD AWA05
+    ───────────────────────────────────────────────────────────── */
     header {
       position: sticky;
       top: 0;
-      z-index: 200;
+      z-index: 300;
       height: 56px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 32px;
-      background: linear-gradient(135deg, var(--cobalt) 0%, #0f2a50 100%);
-      overflow: hidden;
       gap: 16px;
+      padding: 0 32px;
+      overflow: hidden;
+      background: linear-gradient(135deg, var(--cobalt) 0%, var(--cobalt-deep) 100%);
     }
 
     header::before {
@@ -90,7 +132,7 @@
       font-family: var(--display);
       font-size: 96px;
       font-weight: 900;
-      color: rgba(255,255,255,.04);
+      color: rgba(255,255,255,0.04);
       letter-spacing: -4px;
       pointer-events: none;
       user-select: none;
@@ -99,53 +141,53 @@
     header::after {
       content: "";
       position: absolute;
-      bottom: 0;
       left: 0;
       right: 0;
+      bottom: 0;
       height: 1px;
-      background: rgba(255,255,255,.10);
+      background: rgba(255,255,255,0.10);
     }
 
     .hd-brand {
+      position: relative;
+      z-index: 1;
       display: flex;
       align-items: center;
       gap: 12px;
       flex-shrink: 0;
-      position: relative;
-      z-index: 1;
     }
 
     .hd-name {
+      color: #fff;
       font-family: var(--display);
       font-size: 15px;
-      font-weight: 700;
-      color: #fff;
-      letter-spacing: .02em;
       font-style: italic;
+      font-weight: 700;
+      letter-spacing: 0.02em;
     }
 
     .hd-sep {
       width: 1px;
       height: 18px;
-      background: rgba(255,255,255,.18);
+      background: rgba(255,255,255,0.18);
     }
 
     .hd-sub {
+      color: rgba(255,255,255,0.50);
       font-family: var(--mono);
       font-size: 8.5px;
-      color: rgba(255,255,255,.50);
-      letter-spacing: .14em;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
     }
 
     .hd-center {
+      position: relative;
+      z-index: 1;
       flex: 1;
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 24px;
-      position: relative;
-      z-index: 1;
     }
 
     .hd-stat {
@@ -153,69 +195,163 @@
     }
 
     .hd-stat-val {
+      color: #fff;
       font-family: var(--mono);
       font-size: 11px;
       font-weight: 500;
-      color: #fff;
     }
 
     .hd-stat-lbl {
+      margin-top: 1px;
+      color: rgba(255,255,255,0.45);
       font-family: var(--mono);
       font-size: 7.5px;
-      color: rgba(255,255,255,.45);
-      letter-spacing: .10em;
+      letter-spacing: 0.10em;
       text-transform: uppercase;
-      margin-top: 1px;
     }
 
     .hd-right {
+      position: relative;
+      z-index: 1;
       display: flex;
       align-items: center;
       gap: 10px;
       flex-shrink: 0;
-      position: relative;
-      z-index: 1;
     }
 
     .hd-ts {
+      padding: 4px 10px;
+      border: 1px solid rgba(255,255,255,0.18);
+      border-radius: 2px;
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.70);
       font-family: var(--mono);
       font-size: 8px;
-      color: rgba(255,255,255,.70);
-      background: rgba(255,255,255,.08);
-      border: 1px solid rgba(255,255,255,.18);
-      border-radius: 2px;
-      padding: 4px 10px;
-      letter-spacing: .04em;
+      letter-spacing: 0.04em;
     }
 
     .top-link {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       gap: 6px;
       padding: 7px 14px;
+      border: 1px solid rgba(255,255,255,0.22);
       border-radius: 4px;
-      border: 1px solid rgba(255,255,255,.22);
-      background: rgba(255,255,255,.08);
-      color: rgba(255,255,255,.85);
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.85);
       font-family: var(--mono);
       font-size: 9px;
       font-weight: 500;
-      letter-spacing: .10em;
+      letter-spacing: 0.10em;
       text-decoration: none;
       text-transform: uppercase;
-      transition: all .15s;
+      transition: all 0.15s;
     }
 
     .top-link:hover,
     .top-link.active {
-      background: rgba(255,255,255,.92);
-      color: #1c3f6e;
       border-color: transparent;
+      background: rgba(255,255,255,0.92);
+      color: var(--cobalt);
     }
 
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border: 1px solid rgba(255,255,255,0.22);
+      border-radius: 4px;
+      background: rgba(255,255,255,0.08);
+      color: rgba(255,255,255,0.85);
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 500;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .btn:hover {
+      background: rgba(255,255,255,0.16);
+      color: #fff;
+    }
+
+    .hd-mobile-menu {
+      display: none !important;
+    }
+
+    .mobile-menu {
+      position: fixed;
+      top: 56px;
+      left: 0;
+      right: 0;
+      z-index: 260;
+      display: none;
+      padding: 16px 20px 20px;
+      border-bottom: 1px solid var(--rule-strong);
+      background: var(--surface);
+      box-shadow: var(--shadow-md);
+    }
+
+    .mobile-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin-bottom: 16px;
+    }
+
+    .mobile-nav-link {
+      padding: 10px 14px;
+      border-left: 2px solid transparent;
+      border-radius: var(--radius);
+      color: var(--ink-soft);
+      font-size: 13px;
+      text-decoration: none;
+      transition: all 0.12s;
+    }
+
+    .mobile-nav-link:hover,
+    .mobile-nav-link.active {
+      border-left-color: var(--cobalt);
+      background: var(--cobalt-pale);
+      color: var(--cobalt);
+    }
+
+    .mobile-nav-foot {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      padding-top: 14px;
+      border-top: 1px solid var(--rule);
+    }
+
+    .mobile-action {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border: 1px solid var(--cobalt-rim);
+      border-radius: var(--radius);
+      background: var(--cobalt-pale);
+      color: var(--cobalt);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       LAYOUT
+    ───────────────────────────────────────────────────────────── */
     .layout {
       display: grid;
-      grid-template-columns: var(--sidebar-w) 1fr;
+      grid-template-columns: var(--sidebar-w) minmax(0, 1fr) var(--insight-w);
       min-height: calc(100vh - 56px);
     }
 
@@ -224,21 +360,25 @@
       top: 56px;
       height: calc(100vh - 56px);
       overflow-y: auto;
-      padding: 24px 0;
+      padding: 24px 0 78px;
       border-right: 1px solid var(--rule);
       background: var(--surface);
       scrollbar-width: thin;
       scrollbar-color: var(--rule-strong) transparent;
     }
 
+    .sb-section {
+      margin-bottom: 4px;
+    }
+
     .sb-label {
+      display: block;
+      padding: 12px 20px 4px;
+      color: var(--ink-faint);
       font-family: var(--mono);
       font-size: 7.5px;
-      letter-spacing: .16em;
+      letter-spacing: 0.16em;
       text-transform: uppercase;
-      color: var(--ink-faint);
-      padding: 12px 20px 4px;
-      display: block;
     }
 
     .sb-link {
@@ -246,19 +386,11 @@
       align-items: center;
       gap: 8px;
       padding: 7px 20px;
-      text-decoration: none;
-      color: var(--ink-soft);
-      font-family: var(--body);
-      font-size: 12px;
       border-left: 2px solid transparent;
-      transition: all .12s;
-    }
-
-    .sb-link:hover,
-    .sb-link.active {
-      color: var(--cobalt);
-      background: var(--cobalt-pale);
-      border-left-color: var(--cobalt);
+      color: var(--ink-soft);
+      font-size: 12px;
+      text-decoration: none;
+      transition: all 0.12s;
     }
 
     .sb-link::before {
@@ -267,61 +399,151 @@
       height: 4px;
       border-radius: 50%;
       background: currentColor;
-      opacity: .4;
+      opacity: 0.4;
       flex-shrink: 0;
+    }
+
+    .sb-link:hover,
+    .sb-link.active {
+      border-left-color: var(--cobalt);
+      background: var(--cobalt-pale);
+      color: var(--cobalt);
+    }
+
+    .sb-link.active::before {
+      opacity: 1;
     }
 
     .sb-divider {
       height: 1px;
-      background: var(--rule);
       margin: 12px 20px;
+      background: var(--rule);
     }
 
     .sb-kpis {
-      padding: 0 16px;
       display: flex;
       flex-direction: column;
       gap: 8px;
+      padding: 0 16px;
     }
 
     .sb-kpi {
-      background: var(--surface2);
+      padding: 10px 12px;
       border: 1px solid var(--rule);
       border-radius: var(--radius);
-      padding: 10px 12px;
+      background: var(--surface2);
     }
 
     .sb-kpi-lbl {
+      margin-bottom: 3px;
+      color: var(--ink-faint);
       font-family: var(--mono);
       font-size: 7.5px;
-      letter-spacing: .10em;
+      letter-spacing: 0.10em;
       text-transform: uppercase;
-      color: var(--ink-faint);
-      margin-bottom: 3px;
     }
 
     .sb-kpi-val {
+      color: var(--cobalt);
       font-family: var(--mono);
       font-size: 13px;
-      color: var(--cobalt);
       font-weight: 600;
     }
 
     main {
-      padding: 32px 32px 90px;
-      max-width: 1500px;
+      min-width: 0;
       width: 100%;
+      max-width: 1500px;
       margin: 0 auto;
+      padding: 32px 32px 110px;
     }
 
-    .hero {
-      background: var(--surface);
-      border: 1px solid var(--rule);
+    .insight-rail {
+      position: sticky;
+      top: 56px;
+      height: calc(100vh - 56px);
+      overflow: auto;
+      padding: 24px 18px 82px;
+      border-left: 1px solid var(--rule);
+      background: linear-gradient(180deg, rgba(255,255,255,0.92), rgba(250,249,245,0.96));
+    }
+
+    .insight-card {
+      position: relative;
+      padding: 18px;
+      border: 1px solid var(--cobalt-rim);
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, rgba(28,63,110,0.08), rgba(255,255,255,0.92));
       box-shadow: var(--shadow-sm);
-      padding: 32px 36px 30px;
-      margin-bottom: 24px;
+    }
+
+    .insight-eyebrow {
+      color: var(--cobalt);
+      font-family: var(--mono);
+      font-size: 7.5px;
+      font-weight: 600;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .insight-title {
+      margin-top: 6px;
+      font-family: var(--display);
+      font-size: 22px;
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+    }
+
+    .insight-text {
+      margin-top: 10px;
+      color: var(--ink-soft);
+      font-size: 12.5px;
+      line-height: 1.72;
+    }
+
+    .insight-meta {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--rule);
+      color: var(--ink-faint);
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .hover-tooltip {
+      position: fixed;
+      z-index: 9998;
+      max-width: 320px;
+      display: none;
+      padding: 11px 13px;
+      border: 1px solid rgba(28,63,110,0.22);
+      border-radius: 4px;
+      background: rgba(255,255,255,0.97);
+      box-shadow: var(--shadow-lg);
+      color: var(--ink-soft);
+      font-size: 12px;
+      line-height: 1.5;
+      pointer-events: none;
+    }
+
+    .hover-tooltip strong {
+      color: var(--cobalt);
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       SECCIONES Y TARJETAS
+    ───────────────────────────────────────────────────────────── */
+    .hero {
       position: relative;
       overflow: hidden;
+      margin-bottom: 24px;
+      padding: 34px 38px 32px;
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
     }
 
     .hero::before {
@@ -329,8 +551,20 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(circle at 85% 20%, rgba(28,63,110,.09), transparent 36%),
-        linear-gradient(135deg, rgba(28,63,110,.05), transparent 35%);
+        radial-gradient(circle at 85% 20%, rgba(28,63,110,0.12), transparent 36%),
+        linear-gradient(135deg, rgba(28,63,110,0.06), transparent 34%);
+      pointer-events: none;
+    }
+
+    .hero::after {
+      content: "Y = f(clima, tiempo, operación)";
+      position: absolute;
+      right: 28px;
+      bottom: 18px;
+      color: rgba(28,63,110,0.08);
+      font-family: var(--mono);
+      font-size: 22px;
+      font-weight: 700;
       pointer-events: none;
     }
 
@@ -340,95 +574,145 @@
     }
 
     .eyebrow {
+      margin-bottom: 8px;
+      color: var(--cobalt);
       font-family: var(--mono);
       font-size: 8px;
-      letter-spacing: .20em;
-      text-transform: uppercase;
-      color: var(--cobalt);
       font-weight: 600;
-      margin-bottom: 8px;
+      letter-spacing: 0.20em;
+      text-transform: uppercase;
     }
 
     .hero h1 {
-      font-family: var(--display);
-      font-size: clamp(34px, 5vw, 72px);
-      font-weight: 900;
-      letter-spacing: -.035em;
-      line-height: .98;
-      color: var(--ink);
+      max-width: 980px;
       margin-bottom: 12px;
+      color: var(--ink);
+      font-family: var(--display);
+      font-size: clamp(36px, 5vw, 72px);
+      font-weight: 900;
+      line-height: 0.98;
+      letter-spacing: -0.035em;
     }
 
     .hero p {
-      max-width: 930px;
+      max-width: 970px;
       color: var(--ink-soft);
-      font-weight: 300;
       font-size: 15px;
-      line-height: 1.75;
+      font-weight: 300;
+      line-height: 1.78;
+    }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .hero-action {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 13px;
+      border: 1px solid var(--rule-strong);
+      border-radius: var(--radius);
+      background: var(--surface2);
+      color: var(--ink-soft);
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.11em;
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: all 0.15s;
+    }
+
+    .hero-action:hover {
+      border-color: var(--cobalt-rim);
+      background: var(--cobalt-pale);
+      color: var(--cobalt);
+    }
+
+    .hero-action.primary {
+      border-color: var(--cobalt);
+      background: var(--cobalt);
+      color: #fff;
     }
 
     .pill-row {
       display: flex;
-      gap: 8px;
       flex-wrap: wrap;
+      gap: 8px;
       margin-top: 18px;
     }
 
     .pill {
+      padding: 6px 10px;
+      border: 1px solid var(--rule-strong);
+      border-radius: 999px;
+      background: var(--surface2);
+      color: var(--ink-soft);
       font-family: var(--mono);
       font-size: 8px;
+      letter-spacing: 0.10em;
       text-transform: uppercase;
-      letter-spacing: .10em;
-      border: 1px solid var(--rule-strong);
-      background: var(--surface2);
-      border-radius: 999px;
-      padding: 6px 10px;
-      color: var(--ink-soft);
-    }
-
-    .pill.warn {
-      color: var(--amber);
-      border-color: rgba(176,92,0,.22);
-      background: rgba(176,92,0,.06);
     }
 
     .pill.ok {
+      border-color: rgba(26,92,56,0.22);
+      background: rgba(26,92,56,0.06);
       color: var(--forest);
-      border-color: rgba(26,92,56,.22);
-      background: rgba(26,92,56,.06);
+    }
+
+    .pill.warn {
+      border-color: rgba(176,92,0,0.22);
+      background: rgba(176,92,0,0.06);
+      color: var(--amber);
+    }
+
+    .pill.danger {
+      border-color: rgba(149,31,31,0.22);
+      background: rgba(149,31,31,0.06);
+      color: var(--crimson);
     }
 
     .section {
-      margin: 34px 0 0;
+      margin-top: 38px;
+      scroll-margin-top: 74px;
     }
 
     .section-head {
-      margin-bottom: 16px;
       display: flex;
       align-items: flex-end;
       justify-content: space-between;
       gap: 18px;
+      margin-bottom: 16px;
     }
 
     .section-title {
-      font-family: var(--display);
-      font-size: 28px;
-      line-height: 1.1;
-      letter-spacing: -.02em;
       color: var(--ink);
+      font-family: var(--display);
+      font-size: 30px;
+      line-height: 1.1;
+      letter-spacing: -0.02em;
+    }
+
+    .section-title em {
+      color: var(--cobalt);
+      font-style: italic;
     }
 
     .section-sub {
+      max-width: 880px;
+      margin-top: 6px;
       color: var(--ink-soft);
       font-size: 12.5px;
-      max-width: 850px;
-      margin-top: 6px;
+      line-height: 1.65;
     }
 
     .section-rule {
       height: 1px;
-      background: linear-gradient(90deg, var(--rule-strong), transparent);
       margin-top: 14px;
+      background: linear-gradient(90deg, var(--rule-strong), transparent);
     }
 
     .grid-2 {
@@ -462,12 +746,16 @@
     }
 
     .card {
-      background: var(--surface);
+      min-width: 0;
+      padding: 18px;
       border: 1px solid var(--rule);
       border-radius: var(--radius);
+      background: var(--surface);
       box-shadow: var(--shadow-sm);
-      padding: 18px;
-      min-width: 0;
+    }
+
+    .card:hover {
+      box-shadow: var(--shadow-md);
     }
 
     .card-head {
@@ -479,49 +767,104 @@
     }
 
     .card-title {
+      color: var(--ink-mid);
       font-family: var(--mono);
       font-size: 10.5px;
       font-weight: 600;
-      color: var(--ink-mid);
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      letter-spacing: .12em;
     }
 
     .card-sub {
-      font-size: 11.5px;
-      color: var(--ink-faint);
       margin-top: 2px;
+      color: var(--ink-faint);
+      font-size: 11.5px;
+      line-height: 1.5;
     }
 
     .badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      padding: 4px 7px;
+      border: 1px solid var(--cobalt-rim);
+      border-radius: 2px;
+      background: var(--cobalt-pale);
+      color: var(--cobalt);
       font-family: var(--mono);
       font-size: 7.5px;
+      letter-spacing: 0.10em;
       text-transform: uppercase;
-      letter-spacing: .10em;
-      color: var(--cobalt);
-      background: var(--cobalt-pale);
-      border: 1px solid var(--cobalt-rim);
-      padding: 4px 7px;
-      border-radius: 2px;
-      white-space: nowrap;
-    }
-
-    .badge.warn {
-      color: var(--amber);
-      border-color: rgba(176,92,0,.26);
-      background: rgba(176,92,0,.07);
-    }
-
-    .badge.danger {
-      color: var(--danger);
-      border-color: rgba(155,44,44,.26);
-      background: rgba(155,44,44,.07);
     }
 
     .badge.ok {
+      border-color: rgba(26,92,56,0.26);
+      background: rgba(26,92,56,0.07);
       color: var(--forest);
-      border-color: rgba(26,92,56,.26);
-      background: rgba(26,92,56,.07);
+    }
+
+    .badge.warn {
+      border-color: rgba(176,92,0,0.26);
+      background: rgba(176,92,0,0.07);
+      color: var(--amber);
+    }
+
+    .badge.danger {
+      border-color: rgba(149,31,31,0.26);
+      background: rgba(149,31,31,0.07);
+      color: var(--crimson);
+    }
+
+    .badge.violet {
+      border-color: rgba(77,61,143,0.26);
+      background: rgba(77,61,143,0.07);
+      color: var(--violet);
+    }
+
+    .microcopy {
+      margin-top: 10px;
+      color: var(--ink-soft);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .microcopy strong {
+      color: var(--ink-mid);
+    }
+
+    .evidence-note {
+      margin-top: 12px;
+      padding: 12px 13px;
+      border-left: 3px solid var(--cobalt);
+      background: var(--cobalt-pale);
+      color: var(--ink-soft);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .evidence-note strong {
+      color: var(--cobalt);
+    }
+
+    .warning-note {
+      margin-top: 12px;
+      padding: 12px 13px;
+      border-left: 3px solid var(--amber);
+      background: var(--amber-pale);
+      color: #6f3c00;
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .danger-note {
+      margin-top: 12px;
+      padding: 12px 13px;
+      border-left: 3px solid var(--crimson);
+      background: var(--crimson-pale);
+      color: #6f1d1d;
+      font-size: 12px;
+      line-height: 1.7;
     }
 
     .kpi-grid {
@@ -531,13 +874,15 @@
     }
 
     .kpi-card {
-      background: var(--surface);
-      border: 1px solid var(--rule);
-      border-radius: var(--radius);
-      padding: 15px 16px;
-      box-shadow: var(--shadow-sm);
       position: relative;
       overflow: hidden;
+      min-height: 126px;
+      padding: 16px 16px 14px;
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+      cursor: help;
     }
 
     .kpi-card::before {
@@ -546,74 +891,132 @@
       inset: 0 auto 0 0;
       width: 3px;
       background: var(--cobalt);
-      opacity: .75;
+      opacity: 0.85;
+    }
+
+    .kpi-card::after {
+      content: "";
+      position: absolute;
+      right: -24px;
+      top: -24px;
+      width: 82px;
+      height: 82px;
+      border-radius: 50%;
+      background: var(--cobalt-pale);
     }
 
     .kpi-label {
+      margin-bottom: 7px;
+      color: var(--ink-faint);
       font-family: var(--mono);
       font-size: 7.5px;
-      color: var(--ink-faint);
+      letter-spacing: 0.13em;
       text-transform: uppercase;
-      letter-spacing: .12em;
-      margin-bottom: 5px;
     }
 
     .kpi-value {
+      color: var(--cobalt);
       font-family: var(--display);
-      font-size: 28px;
-      line-height: 1;
-      color: var(--ink);
+      font-size: 30px;
       font-weight: 900;
-      letter-spacing: -.03em;
+      line-height: 1;
+      letter-spacing: -0.03em;
     }
 
     .kpi-unit {
+      margin-left: 4px;
+      color: var(--ink-faint);
       font-family: var(--mono);
-      font-size: 8px;
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 0;
+    }
+
+    .kpi-note {
+      margin-top: 8px;
       color: var(--ink-soft);
-      margin-top: 6px;
+      font-size: 10.8px;
+      line-height: 1.42;
+    }
+
+    .kpi-chip {
+      display: inline-flex;
+      margin-top: 8px;
+      padding: 3px 7px;
+      border: 1px solid var(--rule-strong);
+      border-radius: 99px;
+      color: var(--ink-faint);
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: 0.09em;
       text-transform: uppercase;
-      letter-spacing: .08em;
     }
 
     .equation-grid {
       display: grid;
-      grid-template-columns: repeat(2, minmax(0,1fr));
-      gap: 16px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
     }
 
     .equation-card {
-      background: linear-gradient(180deg, #fff, #faf9f5);
+      min-height: 156px;
+      padding: 16px 18px;
+      overflow: auto;
       border: 1px solid var(--rule);
-      box-shadow: var(--shadow-sm);
+      border-left: 3px solid var(--cobalt);
       border-radius: var(--radius);
-      padding: 18px 20px;
-      min-height: 150px;
+      background: linear-gradient(180deg, #fff, var(--surface2));
+      box-shadow: var(--shadow-sm);
+      cursor: help;
     }
 
     .equation-title {
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: .14em;
-      text-transform: uppercase;
-      color: var(--cobalt);
       margin-bottom: 8px;
+      color: var(--cobalt);
+      font-family: var(--mono);
+      font-size: 8px;
       font-weight: 600;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .equation-card mjx-container {
+      margin: 0 !important;
+      text-align: left !important;
+      font-size: 116% !important;
     }
 
     .equation-desc {
+      margin-top: 10px;
       color: var(--ink-soft);
       font-size: 12px;
-      margin-top: 8px;
+      line-height: 1.58;
     }
 
     .chart {
       width: 100%;
-      min-height: 330px;
+      height: 340px;
     }
 
     .chart.tall {
-      min-height: 430px;
+      height: 460px;
+    }
+
+    .chart.short {
+      height: 260px;
+    }
+
+    .chart-note {
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid var(--rule);
+      color: var(--ink-soft);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .chart-note strong {
+      color: var(--ink-mid);
     }
 
     .table-wrap {
@@ -627,22 +1030,23 @@
     table {
       width: 100%;
       border-collapse: collapse;
+      background: var(--surface);
       font-size: 12px;
     }
 
     th {
       position: sticky;
       top: 0;
-      z-index: 1;
+      z-index: 2;
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--rule-strong);
       background: var(--surface3);
       color: var(--ink-mid);
       font-family: var(--mono);
-      font-size: 8px;
-      letter-spacing: .12em;
-      text-transform: uppercase;
+      font-size: 7.5px;
+      letter-spacing: 0.12em;
       text-align: left;
-      padding: 9px 10px;
-      border-bottom: 1px solid var(--rule-strong);
+      text-transform: uppercase;
       white-space: nowrap;
     }
 
@@ -658,1213 +1062,2472 @@
       border-bottom: 0;
     }
 
+    tr:hover td {
+      background: var(--cobalt-pale);
+    }
+
     td.num {
-      font-family: var(--mono);
       color: var(--ink-mid);
+      font-family: var(--mono);
       text-align: right;
     }
 
-    .compact-list {
-      display: flex;
-      flex-direction: column;
-      gap: 9px;
-      padding-left: 18px;
-      color: var(--ink-soft);
-      font-size: 12.5px;
-    }
-
-    .compact-list li::marker {
-      color: var(--cobalt);
-    }
-
-    .note {
-      padding: 12px 14px;
-      border-radius: var(--radius);
-      border: 1px solid rgba(176,92,0,.22);
-      background: rgba(176,92,0,.06);
-      color: #6f3c00;
-      font-size: 12.5px;
-    }
-
-    .dash-footer {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 42px;
-      background: linear-gradient(135deg, #0f2a50 0%, var(--cobalt) 100%);
-      color: rgba(255,255,255,.82);
-      z-index: 180;
-      display: grid;
-      grid-template-columns: 1fr auto 1fr;
+    .status-dot {
+      display: inline-flex;
       align-items: center;
-      padding: 0 24px;
-      border-top: 1px solid rgba(255,255,255,.12);
+      gap: 6px;
     }
 
-    .footer-left,
-    .footer-right {
+    .status-dot::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--ink-faint);
+    }
+
+    .status-dot.ok::before {
+      background: var(--forest);
+    }
+
+    .status-dot.warn::before {
+      background: var(--amber);
+    }
+
+    .status-dot.danger::before {
+      background: var(--crimson);
+    }
+
+    .methodology-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+
+    .method-step {
+      position: relative;
+      padding: 16px;
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+      cursor: help;
+    }
+
+    .method-num {
+      color: var(--cobalt);
       font-family: var(--mono);
-      font-size: 8px;
-      letter-spacing: .08em;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      color: rgba(255,255,255,.55);
     }
 
-    .footer-center {
-      text-align: center;
+    .method-title {
+      margin-top: 8px;
       font-family: var(--display);
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 1.1;
+    }
+
+    .method-text {
+      margin-top: 8px;
+      color: var(--ink-soft);
       font-size: 12px;
-      font-style: italic;
-      font-weight: 600;
+      line-height: 1.58;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       SIMULADOR
+    ───────────────────────────────────────────────────────────── */
+    .simulator-shell {
+      display: grid;
+      grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.35fr);
+      gap: 16px;
+    }
+
+    .sim-panel {
+      padding: 18px;
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--surface), var(--surface2));
+      box-shadow: var(--shadow-sm);
+    }
+
+    .sim-readout {
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 16px;
+      padding: 22px 20px 20px;
+      border-radius: var(--radius);
+      background: linear-gradient(135deg, var(--cobalt), var(--cobalt-deep));
       color: #fff;
     }
 
-    .footer-right {
+    .sim-readout::before {
+      content: "L/h";
+      position: absolute;
+      right: -4px;
+      top: -24px;
+      color: rgba(255,255,255,0.07);
+      font-family: var(--display);
+      font-size: 82px;
+      font-weight: 900;
+      pointer-events: none;
+    }
+
+    .sim-label {
+      color: rgba(255,255,255,0.52);
+      font-family: var(--mono);
+      font-size: 7.5px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .sim-main {
+      margin-top: 6px;
+      font-family: var(--display);
+      font-size: 58px;
+      font-weight: 900;
+      line-height: 0.96;
+      letter-spacing: -0.05em;
+    }
+
+    .sim-main span {
+      margin-left: 5px;
+      font-family: var(--mono);
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.02em;
+      color: rgba(255,255,255,0.62);
+    }
+
+    .sim-sub {
+      margin-top: 9px;
+      color: rgba(255,255,255,0.68);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+
+    .sim-controls {
       display: flex;
-      justify-content: flex-end;
+      flex-direction: column;
+      gap: 13px;
+    }
+
+    .control {
+      padding: 12px 12px 11px;
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .control-head {
+      display: flex;
       align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .control-label {
+      color: var(--ink-mid);
+      font-family: var(--mono);
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .control-value {
+      color: var(--cobalt);
+      font-family: var(--mono);
+      font-size: 11px;
+      font-weight: 700;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--cobalt);
+    }
+
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 8px;
+      margin-top: 12px;
+    }
+
+    .scenario-btn {
+      padding: 9px 10px;
+      border: 1px solid var(--rule-strong);
+      border-radius: var(--radius);
+      background: var(--surface2);
+      color: var(--ink-soft);
+      font-family: var(--mono);
+      font-size: 7.5px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .scenario-btn:hover,
+    .scenario-btn.active {
+      border-color: var(--cobalt-rim);
+      background: var(--cobalt-pale);
+      color: var(--cobalt);
+    }
+
+    .sim-kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .sim-kpi {
+      padding: 12px;
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      background: var(--surface2);
+    }
+
+    .sim-kpi-label {
+      color: var(--ink-faint);
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .sim-kpi-value {
+      margin-top: 5px;
+      color: var(--cobalt);
+      font-family: var(--mono);
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .sim-kpi-note {
+      margin-top: 4px;
+      color: var(--ink-soft);
+      font-size: 10.5px;
+      line-height: 1.4;
+    }
+
+    .sim-explain {
+      margin-top: 14px;
+      padding: 12px 13px;
+      border: 1px solid var(--cobalt-rim);
+      border-radius: var(--radius);
+      background: var(--cobalt-pale);
+      color: var(--ink-soft);
+      font-size: 12px;
+      line-height: 1.72;
+    }
+
+    .sim-explain strong {
+      color: var(--cobalt);
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────────────────────────── */
+    .dash-footer {
+      position: relative;
+      overflow: hidden;
+      height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 36px;
+      background: linear-gradient(135deg, var(--cobalt) 0%, var(--cobalt-deep) 100%);
+    }
+
+    .dash-footer::before {
+      content: "AWA05";
+      position: absolute;
+      right: -10px;
+      top: -18px;
+      color: rgba(255,255,255,0.04);
+      font-family: var(--display);
+      font-size: 96px;
+      font-weight: 900;
+      letter-spacing: -4px;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .dash-footer::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: rgba(255,255,255,0.10);
+    }
+
+    .footer-left {
+      position: relative;
+      z-index: 1;
+      color: rgba(255,255,255,0.38);
+      font-family: var(--mono);
+      font-size: 7.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .footer-center {
+      position: absolute;
+      left: 50%;
+      z-index: 1;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 0;
+    }
+
+    .footer-org {
+      color: rgba(255,255,255,0.90);
+      font-family: var(--display);
+      font-size: 14px;
+      font-style: italic;
+      font-weight: 700;
+      letter-spacing: 0.01em;
+      white-space: nowrap;
+    }
+
+    .footer-org sup {
+      margin-left: 1px;
+      font-family: var(--body);
+      font-size: 9px;
+      font-style: normal;
+      opacity: 0.65;
+      vertical-align: super;
+    }
+
+    .footer-right {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-shrink: 0;
+    }
+
+    .footer-powered-label {
+      color: rgba(255,255,255,0.30);
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
     }
 
     .footer-pi-logo {
-      height: 20px;
       width: auto;
-      object-fit: contain;
-      filter: brightness(0) invert(1);
-      opacity: .78;
+      height: 26px;
+      transition: opacity 0.2s;
     }
 
-    .error-box {
-      margin: 40px auto;
-      max-width: 860px;
-      background: #fff;
-      border: 1px solid rgba(155,44,44,.25);
-      color: var(--danger);
-      padding: 20px;
-      box-shadow: var(--shadow-sm);
-      border-radius: var(--radius);
+    .footer-pi-logo:hover {
+      opacity: 0.9;
+    }
+
+    /* ─────────────────────────────────────────────────────────────
+       ANIMACIONES, RESPONSIVE Y MODO IMPRESIÓN
+    ───────────────────────────────────────────────────────────── */
+    .fade-in {
+      animation: fadeUp 0.55s cubic-bezier(.22,.68,0,1.2) both;
+    }
+
+    @keyframes fadeUp {
+      from {
+        opacity: 0;
+        transform: translateY(22px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    ::-webkit-scrollbar {
+      width: 4px;
+      height: 4px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      border-radius: 4px;
+      background: var(--rule-strong);
+    }
+
+    @media (max-width: 1380px) {
+      :root {
+        --insight-w: 320px;
+      }
+
+      .kpi-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
     }
 
     @media (max-width: 1180px) {
-      .hd-center {
-        display: none;
-      }
-
       .layout {
         grid-template-columns: 1fr;
       }
 
-      .sidebar {
+      .sidebar,
+      .insight-rail {
         display: none;
       }
 
-      .kpi-grid,
+      .hd-center {
+        display: none;
+      }
+
+      main {
+        padding: 28px 24px 90px;
+      }
+
+      .methodology-grid,
       .grid-4 {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .grid-3 {
-        grid-template-columns: 1fr;
-      }
-
-      .col-span-3,
       .col-span-4 {
-        grid-column: auto;
+        grid-column: span 2;
       }
     }
 
-    @media (max-width: 760px) {
+    @media (max-width: 820px) {
       header {
+        height: 52px;
         padding: 0 14px;
       }
 
-      .hd-sub,
-      .hd-ts {
-        display: none;
-      }
-
-      .hd-right {
-        gap: 5px;
-      }
-
+      .hd-hide-sm,
+      .hd-center,
+      .hd-ts,
       .top-link {
-        padding: 6px 8px;
-        font-size: 7.5px;
+        display: none !important;
+      }
+
+      .hd-mobile-menu {
+        display: inline-flex !important;
+      }
+
+      .mobile-menu {
+        top: 52px;
       }
 
       main {
-        padding: 22px 14px 78px;
+        padding: 18px 12px 82px;
       }
 
       .hero {
         padding: 24px 18px;
       }
 
+      .hero::after {
+        display: none;
+      }
+
       .grid-2,
       .grid-3,
       .grid-4,
-      .kpi-grid,
-      .equation-grid {
+      .methodology-grid,
+      .equation-grid,
+      .simulator-shell {
         grid-template-columns: 1fr;
       }
 
-      .col-span-2 {
-        grid-column: auto;
+      .col-span-2,
+      .col-span-3,
+      .col-span-4 {
+        grid-column: span 1;
+      }
+
+      .kpi-grid,
+      .sim-kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .chart {
+        height: 285px;
+      }
+
+      .chart.tall {
+        height: 340px;
       }
 
       .dash-footer {
-        grid-template-columns: 1fr;
-        height: 38px;
-        padding: 0 14px;
+        height: auto;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 8px;
+        padding: 14px 16px;
       }
 
-      .footer-left,
-      .footer-right {
-        display: none;
+      .footer-center {
+        position: static;
+        transform: none;
+        order: -1;
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .footer-left {
+        width: 100%;
+        order: 1;
+        text-align: center;
+      }
+    }
+
+    @media (max-width: 520px) {
+      .kpi-grid,
+      .sim-kpi-grid,
+      .scenario-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero h1 {
+        font-size: 35px;
+      }
+
+      .section-title {
+        font-size: 24px;
+      }
+
+      .sim-main {
+        font-size: 44px;
       }
     }
   </style>
 </head>
-
 <body>
-<header>
-  <div class="hd-brand">
-    <div class="hd-name">AWA05</div>
-    <div class="hd-sep"></div>
-    <div class="hd-sub">Análisis estadístico</div>
+  <header>
+    <div class="hd-brand">
+      <span class="hd-name">AWA05</span>
+      <div class="hd-sep"></div>
+      <span class="hd-sub hd-hide-sm">Análisis estadístico avanzado</span>
+    </div>
+
+    <div class="hd-center">
+      <div class="hd-stat insightable" data-insight="Producción total válida del bloque. Incluye solo incrementos consistentes después del filtrado de eventos físicamente sospechosos.">
+        <div class="hd-stat-val" id="h-production">—</div>
+        <div class="hd-stat-lbl">Producción</div>
+      </div>
+      <div class="hd-sep"></div>
+      <div class="hd-stat insightable" data-insight="Ventanas horarias donde existe simultáneamente producción y clima. Ese es el tamaño real del análisis inferencial producción–clima.">
+        <div class="hd-stat-val" id="h-windows">—</div>
+        <div class="hd-stat-lbl">Ventanas</div>
+      </div>
+      <div class="hd-sep"></div>
+      <div class="hd-stat insightable" data-insight="Solapamiento temporal real entre nivel de agua y estación climática. La inferencia climática no usa datos fuera de este rango.">
+        <div class="hd-stat-val" id="h-overlap">—</div>
+        <div class="hd-stat-lbl">Solapamiento</div>
+      </div>
+      <div class="hd-sep"></div>
+      <div class="hd-stat insightable" data-insight="La variable climática con mayor asociación monotónica, según Spearman. Es asociación, no causalidad.">
+        <div class="hd-stat-val" id="h-best-rho">—</div>
+        <div class="hd-stat-lbl">Mejor ρ</div>
+      </div>
+    </div>
+
+    <div class="hd-right">
+      <a class="top-link" href="index.html">Inicio</a>
+      <a class="top-link" href="dashboard.html">Dashboard</a>
+      <a class="top-link active" href="analisis-estadistico.html">Análisis</a>
+      <a class="top-link" href="comparativo-calidad-agua.html">Calidad</a>
+      <div class="hd-ts" id="header-ts">—</div>
+      <button class="btn hd-mobile-menu" onclick="toggleMobileMenu()" aria-label="Menú">☰</button>
+    </div>
+  </header>
+
+  <div id="mobile-menu" class="mobile-menu">
+    <nav class="mobile-nav">
+      <a class="mobile-nav-link active" href="#resumen">Resumen</a>
+      <a class="mobile-nav-link" href="#metodologia">Metodología</a>
+      <a class="mobile-nav-link" href="#simulador">Simulador</a>
+      <a class="mobile-nav-link" href="#datos">Datos</a>
+      <a class="mobile-nav-link" href="#ecuaciones">Ecuaciones</a>
+      <a class="mobile-nav-link" href="#produccion">Producción</a>
+      <a class="mobile-nav-link" href="#correlaciones">Correlaciones</a>
+      <a class="mobile-nav-link" href="#anova">ANOVA / post hoc</a>
+      <a class="mobile-nav-link" href="#modelos">Modelos</a>
+      <a class="mobile-nav-link" href="#diagnostico">Diagnóstico</a>
+      <a class="mobile-nav-link" href="#conclusiones">Conclusiones</a>
+    </nav>
+    <div class="mobile-nav-foot">
+      <a class="mobile-action" href="index.html">← Inicio</a>
+      <a class="mobile-action" href="dashboard.html">Dashboard</a>
+      <a class="mobile-action" href="comparativo-calidad-agua.html">Calidad de agua</a>
+    </div>
   </div>
 
-  <div class="hd-center">
-    <div class="hd-stat">
-      <div class="hd-stat-val" id="h-prod">—</div>
-      <div class="hd-stat-lbl">Producción</div>
-    </div>
-    <div class="hd-stat">
-      <div class="hd-stat-val" id="h-modelo">—</div>
-      <div class="hd-stat-lbl">Ventanas</div>
-    </div>
-    <div class="hd-stat">
-      <div class="hd-stat-val" id="h-overlap">—</div>
-      <div class="hd-stat-lbl">Solapamiento</div>
-    </div>
-    <div class="hd-stat">
-      <div class="hd-stat-val" id="h-rho">—</div>
-      <div class="hd-stat-lbl">Mejor ρ</div>
-    </div>
+  <div class="hover-tooltip" id="hover-tooltip"></div>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="sb-section">
+        <span class="sb-label">Navegación</span>
+        <a class="sb-link active" href="#resumen">Resumen ejecutivo</a>
+        <a class="sb-link" href="#metodologia">Método científico</a>
+        <a class="sb-link" href="#simulador">Simulador climático</a>
+        <a class="sb-link" href="#datos">Bloque y calidad de datos</a>
+        <a class="sb-link" href="#ecuaciones">Ecuaciones</a>
+        <a class="sb-link" href="#produccion">Producción observada</a>
+        <a class="sb-link" href="#supuestos">Supuestos</a>
+        <a class="sb-link" href="#correlaciones">Correlaciones</a>
+        <a class="sb-link" href="#anova">ANOVA / post hoc</a>
+        <a class="sb-link" href="#modelos">Modelos</a>
+        <a class="sb-link" href="#diagnostico">Diagnóstico</a>
+        <a class="sb-link" href="#conclusiones">Conclusiones</a>
+      </div>
+
+      <div class="sb-divider"></div>
+
+      <div class="sb-section">
+        <span class="sb-label">Bloque activo</span>
+        <div class="sb-kpis">
+          <div class="sb-kpi insightable" data-insight="Identificador del bloque experimental actual. Este primer bloque contiene todos los datos disponibles hasta el momento.">
+            <div class="sb-kpi-lbl">ID</div>
+            <div class="sb-kpi-val" id="sb-block">B01</div>
+          </div>
+          <div class="sb-kpi insightable" data-insight="Cantidad de registros crudos de nivel de agua. No todos se convierten en eventos válidos de producción.">
+            <div class="sb-kpi-lbl">Agua</div>
+            <div class="sb-kpi-val" id="sb-water">—</div>
+          </div>
+          <div class="sb-kpi insightable" data-insight="Cantidad de registros crudos de la estación climática. Hay un registro sin timestamp según el control de calidad.">
+            <div class="sb-kpi-lbl">Clima</div>
+            <div class="sb-kpi-val" id="sb-climate">—</div>
+          </div>
+          <div class="sb-kpi insightable" data-insight="El R² del modelo lineal indica qué fracción de la variación horaria logra explicar el conjunto climático usado.">
+            <div class="sb-kpi-lbl">R² OLS</div>
+            <div class="sb-kpi-val" id="sb-r2">—</div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main>
+      <section id="resumen" class="hero insightable" data-insight="Esta página no recalcula estadística pesada en el navegador. Presenta resultados precalculados en Python y los transforma en narrativa, gráficos e interpretación interactiva.">
+        <div class="hero-inner">
+          <div class="eyebrow">Informe científico interactivo · bloque experimental B01</div>
+          <h1>Producción de agua atmosférica explicada por microclima</h1>
+          <p>
+            Esta versión convierte el análisis estadístico en un informe navegable: cada tarjeta, ecuación,
+            gráfico y tabla tiene interpretación contextual. La variable dependiente es producción de agua,
+            y las variables explicativas son humedad, temperatura, punto de rocío, VPD, viento, lluvia,
+            radiación y tiempo operativo. El simulador traduce la evidencia del bloque en escenarios de producción.
+          </p>
+          <div class="pill-row">
+            <span class="pill ok">JSON precalculado</span>
+            <span class="pill ok">MathJax</span>
+            <span class="pill ok">Plotly</span>
+            <span class="pill warn">1 bloque activo</span>
+            <span class="pill">ANOVA</span>
+            <span class="pill">Welch</span>
+            <span class="pill">Kruskal-Wallis</span>
+            <span class="pill">Post hoc</span>
+            <span class="pill">OLS HAC</span>
+            <span class="pill">Simulador</span>
+          </div>
+          <div class="hero-actions">
+            <a class="hero-action primary" href="#simulador">Abrir simulador</a>
+            <a class="hero-action" href="#correlaciones">Ver evidencia climática</a>
+            <a class="hero-action" href="#anova">Ver pruebas de grupos</a>
+            <a class="hero-action" href="#modelos">Ver modelos</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div id="kpi-grid" class="kpi-grid"></div>
+      </section>
+
+      <section id="metodologia" class="section">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Diseño analítico</div>
+            <h2 class="section-title">De CSV crudo a evidencia <em>interpretada</em></h2>
+            <p class="section-sub">
+              El objetivo no es hacer una sincronización fina para operación en vivo, sino construir un bloque analítico
+              precargado. Este bloque resume todo lo observado y separa producción total de inferencia producción–clima.
+            </p>
+          </div>
+          <span class="badge violet">Pipeline</span>
+        </div>
+        <div class="section-rule"></div>
+        <div class="methodology-grid">
+          <div class="method-step insightable" data-insight="Los archivos nivel_raw.csv y clima_raw.csv se consideran fuentes crudas. Python hace la limpieza; el HTML solo muestra resultados.">
+            <div class="method-num">Paso 01</div>
+            <div class="method-title">Lectura cruda</div>
+            <div class="method-text">Se cargan registros de nivel y estación WS-2000 sin asumir que tienen la misma frecuencia.</div>
+          </div>
+          <div class="method-step insightable" data-insight="Se descartan saltos de producción que pueden representar vaciados, reinicios, ruido o intervalos físicamente no comparables.">
+            <div class="method-num">Paso 02</div>
+            <div class="method-title">Control físico</div>
+            <div class="method-text">Se separa producción válida de incrementos sospechosos y se documenta lo removido.</div>
+          </div>
+          <div class="method-step insightable" data-insight="La inferencia climática solo se ejecuta dentro del periodo donde hay simultáneamente agua y clima. Esto evita relacionar producción de mayo con clima faltante.">
+            <div class="method-num">Paso 03</div>
+            <div class="method-title">Solapamiento</div>
+            <div class="method-text">Se define un periodo común real para modelar producción como función del clima.</div>
+          </div>
+          <div class="method-step insightable" data-insight="La página consume statistical_analysis.json. Esa separación permite subir un HTML liviano y volver a recalcular cuando llegue el bloque 02.">
+            <div class="method-num">Paso 04</div>
+            <div class="method-title">Precarga</div>
+            <div class="method-text">Python exporta estadísticas, pruebas, modelos y series listas para visualización.</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="simulador" class="section">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Simulador exploratorio</div>
+            <h2 class="section-title">¿Cuánta agua produciría AWA05 bajo otro <em>microclima</em>?</h2>
+            <p class="section-sub">
+              El simulador usa el modelo lineal robusto disponible y lo mezcla con patrones observados por franja horaria.
+              No es una garantía operativa: es una traducción visual de la evidencia del bloque B01.
+            </p>
+          </div>
+          <span class="badge warn">Exploratorio</span>
+        </div>
+        <div class="section-rule"></div>
+
+        <div class="simulator-shell">
+          <div class="sim-panel insightable" data-insight="Modifica las variables climáticas y observa cómo cambia la producción estimada. La banda de incertidumbre usa el error RMSE del modelo.">
+            <div class="sim-readout">
+              <div class="sim-label">Producción estimada</div>
+              <div class="sim-main"><span id="sim-lph">—</span><span>L/h</span></div>
+              <div class="sim-sub" id="sim-sub">Ajusta las variables para calcular el escenario.</div>
+            </div>
+
+            <div class="sim-controls">
+              <div class="control insightable" data-insight="La temperatura modifica la capacidad del aire para retener vapor. Su efecto no es lineal físicamente, pero el simulador la usa según evidencia observada y OLS.">
+                <div class="control-head"><span class="control-label">Temperatura</span><span class="control-value" id="temp-val">20 °C</span></div>
+                <input id="temp" type="range" min="12" max="32" step="0.1" value="20" />
+              </div>
+
+              <div class="control insightable" data-insight="La humedad relativa es una de las variables con interpretación física más directa: a mayor humedad, más vapor disponible para condensar, aunque no siempre produce causalidad lineal.">
+                <div class="control-head"><span class="control-label">Humedad relativa</span><span class="control-value" id="humidity-val">78 %</span></div>
+                <input id="humidity" type="range" min="35" max="96" step="0.1" value="78" />
+              </div>
+
+              <div class="control insightable" data-insight="El VPD mide cuán lejos está el aire de la saturación. En principio, VPD bajo favorece condensación porque el aire está más cercano al punto de rocío.">
+                <div class="control-head"><span class="control-label">VPD</span><span class="control-value" id="vpd-val">0.55 kPa</span></div>
+                <input id="vpd" type="range" min="0.05" max="2.3" step="0.01" value="0.55" />
+              </div>
+
+              <div class="control insightable" data-insight="La radiación solar separa condiciones diurnas/nocturnas. En el bloque actual, el patrón nocturno mostró mejor desempeño medio.">
+                <div class="control-head"><span class="control-label">Radiación solar</span><span class="control-value" id="solar-val">0 W/m²</span></div>
+                <input id="solar" type="range" min="0" max="180" step="1" value="0" />
+              </div>
+
+              <div class="control insightable" data-insight="El viento puede renovar aire húmedo sobre el sistema, pero también puede introducir ruido. En el modelo actual su inferencia todavía es débil.">
+                <div class="control-head"><span class="control-label">Viento</span><span class="control-value" id="wind-val">0.4 km/h</span></div>
+                <input id="wind" type="range" min="0" max="8" step="0.1" value="0.4" />
+              </div>
+
+              <div class="control insightable" data-insight="La hora determina franja: madrugada, mañana, tarde o noche. Este factor se usa como ajuste empírico observado.">
+                <div class="control-head"><span class="control-label">Hora del día</span><span class="control-value" id="hour-val">22:00</span></div>
+                <input id="hour" type="range" min="0" max="23" step="1" value="22" />
+              </div>
+            </div>
+
+            <div class="scenario-grid">
+              <button class="scenario-btn" data-scenario="optimal">Óptimo observado</button>
+              <button class="scenario-btn" data-scenario="humid-night">Noche húmeda</button>
+              <button class="scenario-btn" data-scenario="dry-day">Tarde seca</button>
+              <button class="scenario-btn" data-scenario="block-mean">Promedio bloque</button>
+            </div>
+          </div>
+
+          <div class="card insightable" data-insight="Estas gráficas no son datos nuevos: son el modelo recorriendo valores posibles. Sirven para pensar escenarios y sensibilidad.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Respuesta simulada</div>
+                <div class="card-sub">Sensibilidad a humedad y mapa temperatura × humedad</div>
+              </div>
+              <span class="badge warn">Modelo + patrón observado</span>
+            </div>
+
+            <div class="sim-kpi-grid">
+              <div class="sim-kpi">
+                <div class="sim-kpi-label">Producción diaria</div>
+                <div class="sim-kpi-value" id="sim-day">—</div>
+                <div class="sim-kpi-note">Escenario × 24 h</div>
+              </div>
+              <div class="sim-kpi">
+                <div class="sim-kpi-label">Rango probable</div>
+                <div class="sim-kpi-value" id="sim-band">—</div>
+                <div class="sim-kpi-note">± RMSE del modelo</div>
+              </div>
+              <div class="sim-kpi">
+                <div class="sim-kpi-label">Lectura</div>
+                <div class="sim-kpi-value" id="sim-quality">—</div>
+                <div class="sim-kpi-note">comparado con B01</div>
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div>
+                <div id="chart-sim-sensitivity" class="chart short"></div>
+              </div>
+              <div>
+                <div id="chart-sim-heatmap" class="chart short"></div>
+              </div>
+            </div>
+
+            <div class="sim-explain" id="sim-explain">
+              <strong>Interpretación:</strong> mueve los controles para ver cómo el modelo responde. Si el R² es bajo,
+              el simulador debe leerse como exploración, no como predicción contractual.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="datos" class="section">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Auditoría de datos</div>
+            <h2 class="section-title">Periodo real del bloque y <em>solapamiento</em></h2>
+            <p class="section-sub">
+              La producción/nivel se extiende más allá del clima. Por eso la producción total y la producción climáticamente explicable
+              son conceptos distintos y se muestran separados.
+            </p>
+          </div>
+          <span class="badge ok">Datos reales</span>
+        </div>
+        <div class="section-rule"></div>
+
+        <div class="grid-2">
+          <div class="card insightable" data-insight="Si el clima termina antes que la producción, el análisis producción–clima solo puede usar el tramo común. Esto evita inferencia falsa.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Ficha técnica del bloque</div>
+                <div class="card-sub">Fechas, duración, producción y cobertura</div>
+              </div>
+              <span class="badge">B01</span>
+            </div>
+            <div id="block-table" class="table-wrap"></div>
+          </div>
+
+          <div class="card insightable" data-insight="El control de calidad identifica cuántos eventos de producción fueron aceptados y cuántos fueron removidos por reglas físicas.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Control de calidad</div>
+                <div class="card-sub">Registros, eventos, outliers y ventanas analíticas</div>
+              </div>
+              <span class="badge warn">QC</span>
+            </div>
+            <div id="quality-table" class="table-wrap"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="ecuaciones" class="section">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Formalización matemática</div>
+            <h2 class="section-title">Ecuaciones base del análisis</h2>
+            <p class="section-sub">
+              El informe utiliza ecuaciones renderizadas con MathJax para que el marco analítico sea transparente y auditable.
+            </p>
+          </div>
+          <span class="badge violet">MathJax</span>
+        </div>
+        <div class="section-rule"></div>
+        <div id="equation-grid" class="equation-grid"></div>
+      </section>
+
+      <section id="produccion" class="section">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Producción observada</div>
+            <h2 class="section-title">Patrones diarios, horarios y climáticos</h2>
+            <p class="section-sub">
+              La producción de AWA05 se analiza en términos de litros por día, litros por hora y grupos horarios.
+              Las gráficas incluyen texto de lectura para evitar visualizaciones decorativas.
+            </p>
+          </div>
+          <span class="badge">Series</span>
+        </div>
+        <div class="section-rule"></div>
+
+        <div class="grid-2">
+          <div class="card insightable" data-insight="Este gráfico separa producción diaria y clima disponible. Los días con producción pero sin clima se mantienen para producción total, pero no para inferencia climática.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Producción diaria + clima</div>
+                <div class="card-sub">Litros por día, humedad media y temperatura media</div>
+              </div>
+              <span class="badge">Día</span>
+            </div>
+            <div id="chart-daily" class="chart"></div>
+            <div id="daily-note" class="chart-note"></div>
+          </div>
+
+          <div class="card insightable" data-insight="El perfil por franja horaria muestra cuándo el sistema produjo más dentro del tramo con datos climáticos. Es evidencia intra-bloque.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Franja horaria</div>
+                <div class="card-sub">Producción media, humedad, VPD y radiación</div>
+              </div>
+              <span class="badge">Daypart</span>
+            </div>
+            <div id="chart-daypart" class="chart"></div>
+            <div id="daypart-note" class="chart-note"></div>
+          </div>
+
+          <div class="card col-span-2 insightable" data-insight="La serie horaria permite ver si la producción aparece en pulsos, si hay horas de cero producción y cómo conviven humedad, VPD y radiación.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Serie horaria analítica</div>
+                <div class="card-sub">100 ventanas horarias con producción y clima</div>
+              </div>
+              <span class="badge ok">Solapamiento</span>
+            </div>
+            <div id="chart-hourly" class="chart tall"></div>
+            <div class="chart-note">
+              <strong>Cómo leerla:</strong> los picos de producción no deben interpretarse aisladamente; deben cruzarse con humedad, VPD y radiación.
+              Pasa el cursor sobre cada punto para ver interpretación contextual.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="supuestos" class="section">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Rigor inferencial</div>
+            <h2 class="section-title">Pruebas de supuestos estadísticos</h2>
+            <p class="section-sub">
+              Antes de escoger ANOVA, Welch o Kruskal-Wallis se evalúan normalidad, estacionariedad y varianzas.
+              El informe explica qué significa cada p-value.
+            </p>
+          </div>
+          <span class="badge warn">Validación</span>
+        </div>
+        <div class="section-rule"></div>
+
+        <div class="grid-2">
+          <div class="card col-span-2 insightable" data-insight="Una prueba significativa no significa que el sistema falle; significa que el supuesto estadístico podría no cumplirse y conviene usar método robusto o no paramétrico.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Matriz de supuestos</div>
+                <div class="card-sub">Normalidad, estacionariedad y homogeneidad de varianzas</div>
+              </div>
+              <span class="badge">p-values</span>
+            </div>
+            <div id="assumptions-table" class="table-wrap"></div>
+            <div class="warning-note">
+              <strong>Regla de lectura:</strong> si p &lt; 0.05 se rechaza la hipótesis nula de la prueba. En normalidad eso sugiere no-normalidad;
+              en Levene/Brown-Forsythe sugiere varianzas diferentes; en ADF/KPSS la interpretación depende de la hipótesis nula específica.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="correlaciones" class="section">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Asociación climática</div>
+            <h2 class="section-title">Correlaciones y rezagos con interpretación</h2>
+            <p class="section-sub">
+              Se reportan Pearson, Spearman, Kendall, correlaciones parciales y rezagos. La lectura prioriza dirección, magnitud,
+              significancia y plausibilidad física.
+            </p>
+          </div>
+          <span class="badge">ρ / r / τ</span>
+        </div>
+        <div class="section-rule"></div>
+
+        <div class="grid-2">
+          <div class="card insightable" data-insight="Spearman captura relaciones monotónicas y es útil cuando las variables no son normales o la relación no es perfectamente lineal.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Ranking de correlación</div>
+                <div class="card-sub">Producción horaria vs clima</div>
+              </div>
+              <span class="badge">Spearman</span>
+            </div>
+            <div id="chart-corr" class="chart"></div>
+            <div id="corr-note" class="chart-note"></div>
+          </div>
+
+          <div class="card insightable" data-insight="Los rezagos prueban si el clima de horas previas se asocia mejor con la producción actual. Esto es útil porque la condensación puede responder con retardo.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Mapa de rezagos</div>
+                <div class="card-sub">0, 1, 2, 3, 6 y 12 horas</div>
+              </div>
+              <span class="badge violet">Lag</span>
+            </div>
+            <div id="chart-lags" class="chart"></div>
+            <div class="chart-note">
+              <strong>Interpretación:</strong> si un lag supera a lag 0, puede existir memoria atmosférica u operación retardada; no implica causalidad directa.
+            </div>
+          </div>
+
+          <div class="card col-span-2 insightable" data-insight="La correlación parcial pregunta si una variable mantiene relación con producción incluso controlando otra variable. Ayuda a separar efectos confundidos.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Tablas de correlación y correlación parcial</div>
+                <div class="card-sub">Con p-values y controles</div>
+              </div>
+              <span class="badge">Inferencia</span>
+            </div>
+            <div class="grid-2">
+              <div id="correlation-table" class="table-wrap"></div>
+              <div id="partial-table" class="table-wrap"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="anova" class="section">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Comparación entre escenarios</div>
+            <h2 class="section-title">ANOVA, Welch, Kruskal-Wallis y post hoc</h2>
+            <p class="section-sub">
+              Dentro del único bloque activo, se comparan grupos climáticos y franjas horarias. Cuando los supuestos son débiles,
+              la lectura se apoya en Welch, Kruskal-Wallis, Games-Howell y tamaños de efecto.
+            </p>
+          </div>
+          <span class="badge warn">Intra-bloque</span>
+        </div>
+        <div class="section-rule"></div>
+
+        <div class="grid-2">
+          <div class="card col-span-2 insightable" data-insight="Esta tabla responde: ¿la producción promedio cambia entre grupos? Mira p-value, pero también tamaño de efecto. Un p no significativo con efecto pequeño sugiere evidencia débil.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Pruebas globales por agrupación</div>
+                <div class="card-sub">ANOVA clásico, Welch y Kruskal-Wallis</div>
+              </div>
+              <span class="badge">Global</span>
+            </div>
+            <div id="anova-table" class="table-wrap"></div>
+          </div>
+
+          <div class="card insightable" data-insight="Los tamaños de efecto indican magnitud, no solo significancia. Eta, omega y epsilon ayudan a evitar conclusiones exageradas.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Tamaños de efecto</div>
+                <div class="card-sub">η², ω² y ε² por agrupación</div>
+              </div>
+              <span class="badge ok">Magnitud</span>
+            </div>
+            <div id="chart-effects" class="chart"></div>
+            <div class="chart-note">
+              <strong>Lectura:</strong> un efecto grande con p no significativa puede sugerir baja potencia; un efecto pequeño con p significativa puede tener poca relevancia práctica.
+            </div>
+          </div>
+
+          <div class="card insightable" data-insight="El post hoc responde entre qué pares de grupos hay diferencias. La corrección evita inflar falsos positivos por múltiples comparaciones.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Post hoc destacado</div>
+                <div class="card-sub">Tukey, Games-Howell y Mann-Whitney Holm</div>
+              </div>
+              <span class="badge">Pares</span>
+            </div>
+            <div id="posthoc-table" class="table-wrap"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="modelos" class="section">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Modelado predictivo</div>
+            <h2 class="section-title">OLS robusto y modelos no lineales</h2>
+            <p class="section-sub">
+              El modelo lineal se presenta por interpretabilidad; los modelos no lineales se reportan para explorar señales.
+              La validación cruzada es más importante que el ajuste dentro de muestra.
+            </p>
+          </div>
+          <span class="badge">Modelos</span>
+        </div>
+        <div class="section-rule"></div>
+
+        <div class="grid-2">
+          <div class="card col-span-2 insightable" data-insight="OLS con errores HAC/Newey-West intenta corregir autocorrelación y heterocedasticidad. Los coeficientes son interpretables, pero con R² bajo deben leerse con cautela.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Coeficientes OLS robustos</div>
+                <div class="card-sub">Errores HAC / Newey-West</div>
+              </div>
+              <span class="badge">OLS HAC</span>
+            </div>
+            <div id="ols-table" class="table-wrap"></div>
+            <div id="ols-note" class="chart-note"></div>
+          </div>
+
+          <div class="card insightable" data-insight="El ajuste dentro de muestra puede verse bueno en modelos flexibles, pero lo importante es cómo se comportan en validación cruzada. CV R² negativo indica baja generalización.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Comparación de modelos</div>
+                <div class="card-sub">R², MAE, RMSE y validación cruzada</div>
+              </div>
+              <span class="badge warn">CV</span>
+            </div>
+            <div id="model-table" class="table-wrap"></div>
+          </div>
+
+          <div class="card insightable" data-insight="La importancia de variables en Random Forest o Gradient Boosting detecta relaciones no lineales, pero no debe confundirse con causalidad.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Importancia de variables</div>
+                <div class="card-sub">Modelos no lineales</div>
+              </div>
+              <span class="badge violet">ML</span>
+            </div>
+            <div id="chart-importance" class="chart"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="diagnostico" class="section">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Diagnóstico estadístico</div>
+            <h2 class="section-title">Predicción, residuos e influencia</h2>
+            <p class="section-sub">
+              Un modelo serio no solo reporta R²; también muestra errores, residuos, autocorrelación,
+              heterocedasticidad y puntos influyentes.
+            </p>
+          </div>
+          <span class="badge warn">Diagnóstico</span>
+        </div>
+        <div class="section-rule"></div>
+
+        <div class="grid-2">
+          <div class="card insightable" data-insight="Si los puntos siguen la diagonal, el modelo predice bien. Si se dispersan mucho, el clima observado no basta para explicar la producción horaria.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Observado vs predicho</div>
+                <div class="card-sub">Modelo OLS robusto</div>
+              </div>
+              <span class="badge">Fit</span>
+            </div>
+            <div id="chart-obs-pred" class="chart"></div>
+          </div>
+
+          <div class="card insightable" data-insight="Los residuos deberían verse como ruido sin patrón. Si hay estructura, faltan variables, hay no linealidad o la escala temporal no captura bien el proceso.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Residuos en el tiempo</div>
+                <div class="card-sub">Error observado − predicho</div>
+              </div>
+              <span class="badge">Error</span>
+            </div>
+            <div id="chart-residuals" class="chart"></div>
+          </div>
+
+          <div class="card col-span-2 insightable" data-insight="Estas pruebas no son decoración: determinan si el modelo necesita robustez, si hay puntos dominantes o si los errores no son independientes.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Tabla diagnóstica</div>
+                <div class="card-sub">Durbin-Watson, Ljung-Box, Breusch-Pagan y Cook</div>
+              </div>
+              <span class="badge">Tests</span>
+            </div>
+            <div id="diagnostics-table" class="table-wrap"></div>
+          </div>
+        </div>
+      </section>
+
+      <section id="conclusiones" class="section">
+        <div class="section-head">
+          <div>
+            <div class="eyebrow">Síntesis científica</div>
+            <h2 class="section-title">Qué sí se puede afirmar y qué todavía no</h2>
+            <p class="section-sub">
+              Las conclusiones distinguen evidencia operacional, evidencia estadística y límites por tener solo un bloque experimental.
+            </p>
+          </div>
+          <span class="badge ok">Auditable</span>
+        </div>
+        <div class="section-rule"></div>
+
+        <div class="grid-2">
+          <div class="card insightable" data-insight="Estas conclusiones se generan a partir del JSON y son conservadoras: separan evidencia real de interpretación exploratoria.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Conclusiones</div>
+                <div class="card-sub">Lectura automática del bloque</div>
+              </div>
+              <span class="badge ok">Evidencia</span>
+            </div>
+            <ul id="conclusion-list" class="microcopy"></ul>
+          </div>
+
+          <div class="card insightable" data-insight="Las limitaciones son parte del rigor: muestran qué falta antes de hacer afirmaciones inter-bloque o causalidad climática fuerte.">
+            <div class="card-head">
+              <div>
+                <div class="card-title">Limitaciones</div>
+                <div class="card-sub">Cautelas metodológicas</div>
+              </div>
+              <span class="badge warn">Cautela</span>
+            </div>
+            <ul id="limitation-list" class="microcopy"></ul>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <aside class="insight-rail">
+      <div class="insight-card">
+        <div class="insight-eyebrow">Lente interpretativa</div>
+        <div class="insight-title" id="insight-title">Pasa el cursor sobre cualquier elemento</div>
+        <div class="insight-text" id="insight-text">
+          Cada gráfico, ecuación, KPI y tabla puede explicar qué significa, cómo se interpreta y qué cautela estadística aplica.
+        </div>
+        <div class="insight-meta" id="insight-meta">Modo explicación activo</div>
+      </div>
+
+      <div class="card" style="margin-top:16px">
+        <div class="card-head">
+          <div>
+            <div class="card-title">Lectura rápida</div>
+            <div class="card-sub">Resumen dinámico</div>
+          </div>
+        </div>
+        <div id="quick-reading" class="microcopy">
+          Cargando datos estadísticos…
+        </div>
+      </div>
+    </aside>
   </div>
 
-  <div class="hd-right">
-    <a class="top-link" href="index.html">Inicio</a>
-    <a class="top-link" href="dashboard.html">Dashboard</a>
-    <a class="top-link active" href="analisis-estadistico.html">Análisis</a>
-    <a class="top-link" href="comparativo-calidad-agua.html">Calidad</a>
-    <div class="hd-ts" id="header-ts">—</div>
-  </div>
-</header>
-
-<div class="layout">
-  <aside class="sidebar">
-    <span class="sb-label">Navegación</span>
-    <a class="sb-link active" href="#resumen">Resumen</a>
-    <a class="sb-link" href="#datos">Datos y bloque</a>
-    <a class="sb-link" href="#ecuaciones">Ecuaciones</a>
-    <a class="sb-link" href="#descriptivos">Descriptivos</a>
-    <a class="sb-link" href="#supuestos">Supuestos</a>
-    <a class="sb-link" href="#correlaciones">Correlaciones</a>
-    <a class="sb-link" href="#anova">ANOVA / Post hoc</a>
-    <a class="sb-link" href="#modelos">Modelos</a>
-    <a class="sb-link" href="#diagnostico">Diagnóstico</a>
-    <a class="sb-link" href="#conclusiones">Conclusiones</a>
-
-    <div class="sb-divider"></div>
-
-    <span class="sb-label">Bloque activo</span>
-    <div class="sb-kpis">
-      <div class="sb-kpi">
-        <div class="sb-kpi-lbl">ID</div>
-        <div class="sb-kpi-val" id="sb-block">B01</div>
-      </div>
-      <div class="sb-kpi">
-        <div class="sb-kpi-lbl">Agua</div>
-        <div class="sb-kpi-val" id="sb-water">—</div>
-      </div>
-      <div class="sb-kpi">
-        <div class="sb-kpi-lbl">Clima</div>
-        <div class="sb-kpi-val" id="sb-climate">—</div>
-      </div>
+  <footer class="dash-footer">
+    <div class="footer-left" id="footer-ts">—</div>
+    <div class="footer-center">
+      <div class="footer-org">Asociación Amigos del Lago de Atitlán<sup>®</sup> · 2026</div>
     </div>
-  </aside>
-
-  <main>
-    <section id="resumen" class="hero">
-      <div class="hero-inner">
-        <div class="eyebrow">Informe técnico precalculado</div>
-        <h1>Análisis Estadístico Inferencial y Modelado Climático</h1>
-        <p>
-          Evaluación científica del sistema AWA05 usando producción de agua como variable dependiente
-          y condiciones climáticas como variables explicativas. Este HTML no ejecuta estadística pesada:
-          solo despliega resultados generados previamente por Python.
-        </p>
-        <div class="pill-row">
-          <span class="pill ok">MathJax</span>
-          <span class="pill ok">Plotly</span>
-          <span class="pill">ANOVA</span>
-          <span class="pill">Welch</span>
-          <span class="pill">Kruskal-Wallis</span>
-          <span class="pill">Post hoc</span>
-          <span class="pill">HAC/Newey-West</span>
-          <span class="pill warn">1 bloque activo</span>
-        </div>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="kpi-grid" id="kpi-grid"></div>
-    </section>
-
-    <section id="datos" class="section">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">Auditoría de datos</div>
-          <h2 class="section-title">Bloque experimental, cobertura y solapamiento real</h2>
-          <p class="section-sub">
-            El bloque actual usa todos los datos disponibles. La inferencia producción–clima se limita
-            al periodo en el que ambas fuentes tienen datos simultáneos.
-          </p>
-        </div>
-        <span class="badge">Bloque B01</span>
-      </div>
-      <div class="section-rule"></div>
-
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Ficha técnica del bloque</div>
-              <div class="card-sub">Fechas, duración y registros</div>
-            </div>
-            <span class="badge ok">Datos reales</span>
-          </div>
-          <div id="block-table" class="table-wrap"></div>
-        </div>
-
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Control de calidad</div>
-              <div class="card-sub">Filtrado, eventos y cobertura</div>
-            </div>
-            <span class="badge warn">QC</span>
-          </div>
-          <div id="quality-table" class="table-wrap"></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="ecuaciones" class="section">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">Marco matemático</div>
-          <h2 class="section-title">Definición formal de variables y estimadores</h2>
-          <p class="section-sub">
-            Las ecuaciones están renderizadas con MathJax para mantener presentación de informe técnico.
-          </p>
-        </div>
-        <span class="badge">LaTeX</span>
-      </div>
-      <div class="section-rule"></div>
-
-      <div class="equation-grid">
-        <div class="equation-card">
-          <div class="equation-title">Producción por bloque</div>
-          \[
-            Y_b = V_{b,final} - V_{b,inicial}
-          \]
-          <p class="equation-desc">
-            Producción total del bloque experimental \(b\), estimada como diferencia de volumen.
-          </p>
-        </div>
-
-        <div class="equation-card">
-          <div class="equation-title">Producción normalizada</div>
-          \[
-            P_b = \frac{Y_b}{D_b}
-          \]
-          <p class="equation-desc">
-            Producción media diaria del bloque, expresada en litros por día válido.
-          </p>
-        </div>
-
-        <div class="equation-card">
-          <div class="equation-title">Agregación climática</div>
-          \[
-            \bar{X}_{j,b} = \frac{1}{n_b}\sum_{i=1}^{n_b}X_{j,i}
-          \]
-          <p class="equation-desc">
-            Promedio de la variable climática \(j\) durante el bloque \(b\).
-          </p>
-        </div>
-
-        <div class="equation-card">
-          <div class="equation-title">Varianza muestral</div>
-          \[
-            s^2 = \frac{1}{n-1}\sum_{i=1}^{n}(x_i-\bar{x})^2
-          \]
-          <p class="equation-desc">
-            Medida de dispersión usada para caracterizar estabilidad de producción y clima.
-          </p>
-        </div>
-
-        <div class="equation-card">
-          <div class="equation-title">Modelo lineal climático</div>
-          \[
-            Y_t = \beta_0 + \beta_1T_t + \beta_2RH_t + \beta_3VPD_t + \beta_4S_t + \varepsilon_t
-          \]
-          <p class="equation-desc">
-            Modelo interpretable de producción horaria a partir de temperatura, humedad, déficit de presión de vapor y radiación.
-          </p>
-        </div>
-
-        <div class="equation-card">
-          <div class="equation-title">Durbin-Watson</div>
-          \[
-            DW = \frac{\sum_{t=2}^{n}(e_t-e_{t-1})^2}{\sum_{t=1}^{n}e_t^2}
-          \]
-          <p class="equation-desc">
-            Diagnóstico de autocorrelación en residuos del modelo.
-          </p>
-        </div>
-
-        <div class="equation-card">
-          <div class="equation-title">Eta cuadrado</div>
-          \[
-            \eta^2 = \frac{SS_{between}}{SS_{total}}
-          \]
-          <p class="equation-desc">
-            Tamaño de efecto para diferencias entre grupos climáticos o franjas horarias.
-          </p>
-        </div>
-
-        <div class="equation-card">
-          <div class="equation-title">Cliff's delta</div>
-          \[
-            \delta = \frac{\#(x_i > y_j)-\#(x_i < y_j)}{mn}
-          \]
-          <p class="equation-desc">
-            Tamaño de efecto no paramétrico para comparaciones post hoc.
-          </p>
-        </div>
-      </div>
-    </section>
-
-    <section id="descriptivos" class="section">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">Estadística descriptiva</div>
-          <h2 class="section-title">Distribuciones de producción y clima</h2>
-          <p class="section-sub">
-            Resumen de medias, medianas, varianzas, intervalos de confianza, asimetría y curtosis.
-          </p>
-        </div>
-        <span class="badge">Descriptivos</span>
-      </div>
-      <div class="section-rule"></div>
-
-      <div class="grid-2">
-        <div class="card col-span-2">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Tabla descriptiva</div>
-              <div class="card-sub">Producción y variables climáticas principales</div>
-            </div>
-            <span class="badge">n, media, varianza</span>
-          </div>
-          <div id="descriptive-table" class="table-wrap"></div>
-        </div>
-
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Producción diaria</div>
-              <div class="card-sub">Litros por día calendario</div>
-            </div>
-            <span class="badge">Diario</span>
-          </div>
-          <div class="chart" id="chart-daily-production"></div>
-        </div>
-
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Perfil horario</div>
-              <div class="card-sub">Producción promedio por hora del día</div>
-            </div>
-            <span class="badge">24 h</span>
-          </div>
-          <div class="chart" id="chart-hourly-profile"></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="supuestos" class="section">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">Rigor inferencial</div>
-          <h2 class="section-title">Pruebas de supuestos estadísticos</h2>
-          <p class="section-sub">
-            Normalidad, homogeneidad de varianzas, autocorrelación, estacionariedad, heterocedasticidad y multicolinealidad.
-          </p>
-        </div>
-        <span class="badge warn">Validación</span>
-      </div>
-      <div class="section-rule"></div>
-
-      <div class="grid-2">
-        <div class="card col-span-2">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Supuestos</div>
-              <div class="card-sub">Pruebas paramétricas y robustas</div>
-            </div>
-            <span class="badge">p-values</span>
-          </div>
-          <div id="assumptions-table" class="table-wrap"></div>
-        </div>
-
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Distribución de producción horaria</div>
-              <div class="card-sub">Histograma analítico</div>
-            </div>
-            <span class="badge">Hist</span>
-          </div>
-          <div class="chart" id="chart-prod-hist"></div>
-        </div>
-
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="card-title">QQ Plot</div>
-              <div class="card-sub">Normalidad visual</div>
-            </div>
-            <span class="badge">QQ</span>
-          </div>
-          <div class="chart" id="chart-qq"></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="correlaciones" class="section">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">Asociación climática</div>
-          <h2 class="section-title">Correlaciones, parciales y rezagos</h2>
-          <p class="section-sub">
-            Pearson, Spearman, Kendall, correlaciones parciales y lags climáticos de 0 a 12 horas.
-          </p>
-        </div>
-        <span class="badge">Correlación</span>
-      </div>
-      <div class="section-rule"></div>
-
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Ranking de asociación</div>
-              <div class="card-sub">Producción horaria vs variables climáticas</div>
-            </div>
-            <span class="badge">Pearson/Spearman</span>
-          </div>
-          <div class="chart" id="chart-corr-bar"></div>
-        </div>
-
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Correlación parcial</div>
-              <div class="card-sub">Controlando temperatura, humedad o solar</div>
-            </div>
-            <span class="badge">Parcial</span>
-          </div>
-          <div id="partial-table" class="table-wrap"></div>
-        </div>
-
-        <div class="card col-span-2">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Tabla de correlaciones y rezagos</div>
-              <div class="card-sub">Matriz de asociaciones principales</div>
-            </div>
-            <span class="badge">Lag 0–12 h</span>
-          </div>
-          <div id="correlation-table" class="table-wrap"></div>
-          <br />
-          <div id="lag-table" class="table-wrap"></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="anova" class="section">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">Inferencia por escenarios</div>
-          <h2 class="section-title">ANOVA, Welch, Kruskal-Wallis y post hoc</h2>
-          <p class="section-sub">
-            Comparación intra-bloque de producción por franja horaria y terciles climáticos.
-          </p>
-        </div>
-        <span class="badge warn">Intra-bloque</span>
-      </div>
-      <div class="section-rule"></div>
-
-      <div class="grid-2">
-        <div class="card col-span-2">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Resumen de pruebas globales</div>
-              <div class="card-sub">ANOVA clásico, Welch ANOVA, Kruskal-Wallis, Levene y Brown-Forsythe</div>
-            </div>
-            <span class="badge">Global</span>
-          </div>
-          <div id="anova-summary-table" class="table-wrap"></div>
-        </div>
-
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Grupos por franja horaria</div>
-              <div class="card-sub">Medias, IC y dispersión</div>
-            </div>
-            <span class="badge">Daypart</span>
-          </div>
-          <div id="daypart-table" class="table-wrap"></div>
-        </div>
-
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Post hoc destacado</div>
-              <div class="card-sub">Games-Howell / Mann-Whitney Holm</div>
-            </div>
-            <span class="badge">Post hoc</span>
-          </div>
-          <div id="posthoc-table" class="table-wrap"></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="modelos" class="section">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">Modelado matemático</div>
-          <h2 class="section-title">Regresión, regularización y modelos no lineales</h2>
-          <p class="section-sub">
-            OLS con errores robustos HAC/Newey-West, Ridge, Lasso, Random Forest y Gradient Boosting.
-          </p>
-        </div>
-        <span class="badge">Modelos</span>
-      </div>
-      <div class="section-rule"></div>
-
-      <div class="grid-2">
-        <div class="card col-span-2">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Coeficientes OLS robustos HAC</div>
-              <div class="card-sub">Modelo interpretable con autocorrelación robusta</div>
-            </div>
-            <span class="badge">Newey-West</span>
-          </div>
-          <div id="ols-table" class="table-wrap"></div>
-        </div>
-
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Comparación de modelos</div>
-              <div class="card-sub">R², MAE, RMSE, CV</div>
-            </div>
-            <span class="badge">CV</span>
-          </div>
-          <div id="model-table" class="table-wrap"></div>
-        </div>
-
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Importancia de variables</div>
-              <div class="card-sub">Random Forest / Gradient Boosting</div>
-            </div>
-            <span class="badge">Importancia</span>
-          </div>
-          <div class="chart" id="chart-feature-importance"></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="diagnostico" class="section">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">Diagnóstico del modelo</div>
-          <h2 class="section-title">Residuos, predicción y puntos influyentes</h2>
-          <p class="section-sub">
-            Predicho vs observado, residuos, Ljung-Box, Breusch-Pagan, Durbin-Watson y distancia de Cook.
-          </p>
-        </div>
-        <span class="badge warn">Diagnóstico</span>
-      </div>
-      <div class="section-rule"></div>
-
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Observado vs predicho</div>
-              <div class="card-sub">OLS interpretable</div>
-            </div>
-            <span class="badge">Fit</span>
-          </div>
-          <div class="chart" id="chart-obs-pred"></div>
-        </div>
-
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Residuos OLS</div>
-              <div class="card-sub">Serie residual</div>
-            </div>
-            <span class="badge">Residuals</span>
-          </div>
-          <div class="chart" id="chart-residuals"></div>
-        </div>
-
-        <div class="card col-span-2">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Pruebas y Cook’s distance</div>
-              <div class="card-sub">Autocorrelación, heterocedasticidad e influencia</div>
-            </div>
-            <span class="badge">Diagnóstico</span>
-          </div>
-          <div id="diagnostics-table" class="table-wrap"></div>
-        </div>
-      </div>
-    </section>
-
-    <section id="conclusiones" class="section">
-      <div class="section-head">
-        <div>
-          <div class="eyebrow">Lectura técnica</div>
-          <h2 class="section-title">Conclusiones y limitaciones</h2>
-          <p class="section-sub">
-            Interpretación conservadora para un solo bloque experimental.
-          </p>
-        </div>
-        <span class="badge ok">Reproducible</span>
-      </div>
-      <div class="section-rule"></div>
-
-      <div class="grid-2">
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Conclusiones automáticas</div>
-              <div class="card-sub">Derivadas de resultados del script</div>
-            </div>
-            <span class="badge">Conclusión</span>
-          </div>
-          <ul id="conclusion-list" class="compact-list"></ul>
-        </div>
-
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Limitaciones</div>
-              <div class="card-sub">Control metodológico</div>
-            </div>
-            <span class="badge warn">Cautela</span>
-          </div>
-          <ul id="limitation-list" class="compact-list"></ul>
-        </div>
-      </div>
-    </section>
-  </main>
-</div>
-
-<div class="dash-footer">
-  <div class="footer-left" id="footer-ts">—</div>
-  <div class="footer-center">
-    <div class="footer-org">Asociación Amigos del Lago de Atitlán<sup>®</sup> &nbsp;·&nbsp; 2026</div>
-  </div>
-  <div class="footer-right">
-    <span class="footer-powered-label">Powered by</span>
-    <img src="Raspberry_Pi-Logo.wine.png" alt="Raspberry Pi" class="footer-pi-logo" title="Raspberry Pi 4B — AWA05">
-  </div>
-</div>
-
-<script>
-const fmt = {
-  num: (v, d = 2) => v === null || v === undefined || Number.isNaN(Number(v))
-    ? '—'
-    : Number(v).toLocaleString('es-GT', { maximumFractionDigits: d, minimumFractionDigits: d }),
-  int: v => v === null || v === undefined
-    ? '—'
-    : Number(v).toLocaleString('es-GT', { maximumFractionDigits: 0 }),
-  p: v => {
-    if (v === null || v === undefined || Number.isNaN(Number(v))) return '—';
-    return Number(v) < 0.001 ? 'p<0.001' : Number(v).toFixed(4);
-  },
-  date: s => s ? String(s).replace('T', ' ') : '—'
-};
-
-const labelMap = {
-  temp_c: 'Temperatura (°C)',
-  humidity_pct: 'Humedad (%)',
-  dew_point_c: 'Punto de rocío (°C)',
-  dew_point_calc_c: 'Rocío calculado (°C)',
-  pressure_hpa: 'Presión (hPa)',
-  wind_kmh: 'Viento (km/h)',
-  rain_mm_h: 'Lluvia (mm/h)',
-  solar_wm2: 'Radiación solar (W/m²)',
-  uv: 'UV',
-  vpd_kpa: 'VPD (kPa)',
-  abs_humidity_gm3: 'Humedad absoluta (g/m³)',
-  production_lph: 'Producción (L/h)',
-  hourly_production_lph: 'Producción horaria (L/h)',
-  daily_production_l: 'Producción diaria (L)'
-};
-
-function label(x) {
-  return labelMap[x] || x;
-}
-
-function table(headers, rows) {
-  return `
-    <table>
-      <thead>
-        <tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr>
-      </thead>
-      <tbody>
-        ${rows.map(r => `
-          <tr>
-            ${r.map(c => {
-              const isNum = typeof c === 'number' || String(c).match(/^-?\d+(\.\d+)?$/);
-              return `<td class="${isNum ? 'num' : ''}">${c ?? '—'}</td>`;
-            }).join('')}
-          </tr>
-        `).join('')}
-      </tbody>
-    </table>
-  `;
-}
-
-function setHTML(id, html) {
-  const el = document.getElementById(id);
-  if (el) el.innerHTML = html;
-}
-
-function pBadge(p) {
-  if (p === null || p === undefined || Number.isNaN(Number(p))) return '<span class="badge">NA</span>';
-  return Number(p) < 0.05
-    ? '<span class="badge ok">p&lt;.05</span>'
-    : '<span class="badge warn">NS</span>';
-}
-
-function layout(title) {
-  return {
-    margin: { l: 52, r: 22, t: 30, b: 48 },
-    paper_bgcolor: 'rgba(0,0,0,0)',
-    plot_bgcolor: 'rgba(0,0,0,0)',
-    font: { family: 'DM Sans', size: 11, color: '#3a3830' },
-    title: { text: title, font: { family: 'JetBrains Mono', size: 11, color: '#6b6860' }, x: 0 },
-    xaxis: { gridcolor: 'rgba(40,38,30,.08)', zerolinecolor: 'rgba(40,38,30,.12)' },
-    yaxis: { gridcolor: 'rgba(40,38,30,.08)', zerolinecolor: 'rgba(40,38,30,.12)' },
-    legend: { orientation: 'h', y: -.22 }
-  };
-}
-
-async function loadAnalysis() {
-  const res = await fetch('data/processed/statistical_analysis.json', { cache: 'no-store' });
-  if (!res.ok) throw new Error('No se pudo cargar data/processed/statistical_analysis.json');
-  return await res.json();
-}
-
-function renderHeader(data) {
-  const b = data.block || {};
-  const q = data.data_quality || {};
-  const corr = data.correlations?.hourly_production_vs_climate || [];
-  const best = corr[0];
-
-  document.getElementById('h-prod').textContent = `${fmt.num(b.water_production_l_valid, 1)} L`;
-  document.getElementById('h-modelo').textContent = fmt.int(q.hourly_windows_with_water_and_climate);
-  document.getElementById('h-overlap').textContent = q.analytical_overlap?.days ? `${fmt.num(q.analytical_overlap.days, 2)} d` : '—';
-  document.getElementById('h-rho').textContent = best ? `ρ ${fmt.num(best.spearman_rho, 2)}` : 'ρ —';
-  document.getElementById('header-ts').textContent = (data.metadata?.generated_at || '—').slice(0,16);
-
-  document.getElementById('footer-ts').textContent = 'Análisis generado · ' + (data.metadata?.generated_at || '—').slice(0,19);
-  document.getElementById('sb-block').textContent = b.block_id || 'B01';
-  document.getElementById('sb-water').textContent = `${fmt.int(q.water_records_total)} registros`;
-  document.getElementById('sb-climate').textContent = `${fmt.int(q.climate_records_total)} registros`;
-}
-
-function renderKPIs(data) {
-  const b = data.block || {};
-  const q = data.data_quality || {};
-  const bestCorr = data.correlations?.hourly_production_vs_climate?.[0];
-
-  const kpis = [
-    ['Producción total', fmt.num(b.water_production_l_valid, 2), 'L válidos'],
-    ['Producción diaria', fmt.num(b.water_l_per_day_overlap, 2), 'L/día en solapamiento'],
-    ['Registros agua', fmt.int(q.water_records_total), 'nivel_raw.csv'],
-    ['Registros clima', fmt.int(q.climate_records_total), 'clima_raw.csv'],
-    ['Solapamiento', fmt.num(q.analytical_overlap?.days, 2), 'días analizables'],
-    ['Ventanas modelo', fmt.int(q.hourly_windows_with_water_and_climate), 'horarias'],
-    ['Mejor asociación', bestCorr ? label(bestCorr.variable) : '—', 'variable climática'],
-    ['Spearman máximo', bestCorr ? fmt.num(bestCorr.spearman_rho, 3) : '—', 'ρ'],
-    ['R² OLS', fmt.num(data.models?.ols_hac?.r2, 3), 'modelo lineal'],
-    ['RMSE OLS', fmt.num(data.models?.ols_hac?.rmse, 3), 'L/h']
-  ];
-
-  setHTML('kpi-grid', kpis.map(k => `
-    <div class="kpi-card">
-      <div class="kpi-label">${k[0]}</div>
-      <div class="kpi-value">${k[1]}</div>
-      <div class="kpi-unit">${k[2]}</div>
+    <div class="footer-right">
+      <span class="footer-powered-label">Powered by</span>
+      <img src="Raspberry_Pi-Logo.wine.png" alt="Raspberry Pi" class="footer-pi-logo" title="Raspberry Pi 4B — AWA05" />
     </div>
-  `).join(''));
-}
+  </footer>
 
-function renderDataTables(data) {
-  const b = data.block || {};
-  const q = data.data_quality || {};
+  <script>
+    const DATA_URL = 'data/processed/statistical_analysis.json';
 
-  setHTML('block-table', table(
-    ['Campo', 'Valor'],
-    [
-      ['ID bloque', b.block_id],
-      ['Inicio agua', fmt.date(b.water_start)],
-      ['Fin agua', fmt.date(b.water_end)],
-      ['Inicio clima', fmt.date(b.climate_start)],
-      ['Fin clima', fmt.date(b.climate_end)],
-      ['Inicio solapamiento', fmt.date(q.analytical_overlap?.start)],
-      ['Fin solapamiento', fmt.date(q.analytical_overlap?.end)],
-      ['Días solapados', fmt.num(q.analytical_overlap?.days, 3)]
-    ]
-  ));
+    const FALLBACK_DATA = {
+      metadata: {
+        generated_at: '2026-05-08T00:00:00',
+        analysis_version: 'fallback-minimal'
+      },
+      block: {
+        block_id: 'B01',
+        block_name: 'Bloque 01 · fallback',
+        water_start: '2026-04-23 12:29:11',
+        water_end: '2026-05-06 09:27:12',
+        climate_start: '2026-04-23 12:30:20',
+        climate_end: '2026-04-29 06:13:50',
+        overlap_start: '2026-04-23 12:30:20',
+        overlap_end: '2026-04-29 06:13:50',
+        water_days: 12.8736,
+        climate_days: 5.7385,
+        overlap_days: 5.7385,
+        water_records: 978,
+        climate_records: 8077,
+        climate_records_valid_timestamp: 8076,
+        water_production_l_valid: 347.93,
+        production_l_overlap_with_climate: 161.25,
+        hourly_windows_modeled: 100
+      },
+      data_quality: {
+        water_records_total: 978,
+        climate_records_total: 8077,
+        climate_records_valid_timestamp: 8076,
+        climate_records_missing_timestamp: 1,
+        hourly_windows_with_water_and_climate: 100,
+        total_positive_valid_l: 347.93,
+        total_positive_overlap_with_climate_l: 161.25,
+        water_positive_events_removed: 6,
+        analytical_overlap: {
+          start: '2026-04-23 12:30:20',
+          end: '2026-04-29 06:13:50',
+          days: 5.7385
+        }
+      },
+      equations: [],
+      descriptive_statistics: {},
+      assumption_tests: {},
+      anova_posthoc: {},
+      correlations: { hourly_production_vs_climate: [], partial_correlations: [], lag_correlations: [] },
+      models: {
+        n: 100,
+        ols_hac: {
+          r2: 0.068129,
+          adj_r2: 0.018561,
+          mae: 1.224415,
+          rmse: 1.466532,
+          coefficients: [
+            { term: 'const', coef: -6.229285, p_hac: 0.331263 },
+            { term: 'humidity_pct', coef: 0.092636, p_hac: 0.387282 },
+            { term: 'temp_c', coef: -0.009984, p_hac: 0.967548 },
+            { term: 'vpd_kpa', coef: 1.796850, p_hac: 0.634259 },
+            { term: 'solar_wm2', coef: -0.003770, p_hac: 0.409762 },
+            { term: 'wind_kmh', coef: 0.167466, p_hac: 0.286958 }
+          ],
+          diagnostics: {}
+        },
+        predictive_models: {},
+        chart_data: { observed_vs_predicted_ols: [] }
+      },
+      summaries: {
+        daily: [],
+        daypart: [
+          { daypart: 'Madrugada', production_mean: 1.3004, production_sum: 31.21, humidity_mean: 78.24, temp_mean: 17.87, vpd_mean: 0.447, solar_mean: 0.08, n: 24 },
+          { daypart: 'Mañana', production_mean: 1.3471, production_sum: 32.33, humidity_mean: 67.33, temp_mean: 20.83, vpd_mean: 0.861, solar_mean: 55.02, n: 24 },
+          { daypart: 'Noche', production_mean: 2.2879, production_sum: 54.91, humidity_mean: 82.66, temp_mean: 19.73, vpd_mean: 0.406, solar_mean: 0.08, n: 24 },
+          { daypart: 'Tarde', production_mean: 1.5286, production_sum: 42.80, humidity_mean: 70.27, temp_mean: 23.34, vpd_mean: 0.871, solar_mean: 72.07, n: 28 }
+        ],
+        humidity_groups: []
+      },
+      chart_data: { hourly: [] },
+      scientific_conclusions: [
+        'El periodo de producción/nivel se extiende más que el periodo climático; por tanto la inferencia clima-producción se restringe al solapamiento real.',
+        'Con un solo bloque experimental, la inferencia inter-bloques debe permanecer deshabilitada.'
+      ],
+      limitations: [
+        'El simulador es exploratorio y depende de un modelo con bajo R².',
+        'Faltan bloques adicionales para sostener inferencia robusta entre periodos.'
+      ]
+    };
 
-  setHTML('quality-table', table(
-    ['Métrica', 'Valor'],
-    [
-      ['Registros agua totales', fmt.int(q.water_records_total)],
-      ['Registros clima totales', fmt.int(q.climate_records_total)],
-      ['Registros clima sin timestamp', fmt.int(q.climate_records_invalid_timestamp)],
-      ['Eventos positivos de producción', fmt.int(q.positive_water_events)],
-      ['Ventanas horarias con agua+clima', fmt.int(q.hourly_windows_with_water_and_climate)],
-      ['Outliers removidos', fmt.int(q.outliers_removed)],
-      ['Producción válida', `${fmt.num(b.water_production_l_valid, 2)} L`]
-    ]
-  ));
-}
+    let ANALYSIS = null;
+    let USING_FALLBACK = false;
 
-function renderDescriptives(data) {
-  const stats = data.descriptive_statistics || {};
-  const rows = Object.entries(stats).map(([varName, s]) => [
-    label(varName),
-    fmt.int(s.n),
-    fmt.num(s.mean, 4),
-    fmt.num(s.median, 4),
-    fmt.num(s.std, 4),
-    fmt.num(s.variance, 4),
-    fmt.num(s.min, 4),
-    fmt.num(s.max, 4),
-    fmt.num(s.skewness, 4),
-    fmt.num(s.kurtosis, 4),
-    `${fmt.num(s.ci95_low, 4)} – ${fmt.num(s.ci95_high, 4)}`
-  ]);
+    const fmt = {
+      num(value, digits = 2) {
+        if (value === null || value === undefined || Number.isNaN(Number(value))) return '—';
+        return Number(value).toLocaleString('es-GT', {
+          minimumFractionDigits: digits,
+          maximumFractionDigits: digits
+        });
+      },
+      int(value) {
+        if (value === null || value === undefined || Number.isNaN(Number(value))) return '—';
+        return Number(value).toLocaleString('es-GT', {
+          maximumFractionDigits: 0
+        });
+      },
+      pct(value, digits = 1) {
+        if (value === null || value === undefined || Number.isNaN(Number(value))) return '—';
+        return `${Number(value).toLocaleString('es-GT', { minimumFractionDigits: digits, maximumFractionDigits: digits })}%`;
+      },
+      p(value) {
+        if (value === null || value === undefined || Number.isNaN(Number(value))) return '—';
+        const n = Number(value);
+        if (n < 0.001) return '<0.001';
+        return n.toFixed(4);
+      },
+      date(value) {
+        return value ? String(value).replace('T', ' ') : '—';
+      }
+    };
 
-  setHTML('descriptive-table', table(
-    ['Variable', 'n', 'Media', 'Mediana', 'DE', 'Varianza', 'Min', 'Max', 'Asimetría', 'Curtosis', 'IC95%'],
-    rows
-  ));
-}
+    const labelMap = {
+      const: 'Intercepto',
+      production_lph: 'Producción (L/h)',
+      hourly_production_lph: 'Producción horaria (L/h)',
+      daily_production_l: 'Producción diaria (L)',
+      water_interval_production_l: 'Δ volumen por intervalo (L)',
+      water_event_delta_l: 'Evento positivo de agua (L)',
+      water_event_rate_lph: 'Tasa por evento (L/h)',
+      temp_c: 'Temperatura (°C)',
+      climate_temp_c: 'Temperatura climática (°C)',
+      humidity_pct: 'Humedad relativa (%)',
+      climate_humidity_pct: 'Humedad climática (%)',
+      dew_point_c: 'Punto de rocío (°C)',
+      dew_point_calc_c: 'Punto de rocío calculado (°C)',
+      climate_dew_point_c: 'Punto de rocío climático (°C)',
+      pressure_hpa: 'Presión (hPa)',
+      wind_kmh: 'Viento (km/h)',
+      climate_wind_kmh: 'Viento climático (km/h)',
+      rain_mm_h: 'Lluvia (mm/h)',
+      climate_rain_mm_h: 'Lluvia climática (mm/h)',
+      solar_wm2: 'Radiación solar (W/m²)',
+      climate_solar_wm2: 'Radiación solar climática (W/m²)',
+      uv: 'Índice UV',
+      vpd_kpa: 'VPD (kPa)',
+      climate_vpd_kpa: 'VPD climático (kPa)',
+      abs_humidity_gm3: 'Humedad absoluta (g/m³)',
+      climate_abs_humidity_gm3: 'Humedad absoluta climática (g/m³)',
+      daypart: 'Franja horaria',
+      humidity_group: 'Grupo de humedad',
+      temp_group: 'Grupo de temperatura',
+      vpd_group: 'Grupo VPD'
+    };
 
-function renderAssumptions(data) {
-  const a = data.assumption_tests || {};
-  const rows = [];
-
-  for (const [key, val] of Object.entries(a.normality || {})) {
-    rows.push([`Normalidad · ${label(key)}`, 'Shapiro-Wilk', fmt.num(val.shapiro_w, 4), fmt.p(val.shapiro_p), pBadge(val.shapiro_p)]);
-    rows.push([`Normalidad · ${label(key)}`, "D'Agostino-Pearson", fmt.num(val.normaltest_stat, 4), fmt.p(val.normaltest_p), pBadge(val.normaltest_p)]);
-  }
-
-  for (const [key, val] of Object.entries(a.stationarity || {})) {
-    rows.push([`Estacionariedad · ${label(key)}`, 'ADF', fmt.num(val.adf_stat, 4), fmt.p(val.adf_p), pBadge(val.adf_p)]);
-    rows.push([`Estacionariedad · ${label(key)}`, 'KPSS', fmt.num(val.kpss_stat, 4), fmt.p(val.kpss_p), pBadge(val.kpss_p)]);
-  }
-
-  for (const [key, val] of Object.entries(a.variance_homogeneity || {})) {
-    rows.push([`Varianzas · ${key}`, 'Levene', fmt.num(val.levene_stat, 4), fmt.p(val.levene_p), pBadge(val.levene_p)]);
-    rows.push([`Varianzas · ${key}`, 'Brown-Forsythe', fmt.num(val.brown_forsythe_stat, 4), fmt.p(val.brown_forsythe_p), pBadge(val.brown_forsythe_p)]);
-  }
-
-  const vif = a.vif || {};
-  for (const [key, value] of Object.entries(vif)) {
-    rows.push([`Multicolinealidad · ${label(key)}`, 'VIF', fmt.num(value, 3), '—', Number(value) > 5 ? '<span class="badge warn">alto</span>' : '<span class="badge ok">ok</span>']);
-  }
-
-  setHTML('assumptions-table', table(['Supuesto', 'Prueba', 'Estadístico', 'p-value', 'Estado'], rows));
-}
-
-function renderCorrelations(data) {
-  const corr = data.correlations?.hourly_production_vs_climate || [];
-  const partial = data.correlations?.partial_correlations || [];
-  const lags = data.correlations?.lag_correlations || [];
-
-  setHTML('correlation-table', table(
-    ['Variable', 'Pearson r', 'p', 'Spearman ρ', 'p', 'Kendall τ', 'p'],
-    corr.map(c => [
-      label(c.variable),
-      fmt.num(c.pearson_r, 4),
-      fmt.p(c.pearson_p),
-      fmt.num(c.spearman_rho, 4),
-      fmt.p(c.spearman_p),
-      fmt.num(c.kendall_tau, 4),
-      fmt.p(c.kendall_p)
-    ])
-  ));
-
-  setHTML('partial-table', table(
-    ['Variable X', 'Variable Y', 'Control', 'r parcial', 'p'],
-    partial.map(c => [
-      label(c.x),
-      label(c.y),
-      label(c.control),
-      fmt.num(c.partial_r, 4),
-      fmt.p(c.p_value)
-    ])
-  ));
-
-  setHTML('lag-table', table(
-    ['Variable', 'Lag horas', 'Spearman ρ', 'p'],
-    lags.map(c => [
-      label(c.variable),
-      fmt.num(c.lag_hours, 0),
-      fmt.num(c.spearman_rho, 4),
-      fmt.p(c.p_value)
-    ])
-  ));
-}
-
-function renderAnova(data) {
-  const anova = data.anova || {};
-  const rows = [];
-
-  for (const [group, val] of Object.entries(anova.global_tests || {})) {
-    rows.push([group, 'ANOVA', fmt.num(val.anova_f, 4), fmt.p(val.anova_p), fmt.num(val.eta_squared, 4), fmt.num(val.omega_squared, 4)]);
-    rows.push([group, 'Welch ANOVA', fmt.num(val.welch_f, 4), fmt.p(val.welch_p), '—', '—']);
-    rows.push([group, 'Kruskal-Wallis', fmt.num(val.kruskal_h, 4), fmt.p(val.kruskal_p), fmt.num(val.epsilon_squared, 4), '—']);
-  }
-
-  setHTML('anova-summary-table', table(
-    ['Agrupación', 'Prueba', 'Estadístico', 'p-value', 'η² / ε²', 'ω²'],
-    rows
-  ));
-
-  const daypart = anova.group_summaries?.daypart || [];
-  setHTML('daypart-table', table(
-    ['Grupo', 'n', 'Media', 'Mediana', 'DE', 'IC95%'],
-    daypart.map(g => [
-      g.group,
-      fmt.int(g.n),
-      fmt.num(g.mean, 4),
-      fmt.num(g.median, 4),
-      fmt.num(g.std, 4),
-      `${fmt.num(g.ci95_low, 4)} – ${fmt.num(g.ci95_high, 4)}`
-    ])
-  ));
-
-  const posthoc = anova.posthoc?.slice(0, 18) || [];
-  setHTML('posthoc-table', table(
-    ['Agrupación', 'Comparación', 'Método', 'Diferencia', 'p ajustado', 'Efecto'],
-    posthoc.map(p => [
-      p.grouping,
-      `${p.group_a} vs ${p.group_b}`,
-      p.method,
-      fmt.num(p.mean_diff, 4),
-      fmt.p(p.p_adjusted),
-      p.effect_size !== undefined ? fmt.num(p.effect_size, 4) : '—'
-    ])
-  ));
-}
-
-function renderModels(data) {
-  const ols = data.models?.ols_hac || {};
-  const rows = Object.entries(ols.coefficients || {}).map(([name, c]) => [
-    label(name),
-    fmt.num(c.coef, 6),
-    fmt.num(c.std_err, 6),
-    fmt.num(c.t, 4),
-    fmt.p(c.p_value),
-    `${fmt.num(c.ci95_low, 6)} – ${fmt.num(c.ci95_high, 6)}`
-  ]);
-
-  setHTML('ols-table', table(
-    ['Variable', 'Coeficiente', 'Error estándar', 't', 'p-value', 'IC95%'],
-    rows
-  ));
-
-  const models = data.models?.comparison || [];
-  setHTML('model-table', table(
-    ['Modelo', 'R²', 'MAE', 'RMSE', 'CV R² medio', 'CV RMSE medio'],
-    models.map(m => [
-      m.model,
-      fmt.num(m.r2, 4),
-      fmt.num(m.mae, 4),
-      fmt.num(m.rmse, 4),
-      fmt.num(m.cv_r2_mean, 4),
-      fmt.num(m.cv_rmse_mean, 4)
-    ])
-  ));
-}
-
-function renderDiagnostics(data) {
-  const d = data.diagnostics || {};
-
-  const rows = [
-    ['Durbin-Watson', fmt.num(d.durbin_watson, 4), 'Autocorrelación residual'],
-    ['Ljung-Box Q', fmt.num(d.ljung_box_stat, 4), fmt.p(d.ljung_box_p)],
-    ['Breusch-Pagan LM', fmt.num(d.breusch_pagan_lm, 4), fmt.p(d.breusch_pagan_p)],
-    ['Cook máximo', fmt.num(d.cooks_distance_max, 6), 'Influencia máxima'],
-    ['Puntos influyentes', fmt.int(d.influential_points_count), 'Cook > 4/n']
-  ];
-
-  setHTML('diagnostics-table', table(['Diagnóstico', 'Valor', 'Interpretación'], rows));
-}
-
-function renderConclusions(data) {
-  const conclusions = data.scientific_conclusions || [];
-  const limitations = data.limitations || [];
-
-  setHTML('conclusion-list', conclusions.map(x => `<li>${x}</li>`).join(''));
-  setHTML('limitation-list', limitations.map(x => `<li>${x}</li>`).join(''));
-}
-
-function renderPlots(data) {
-  const daily = data.visualization_data?.daily_production || [];
-  Plotly.newPlot('chart-daily-production', [{
-    x: daily.map(d => d.date),
-    y: daily.map(d => d.production_l),
-    type: 'bar',
-    name: 'Producción diaria'
-  }], layout('Producción diaria'), { responsive: true, displayModeBar: false });
-
-  const profile = data.visualization_data?.hourly_profile || [];
-  Plotly.newPlot('chart-hourly-profile', [{
-    x: profile.map(d => d.hour),
-    y: profile.map(d => d.mean_production_lph),
-    type: 'scatter',
-    mode: 'lines+markers',
-    name: 'L/h promedio'
-  }], layout('Perfil horario'), { responsive: true, displayModeBar: false });
-
-  const hist = data.visualization_data?.production_hourly_values || [];
-  Plotly.newPlot('chart-prod-hist', [{
-    x: hist,
-    type: 'histogram',
-    nbinsx: 24,
-    name: 'Producción horaria'
-  }], layout('Histograma de producción'), { responsive: true, displayModeBar: false });
-
-  const qq = data.visualization_data?.qq_plot || [];
-  Plotly.newPlot('chart-qq', [
-    {
-      x: qq.map(d => d.theoretical),
-      y: qq.map(d => d.sample),
-      mode: 'markers',
-      type: 'scatter',
-      name: 'Cuantiles'
-    },
-    {
-      x: qq.map(d => d.theoretical),
-      y: qq.map(d => d.theoretical),
-      mode: 'lines',
-      type: 'scatter',
-      name: 'Normal teórica'
+    function label(key) {
+      return labelMap[key] || String(key || '—').replaceAll('_', ' ');
     }
-  ], layout('QQ plot'), { responsive: true, displayModeBar: false });
 
-  const corr = data.correlations?.hourly_production_vs_climate || [];
-  Plotly.newPlot('chart-corr-bar', [{
-    x: corr.map(c => c.spearman_rho),
-    y: corr.map(c => label(c.variable)),
-    type: 'bar',
-    orientation: 'h',
-    name: 'Spearman ρ'
-  }], layout('Ranking de correlación Spearman'), { responsive: true, displayModeBar: false });
-
-  const imp = data.models?.feature_importance || [];
-  Plotly.newPlot('chart-feature-importance', [{
-    x: imp.map(d => d.importance),
-    y: imp.map(d => label(d.variable)),
-    type: 'bar',
-    orientation: 'h',
-    name: 'Importancia'
-  }], layout('Importancia de variables'), { responsive: true, displayModeBar: false });
-
-  const pred = data.visualization_data?.observed_vs_predicted || [];
-  Plotly.newPlot('chart-obs-pred', [{
-    x: pred.map(d => d.predicted),
-    y: pred.map(d => d.observed),
-    mode: 'markers',
-    type: 'scatter',
-    name: 'Observado'
-  }], layout('Observado vs predicho'), { responsive: true, displayModeBar: false });
-
-  const residuals = data.visualization_data?.residuals || [];
-  Plotly.newPlot('chart-residuals', [{
-    x: residuals.map((_, i) => i + 1),
-    y: residuals,
-    mode: 'lines+markers',
-    type: 'scatter',
-    name: 'Residuo'
-  }], layout('Residuos del modelo'), { responsive: true, displayModeBar: false });
-}
-
-function showError(err) {
-  document.querySelector('main').innerHTML = `
-    <div class="error-box">
-      <h2>No se pudo cargar el análisis estadístico</h2>
-      <p>${err.message}</p>
-      <p style="margin-top:10px;">
-        Verifica que exista <code>data/processed/statistical_analysis.json</code>
-        y que estés abriendo la página desde un servidor local o desde GitHub Pages.
-      </p>
-    </div>
-  `;
-}
-
-loadAnalysis()
-  .then(data => {
-    renderHeader(data);
-    renderKPIs(data);
-    renderDataTables(data);
-    renderDescriptives(data);
-    renderAssumptions(data);
-    renderCorrelations(data);
-    renderAnova(data);
-    renderModels(data);
-    renderDiagnostics(data);
-    renderConclusions(data);
-    renderPlots(data);
-
-    if (window.MathJax && MathJax.typesetPromise) {
-      MathJax.typesetPromise();
+    function $(id) {
+      return document.getElementById(id);
     }
-  })
-  .catch(showError);
-</script>
+
+    function setText(id, text) {
+      const el = $(id);
+      if (el) el.textContent = text;
+    }
+
+    function setHTML(id, html) {
+      const el = $(id);
+      if (el) el.innerHTML = html;
+    }
+
+    function safeArray(value) {
+      return Array.isArray(value) ? value : [];
+    }
+
+    function get(obj, path, fallback = null) {
+      return path.split('.').reduce((acc, key) => {
+        if (acc && Object.prototype.hasOwnProperty.call(acc, key)) return acc[key];
+        return undefined;
+      }, obj) ?? fallback;
+    }
+
+    function clamp(value, min, max) {
+      return Math.max(min, Math.min(max, value));
+    }
+
+    function table(headers, rows) {
+      return `
+        <table>
+          <thead>
+            <tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr>
+          </thead>
+          <tbody>
+            ${rows.map(row => `
+              <tr>
+                ${row.map(cell => {
+                  const raw = cell === null || cell === undefined ? '—' : cell;
+                  const numeric = typeof raw === 'number' || String(raw).match(/^-?\d+(\.\d+)?$/);
+                  return `<td class="${numeric ? 'num' : ''}">${raw}</td>`;
+                }).join('')}
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function pStatus(p) {
+      if (p === null || p === undefined || Number.isNaN(Number(p))) return '<span class="status-dot warn">sin p</span>';
+      return Number(p) < 0.05
+        ? '<span class="status-dot ok">significativo</span>'
+        : '<span class="status-dot warn">no significativo</span>';
+    }
+
+    function effectLabel(x) {
+      const v = Math.abs(Number(x));
+      if (!Number.isFinite(v)) return '—';
+      if (v < 0.01) return 'trivial';
+      if (v < 0.06) return 'pequeño';
+      if (v < 0.14) return 'medio';
+      return 'grande';
+    }
+
+    function inferDaypart(hour) {
+      const h = Number(hour);
+      if (h >= 0 && h < 6) return 'Madrugada';
+      if (h >= 6 && h < 12) return 'Mañana';
+      if (h >= 12 && h < 18) return 'Tarde';
+      return 'Noche';
+    }
+
+    function daypartFactor(daypart) {
+      const summaries = safeArray(get(ANALYSIS, 'summaries.daypart', []));
+      const means = summaries.map(d => Number(d.production_mean)).filter(Number.isFinite);
+      if (!means.length) return 1;
+      const overall = means.reduce((a, b) => a + b, 0) / means.length;
+      const row = summaries.find(d => d.daypart === daypart);
+      if (!row || !Number.isFinite(Number(row.production_mean)) || overall === 0) return 1;
+      return Number(row.production_mean) / overall;
+    }
+
+    function plotLayout(title, options = {}) {
+      return {
+        margin: options.margin || { l: 56, r: 22, t: 34, b: 48 },
+        paper_bgcolor: 'rgba(0,0,0,0)',
+        plot_bgcolor: 'rgba(0,0,0,0)',
+        font: {
+          family: 'DM Sans',
+          size: 11,
+          color: '#3a3830'
+        },
+        title: {
+          text: title,
+          x: 0,
+          font: {
+            family: 'JetBrains Mono',
+            size: 11,
+            color: '#6b6860'
+          }
+        },
+        xaxis: {
+          gridcolor: 'rgba(40,38,30,.08)',
+          zerolinecolor: 'rgba(40,38,30,.12)',
+          title: options.xTitle || ''
+        },
+        yaxis: {
+          gridcolor: 'rgba(40,38,30,.08)',
+          zerolinecolor: 'rgba(40,38,30,.12)',
+          title: options.yTitle || ''
+        },
+        legend: {
+          orientation: 'h',
+          y: -0.23
+        },
+        hovermode: options.hovermode || 'closest'
+      };
+    }
+
+    function plotConfig() {
+      return {
+        responsive: true,
+        displayModeBar: false
+      };
+    }
+
+    async function loadAnalysis() {
+      try {
+        const response = await fetch(DATA_URL, { cache: 'no-store' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        return await response.json();
+      } catch (error) {
+        USING_FALLBACK = true;
+        console.warn('No se pudo cargar statistical_analysis.json; usando fallback mínimo.', error);
+        return FALLBACK_DATA;
+      }
+    }
+
+    function updateInsight(title, text, meta = 'Elemento interpretado') {
+      setText('insight-title', title || 'Interpretación');
+      setText('insight-text', text || 'Sin interpretación disponible.');
+      setText('insight-meta', meta);
+    }
+
+    function installHoverInsights() {
+      const tooltip = $('hover-tooltip');
+
+      document.addEventListener('pointerover', event => {
+        const target = event.target.closest('.insightable, [data-insight]');
+        if (!target) return;
+        const text = target.dataset.insight;
+        if (!text) return;
+        const title = target.dataset.insightTitle || target.querySelector('.card-title, .kpi-label, .method-title, .equation-title')?.textContent || 'Lectura contextual';
+        updateInsight(title, text, 'Hover interpretativo');
+        tooltip.innerHTML = `<strong>${title}</strong><br>${text}`;
+        tooltip.style.display = 'block';
+      });
+
+      document.addEventListener('pointermove', event => {
+        if (tooltip.style.display !== 'block') return;
+        const pad = 18;
+        const x = Math.min(window.innerWidth - 340, event.clientX + pad);
+        const y = Math.min(window.innerHeight - 160, event.clientY + pad);
+        tooltip.style.left = `${Math.max(12, x)}px`;
+        tooltip.style.top = `${Math.max(12, y)}px`;
+      });
+
+      document.addEventListener('pointerout', event => {
+        if (!event.target.closest('.insightable, [data-insight]')) return;
+        tooltip.style.display = 'none';
+      });
+    }
+
+    function renderHeaderAndQuickReading(data) {
+      const block = data.block || {};
+      const quality = data.data_quality || {};
+      const correlations = safeArray(get(data, 'correlations.hourly_production_vs_climate', []));
+      const best = correlations
+        .filter(d => Number.isFinite(Number(d.spearman_rho)))
+        .sort((a, b) => Math.abs(Number(b.spearman_rho)) - Math.abs(Number(a.spearman_rho)))[0];
+      const r2 = get(data, 'models.ols_hac.r2', null);
+
+      setText('h-production', `${fmt.num(block.water_production_l_valid, 1)} L`);
+      setText('h-windows', fmt.int(quality.hourly_windows_with_water_and_climate || block.hourly_windows_modeled));
+      setText('h-overlap', `${fmt.num(get(quality, 'analytical_overlap.days', block.overlap_days), 2)} d`);
+      setText('h-best-rho', best ? `ρ ${fmt.num(best.spearman_rho, 2)}` : 'ρ —');
+      setText('header-ts', String(get(data, 'metadata.generated_at', '—')).slice(0, 16));
+      setText('footer-ts', `Análisis generado · ${String(get(data, 'metadata.generated_at', '—')).slice(0, 19)}${USING_FALLBACK ? ' · fallback' : ''}`);
+      setText('sb-block', block.block_id || 'B01');
+      setText('sb-water', `${fmt.int(quality.water_records_total || block.water_records)} registros`);
+      setText('sb-climate', `${fmt.int(quality.climate_records_total || block.climate_records)} registros`);
+      setText('sb-r2', fmt.num(r2, 3));
+
+      const bestText = best
+        ? `${label(best.variable)} tiene la mayor asociación monotónica observada (ρ=${fmt.num(best.spearman_rho, 3)}).`
+        : 'No hay correlaciones disponibles en el JSON.';
+
+      const cautious = Number(r2) < 0.15
+        ? 'El R² lineal es bajo; el simulador debe leerse como exploratorio.'
+        : 'El modelo lineal tiene señal explicativa apreciable, pero sigue siendo intra-bloque.';
+
+      setHTML('quick-reading', `
+        <p><strong>Periodo:</strong> agua ${fmt.date(block.water_start)} → ${fmt.date(block.water_end)}; clima ${fmt.date(block.climate_start)} → ${fmt.date(block.climate_end)}.</p>
+        <p><strong>Solapamiento:</strong> ${fmt.num(get(quality, 'analytical_overlap.days', block.overlap_days), 2)} días con agua y clima simultáneos.</p>
+        <p><strong>Lectura:</strong> ${bestText} ${cautious}</p>
+      `);
+    }
+
+    function renderKPIs(data) {
+      const block = data.block || {};
+      const quality = data.data_quality || {};
+      const bestCorr = safeArray(get(data, 'correlations.hourly_production_vs_climate', []))
+        .filter(d => Number.isFinite(Number(d.spearman_rho)))
+        .sort((a, b) => Math.abs(Number(b.spearman_rho)) - Math.abs(Number(a.spearman_rho)))[0];
+      const rmse = get(data, 'models.ols_hac.rmse', null);
+      const r2 = get(data, 'models.ols_hac.r2', null);
+      const daypart = safeArray(get(data, 'summaries.daypart', []));
+      const bestDaypart = [...daypart].sort((a, b) => Number(b.production_mean) - Number(a.production_mean))[0];
+      const humid = safeArray(get(data, 'summaries.humidity_groups', []));
+      const bestHumid = [...humid].sort((a, b) => Number(b.production_mean) - Number(a.production_mean))[0];
+
+      const cards = [
+        {
+          label: 'Producción total válida',
+          value: fmt.num(block.water_production_l_valid, 2),
+          unit: 'L',
+          note: `${fmt.num(block.production_l_per_water_day, 2)} L/día sobre periodo agua`,
+          chip: 'agua total',
+          insight: 'Es la producción válida después de aplicar reglas de control físico. No equivale exactamente a producción explicable por clima, porque el clima termina antes.'
+        },
+        {
+          label: 'Producción con clima',
+          value: fmt.num(block.production_l_overlap_with_climate || quality.total_positive_overlap_with_climate_l, 2),
+          unit: 'L',
+          note: `${fmt.num(get(quality, 'analytical_overlap.days', block.overlap_days), 2)} días con solapamiento`,
+          chip: 'modelo',
+          insight: 'Esta es la porción más importante para inferencia climática: producción observada dentro del mismo rango donde existen variables climáticas.'
+        },
+        {
+          label: 'Ventanas analíticas',
+          value: fmt.int(quality.hourly_windows_with_water_and_climate || block.hourly_windows_modeled),
+          unit: 'h',
+          note: 'unidades horarias modeladas',
+          chip: 'n efectivo',
+          insight: 'El análisis inferencial usa ventanas horarias, no todos los registros crudos. Este número define la potencia real de correlaciones y modelos.'
+        },
+        {
+          label: 'Mejor franja',
+          value: bestDaypart ? bestDaypart.daypart : '—',
+          unit: '',
+          note: bestDaypart ? `${fmt.num(bestDaypart.production_mean, 2)} L/h promedio` : 'sin datos',
+          chip: 'escenario',
+          insight: 'La mejor franja horaria se calcula por producción media observada. Sirve para operación y para el simulador, pero no prueba causalidad.'
+        },
+        {
+          label: 'Mejor grupo humedad',
+          value: bestHumid ? bestHumid.humidity_group.replace('Humedad ', '') : '—',
+          unit: '',
+          note: bestHumid ? `${fmt.num(bestHumid.production_mean, 2)} L/h promedio` : 'sin datos',
+          chip: 'humedad',
+          insight: 'Los grupos de humedad comparan terciles dentro del bloque. Ayudan a interpretar si condiciones húmedas muestran mayor producción.'
+        },
+        {
+          label: 'R² modelo lineal',
+          value: fmt.num(r2, 3),
+          unit: '',
+          note: Number(r2) < 0.15 ? 'señal débil, usar cautela' : 'señal moderada',
+          chip: 'OLS HAC',
+          insight: 'R² mide la proporción de variabilidad horaria explicada por el modelo. Bajo R² no invalida el sistema; indica que faltan variables, hay ruido o no linealidad.'
+        },
+        {
+          label: 'Error típico',
+          value: fmt.num(rmse, 2),
+          unit: 'L/h',
+          note: 'RMSE del modelo OLS',
+          chip: 'incertidumbre',
+          insight: 'El RMSE se usa como banda de incertidumbre del simulador. Cuando el error es grande frente a la producción media, las predicciones son exploratorias.'
+        },
+        {
+          label: 'Mejor correlación',
+          value: bestCorr ? label(bestCorr.variable).split(' ')[0] : '—',
+          unit: '',
+          note: bestCorr ? `ρ=${fmt.num(bestCorr.spearman_rho, 3)}, p=${fmt.p(bestCorr.spearman_p)}` : 'sin datos',
+          chip: 'Spearman',
+          insight: 'La correlación más alta muestra asociación monotónica. Es útil para priorizar variables, pero no para declarar causalidad.'
+        },
+        {
+          label: 'Eventos removidos',
+          value: fmt.int(quality.water_positive_events_removed),
+          unit: '',
+          note: 'por control físico',
+          chip: 'QC',
+          insight: 'Eventos removidos documentan limpieza de datos. Es mejor remover explícitamente saltos sospechosos que dejar que dominen el modelo.'
+        },
+        {
+          label: 'Clima sin timestamp',
+          value: fmt.int(quality.climate_records_missing_timestamp),
+          unit: '',
+          note: 'registro(s) no fechados',
+          chip: 'calidad',
+          insight: 'Los registros sin timestamp no se pueden ubicar temporalmente y no deben entrar en análisis de series o sincronización.'
+        }
+      ];
+
+      setHTML('kpi-grid', cards.map(card => `
+        <div class="kpi-card insightable" data-insight="${escapeAttr(card.insight)}" data-insight-title="${escapeAttr(card.label)}">
+          <div class="kpi-label">${card.label}</div>
+          <div class="kpi-value">${card.value}<span class="kpi-unit">${card.unit}</span></div>
+          <div class="kpi-note">${card.note}</div>
+          <div class="kpi-chip">${card.chip}</div>
+        </div>
+      `).join(''));
+    }
+
+    function escapeAttr(text) {
+      return String(text || '')
+        .replaceAll('&', '&amp;')
+        .replaceAll('"', '&quot;')
+        .replaceAll('<', '&lt;')
+        .replaceAll('>', '&gt;');
+    }
+
+    function renderDataTables(data) {
+      const block = data.block || {};
+      const quality = data.data_quality || {};
+      const overlap = quality.analytical_overlap || {};
+
+      setHTML('block-table', table(
+        ['Campo', 'Valor', 'Interpretación'],
+        [
+          ['ID', block.block_id || 'B01', 'Unidad experimental activa'],
+          ['Periodo agua', `${fmt.date(block.water_start)} → ${fmt.date(block.water_end)}`, `${fmt.num(block.water_days, 2)} días`],
+          ['Periodo clima', `${fmt.date(block.climate_start)} → ${fmt.date(block.climate_end)}`, `${fmt.num(block.climate_days, 2)} días`],
+          ['Solapamiento analítico', `${fmt.date(overlap.start || block.overlap_start)} → ${fmt.date(overlap.end || block.overlap_end)}`, `${fmt.num(overlap.days || block.overlap_days, 2)} días`],
+          ['Producción válida total', `${fmt.num(block.water_production_l_valid, 2)} L`, 'Toda la serie de agua'],
+          ['Producción con clima', `${fmt.num(block.production_l_overlap_with_climate || quality.total_positive_overlap_with_climate_l, 2)} L`, 'Solo solapamiento'],
+          ['Ventanas modeladas', `${fmt.int(block.hourly_windows_modeled || quality.hourly_windows_with_water_and_climate)} h`, 'n efectivo para modelos']
+        ]
+      ));
+
+      setHTML('quality-table', table(
+        ['Métrica', 'Valor', 'Lectura'],
+        [
+          ['Registros agua', fmt.int(quality.water_records_total || block.water_records), 'Fuente nivel_raw.csv'],
+          ['Registros clima', fmt.int(quality.climate_records_total || block.climate_records), 'Fuente clima_raw.csv'],
+          ['Clima válido con timestamp', fmt.int(quality.climate_records_valid_timestamp || block.climate_records_valid_timestamp), 'usable temporalmente'],
+          ['Clima sin timestamp', fmt.int(quality.climate_records_missing_timestamp), 'no sincronizable'],
+          ['Eventos positivos crudos', fmt.int(quality.water_positive_raw_events), 'antes de QC'],
+          ['Eventos positivos válidos', fmt.int(quality.water_positive_valid_events), 'después de QC'],
+          ['Eventos removidos', fmt.int(quality.water_positive_events_removed), 'saltos sospechosos'],
+          ['Saltos > 6 L removidos', fmt.int(quality.water_large_positive_removed_gt_6l), 'regla física']
+        ]
+      ));
+    }
+
+    function renderEquations(data) {
+      const fallbackEquations = [
+        { id: 'Yb', title: 'Producción total del bloque', latex: 'Y_b = V_{b,final} - V_{b,inicial}', desc: 'Variable dependiente agregada por bloque.' },
+        { id: 'Pb', title: 'Producción normalizada', latex: 'P_b = \\frac{Y_b}{D_b}', desc: 'Litros por día válido del bloque.' },
+        { id: 'xbar', title: 'Agregación climática', latex: '\\bar{X}_{j,b} = \\frac{1}{n_b}\\sum_{i=1}^{n_b} X_{j,i}', desc: 'Resumen climático por bloque o ventana.' },
+        { id: 'vpd', title: 'Déficit de presión de vapor', latex: 'VPD = e_s(T) - e_a', desc: 'Distancia atmosférica respecto a saturación.' },
+        { id: 'ols', title: 'Modelo climático lineal', latex: 'Y_t = \\beta_0 + \\beta_1 RH_t + \\beta_2 T_t + \\beta_3 VPD_t + \\beta_4 S_t + \\epsilon_t', desc: 'Modelo interpretable por ventana horaria.' },
+        { id: 'dw', title: 'Durbin-Watson', latex: 'DW = \\frac{\\sum_{t=2}^{n}(e_t-e_{t-1})^2}{\\sum_{t=1}^{n}e_t^2}', desc: 'Autocorrelación de residuos.' },
+        { id: 'eta', title: 'Eta cuadrado', latex: '\\eta^2 = \\frac{SS_{between}}{SS_{total}}', desc: 'Tamaño de efecto en ANOVA.' },
+        { id: 'cliff', title: "Cliff's delta", latex: '\\delta = \\frac{\\#(x_i>y_j)-\\#(x_i<y_j)}{mn}', desc: 'Tamaño de efecto no paramétrico.' }
+      ];
+      const equations = safeArray(data.equations).length ? data.equations : fallbackEquations;
+
+      setHTML('equation-grid', equations.slice(0, 12).map(eq => `
+        <div class="equation-card insightable" data-insight="${escapeAttr(eq.desc || interpretEquation(eq.title))}" data-insight-title="${escapeAttr(eq.title)}">
+          <div class="equation-title">${eq.title}</div>
+          \\
+          [
+            ${eq.latex}
+          \\
+          ]
+          <div class="equation-desc">${eq.desc || interpretEquation(eq.title)}</div>
+        </div>
+      `).join(''));
+
+      if (window.MathJax && MathJax.typesetPromise) {
+        MathJax.typesetPromise();
+      }
+    }
+
+    function interpretEquation(title) {
+      return `Ecuación usada para formalizar ${title}. Pasa de mediciones crudas a una cantidad estadística auditable.`;
+    }
+
+    function renderAssumptions(data) {
+      const tests = data.assumption_tests || {};
+      const rows = [];
+
+      Object.entries(tests).forEach(([name, value]) => {
+        if (!value || typeof value !== 'object') return;
+        if (value.shapiro_wilk) {
+          rows.push([
+            label(name),
+            'Shapiro-Wilk',
+            fmt.num(value.shapiro_wilk.W, 4),
+            fmt.p(value.shapiro_wilk.p_value),
+            pStatus(value.shapiro_wilk.p_value),
+            'normalidad'
+          ]);
+        }
+        if (value.dagostino_pearson) {
+          rows.push([
+            label(name),
+            "D'Agostino-Pearson",
+            fmt.num(value.dagostino_pearson.K2, 4),
+            fmt.p(value.dagostino_pearson.p_value),
+            pStatus(value.dagostino_pearson.p_value),
+            'normalidad'
+          ]);
+        }
+        if (value.adf) {
+          rows.push([
+            label(name),
+            'ADF',
+            fmt.num(value.adf.statistic, 4),
+            fmt.p(value.adf.p_value),
+            pStatus(value.adf.p_value),
+            'estacionariedad'
+          ]);
+        }
+        if (value.kpss) {
+          rows.push([
+            label(name),
+            'KPSS',
+            fmt.num(value.kpss.statistic, 4),
+            fmt.p(value.kpss.p_value),
+            pStatus(value.kpss.p_value),
+            'estacionariedad'
+          ]);
+        }
+      });
+
+      Object.entries(data.anova_posthoc || {}).forEach(([groupName, group]) => {
+        const assumptions = group.assumptions || {};
+        if (assumptions.levene_mean) {
+          rows.push([
+            groupName.replace('by_', ''),
+            'Levene media',
+            fmt.num(assumptions.levene_mean.statistic, 4),
+            fmt.p(assumptions.levene_mean.p_value),
+            pStatus(assumptions.levene_mean.p_value),
+            'varianzas'
+          ]);
+        }
+        if (assumptions.brown_forsythe_median) {
+          rows.push([
+            groupName.replace('by_', ''),
+            'Brown-Forsythe',
+            fmt.num(assumptions.brown_forsythe_median.statistic, 4),
+            fmt.p(assumptions.brown_forsythe_median.p_value),
+            pStatus(assumptions.brown_forsythe_median.p_value),
+            'varianzas robustas'
+          ]);
+        }
+      });
+
+      if (!rows.length) {
+        rows.push(['—', '—', '—', '—', '<span class="status-dot warn">sin datos</span>', 'El JSON no trae pruebas de supuestos.']);
+      }
+
+      setHTML('assumptions-table', table(['Variable / agrupación', 'Prueba', 'Estadístico', 'p-value', 'Estado', 'Lectura'], rows));
+    }
+
+    function renderANOVA(data) {
+      const rows = [];
+      const effectRows = [];
+      const posthocRows = [];
+
+      Object.entries(data.anova_posthoc || {}).forEach(([key, item]) => {
+        if (!item || !item.available) return;
+        const name = key.replace('by_', '').replaceAll('_', ' ');
+        const anova = item.anova_classic || {};
+        const welch = item.welch_anova || {};
+        const kruskal = item.kruskal_wallis || {};
+        const eff = item.effect_sizes || {};
+
+        rows.push([name, 'ANOVA clásico', fmt.num(anova.F, 4), fmt.p(anova.p_value), pStatus(anova.p_value), `η²=${fmt.num(eff.eta_squared, 4)}`]);
+        rows.push([name, 'Welch ANOVA', fmt.num(welch.F, 4), fmt.p(welch.p_value), pStatus(welch.p_value), `df2=${fmt.num(welch.df2, 2)}`]);
+        rows.push([name, 'Kruskal-Wallis', fmt.num(kruskal.H, 4), fmt.p(kruskal.p_value), pStatus(kruskal.p_value), `ε²=${fmt.num(eff.epsilon_squared, 4)}`]);
+
+        effectRows.push({ grouping: name, metric: 'η²', value: Number(eff.eta_squared) || 0 });
+        effectRows.push({ grouping: name, metric: 'ω²', value: Number(eff.omega_squared) || 0 });
+        effectRows.push({ grouping: name, metric: 'ε²', value: Number(eff.epsilon_squared) || 0 });
+
+        const methods = item.posthoc || {};
+        ['games_howell', 'tukey_hsd', 'mann_whitney_holm'].forEach(method => {
+          safeArray(methods[method]).slice(0, 3).forEach(comp => {
+            posthocRows.push([
+              name,
+              method.replaceAll('_', ' '),
+              `${comp.group_a || comp.a || 'A'} vs ${comp.group_b || comp.b || 'B'}`,
+              fmt.num(comp.mean_diff ?? comp.diff ?? comp.statistic, 4),
+              fmt.p(comp.p_adjusted ?? comp.p_value),
+              pStatus(comp.p_adjusted ?? comp.p_value)
+            ]);
+          });
+        });
+      });
+
+      setHTML('anova-table', table(['Agrupación', 'Prueba', 'Estadístico', 'p-value', 'Estado', 'Tamaño / gl'], rows));
+      setHTML('posthoc-table', table(['Agrupación', 'Método', 'Comparación', 'Diferencia / estadístico', 'p ajustado', 'Estado'], posthocRows.slice(0, 18)));
+
+      Plotly.newPlot('chart-effects', [
+        {
+          x: effectRows.map(d => d.value),
+          y: effectRows.map(d => `${d.grouping} · ${d.metric}`),
+          type: 'bar',
+          orientation: 'h',
+          hovertemplate: '<b>%{y}</b><br>Tamaño de efecto: %{x:.4f}<br>Lectura: magnitud práctica del contraste<extra></extra>'
+        }
+      ], plotLayout('Tamaños de efecto por agrupación', { xTitle: 'valor', margin: { l: 150, r: 16, t: 34, b: 44 } }), plotConfig());
+
+      bindPlotInsight('chart-effects', 'Tamaños de efecto', 'Esta gráfica no pregunta si hay diferencia estadística, sino qué tan grande es la diferencia entre grupos. La magnitud evita sobrerreaccionar a p-values.');
+    }
+
+    function renderCorrelations(data) {
+      const corr = safeArray(get(data, 'correlations.hourly_production_vs_climate', []));
+      const partial = safeArray(get(data, 'correlations.partial_correlations', []));
+      const lags = safeArray(get(data, 'correlations.lag_correlations', []));
+
+      const corrSorted = [...corr]
+        .filter(d => Number.isFinite(Number(d.spearman_rho)))
+        .sort((a, b) => Math.abs(Number(b.spearman_rho)) - Math.abs(Number(a.spearman_rho)));
+
+      setHTML('correlation-table', table(
+        ['Variable', 'Pearson r', 'p', 'Spearman ρ', 'p', 'Kendall τ', 'p'],
+        corrSorted.map(c => [
+          label(c.variable),
+          fmt.num(c.pearson_r, 4),
+          fmt.p(c.pearson_p),
+          fmt.num(c.spearman_rho, 4),
+          fmt.p(c.spearman_p),
+          fmt.num(c.kendall_tau, 4),
+          fmt.p(c.kendall_p)
+        ])
+      ));
+
+      setHTML('partial-table', table(
+        ['X', 'Y', 'Control', 'r parcial', 'p', 'Lectura'],
+        partial.map(c => [
+          label(c.x),
+          label(c.y),
+          label(c.control),
+          fmt.num(c.partial_r, 4),
+          fmt.p(c.p_value),
+          Math.abs(Number(c.partial_r)) > 0.3 ? 'asociación visible' : 'débil'
+        ])
+      ));
+
+      Plotly.newPlot('chart-corr', [
+        {
+          x: corrSorted.map(d => Number(d.spearman_rho)),
+          y: corrSorted.map(d => label(d.variable)),
+          type: 'bar',
+          orientation: 'h',
+          customdata: corrSorted.map(d => [fmt.p(d.spearman_p), fmt.num(d.pearson_r, 3), fmt.num(d.kendall_tau, 3)]),
+          hovertemplate: '<b>%{y}</b><br>Spearman ρ=%{x:.3f}<br>p=%{customdata[0]}<br>Pearson=%{customdata[1]} · Kendall=%{customdata[2]}<br><i>Interpretación: asociación monotónica, no causalidad.</i><extra></extra>'
+        }
+      ], plotLayout('Ranking Spearman producción vs clima', { xTitle: 'ρ de Spearman', margin: { l: 170, r: 16, t: 34, b: 44 } }), plotConfig());
+
+      const best = corrSorted[0];
+      setHTML('corr-note', best
+        ? `<strong>Lectura:</strong> la asociación más alta del bloque es ${label(best.variable)} con ρ=${fmt.num(best.spearman_rho, 3)} y p=${fmt.p(best.spearman_p)}. Esto prioriza hipótesis, pero no prueba causalidad.`
+        : '<strong>Lectura:</strong> no hay correlaciones disponibles.'
+      );
+
+      const variables = [...new Set(lags.map(d => label(d.variable)))];
+      const lagValues = [...new Set(lags.map(d => Number(d.lag_hours)))].sort((a, b) => a - b);
+      const z = variables.map(v => lagValues.map(l => {
+        const found = lags.find(d => label(d.variable) === v && Number(d.lag_hours) === l);
+        return found ? Number(found.spearman_rho) : null;
+      }));
+
+      Plotly.newPlot('chart-lags', [
+        {
+          x: lagValues.map(l => `${l}h`),
+          y: variables,
+          z,
+          type: 'heatmap',
+          colorscale: 'RdBu',
+          zmid: 0,
+          hovertemplate: '<b>%{y}</b><br>Rezago: %{x}<br>ρ=%{z:.3f}<br><i>Mayor magnitud sugiere posible respuesta retardada.</i><extra></extra>'
+        }
+      ], plotLayout('Correlación por rezago', { margin: { l: 170, r: 16, t: 34, b: 44 } }), plotConfig());
+
+      bindPlotInsight('chart-corr', 'Ranking de correlaciones', 'Este gráfico ordena variables por asociación monotónica. Úsalo para priorizar hipótesis: humedad, VPD o radiación pueden ser candidatos, pero no basta para causalidad.');
+      bindPlotInsight('chart-lags', 'Mapa de rezagos', 'El mapa de rezagos busca memoria temporal: a veces el clima de 1–3 horas antes explica mejor que el clima instantáneo.');
+    }
+
+    function renderProductionPlots(data) {
+      const daily = safeArray(get(data, 'summaries.daily', []));
+      const daypart = safeArray(get(data, 'summaries.daypart', []));
+      const hourly = safeArray(get(data, 'chart_data.hourly', []));
+
+      Plotly.newPlot('chart-daily', [
+        {
+          x: daily.map(d => d.date),
+          y: daily.map(d => d.production_l),
+          type: 'bar',
+          name: 'Producción L',
+          yaxis: 'y',
+          hovertemplate: '<b>%{x}</b><br>Producción: %{y:.2f} L<br><i>Si falta clima ese día no entra al modelo climático.</i><extra></extra>'
+        },
+        {
+          x: daily.map(d => d.date),
+          y: daily.map(d => d.humidity_pct),
+          type: 'scatter',
+          mode: 'lines+markers',
+          name: 'Humedad %',
+          yaxis: 'y2',
+          hovertemplate: '<b>%{x}</b><br>Humedad media: %{y:.1f}%<extra></extra>'
+        },
+        {
+          x: daily.map(d => d.date),
+          y: daily.map(d => d.temp_c),
+          type: 'scatter',
+          mode: 'lines+markers',
+          name: 'Temp °C',
+          yaxis: 'y2',
+          hovertemplate: '<b>%{x}</b><br>Temperatura media: %{y:.1f}°C<extra></extra>'
+        }
+      ], {
+        ...plotLayout('Producción diaria y clima medio', { hovermode: 'x unified' }),
+        yaxis: { title: 'Producción (L)', gridcolor: 'rgba(40,38,30,.08)' },
+        yaxis2: { title: 'Clima', overlaying: 'y', side: 'right', gridcolor: 'rgba(0,0,0,0)' }
+      }, plotConfig());
+
+      const validDaily = daily.filter(d => Number.isFinite(Number(d.production_l)));
+      const bestDay = [...validDaily].sort((a, b) => Number(b.production_l) - Number(a.production_l))[0];
+      setHTML('daily-note', bestDay
+        ? `<strong>Lectura:</strong> el día con mayor producción válida fue ${bestDay.date} con ${fmt.num(bestDay.production_l, 2)} L. Los días posteriores al fin del clima aportan producción operacional, pero no evidencia climática.`
+        : '<strong>Lectura:</strong> no hay producción diaria disponible.'
+      );
+
+      Plotly.newPlot('chart-daypart', [
+        {
+          x: daypart.map(d => d.daypart),
+          y: daypart.map(d => d.production_mean),
+          type: 'bar',
+          name: 'Producción media L/h',
+          customdata: daypart.map(d => [fmt.num(d.humidity_mean, 1), fmt.num(d.vpd_mean, 3), fmt.num(d.solar_mean, 1), fmt.int(d.n)]),
+          hovertemplate: '<b>%{x}</b><br>Producción media: %{y:.2f} L/h<br>Humedad: %{customdata[0]}%<br>VPD: %{customdata[1]} kPa<br>Solar: %{customdata[2]} W/m²<br>n=%{customdata[3]}<extra></extra>'
+        }
+      ], plotLayout('Producción media por franja horaria', { yTitle: 'L/h' }), plotConfig());
+
+      const bestPart = [...daypart].sort((a, b) => Number(b.production_mean) - Number(a.production_mean))[0];
+      setHTML('daypart-note', bestPart
+        ? `<strong>Lectura:</strong> la franja con mayor producción media fue ${bestPart.daypart}, con ${fmt.num(bestPart.production_mean, 2)} L/h. Esto sugiere que condiciones nocturnas/húmedas merecen seguimiento en próximos bloques.`
+        : '<strong>Lectura:</strong> no hay resumen por franja.'
+      );
+
+      Plotly.newPlot('chart-hourly', [
+        {
+          x: hourly.map(d => d.timestamp),
+          y: hourly.map(d => d.production_lph),
+          type: 'scatter',
+          mode: 'lines+markers',
+          name: 'Producción L/h',
+          yaxis: 'y',
+          customdata: hourly.map(d => [fmt.num(d.humidity_pct, 1), fmt.num(d.temp_c, 1), fmt.num(d.vpd_kpa, 3), fmt.num(d.solar_wm2, 1), d.daypart]),
+          hovertemplate: '<b>%{x}</b><br>Producción: %{y:.2f} L/h<br>Humedad: %{customdata[0]}%<br>Temp: %{customdata[1]}°C<br>VPD: %{customdata[2]} kPa<br>Solar: %{customdata[3]} W/m²<br>Franja: %{customdata[4]}<br><i>Lee producción junto con VPD y radiación.</i><extra></extra>'
+        },
+        {
+          x: hourly.map(d => d.timestamp),
+          y: hourly.map(d => d.humidity_pct),
+          type: 'scatter',
+          mode: 'lines',
+          name: 'Humedad %',
+          yaxis: 'y2',
+          opacity: 0.65,
+          hovertemplate: '<b>%{x}</b><br>Humedad: %{y:.1f}%<extra></extra>'
+        },
+        {
+          x: hourly.map(d => d.timestamp),
+          y: hourly.map(d => d.vpd_kpa),
+          type: 'scatter',
+          mode: 'lines',
+          name: 'VPD kPa',
+          yaxis: 'y3',
+          opacity: 0.65,
+          hovertemplate: '<b>%{x}</b><br>VPD: %{y:.3f} kPa<extra></extra>'
+        }
+      ], {
+        ...plotLayout('Serie horaria con clima', { hovermode: 'x unified' }),
+        yaxis: { title: 'Producción L/h', gridcolor: 'rgba(40,38,30,.08)' },
+        yaxis2: { title: 'Humedad %', overlaying: 'y', side: 'right', gridcolor: 'rgba(0,0,0,0)' },
+        yaxis3: { title: 'VPD', overlaying: 'y', side: 'right', anchor: 'free', position: 0.94, showgrid: false }
+      }, plotConfig());
+
+      bindPlotInsight('chart-daily', 'Producción diaria', 'Este gráfico muestra cuánto produjo cada día y si hubo clima disponible para ese día. Distinguir datos operativos de datos inferenciales evita conclusiones falsas.');
+      bindPlotInsight('chart-daypart', 'Franja horaria', 'La comparación por franja revela patrones operativos: si la noche supera al día, se abre una hipótesis física sobre humedad, VPD y radiación.');
+      bindPlotInsight('chart-hourly', 'Serie horaria', 'Los picos horarios deben leerse como eventos; no todos se explican por clima. Observa la relación simultánea con humedad y VPD.');
+    }
+
+    function renderModels(data) {
+      const ols = get(data, 'models.ols_hac', {});
+      const coeffs = safeArray(ols.coefficients);
+      const coefRows = coeffs.map(c => [
+        label(c.term),
+        fmt.num(c.coef, 6),
+        fmt.num(c.std_err_hac, 6),
+        fmt.num(c.t_hac, 4),
+        fmt.p(c.p_hac),
+        pStatus(c.p_hac),
+        `${fmt.num(c.ci_low_hac, 6)} – ${fmt.num(c.ci_high_hac, 6)}`
+      ]);
+      setHTML('ols-table', table(['Término', 'Coef.', 'EE HAC', 't', 'p', 'Estado', 'IC95%'], coefRows));
+
+      setHTML('ols-note', `
+        <strong>Lectura:</strong> el modelo OLS/HAC tiene R²=${fmt.num(ols.r2, 3)}, R² ajustado=${fmt.num(ols.adj_r2, 3)}, MAE=${fmt.num(ols.mae, 2)} L/h y RMSE=${fmt.num(ols.rmse, 2)} L/h.
+        ${Number(ols.r2) < 0.15 ? 'La señal explicativa es baja; se recomienda acumular más bloques antes de usarlo como predictor fuerte.' : 'Hay señal explicativa, pero debe validarse en bloques futuros.'}
+      `);
+
+      const models = get(data, 'models.predictive_models', {});
+      const modelRows = Object.entries(models).map(([name, m]) => [
+        name.replaceAll('_', ' '),
+        fmt.num(m.r2_insample, 4),
+        fmt.num(m.mae_insample, 4),
+        fmt.num(m.rmse_insample, 4),
+        fmt.num(m.cv_r2_mean, 4),
+        fmt.num(m.cv_mae_mean, 4),
+        fmt.num(m.time_series_cv_mae_mean, 4)
+      ]);
+      setHTML('model-table', table(['Modelo', 'R² in', 'MAE in', 'RMSE in', 'CV R²', 'CV MAE', 'TS CV MAE'], modelRows));
+
+      const importance = safeArray(models.random_forest?.feature_importance || models.gradient_boosting?.feature_importance);
+      Plotly.newPlot('chart-importance', [
+        {
+          x: importance.map(d => d.importance),
+          y: importance.map(d => label(d.variable || d.feature)),
+          type: 'bar',
+          orientation: 'h',
+          hovertemplate: '<b>%{y}</b><br>Importancia: %{x:.4f}<br><i>Importancia predictiva, no causal.</i><extra></extra>'
+        }
+      ], plotLayout('Importancia de variables', { margin: { l: 170, r: 16, t: 34, b: 44 } }), plotConfig());
+
+      bindPlotInsight('chart-importance', 'Importancia de variables', 'Esta gráfica muestra qué variables ayudaron más a modelos flexibles. No equivale a causalidad y puede cambiar cuando entren más bloques.');
+    }
+
+    function renderDiagnostics(data) {
+      const diag = get(data, 'models.ols_hac.diagnostics', {});
+      const chart = safeArray(get(data, 'models.chart_data.observed_vs_predicted_ols', []));
+
+      const maxVal = Math.max(
+        ...chart.map(d => Number(d.observed)).filter(Number.isFinite),
+        ...chart.map(d => Number(d.predicted)).filter(Number.isFinite),
+        1
+      );
+
+      Plotly.newPlot('chart-obs-pred', [
+        {
+          x: chart.map(d => d.predicted),
+          y: chart.map(d => d.observed),
+          type: 'scatter',
+          mode: 'markers',
+          text: chart.map(d => d.timestamp),
+          hovertemplate: '<b>%{text}</b><br>Predicho: %{x:.2f} L/h<br>Observado: %{y:.2f} L/h<br>Error vertical = residuo<extra></extra>'
+        },
+        {
+          x: [0, maxVal],
+          y: [0, maxVal],
+          type: 'scatter',
+          mode: 'lines',
+          name: 'Línea ideal',
+          hoverinfo: 'skip'
+        }
+      ], plotLayout('Observado vs predicho', { xTitle: 'Predicho L/h', yTitle: 'Observado L/h' }), plotConfig());
+
+      Plotly.newPlot('chart-residuals', [
+        {
+          x: chart.map(d => d.timestamp),
+          y: chart.map(d => d.residual),
+          type: 'scatter',
+          mode: 'lines+markers',
+          name: 'Residuo',
+          hovertemplate: '<b>%{x}</b><br>Residuo: %{y:.2f} L/h<br><i>Positivo = produjo más de lo predicho.</i><extra></extra>'
+        },
+        {
+          x: chart.map(d => d.timestamp),
+          y: chart.map(() => 0),
+          type: 'scatter',
+          mode: 'lines',
+          name: '0',
+          hoverinfo: 'skip'
+        }
+      ], plotLayout('Residuos del modelo', { hovermode: 'x unified', yTitle: 'Residuo L/h' }), plotConfig());
+
+      const rows = [
+        ['Durbin-Watson', fmt.num(diag.durbin_watson, 4), 'Autocorrelación residual', interpretDW(diag.durbin_watson)],
+        ['Ljung-Box Q', fmt.num(diag.ljung_box?.Q, 4), `p=${fmt.p(diag.ljung_box?.p_value)}`, Number(diag.ljung_box?.p_value) < 0.05 ? 'Hay autocorrelación detectable.' : 'No se detecta autocorrelación fuerte.'],
+        ['Breusch-Pagan LM', fmt.num(diag.breusch_pagan?.LM, 4), `p=${fmt.p(diag.breusch_pagan?.LM_p_value)}`, Number(diag.breusch_pagan?.LM_p_value) < 0.05 ? 'Posible heterocedasticidad.' : 'No hay evidencia fuerte de heterocedasticidad.'],
+        ['Cook threshold', fmt.num(diag.cooks_distance_threshold_4_over_n, 5), '4/n', 'Umbral para puntos influyentes.']
+      ];
+      safeArray(diag.top_cooks_distance).slice(0, 6).forEach(d => {
+        rows.push(['Cook top', fmt.num(d.cooks_distance, 5), d.timestamp || `obs ${d.index}`, 'Punto potencialmente influyente.']);
+      });
+      setHTML('diagnostics-table', table(['Métrica', 'Valor', 'Referencia', 'Lectura'], rows));
+
+      bindPlotInsight('chart-obs-pred', 'Observado vs predicho', 'La diagonal representa predicción perfecta. Dispersión amplia alrededor de esa línea sugiere que el modelo climático aún no captura toda la dinámica de producción.');
+      bindPlotInsight('chart-residuals', 'Residuos', 'Residuos positivos son horas donde la máquina produjo más de lo predicho; negativos, menos. Patrones persistentes indican variables faltantes o no linealidad.');
+    }
+
+    function interpretDW(dw) {
+      const v = Number(dw);
+      if (!Number.isFinite(v)) return 'No disponible.';
+      if (v < 1.5) return 'Posible autocorrelación positiva.';
+      if (v > 2.5) return 'Posible autocorrelación negativa.';
+      return 'Cerca de 2: autocorrelación débil.';
+    }
+
+    function renderConclusions(data) {
+      setHTML('conclusion-list', safeArray(data.scientific_conclusions).map(x => `<li>${x}</li>`).join(''));
+      setHTML('limitation-list', safeArray(data.limitations).map(x => `<li>${x}</li>`).join(''));
+    }
+
+    function bindPlotInsight(id, title, text) {
+      const el = $(id);
+      if (!el) return;
+      el.classList.add('insightable');
+      el.dataset.insightTitle = title;
+      el.dataset.insight = text;
+      if (el.on) {
+        el.on('plotly_hover', event => {
+          const point = event.points && event.points[0];
+          const extra = point
+            ? ` Punto actual: ${point.x !== undefined ? point.x : ''} ${point.y !== undefined ? '· ' + point.y : ''}.`
+            : '';
+          updateInsight(title, text + extra, 'Hover sobre gráfica');
+        });
+      }
+    }
+
+    function computePrediction(input) {
+      const coeffs = safeArray(get(ANALYSIS, 'models.ols_hac.coefficients', []));
+      const map = Object.fromEntries(coeffs.map(c => [c.term, Number(c.coef)]));
+      const hasOLS = coeffs.length > 0;
+      const ols = hasOLS
+        ? (map.const || 0)
+          + (map.humidity_pct || 0) * input.humidity
+          + (map.temp_c || 0) * input.temp
+          + (map.vpd_kpa || 0) * input.vpd
+          + (map.solar_wm2 || 0) * input.solar
+          + (map.wind_kmh || 0) * input.wind
+        : 1.2;
+
+      const part = inferDaypart(input.hour);
+      const empirical = daypartFactor(part) * 1.62;
+      const humidityBoost = 0.018 * (input.humidity - 70);
+      const vpdPenalty = -0.42 * Math.max(0, input.vpd - 0.75);
+      const solarPenalty = -0.004 * Math.max(0, input.solar - 30);
+      const physicalAdjustment = humidityBoost + vpdPenalty + solarPenalty;
+      const hybrid = 0.62 * ols + 0.26 * empirical + 0.12 * (1.5 + physicalAdjustment);
+      return clamp(hybrid, 0, 7.5);
+    }
+
+    function currentSimInput() {
+      return {
+        temp: Number($('temp').value),
+        humidity: Number($('humidity').value),
+        vpd: Number($('vpd').value),
+        solar: Number($('solar').value),
+        wind: Number($('wind').value),
+        hour: Number($('hour').value)
+      };
+    }
+
+    function updateSimulator() {
+      const input = currentSimInput();
+      const lph = computePrediction(input);
+      const rmse = Number(get(ANALYSIS, 'models.ols_hac.rmse', 1.47)) || 1.47;
+      const low = Math.max(0, lph - rmse);
+      const high = lph + rmse;
+      const daypart = inferDaypart(input.hour);
+      const blockAvg = mean(safeArray(get(ANALYSIS, 'chart_data.hourly', [])).map(d => Number(d.production_lph)).filter(Number.isFinite)) || 1.61;
+      const quality = lph > blockAvg * 1.25 ? 'alto' : lph < blockAvg * 0.75 ? 'bajo' : 'medio';
+
+      setText('temp-val', `${fmt.num(input.temp, 1)} °C`);
+      setText('humidity-val', `${fmt.num(input.humidity, 1)} %`);
+      setText('vpd-val', `${fmt.num(input.vpd, 2)} kPa`);
+      setText('solar-val', `${fmt.int(input.solar)} W/m²`);
+      setText('wind-val', `${fmt.num(input.wind, 1)} km/h`);
+      setText('hour-val', `${String(input.hour).padStart(2, '0')}:00 · ${daypart}`);
+      setText('sim-lph', fmt.num(lph, 2));
+      setText('sim-sub', `Escenario ${daypart.toLowerCase()}: ${fmt.num(input.humidity, 1)}% HR, ${fmt.num(input.temp, 1)}°C, VPD ${fmt.num(input.vpd, 2)} kPa.`);
+      setText('sim-day', `${fmt.num(lph * 24, 1)} L/día`);
+      setText('sim-band', `${fmt.num(low, 1)}–${fmt.num(high, 1)} L/h`);
+      setText('sim-quality', quality.toUpperCase());
+
+      const r2 = Number(get(ANALYSIS, 'models.ols_hac.r2', 0));
+      setHTML('sim-explain', `
+        <strong>Interpretación:</strong> bajo este escenario el simulador estima ${fmt.num(lph, 2)} L/h (${fmt.num(lph * 24, 1)} L/día si se mantuviera 24 h).
+        La franja es <strong>${daypart}</strong>. El R² lineal del bloque es ${fmt.num(r2, 3)}, por lo que la salida debe leerse como exploratoria y comparativa, no como garantía.
+      `);
+
+      renderSimulatorCharts(input);
+    }
+
+    function renderSimulatorCharts(input) {
+      const humidityValues = Array.from({ length: 62 }, (_, i) => 35 + i);
+      const sensitivity = humidityValues.map(h => computePrediction({ ...input, humidity: h }));
+
+      Plotly.react('chart-sim-sensitivity', [
+        {
+          x: humidityValues,
+          y: sensitivity,
+          type: 'scatter',
+          mode: 'lines',
+          name: 'L/h estimado',
+          hovertemplate: 'Humedad: %{x:.0f}%<br>Producción estimada: %{y:.2f} L/h<br><i>Curva manteniendo las demás variables constantes.</i><extra></extra>'
+        },
+        {
+          x: [input.humidity],
+          y: [computePrediction(input)],
+          type: 'scatter',
+          mode: 'markers',
+          name: 'escenario actual',
+          marker: { size: 10 },
+          hovertemplate: '<b>Escenario actual</b><br>%{x:.1f}% HR<br>%{y:.2f} L/h<extra></extra>'
+        }
+      ], plotLayout('Sensibilidad a humedad', { xTitle: 'Humedad %', yTitle: 'L/h' }), plotConfig());
+
+      const temps = Array.from({ length: 21 }, (_, i) => 12 + i);
+      const hums = Array.from({ length: 25 }, (_, i) => 45 + i * 2);
+      const z = hums.map(h => temps.map(t => computePrediction({ ...input, humidity: h, temp: t })));
+
+      Plotly.react('chart-sim-heatmap', [
+        {
+          x: temps,
+          y: hums,
+          z,
+          type: 'heatmap',
+          colorscale: 'YlGnBu',
+          hovertemplate: 'Temp: %{x:.1f}°C<br>Humedad: %{y:.0f}%<br>Producción: %{z:.2f} L/h<extra></extra>'
+        },
+        {
+          x: [input.temp],
+          y: [input.humidity],
+          type: 'scatter',
+          mode: 'markers',
+          marker: { size: 10, color: 'white', line: { color: '#1c3f6e', width: 2 } },
+          name: 'Actual',
+          hovertemplate: '<b>Escenario actual</b><br>%{x:.1f}°C · %{y:.1f}%<extra></extra>'
+        }
+      ], plotLayout('Mapa temperatura × humedad', { xTitle: 'Temperatura °C', yTitle: 'Humedad %' }), plotConfig());
+
+      bindPlotInsight('chart-sim-sensitivity', 'Curva de sensibilidad', 'Esta curva cambia solo la humedad, manteniendo constantes las demás variables. Sirve para ver si el modelo responde a humedad en este escenario.');
+      bindPlotInsight('chart-sim-heatmap', 'Mapa de producción estimada', 'El mapa recorre temperatura y humedad para visualizar regiones favorables. La estrella/punto marca el escenario actual.');
+    }
+
+    function applyScenario(name) {
+      const scenarios = {
+        optimal: { temp: 19.7, humidity: 84, vpd: 0.38, solar: 0, wind: 0.25, hour: 22 },
+        'humid-night': { temp: 18.5, humidity: 88, vpd: 0.30, solar: 0, wind: 0.4, hour: 23 },
+        'dry-day': { temp: 26.0, humidity: 52, vpd: 1.65, solar: 120, wind: 2.2, hour: 14 },
+        'block-mean': { temp: 20.8, humidity: 72, vpd: 0.70, solar: 34, wind: 0.6, hour: 12 }
+      };
+      const s = scenarios[name];
+      if (!s) return;
+      $('temp').value = s.temp;
+      $('humidity').value = s.humidity;
+      $('vpd').value = s.vpd;
+      $('solar').value = s.solar;
+      $('wind').value = s.wind;
+      $('hour').value = s.hour;
+      document.querySelectorAll('.scenario-btn').forEach(btn => btn.classList.toggle('active', btn.dataset.scenario === name));
+      updateSimulator();
+    }
+
+    function mean(values) {
+      const arr = values.filter(Number.isFinite);
+      if (!arr.length) return null;
+      return arr.reduce((a, b) => a + b, 0) / arr.length;
+    }
+
+    function installSimulatorEvents() {
+      ['temp', 'humidity', 'vpd', 'solar', 'wind', 'hour'].forEach(id => {
+        const el = $(id);
+        if (el) el.addEventListener('input', () => {
+          document.querySelectorAll('.scenario-btn').forEach(btn => btn.classList.remove('active'));
+          updateSimulator();
+        });
+      });
+      document.querySelectorAll('.scenario-btn').forEach(btn => {
+        btn.addEventListener('click', () => applyScenario(btn.dataset.scenario));
+      });
+    }
+
+    function installNavigationSpy() {
+      const links = [...document.querySelectorAll('.sb-link, .mobile-nav-link')];
+      const sections = links
+        .map(link => document.querySelector(link.getAttribute('href')))
+        .filter(Boolean);
+
+      const observer = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          if (!entry.isIntersecting) return;
+          const id = `#${entry.target.id}`;
+          links.forEach(link => link.classList.toggle('active', link.getAttribute('href') === id));
+        });
+      }, { rootMargin: '-18% 0px -72% 0px', threshold: 0.01 });
+
+      sections.forEach(section => observer.observe(section));
+    }
+
+    function toggleMobileMenu() {
+      const menu = $('mobile-menu');
+      if (!menu) return;
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    async function init() {
+      ANALYSIS = await loadAnalysis();
+      renderHeaderAndQuickReading(ANALYSIS);
+      renderKPIs(ANALYSIS);
+      renderDataTables(ANALYSIS);
+      renderEquations(ANALYSIS);
+      renderAssumptions(ANALYSIS);
+      renderProductionPlots(ANALYSIS);
+      renderCorrelations(ANALYSIS);
+      renderANOVA(ANALYSIS);
+      renderModels(ANALYSIS);
+      renderDiagnostics(ANALYSIS);
+      renderConclusions(ANALYSIS);
+      installHoverInsights();
+      installSimulatorEvents();
+      installNavigationSpy();
+      updateSimulator();
+      updateInsight(
+        'Informe cargado',
+        USING_FALLBACK
+          ? 'No se pudo cargar statistical_analysis.json, así que se activó un fallback mínimo. Sube el JSON a data/processed para ver el informe completo.'
+          : 'El archivo statistical_analysis.json se cargó correctamente. Pasa el cursor sobre cualquier elemento para obtener interpretación contextual.',
+        USING_FALLBACK ? 'Modo fallback' : 'Datos precalculados'
+      );
+    }
+
+    window.toggleMobileMenu = toggleMobileMenu;
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
 </body>
 </html>
