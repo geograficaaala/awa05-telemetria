@@ -1144,8 +1144,9 @@
     ───────────────────────────────────────────────────────────── */
     .simulator-shell {
       display: grid;
-      grid-template-columns: minmax(280px, 0.85fr) minmax(0, 1.35fr);
-      gap: 16px;
+      grid-template-columns: minmax(300px, 0.82fr) minmax(0, 1.38fr);
+      gap: 18px;
+      align-items: start;
     }
 
     .sim-panel {
@@ -1167,19 +1168,20 @@
     }
 
     .sim-readout::before {
-      content: "L/h";
+      content: "SIM";
       position: absolute;
-      right: -4px;
-      top: -24px;
-      color: rgba(255,255,255,0.07);
+      right: -8px;
+      top: -18px;
+      color: rgba(255,255,255,0.06);
       font-family: var(--display);
-      font-size: 82px;
+      font-size: 88px;
       font-weight: 900;
       pointer-events: none;
+      letter-spacing: -0.06em;
     }
 
     .sim-label {
-      color: rgba(255,255,255,0.52);
+      color: rgba(255,255,255,0.58);
       font-family: var(--mono);
       font-size: 7.5px;
       letter-spacing: 0.16em;
@@ -1188,27 +1190,33 @@
 
     .sim-main {
       margin-top: 6px;
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
       font-family: var(--display);
-      font-size: 58px;
+      font-size: 56px;
       font-weight: 900;
-      line-height: 0.96;
+      line-height: 0.94;
       letter-spacing: -0.05em;
+      flex-wrap: wrap;
     }
 
     .sim-main span {
-      margin-left: 5px;
+      margin-left: 0;
       font-family: var(--mono);
       font-size: 12px;
-      font-weight: 400;
-      letter-spacing: 0.02em;
-      color: rgba(255,255,255,0.62);
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      color: rgba(255,255,255,0.68);
+      text-transform: uppercase;
     }
 
     .sim-sub {
       margin-top: 9px;
-      color: rgba(255,255,255,0.68);
-      font-size: 12px;
+      color: rgba(255,255,255,0.78);
+      font-size: 12.5px;
       line-height: 1.55;
+      max-width: 42ch;
     }
 
     .sim-controls {
@@ -1246,6 +1254,7 @@
       font-family: var(--mono);
       font-size: 11px;
       font-weight: 700;
+      text-align: right;
     }
 
     input[type="range"] {
@@ -1261,7 +1270,7 @@
     }
 
     .scenario-btn {
-      padding: 9px 10px;
+      padding: 10px 10px;
       border: 1px solid var(--rule-strong);
       border-radius: var(--radius);
       background: var(--surface2);
@@ -1272,6 +1281,7 @@
       text-transform: uppercase;
       cursor: pointer;
       transition: all 0.15s;
+      min-height: 38px;
     }
 
     .scenario-btn:hover,
@@ -1281,11 +1291,15 @@
       color: var(--cobalt);
     }
 
+    .sim-result-card {
+      padding: 18px;
+    }
+
     .sim-kpi-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 10px;
-      margin-bottom: 14px;
+      margin-bottom: 16px;
     }
 
     .sim-kpi {
@@ -1293,6 +1307,7 @@
       border: 1px solid var(--rule);
       border-radius: var(--radius);
       background: var(--surface2);
+      min-height: 92px;
     }
 
     .sim-kpi-label {
@@ -1301,29 +1316,492 @@
       font-size: 7px;
       letter-spacing: 0.12em;
       text-transform: uppercase;
+      line-height: 1.5;
     }
 
     .sim-kpi-value {
-      margin-top: 5px;
+      margin-top: 6px;
       color: var(--cobalt);
       font-family: var(--mono);
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 700;
+      line-height: 1.25;
+      word-break: break-word;
     }
 
     .sim-kpi-note {
       margin-top: 4px;
       color: var(--ink-soft);
       font-size: 10.5px;
+      line-height: 1.45;
+    }
+
+    .sim-hero-grid {
+      display: grid;
+      grid-template-columns: minmax(270px, 0.78fr) minmax(0, 1.22fr);
+      gap: 14px;
+      margin-bottom: 14px;
+    }
+
+    .garrafon-panel,
+    .gauge-card,
+    .compare-card,
+    .sim-mini-grid,
+    .driver-board,
+    .impact-grid,
+    .sim-explain {
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+
+    .garrafon-panel {
+      padding: 16px;
+      background: linear-gradient(180deg, #fdfdfd, #f4f2eb);
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 100%;
+    }
+
+    .garrafon-caption {
+      font-family: var(--mono);
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--ink-faint);
+    }
+
+    .garrafon-stage {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 16px;
+      align-items: center;
+      min-height: 290px;
+    }
+
+    .garrafon-wrap {
+      position: relative;
+      width: 150px;
+      margin: 0 auto;
+      padding-top: 10px;
+    }
+
+    .garrafon-cap {
+      width: 34px;
+      height: 16px;
+      margin: 0 auto;
+      border-radius: 10px 10px 4px 4px;
+      background: linear-gradient(180deg, #2d62a1, #183d6a);
+      box-shadow: inset 0 -2px 0 rgba(255,255,255,0.18);
+    }
+
+    .garrafon-neck {
+      width: 54px;
+      height: 34px;
+      margin: -2px auto 0;
+      border: 3px solid rgba(28,63,110,0.22);
+      border-bottom: 0;
+      border-radius: 16px 16px 0 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.60), rgba(214,232,249,0.38));
+    }
+
+    .garrafon-body {
+      position: relative;
+      height: 230px;
+      margin-top: -1px;
+      border: 3px solid rgba(28,63,110,0.18);
+      border-radius: 26px 26px 34px 34px;
+      overflow: hidden;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,0.42), rgba(255,255,255,0.08) 20%, rgba(255,255,255,0.02) 58%, rgba(255,255,255,0.24) 100%),
+        linear-gradient(180deg, rgba(228,241,252,0.58), rgba(250,252,255,0.92));
+      box-shadow:
+        inset 18px 0 28px rgba(255,255,255,0.42),
+        inset -10px 0 18px rgba(28,63,110,0.05);
+    }
+
+    .garrafon-fill {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 0%;
+      transition: height 0.9s cubic-bezier(.2,.8,.2,1);
+      background: linear-gradient(180deg, rgba(86,180,255,0.88) 0%, rgba(41,125,224,0.90) 62%, rgba(17,70,137,0.96) 100%);
+      overflow: hidden;
+    }
+
+    .garrafon-fill::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, rgba(255,255,255,0.22), transparent 55%);
+      pointer-events: none;
+    }
+
+    .wave {
+      position: absolute;
+      top: -12px;
+      left: -8%;
+      width: 116%;
+      height: 22px;
+      border-radius: 45%;
+      opacity: 0.82;
+      animation: waveDrift 5s linear infinite;
+    }
+
+    .wave.one {
+      background: rgba(255,255,255,0.28);
+      animation-duration: 5.3s;
+    }
+
+    .wave.two {
+      background: rgba(255,255,255,0.18);
+      top: -8px;
+      animation-direction: reverse;
+      animation-duration: 6.8s;
+    }
+
+    @keyframes waveDrift {
+      0% { transform: translateX(-6%) rotate(0deg); }
+      100% { transform: translateX(6%) rotate(2deg); }
+    }
+
+    .garrafon-scale {
+      position: absolute;
+      top: 20px;
+      right: 12px;
+      bottom: 18px;
+      width: 28px;
+      pointer-events: none;
+    }
+
+    .garrafon-mark {
+      position: absolute;
+      right: 0;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 6px;
+      font-family: var(--mono);
+      font-size: 7px;
+      color: rgba(28,63,110,0.72);
+    }
+
+    .garrafon-mark::before {
+      content: "";
+      width: 12px;
+      height: 1px;
+      background: rgba(28,63,110,0.32);
+    }
+
+    .garrafon-info {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .garrafon-big {
+      font-family: var(--display);
+      font-size: 42px;
+      line-height: 0.95;
+      font-weight: 900;
+      letter-spacing: -0.05em;
+      color: var(--ink);
+    }
+
+    .garrafon-big small {
+      display: block;
+      margin-top: 6px;
+      font-family: var(--mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .garrafon-note {
+      color: var(--ink-soft);
+      font-size: 12px;
+      line-height: 1.7;
+    }
+
+    .garrafon-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: var(--cobalt-pale);
+      border: 1px solid var(--cobalt-rim);
+      color: var(--cobalt);
+      font-family: var(--mono);
+      font-size: 8px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      width: fit-content;
+    }
+
+    .sim-side-stack {
+      display: grid;
+      gap: 12px;
+    }
+
+    .gauge-card,
+    .compare-card {
+      padding: 14px;
+    }
+
+    .gauge-head,
+    .compare-head,
+    .driver-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .gauge-title,
+    .compare-title,
+    .driver-title {
+      font-family: var(--mono);
+      font-size: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--ink-faint);
+    }
+
+    .gauge-sub,
+    .compare-sub {
+      color: var(--ink-soft);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+
+    .gauge-wrap {
+      display: grid;
+      grid-template-columns: 118px 1fr;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .gauge-ring {
+      --gauge-angle: 0deg;
+      width: 108px;
+      height: 108px;
+      border-radius: 50%;
+      background: conic-gradient(var(--cobalt) var(--gauge-angle), rgba(28,63,110,0.10) 0deg);
+      display: grid;
+      place-items: center;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .gauge-ring::after {
+      content: "";
+      position: absolute;
+      inset: 11px;
+      border-radius: 50%;
+      background: var(--surface);
+      box-shadow: inset 0 0 0 1px var(--rule);
+    }
+
+    .gauge-center {
+      position: relative;
+      z-index: 1;
+      text-align: center;
+    }
+
+    .gauge-value {
+      font-family: var(--display);
+      font-size: 30px;
+      font-weight: 900;
+      line-height: 0.95;
+      color: var(--ink);
+    }
+
+    .gauge-unit {
+      margin-top: 5px;
+      font-family: var(--mono);
+      font-size: 7.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+    }
+
+    .compare-track {
+      position: relative;
+      height: 14px;
+      border-radius: 999px;
+      background: rgba(28,63,110,0.10);
+      overflow: hidden;
+      margin: 10px 0 12px;
+    }
+
+    .compare-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 0%;
+      transition: width 0.7s ease;
+      background: linear-gradient(90deg, #96c6ff 0%, #1c3f6e 100%);
+      border-radius: 999px;
+    }
+
+    .compare-axis {
+      display: flex;
+      justify-content: space-between;
+      font-family: var(--mono);
+      font-size: 7px;
+      color: var(--ink-faint);
+      text-transform: uppercase;
+      letter-spacing: 0.10em;
+    }
+
+    .compare-text {
+      color: var(--ink-soft);
+      font-size: 12px;
+      line-height: 1.65;
+    }
+
+    .sim-mini-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      padding: 12px;
+      margin-bottom: 14px;
+    }
+
+    .sim-mini {
+      padding: 10px;
+      border: 1px solid var(--rule);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--surface2), var(--surface));
+      min-height: 82px;
+    }
+
+    .sim-mini-label {
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      line-height: 1.55;
+    }
+
+    .sim-mini-value {
+      margin-top: 8px;
+      font-family: var(--mono);
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--cobalt);
+      line-height: 1.25;
+      word-break: break-word;
+    }
+
+    .driver-board {
+      padding: 14px;
+      margin-bottom: 14px;
+    }
+
+    .driver-list {
+      display: grid;
+      gap: 11px;
+      margin-top: 10px;
+    }
+
+    .driver-item {
+      display: grid;
+      grid-template-columns: minmax(110px, 155px) minmax(0, 1fr) 50px;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .driver-label {
+      font-size: 11.5px;
+      color: var(--ink-mid);
       line-height: 1.4;
     }
 
-    .sim-explain {
-      margin-top: 14px;
-      padding: 12px 13px;
-      border: 1px solid var(--cobalt-rim);
+    .driver-track {
+      position: relative;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(28,63,110,0.10);
+      overflow: hidden;
+    }
+
+    .driver-fill {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 0%;
+      transition: width 0.6s ease;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #5ba7ff 0%, #173a67 100%);
+    }
+
+    .driver-value {
+      font-family: var(--mono);
+      font-size: 10px;
+      color: var(--cobalt);
+      text-align: right;
+    }
+
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      padding: 12px;
+      margin-bottom: 14px;
+    }
+
+    .impact-card {
+      padding: 12px;
+      border: 1px solid var(--rule);
       border-radius: var(--radius);
+      background: linear-gradient(180deg, var(--surface2), var(--surface));
+      min-height: 100px;
+    }
+
+    .impact-label {
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: 0.10em;
+      text-transform: uppercase;
+      color: var(--ink-faint);
+      line-height: 1.55;
+    }
+
+    .impact-value {
+      margin-top: 10px;
+      font-family: var(--display);
+      font-size: 24px;
+      font-weight: 900;
+      line-height: 1;
+      color: var(--cobalt);
+      letter-spacing: -0.04em;
+    }
+
+    .impact-value.negative { color: #8f3f26; }
+    .impact-value.positive { color: var(--forest); }
+
+    .impact-note {
+      margin-top: 6px;
+      color: var(--ink-soft);
+      font-size: 11px;
+      line-height: 1.55;
+    }
+
+    .sim-explain {
+      padding: 14px 15px;
       background: var(--cobalt-pale);
+      border-color: var(--cobalt-rim);
       color: var(--ink-soft);
       font-size: 12px;
       line-height: 1.72;
@@ -1332,6 +1810,7 @@
     .sim-explain strong {
       color: var(--cobalt);
     }
+
 
     /* ─────────────────────────────────────────────────────────────
        FOOTER
@@ -1897,6 +2376,62 @@
       }
     }
 
+
+    /* ─────────────────────────────────────────────────────────────
+       AJUSTES RESPONSIVOS DEL SIMULADOR V5
+    ───────────────────────────────────────────────────────────── */
+    @media (max-width: 1280px) {
+      .sim-hero-grid,
+      .sim-kpi-grid,
+      .sim-mini-grid,
+      .impact-grid,
+      .scenario-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      }
+
+      .garrafon-stage,
+      .gauge-wrap,
+      .driver-item {
+        grid-template-columns: 1fr !important;
+      }
+
+      .driver-value {
+        text-align: left;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .sim-controls,
+      .sim-kpi-grid,
+      .sim-hero-grid,
+      .sim-mini-grid,
+      .impact-grid,
+      .scenario-grid {
+        grid-template-columns: 1fr !important;
+      }
+
+      .garrafon-panel,
+      .gauge-card,
+      .compare-card,
+      .driver-board,
+      .sim-explain {
+        padding: 14px;
+      }
+
+      .garrafon-stage {
+        min-height: unset;
+      }
+
+      .garrafon-big {
+        font-size: 34px;
+      }
+
+      .sim-main {
+        white-space: normal;
+        gap: 4px;
+      }
+    }
+
   </style>
 </head>
 <body>
@@ -2080,51 +2615,51 @@
         <div class="section-head">
           <div>
             <div class="eyebrow">Simulación microclimática</div>
-            <h2 class="section-title">Respuesta estimada del sistema ante escenarios de operación</h2>
+            <h2 class="section-title">Simulador de producción bajo condiciones microclimáticas</h2>
             <p class="section-sub">
-              El simulador combina el ajuste estadístico del bloque con reglas físicas simples de condensación.
-              Permite comparar escenarios de humedad, temperatura, VPD, radiación, viento y horario sin alterar los datos originales.
+              Ajusta las variables medidas en campo para estimar la respuesta horaria del sistema.
+              El resultado combina el ajuste estadístico del bloque B01 con restricciones físicas simples de condensación.
             </p>
           </div>
-          <span class="badge warn">Simulador</span>
+          <span class="badge warn">Simulación</span>
         </div>
         <div class="section-rule"></div>
 
         <div class="simulator-shell">
-          <div class="sim-panel insightable" data-insight="Modifica las variables climáticas y observa cómo cambia la producción estimada. La banda de incertidumbre usa el error RMSE del modelo.">
+          <div class="sim-panel">
             <div class="sim-readout">
               <div class="sim-label">Producción estimada</div>
               <div class="sim-main"><span id="sim-lph">—</span><span>L/h</span></div>
-              <div class="sim-sub" id="sim-sub">Ajusta las variables para calcular el escenario.</div>
+              <div class="sim-sub" id="sim-sub">Configura un escenario para estimar la producción del sistema.</div>
             </div>
 
             <div class="sim-controls">
-              <div class="control insightable" data-insight="La temperatura modifica la capacidad del aire para retener vapor. Su efecto no es lineal físicamente, pero el simulador la usa según evidencia observada y OLS.">
-                <div class="control-head"><span class="control-label">Temperatura</span><span class="control-value" id="temp-val">20 °C</span></div>
+              <div class="control">
+                <div class="control-head"><span class="control-label">Temperatura del aire</span><span class="control-value" id="temp-val">20 °C</span></div>
                 <input id="temp" type="range" min="12" max="32" step="0.1" value="20" />
               </div>
 
-              <div class="control insightable" data-insight="La humedad relativa es una de las variables con interpretación física más directa: a mayor humedad, más vapor disponible para condensar, aunque no siempre produce causalidad lineal.">
+              <div class="control">
                 <div class="control-head"><span class="control-label">Humedad relativa</span><span class="control-value" id="humidity-val">78 %</span></div>
                 <input id="humidity" type="range" min="35" max="96" step="0.1" value="78" />
               </div>
 
-              <div class="control insightable" data-insight="El VPD mide cuán lejos está el aire de la saturación. En principio, VPD bajo favorece condensación porque el aire está más cercano al punto de rocío.">
-                <div class="control-head"><span class="control-label">VPD</span><span class="control-value" id="vpd-val">0.55 kPa</span></div>
+              <div class="control">
+                <div class="control-head"><span class="control-label">Déficit de presión de vapor</span><span class="control-value" id="vpd-val">0.55 kPa</span></div>
                 <input id="vpd" type="range" min="0.05" max="2.3" step="0.01" value="0.55" />
               </div>
 
-              <div class="control insightable" data-insight="La radiación solar separa condiciones diurnas/nocturnas. En el bloque actual, el patrón nocturno mostró mejor desempeño medio.">
+              <div class="control">
                 <div class="control-head"><span class="control-label">Radiación solar</span><span class="control-value" id="solar-val">0 W/m²</span></div>
                 <input id="solar" type="range" min="0" max="180" step="1" value="0" />
               </div>
 
-              <div class="control insightable" data-insight="El viento puede renovar aire húmedo sobre el sistema, pero también puede introducir ruido. En el modelo actual su inferencia todavía es débil.">
-                <div class="control-head"><span class="control-label">Viento</span><span class="control-value" id="wind-val">0.4 km/h</span></div>
+              <div class="control">
+                <div class="control-head"><span class="control-label">Velocidad del viento</span><span class="control-value" id="wind-val">0.4 km/h</span></div>
                 <input id="wind" type="range" min="0" max="8" step="0.1" value="0.4" />
               </div>
 
-              <div class="control insightable" data-insight="La hora determina franja: madrugada, mañana, tarde o noche. Este factor se usa como ajuste empírico observado.">
+              <div class="control">
                 <div class="control-head"><span class="control-label">Hora del día</span><span class="control-value" id="hour-val">22:00</span></div>
                 <input id="hour" type="range" min="0" max="23" step="1" value="22" />
               </div>
@@ -2134,15 +2669,15 @@
               <button class="scenario-btn" data-scenario="optimal">Óptimo observado</button>
               <button class="scenario-btn" data-scenario="humid-night">Noche húmeda</button>
               <button class="scenario-btn" data-scenario="dry-day">Tarde seca</button>
-              <button class="scenario-btn" data-scenario="block-mean">Promedio bloque</button>
+              <button class="scenario-btn" data-scenario="block-mean">Promedio del bloque</button>
             </div>
           </div>
 
-          <div class="card sim-result-card insightable" data-insight="Resultados del simulador. La lectura principal es comparativa: cómo cambia el rendimiento estimado cuando varían las condiciones microclimáticas.">
+          <div class="card sim-result-card">
             <div class="card-head">
               <div>
                 <div class="card-title">Respuesta estimada del sistema</div>
-                <div class="card-sub">Producción, incertidumbre, sensibilidad a humedad y superficie temperatura × humedad</div>
+                <div class="card-sub">Representación visual de producción, equivalencia diaria y variables dominantes del escenario</div>
               </div>
               <span class="badge warn">Modelo híbrido</span>
             </div>
@@ -2151,43 +2686,135 @@
               <div class="sim-kpi">
                 <div class="sim-kpi-label">Producción diaria equivalente</div>
                 <div class="sim-kpi-value" id="sim-day">—</div>
-                <div class="sim-kpi-note">si el escenario se mantiene 24 h</div>
+                <div class="sim-kpi-note">si el escenario se mantiene 24 horas</div>
               </div>
               <div class="sim-kpi">
                 <div class="sim-kpi-label">Intervalo operativo</div>
                 <div class="sim-kpi-value" id="sim-band">—</div>
-                <div class="sim-kpi-note">banda basada en RMSE</div>
+                <div class="sim-kpi-note">rango aproximado según error del modelo</div>
               </div>
               <div class="sim-kpi">
-                <div class="sim-kpi-label">Comparación con B01</div>
+                <div class="sim-kpi-label">Comparación con el bloque B01</div>
                 <div class="sim-kpi-value" id="sim-quality">—</div>
-                <div class="sim-kpi-note">respecto al promedio horario</div>
+                <div class="sim-kpi-note">respecto al promedio horario observado</div>
               </div>
               <div class="sim-kpi">
                 <div class="sim-kpi-label">Índice microclimático</div>
                 <div class="sim-kpi-value" id="sim-index">—</div>
-                <div class="sim-kpi-note">0–100, condiciones favorables</div>
+                <div class="sim-kpi-note">síntesis relativa de favorabilidad</div>
               </div>
             </div>
 
-            <div class="sim-metrics-grid">
+            <div class="sim-hero-grid">
+              <div class="garrafon-panel">
+                <div class="garrafon-caption">Visualización diaria equivalente</div>
+                <div class="garrafon-stage">
+                  <div class="garrafon-wrap" aria-hidden="true">
+                    <div class="garrafon-cap"></div>
+                    <div class="garrafon-neck"></div>
+                    <div class="garrafon-body">
+                      <div class="garrafon-fill" id="garrafon-fill">
+                        <div class="wave one"></div>
+                        <div class="wave two"></div>
+                      </div>
+                      <div class="garrafon-scale">
+                        <div class="garrafon-mark" style="top: 0%">20 L</div>
+                        <div class="garrafon-mark" style="top: 25%">15 L</div>
+                        <div class="garrafon-mark" style="top: 50%">10 L</div>
+                        <div class="garrafon-mark" style="top: 75%">5 L</div>
+                        <div class="garrafon-mark" style="top: 92%">0</div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="garrafon-info">
+                    <div class="garrafon-big"><span id="sim-day-big">—</span><small>Litros por día</small></div>
+                    <div class="garrafon-note" id="sim-garrafon-note">La visualización traduce la producción diaria equivalente a una referencia de garrafón de 20 litros.</div>
+                    <div class="garrafon-pill" id="sim-garrafon-pill">— garrafones de 20 L/día</div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sim-side-stack">
+                <div class="gauge-card">
+                  <div class="gauge-head">
+                    <div>
+                      <div class="gauge-title">Condición microclimática</div>
+                      <div class="gauge-sub">Síntesis del escenario a partir de humedad, VPD, temperatura, radiación y viento</div>
+                    </div>
+                  </div>
+                  <div class="gauge-wrap">
+                    <div class="gauge-ring" id="sim-gauge-ring">
+                      <div class="gauge-center">
+                        <div class="gauge-value" id="sim-gauge-value">—</div>
+                        <div class="gauge-unit">/100</div>
+                      </div>
+                    </div>
+                    <div class="compare-text" id="sim-gauge-text">El índice resume cuán favorable es el microclima para condensación dentro de la lógica del modelo.</div>
+                  </div>
+                </div>
+
+                <div class="compare-card">
+                  <div class="compare-head">
+                    <div>
+                      <div class="compare-title">Comparación con el desempeño observado</div>
+                      <div class="compare-sub">Relación entre el escenario actual y el promedio horario del bloque</div>
+                    </div>
+                  </div>
+                  <div class="compare-track"><div class="compare-fill" id="sim-compare-fill"></div></div>
+                  <div class="compare-axis"><span>0×</span><span>1× promedio</span><span>2× promedio</span></div>
+                  <div class="compare-text" id="sim-compare-text">—</div>
+                </div>
+              </div>
+            </div>
+
+            <div class="sim-mini-grid">
               <div class="sim-mini"><div class="sim-mini-label">Punto de rocío estimado</div><div class="sim-mini-value" id="sim-dew">—</div></div>
               <div class="sim-mini"><div class="sim-mini-label">Humedad absoluta</div><div class="sim-mini-value" id="sim-ah">—</div></div>
               <div class="sim-mini"><div class="sim-mini-label">Franja horaria</div><div class="sim-mini-value" id="sim-part">—</div></div>
-              <div class="sim-mini"><div class="sim-mini-label">Penalización solar / VPD</div><div class="sim-mini-value" id="sim-penalty">—</div></div>
+              <div class="sim-mini"><div class="sim-mini-label">Penalización solar y VPD</div><div class="sim-mini-value" id="sim-penalty">—</div></div>
             </div>
 
-            <div class="grid-2">
-              <div>
-                <div id="chart-sim-sensitivity" class="chart short"></div>
+            <div class="driver-board">
+              <div class="driver-head">
+                <div>
+                  <div class="driver-title">Factores dominantes del escenario</div>
+                  <div class="compare-sub">Lectura relativa de cuánto favorece o restringe cada componente bajo las condiciones definidas</div>
+                </div>
               </div>
-              <div>
-                <div id="chart-sim-heatmap" class="chart short"></div>
+              <div class="driver-list">
+                <div class="driver-item"><div class="driver-label">Disponibilidad de humedad</div><div class="driver-track"><div class="driver-fill" id="driver-humidity"></div></div><div class="driver-value" id="driver-humidity-text">—</div></div>
+                <div class="driver-item"><div class="driver-label">Proximidad a saturación (VPD)</div><div class="driver-track"><div class="driver-fill" id="driver-vpd"></div></div><div class="driver-value" id="driver-vpd-text">—</div></div>
+                <div class="driver-item"><div class="driver-label">Ajuste térmico</div><div class="driver-track"><div class="driver-fill" id="driver-temp"></div></div><div class="driver-value" id="driver-temp-text">—</div></div>
+                <div class="driver-item"><div class="driver-label">Baja radiación</div><div class="driver-track"><div class="driver-fill" id="driver-solar"></div></div><div class="driver-value" id="driver-solar-text">—</div></div>
+                <div class="driver-item"><div class="driver-label">Estabilidad por viento</div><div class="driver-track"><div class="driver-fill" id="driver-wind"></div></div><div class="driver-value" id="driver-wind-text">—</div></div>
+              </div>
+            </div>
+
+            <div class="impact-grid">
+              <div class="impact-card">
+                <div class="impact-label">Sensibilidad local</div>
+                <div class="impact-value" id="impact-humidity">—</div>
+                <div class="impact-note">Cambio estimado si la humedad aumenta 5 puntos porcentuales.</div>
+              </div>
+              <div class="impact-card">
+                <div class="impact-label">Sensibilidad local</div>
+                <div class="impact-value" id="impact-vpd">—</div>
+                <div class="impact-note">Cambio estimado si el VPD disminuye 0.20 kPa.</div>
+              </div>
+              <div class="impact-card">
+                <div class="impact-label">Sensibilidad local</div>
+                <div class="impact-value" id="impact-solar">—</div>
+                <div class="impact-note">Cambio estimado si la radiación desciende 40 W/m².</div>
+              </div>
+              <div class="impact-card">
+                <div class="impact-label">Sensibilidad local</div>
+                <div class="impact-value" id="impact-night">—</div>
+                <div class="impact-note">Cambio estimado al llevar el mismo escenario a una hora nocturna.</div>
               </div>
             </div>
 
             <div class="sim-explain" id="sim-explain">
-              Ajusta las variables o elige un escenario. El resultado se interpreta como rendimiento relativo frente al bloque B01.
+              Ajusta las variables o selecciona un escenario de referencia para obtener una estimación interpretable de la producción.
             </div>
           </div>
         </div>
@@ -3766,59 +4393,98 @@
       `);
 
       updateInsight('Simulador microclimático', `Escenario actual: ${fmt.num(lph, 2)} L/h, índice ${fmt.num(idx, 0)}/100, ${daypart}. La lectura combina coeficientes estadísticos con penalización física por VPD alto y radiación.`, 'Simulador activo');
-      renderSimulatorCharts(input);
+      renderSimulatorVisuals(input, { lph, low, high, daypart, blockAvg, ratio, quality, dew, ah, idx, penalty });
     }
 
-    function renderSimulatorCharts(input) {
-      const humidityValues = Array.from({ length: 62 }, (_, i) => 35 + i);
-      const sensitivity = humidityValues.map(h => computePrediction({ ...input, humidity: h }));
+    function renderSimulatorVisuals(input, state) {
+      const { lph, daypart, blockAvg, ratio, dew, ah, idx, penalty } = state;
+      const dayLiters = lph * 24;
+      const avgDay = (blockAvg || 0) * 24;
+      const garrafones = dayLiters / 20;
+      const fillPct = clamp(dayLiters / 20, 0, 1) * 100;
+      const comparePct = clamp((ratio || 0) / 2, 0, 1) * 100;
 
-      Plotly.react('chart-sim-sensitivity', [
-        {
-          x: humidityValues,
-          y: sensitivity,
-          type: 'scatter',
-          mode: 'lines',
-          name: 'L/h estimado',
-          hovertemplate: 'Humedad: %{x:.0f}%<br>Producción estimada: %{y:.2f} L/h<br><i>Curva manteniendo las demás variables constantes.</i><extra></extra>'
-        },
-        {
-          x: [input.humidity],
-          y: [computePrediction(input)],
-          type: 'scatter',
-          mode: 'markers',
-          name: 'escenario actual',
-          marker: { size: 10 },
-          hovertemplate: '<b>Escenario actual</b><br>%{x:.1f}% HR<br>%{y:.2f} L/h<extra></extra>'
-        }
-      ], plotLayout('Sensibilidad a humedad', { xTitle: 'Humedad %', yTitle: 'L/h' }), plotConfig());
+      const fill = document.getElementById('garrafon-fill');
+      if (fill) fill.style.height = `${fillPct}%`;
+      const gauge = document.getElementById('sim-gauge-ring');
+      if (gauge) gauge.style.setProperty('--gauge-angle', `${clamp(idx, 0, 100) * 3.6}deg`);
+      const compareFill = document.getElementById('sim-compare-fill');
+      if (compareFill) compareFill.style.width = `${comparePct}%`;
 
-      const temps = Array.from({ length: 21 }, (_, i) => 12 + i);
-      const hums = Array.from({ length: 25 }, (_, i) => 45 + i * 2);
-      const z = hums.map(h => temps.map(t => computePrediction({ ...input, humidity: h, temp: t })));
+      setText('sim-day-big', fmt.num(dayLiters, 1));
+      setText('sim-garrafon-pill', `${fmt.num(garrafones, 2)} garrafones de 20 L/día`);
+      setText('sim-gauge-value', fmt.num(idx, 0));
 
-      Plotly.react('chart-sim-heatmap', [
-        {
-          x: temps,
-          y: hums,
-          z,
-          type: 'heatmap',
-          colorscale: 'YlGnBu',
-          hovertemplate: 'Temp: %{x:.1f}°C<br>Humedad: %{y:.0f}%<br>Producción: %{z:.2f} L/h<extra></extra>'
-        },
-        {
-          x: [input.temp],
-          y: [input.humidity],
-          type: 'scatter',
-          mode: 'markers',
-          marker: { size: 10, color: 'white', line: { color: '#1c3f6e', width: 2 } },
-          name: 'Actual',
-          hovertemplate: '<b>Escenario actual</b><br>%{x:.1f}°C · %{y:.1f}%<extra></extra>'
-        }
-      ], plotLayout('Mapa temperatura × humedad', { xTitle: 'Temperatura °C', yTitle: 'Humedad %' }), plotConfig());
+      const garrafonMsg = garrafones < 1
+        ? `La producción diaria equivalente llena aproximadamente ${fmt.num(garrafones * 100, 0)}% de un garrafón estándar de 20 litros.`
+        : `La producción diaria equivalente corresponde a ${fmt.num(garrafones, 2)} garrafones estándar de 20 litros.`;
+      setText('sim-garrafon-note', garrafonMsg);
 
-      bindPlotInsight('chart-sim-sensitivity', 'Curva de sensibilidad', 'Esta curva cambia solo la humedad, manteniendo constantes las demás variables. Sirve para ver si el modelo responde a humedad en este escenario.');
-      bindPlotInsight('chart-sim-heatmap', 'Mapa de producción estimada', 'El mapa recorre temperatura y humedad para visualizar regiones favorables. La estrella/punto marca el escenario actual.');
+      let gaugeMsg = 'Escenario poco favorable para condensación sostenida.';
+      if (idx >= 75) gaugeMsg = 'Escenario favorable: el sistema operaría en un rango microclimático alto para producción.';
+      else if (idx >= 55) gaugeMsg = 'Escenario intermedio: condiciones razonables, con una o dos restricciones operativas.';
+      else if (idx >= 35) gaugeMsg = 'Escenario moderado-bajo: hay señales de restricción térmica o de secado del aire.';
+      setText('sim-gauge-text', gaugeMsg);
+
+      const compareMsg = avgDay
+        ? `El escenario proyecta ${fmt.num(dayLiters, 1)} L/día frente a un equivalente medio del bloque de ${fmt.num(avgDay, 1)} L/día. Esto representa ${fmt.num(ratio, 2)} veces el promedio horario observado.`
+        : `No se pudo establecer una comparación robusta con el promedio del bloque.`;
+      setText('sim-compare-text', compareMsg);
+
+      const driverHumidity = clamp((input.humidity - 35) / (96 - 35), 0, 1) * 100;
+      const driverVpd = clamp(1 - (input.vpd - 0.05) / (2.3 - 0.05), 0, 1) * 100;
+      const driverTemp = clamp(1 - Math.abs(input.temp - 20) / 10, 0, 1) * 100;
+      const driverSolar = clamp(1 - input.solar / 180, 0, 1) * 100;
+      const driverWind = clamp(1 - Math.max(0, input.wind - 1.2) / 6.8, 0, 1) * 100;
+
+      const drivers = {
+        humidity: driverHumidity,
+        vpd: driverVpd,
+        temp: driverTemp,
+        solar: driverSolar,
+        wind: driverWind
+      };
+
+      Object.entries(drivers).forEach(([key, val]) => {
+        const bar = document.getElementById(`driver-${key}`);
+        const label = document.getElementById(`driver-${key}-text`);
+        if (bar) bar.style.width = `${clamp(val, 0, 100)}%`;
+        if (label) label.textContent = `${fmt.num(val, 0)}%`;
+      });
+
+      function signedDeltaText(delta) {
+        const text = `${delta >= 0 ? '+' : '−'}${fmt.num(Math.abs(delta), 2)} L/h`;
+        return { text, cls: delta >= 0 ? 'positive' : 'negative' };
+      }
+
+      const deltaHumidity = computePrediction({ ...input, humidity: clamp(input.humidity + 5, 35, 96) }) - lph;
+      const deltaVpd = computePrediction({ ...input, vpd: clamp(input.vpd - 0.20, 0.05, 2.3) }) - lph;
+      const deltaSolar = computePrediction({ ...input, solar: clamp(input.solar - 40, 0, 180) }) - lph;
+      const nightHour = input.hour >= 20 || input.hour <= 5 ? input.hour : 22;
+      const deltaNight = computePrediction({ ...input, solar: 0, hour: nightHour }) - lph;
+
+      [
+        ['impact-humidity', deltaHumidity],
+        ['impact-vpd', deltaVpd],
+        ['impact-solar', deltaSolar],
+        ['impact-night', deltaNight]
+      ].forEach(([id, delta]) => {
+        const el = document.getElementById(id);
+        if (!el) return;
+        const { text, cls } = signedDeltaText(delta);
+        el.textContent = text;
+        el.classList.remove('positive', 'negative');
+        el.classList.add(cls);
+      });
+
+      const r2 = Number(get(ANALYSIS, 'models.ols_hac.r2', 0));
+      const summary = [
+        `El escenario actual produce una estimación central de ${fmt.num(lph, 2)} L/h bajo ${fmt.num(input.humidity, 1)}% de humedad relativa y ${fmt.num(input.temp, 1)} °C.`,
+        `La equivalencia diaria sería de ${fmt.num(dayLiters, 1)} L/día, con punto de rocío aproximado de ${fmt.num(dew, 1)} °C y humedad absoluta de ${fmt.num(ah, 1)} g/m³.`,
+        `La comparación con el bloque B01 indica un desempeño ${ratio >= 1 ? 'superior' : 'inferior'} al promedio observado, en una razón de ${fmt.num(ratio, 2)}×.`,
+        `La penalización conjunta por VPD y radiación se estima en ${fmt.num(penalty, 2)} L/h. El ajuste lineal disponible tiene R²=${fmt.num(r2, 3)} y debe leerse como aproximación de escenario.`
+      ];
+      setHTML('sim-explain', `<strong>Interpretación del escenario.</strong> ${summary.join(' ')}`);
     }
 
     function applyScenario(name) {
