@@ -2432,7 +2432,233 @@
       }
     }
 
+  
+
+    /* ─────────────────────────────────────────────────────────────
+       DETECCIÓN AUTOMÁTICA: TELÉFONO / TABLET / PC
+    ───────────────────────────────────────────────────────────── */
+    html.device-mobile,
+    html.device-tablet,
+    html.device-desktop {
+      scroll-padding-top: 72px;
+    }
+
+    html.device-mobile header {
+      height: 52px;
+      padding: 0 12px;
+    }
+
+    html.device-mobile .hd-sub,
+    html.device-mobile .hd-center,
+    html.device-mobile .hd-ts {
+      display: none !important;
+    }
+
+    html.device-mobile .top-link {
+      display: none !important;
+    }
+
+    html.device-mobile .hd-mobile-menu {
+      display: inline-flex !important;
+    }
+
+    html.device-mobile main {
+      padding: 16px 10px 76px !important;
+    }
+
+    html.device-mobile .hero {
+      padding: 22px 16px !important;
+    }
+
+    html.device-mobile .hero h1 {
+      font-size: clamp(36px, 12vw, 54px) !important;
+      line-height: 0.92;
+    }
+
+    html.device-mobile .section-title {
+      font-size: 25px !important;
+      line-height: 1.08;
+    }
+
+    html.device-mobile .section-head {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    html.device-mobile .kpi-grid,
+    html.device-mobile .grid-2,
+    html.device-mobile .grid-3,
+    html.device-mobile .grid-4,
+    html.device-mobile .equation-grid,
+    html.device-mobile .methodology-grid,
+    html.device-mobile .simulator-shell,
+    html.device-mobile .sim-controls,
+    html.device-mobile .sim-kpi-grid,
+    html.device-mobile .sim-hero-grid,
+    html.device-mobile .sim-mini-grid,
+    html.device-mobile .impact-grid,
+    html.device-mobile .scenario-grid,
+    html.device-mobile .garrafon-stage,
+    html.device-mobile .gauge-wrap,
+    html.device-mobile .driver-item {
+      grid-template-columns: 1fr !important;
+    }
+
+    html.device-mobile .card,
+    html.device-mobile .sim-panel,
+    html.device-mobile .sim-result-card,
+    html.device-mobile .garrafon-panel,
+    html.device-mobile .gauge-card,
+    html.device-mobile .compare-card,
+    html.device-mobile .driver-board,
+    html.device-mobile .sim-explain {
+      padding: 14px !important;
+    }
+
+    html.device-mobile .sim-main {
+      font-size: clamp(42px, 16vw, 62px) !important;
+      white-space: normal !important;
+    }
+
+    html.device-mobile .garrafon-stage {
+      min-height: unset;
+      gap: 12px;
+    }
+
+    html.device-mobile .garrafon-wrap {
+      width: 138px;
+    }
+
+    html.device-mobile .garrafon-body {
+      height: 210px;
+    }
+
+    html.device-mobile .garrafon-big {
+      font-size: 34px !important;
+    }
+
+    html.device-mobile .table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    html.device-mobile .table-wrap table {
+      min-width: 720px;
+    }
+
+    html.device-mobile .insight-rail {
+      position: static !important;
+      height: auto !important;
+      border-left: 0 !important;
+      border-top: 1px solid var(--rule) !important;
+      padding: 16px 14px 74px !important;
+    }
+
+    html.device-mobile .dash-footer {
+      height: auto !important;
+      padding: 12px 14px !important;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    html.device-mobile .footer-center {
+      position: static !important;
+      transform: none !important;
+      order: -1;
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+    }
+
+    html.device-mobile .footer-left,
+    html.device-mobile .footer-right {
+      width: 100%;
+      justify-content: center;
+      text-align: center;
+    }
+
+    html.device-tablet .layout {
+      grid-template-columns: minmax(0, 1fr) !important;
+    }
+
+    html.device-tablet .insight-rail {
+      position: static !important;
+      height: auto !important;
+      border-left: 0 !important;
+      border-top: 1px solid var(--rule) !important;
+      padding: 18px 28px 84px !important;
+    }
+
+    html.device-tablet .simulator-shell,
+    html.device-tablet .sim-hero-grid {
+      grid-template-columns: 1fr !important;
+    }
+
+    html.device-tablet .sim-controls,
+    html.device-tablet .sim-kpi-grid,
+    html.device-tablet .sim-mini-grid,
+    html.device-tablet .impact-grid,
+    html.device-tablet .scenario-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    }
+
+    html.device-tablet main {
+      padding-left: 24px !important;
+      padding-right: 24px !important;
+    }
+
+    html.device-desktop .hd-mobile-menu {
+      display: none !important;
+    }
+
   </style>
+
+  <script>
+    (function () {
+      function detectAWA05Device() {
+        const ua = navigator.userAgent || '';
+        const w = Math.min(window.innerWidth || 0, screen.width || window.innerWidth || 0);
+        const touch = navigator.maxTouchPoints > 0 || 'ontouchstart' in window;
+        const isMobileUA = /Android.*Mobile|iPhone|iPod|IEMobile|Opera Mini/i.test(ua);
+        const isTabletUA = /iPad|Android(?!.*Mobile)|Tablet|Silk/i.test(ua);
+
+        let device = 'desktop';
+        if (isMobileUA || (touch && w <= 640)) device = 'mobile';
+        else if (isTabletUA || (touch && w <= 1180) || (w > 640 && w <= 1024)) device = 'tablet';
+
+        const root = document.documentElement;
+        root.classList.remove('device-mobile', 'device-tablet', 'device-desktop');
+        root.classList.add('device-' + device);
+        root.dataset.device = device;
+
+        if (document.body) {
+          document.body.classList.remove('device-mobile', 'device-tablet', 'device-desktop');
+          document.body.classList.add('device-' + device);
+          document.body.dataset.device = device;
+        }
+
+        window.AWA05_DEVICE = {
+          type: device,
+          width: window.innerWidth,
+          height: window.innerHeight,
+          touch: touch
+        };
+      }
+
+      let resizeTimer = null;
+      detectAWA05Device();
+      document.addEventListener('DOMContentLoaded', detectAWA05Device);
+      window.addEventListener('resize', function () {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(detectAWA05Device, 120);
+      }, { passive: true });
+      window.addEventListener('orientationchange', function () {
+        setTimeout(detectAWA05Device, 180);
+      }, { passive: true });
+    })();
+  </script>
+
 </head>
 <body>
   <header>
@@ -4569,7 +4795,7 @@
         'Informe cargado',
         USING_FALLBACK
           ? 'No se pudo cargar statistical_analysis.json, así que se activó un respaldo mínimo. Sube el JSON a data/processed para ver el informe completo.'
-          : 'El archivo statistical_analysis.json se cargó correctamente. Pasa el cursor sobre cualquier elemento para obtener interpretación contextual.',
+          : 'El archivo statistical_analysis.json se cargó correctamente. Haz clic en cualquier tarjeta, fila, ecuación o gráfica para obtener interpretación contextual.',
         USING_FALLBACK ? 'Modo respaldo' : 'Datos procesados'
       );
     }
