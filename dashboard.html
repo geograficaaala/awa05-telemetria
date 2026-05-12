@@ -419,9 +419,161 @@
     .imp-bar-bg{flex:1;height:20px;background:var(--surface3);border-radius:2px;overflow:hidden;position:relative}
     .imp-bar-fill{height:100%;border-radius:2px;transition:width 0.6s ease;display:flex;align-items:center;padding-left:6px}
     .imp-bar-val{font-family:var(--mono);font-size:8px;color:#fff;font-weight:500;white-space:nowrap}
+
+
+    /* ══ LOADING SCREEN · AWA05 ═════════════════════════════════════ */
+    #awa-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
+      background: linear-gradient(160deg, #0e274b 0%, #1c3f6e 45%, #087fa5 100%);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+      overflow: hidden;
+    }
+    #awa-loader.fade-out {
+      opacity: 0;
+      transform: translateY(-18px);
+      pointer-events: none;
+    }
+    #awa-loader.gone {
+      display: none;
+    }
+    .loader-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .loader-waves {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 100%;
+      height: 280px;
+      pointer-events: none;
+    }
+    .lwave1 {
+      animation: waveRise1 5s cubic-bezier(.4,0,.2,1) forwards, waveSway 3s ease-in-out infinite alternate;
+    }
+    .lwave2 {
+      animation: waveRise2 5s cubic-bezier(.4,0,.2,1) forwards, waveSway2 4s ease-in-out infinite alternate;
+    }
+    @keyframes waveRise1 { from { transform: translateY(280px); } to { transform: translateY(0); } }
+    @keyframes waveRise2 { 0%,15% { transform: translateY(280px); } to { transform: translateY(0); } }
+    @keyframes waveSway { from { transform: translateX(-5%) scaleX(1.04); } to { transform: translateX(5%) scaleX(.97); } }
+    @keyframes waveSway2 { from { transform: translateX(4%) scaleX(.96); } to { transform: translateX(-4%) scaleX(1.03); } }
+    .loader-logo {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      animation: logoFadeIn 0.8s 0.5s both;
+    }
+    @keyframes logoFadeIn { from { opacity: 0; transform: translateY(24px) scale(.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .loader-drop {
+      width: 64px;
+      height: 88px;
+      filter: drop-shadow(0 12px 32px rgba(16,168,208,.5));
+      animation: dropBob 2.2s ease-in-out infinite;
+    }
+    @keyframes dropBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    .loader-wordmark {
+      color: #fff;
+      font-family: var(--display);
+      font-size: 48px;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      line-height: 1;
+    }
+    .loader-wordmark span {
+      color: #7ee8f4;
+    }
+    .loader-sub {
+      color: rgba(255,255,255,.54);
+      font-family: var(--mono);
+      font-size: 9.5px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+    }
+    .loader-bar-wrap {
+      position: relative;
+      z-index: 2;
+      width: 220px;
+      height: 2px;
+      margin-top: 28px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(255,255,255,.12);
+    }
+    .loader-bar {
+      height: 100%;
+      width: 0%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #10a8d0, #fff, #18a978);
+      animation: barFill 5.2s cubic-bezier(.4,0,.2,1) 0.2s forwards;
+    }
+    @keyframes barFill { from { width: 0%; } to { width: 100%; } }
+    .legend-item.is-hidden {
+      opacity: .36;
+      text-decoration: line-through;
+      text-decoration-thickness: 1px;
+    }
+    #legend-dias .legend-item {
+      cursor: pointer;
+      user-select: none;
+    }
+
   </style>
 </head>
 <body>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     LOADING SCREEN
+════════════════════════════════════════════════════════════════ -->
+<div id="awa-loader" aria-hidden="true">
+  <div class="loader-inner">
+    <svg class="loader-waves" viewBox="0 0 1200 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="wg1-dashboard" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#10a8d0" stop-opacity="0.6"/>
+          <stop offset="100%" stop-color="#0e274b" stop-opacity="1"/>
+        </linearGradient>
+        <linearGradient id="wg2-dashboard" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#18a978" stop-opacity="0.45"/>
+          <stop offset="100%" stop-color="#1c3f6e" stop-opacity="0.9"/>
+        </linearGradient>
+      </defs>
+      <path class="lwave lwave1" fill="url(#wg1-dashboard)" d="M0,180 C200,120 400,240 600,180 C800,120 1000,240 1200,180 L1200,300 L0,300 Z"/>
+      <path class="lwave lwave2" fill="url(#wg2-dashboard)" d="M0,210 C250,150 450,270 700,200 C900,140 1050,260 1200,200 L1200,300 L0,300 Z"/>
+    </svg>
+    <div class="loader-logo">
+      <div class="loader-drop">
+        <svg viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <radialGradient id="dg-dashboard" cx="40%" cy="30%">
+              <stop offset="0%" stop-color="#7ee8f4"/>
+              <stop offset="100%" stop-color="#1c3f6e"/>
+            </radialGradient>
+          </defs>
+          <path d="M30 4 C30 4 6 44 6 56 C6 69 17 76 30 76 C43 76 54 69 54 56 C54 44 30 4 30 4Z" fill="url(#dg-dashboard)"/>
+          <ellipse cx="22" cy="42" rx="5" ry="9" fill="rgba(255,255,255,0.22)" transform="rotate(-18,22,42)"/>
+        </svg>
+      </div>
+      <div class="loader-wordmark">AWA<span>05</span></div>
+      <div class="loader-sub">Cargando telemetría · Dashboard operativo</div>
+    </div>
+    <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  </div>
+</div>
+
 
 <!-- ═══════════════════════════════════════════════════════════════
      HEADER
@@ -734,28 +886,11 @@
     </div>
   </div>
 
-  <!-- COMPARATIVA VS MERCADO -->
-  <div class="section-eyebrow" style="margin-bottom:10px">Comparativa de costo — Lo que costaría comprar el mismo volumen en el mercado</div>
-  <div class="precio-grid">
-    <div class="precio-card">
-      <div class="precio-card-tag">Si compraras en mercado mínimo</div>
-      <div class="precio-val" id="comp-mkt-min">--</div>
-      <div class="precio-unit">Q por el agua producida hasta hoy</div>
-      <div class="precio-detalle">A Q8/garrafón · precio más bajo disponible en Sololá.</div>
-    </div>
-    <div class="precio-card recomendado">
-      <div class="precio-badge">Referencia principal</div>
-      <div class="precio-card-tag">Si compraras al precio medio</div>
-      <div class="precio-val" id="comp-mkt-med">--</div>
-      <div class="precio-unit">Q por el agua producida hasta hoy</div>
-      <div class="precio-detalle">A Q13.50/garrafón · precio promedio Sololá.</div>
-    </div>
-    <div class="precio-card">
-      <div class="precio-card-tag">Si compraras al precio máximo</div>
-      <div class="precio-val" id="comp-mkt-max">--</div>
-      <div class="precio-unit">Q por el agua producida hasta hoy</div>
-      <div class="precio-detalle">A Q19/garrafón · precio más alto del mercado local.</div>
-    </div>
+  <!-- COMPARATIVA VS MERCADO OCULTA: IDs conservados para no alterar la lógica JS -->
+  <div style="display:none" aria-hidden="true">
+    <span id="comp-mkt-min">--</span>
+    <span id="comp-mkt-med">--</span>
+    <span id="comp-mkt-max">--</span>
   </div>
 
   <!-- COMPARATIVA ENERGÍA VS MERCADO DETALLADA -->
@@ -1082,6 +1217,14 @@
 
 
 <script>
+
+function hideAwaLoader() {
+  const loader = document.getElementById('awa-loader');
+  if (!loader || loader.classList.contains('fade-out')) return;
+  loader.classList.add('fade-out');
+  setTimeout(() => loader.classList.add('gone'), 750);
+}
+
 // ═══════════════════════════════════════════════════════════════════════
 // CONSTANTES GLOBALES
 // ═══════════════════════════════════════════════════════════════════════
@@ -1091,6 +1234,7 @@ let globalPayload = null;
 const DIAS  = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 const MESES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const DIA_COLORS = ['#1c3f6e','#b05c00','#1a5c38','#951f1f','#0f6b60','#7a4a9e','#b5860a','#2a6080'];
+const CURVAS_DIA_VISIBLE_DESDE = '2026-05-11';
 
 // ─── MODELO ECONÓMICO ──────────────────────────────────────────────────
 const ECO = {
@@ -2082,10 +2226,32 @@ function renderProduccionAnalisis(rawLabels, nivel) {
       if(pts.length<2) return;
       const volBase=Math.min(...pts.map(p=>p.vol));
       const color=DIA_COLORS[dIdx%DIA_COLORS.length];
-      datasets.push({label:diaLabels[dIdx],data:pts.map(p=>({x:+p.hora.toFixed(2),y:+Math.max(0,p.vol-volBase).toFixed(2)})),borderColor:color,backgroundColor:'transparent',borderWidth:2,pointRadius:0,pointHoverRadius:6,pointHoverBackgroundColor:'#fff',pointHoverBorderColor:color,pointHoverBorderWidth:2,tension:0.3,fill:false});
-      if(legendEl){const item=document.createElement('div');item.className='legend-item';item.innerHTML=`<div class="legend-dot" style="background:${color}"></div>${diaLabels[dIdx]}`;legendEl.appendChild(item);}
+      const visibleDefault = dia >= CURVAS_DIA_VISIBLE_DESDE;
+      const datasetIndex = datasets.length;
+      datasets.push({label:diaLabels[dIdx],data:pts.map(p=>({x:+p.hora.toFixed(2),y:+Math.max(0,p.vol-volBase).toFixed(2)})),borderColor:color,backgroundColor:'transparent',borderWidth:2,pointRadius:0,pointHoverRadius:6,pointHoverBackgroundColor:'#fff',pointHoverBorderColor:color,pointHoverBorderWidth:2,tension:0.3,fill:false,hidden:!visibleDefault});
+      if(legendEl){
+        const item=document.createElement('div');
+        item.className='legend-item'+(!visibleDefault?' is-hidden':'');
+        item.dataset.datasetIndex=String(datasetIndex);
+        item.title='Mostrar / ocultar '+diaLabels[dIdx];
+        item.innerHTML=`<div class="legend-dot" style="background:${color}"></div>${diaLabels[dIdx]}`;
+        legendEl.appendChild(item);
+      }
     });
-    chartRegistry['chart-curvas-dia']=new Chart(ctx3,{type:'line',data:{datasets},options:mergeOpts({plugins:{legend:{display:datasets.length<=5,position:'top',labels:{font:{family:"'JetBrains Mono'",size:8},color:'#6b6860',boxWidth:10,padding:12}}},scales:{x:{type:'linear',min:0,max:24,...chartDefaults.scales.x,ticks:{...chartDefaults.scales.x.ticks,callback:v=>String(Math.floor(v)).padStart(2,'0')+':00',stepSize:3}},y:{...chartDefaults.scales.y,min:0,ticks:{...chartDefaults.scales.y.ticks,callback:v=>'+'+v+' L'}}}})});
+    chartRegistry['chart-curvas-dia']=new Chart(ctx3,{type:'line',data:{datasets},options:mergeOpts({plugins:{legend:{display:false}},scales:{x:{type:'linear',min:0,max:24,...chartDefaults.scales.x,ticks:{...chartDefaults.scales.x.ticks,callback:v=>String(Math.floor(v)).padStart(2,'0')+':00',stepSize:3}},y:{...chartDefaults.scales.y,min:0,ticks:{...chartDefaults.scales.y.ticks,callback:v=>'+'+v+' L'}}}})});
+    if(legendEl){
+      legendEl.querySelectorAll('[data-dataset-index]').forEach(item=>{
+        item.addEventListener('click',()=>{
+          const chart=chartRegistry['chart-curvas-dia'];
+          if(!chart) return;
+          const idx=Number(item.dataset.datasetIndex);
+          const visible=chart.isDatasetVisible(idx);
+          chart.setDatasetVisibility(idx,!visible);
+          item.classList.toggle('is-hidden',visible);
+          chart.update();
+        });
+      });
+    }
     setText('ts-curvas-dia','Act: '+(document.getElementById('header-ts')?.textContent||'--'));
   }
 }
@@ -2646,7 +2812,8 @@ async function exportXLSX() {
   }
 }
 
-renderDashboard();
+renderDashboard().catch(err => console.error('Error inicial dashboard:', err)).finally(hideAwaLoader);
+setTimeout(hideAwaLoader, 6500);
 setInterval(renderDashboard, 60000);
 </script>
 </body>
