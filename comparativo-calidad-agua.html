@@ -1633,6 +1633,137 @@
       transition: width 0.6s var(--spring) !important;
     }
 
+    /* ══ AJUSTES FINALES: MATRIZ, CONCLUSIONES Y FOOTER ═══════════ */
+    .table-wrap {
+      position: relative;
+    }
+
+    #matrix-table {
+      min-width: 1680px;
+      border-collapse: separate;
+      border-spacing: 0;
+    }
+
+    #matrix-table th,
+    #matrix-table td {
+      min-width: 132px;
+    }
+
+    #matrix-table th:first-child,
+    #matrix-table td:first-child {
+      position: sticky;
+      left: 0;
+      min-width: 280px;
+      width: 280px;
+      max-width: 280px;
+      background: #ffffff !important;
+      z-index: 12;
+      box-shadow: 8px 0 18px rgba(10, 35, 38, .075), 1px 0 0 var(--rule);
+      overflow: hidden;
+    }
+
+    #matrix-table th:first-child {
+      z-index: 24;
+      background: #eff8fa !important;
+    }
+
+    #matrix-table tr:nth-child(even) td:first-child {
+      background: #f8fbfb !important;
+    }
+
+    #matrix-table tr:hover td:first-child,
+    #matrix-table tr.selected-row td:first-child {
+      background: #e8f8fb !important;
+    }
+
+    #matrix-table th:nth-child(2),
+    #matrix-table td:nth-child(2) {
+      min-width: 190px;
+    }
+
+    #matrix-table .param-cell {
+      width: 100%;
+      min-width: 0;
+      overflow: hidden;
+    }
+
+    #matrix-table .param-name {
+      display: block;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+
+    #matrix-table .param-meta {
+      display: block;
+      max-width: 100%;
+      overflow-wrap: anywhere;
+    }
+
+    .concl-card {
+      align-items: stretch;
+    }
+
+    .concl-icon {
+      display: none !important;
+    }
+
+    .dash-footer {
+      gap: 18px;
+    }
+
+    .footer-left {
+      min-width: 0;
+    }
+
+    .footer-right {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .footer-standard {
+      color: rgba(255,255,255,.42);
+      white-space: nowrap;
+    }
+
+    .footer-powered-label {
+      color: rgba(255,255,255,.36);
+      font-family: var(--mono);
+      font-size: 7px;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
+    .footer-pi-logo {
+      height: 26px;
+      width: auto;
+      object-fit: contain;
+      filter: brightness(0) invert(1);
+      opacity: .82;
+    }
+
+    @media (max-width: 760px) {
+      #matrix-table {
+        min-width: 1540px;
+      }
+
+      #matrix-table th:first-child,
+      #matrix-table td:first-child {
+        min-width: 235px;
+        width: 235px;
+        max-width: 235px;
+      }
+
+      .footer-right {
+        justify-content: center;
+        width: 100%;
+        flex-wrap: wrap;
+      }
+    }
+
   </style>
 </head>
 
@@ -2149,7 +2280,11 @@
     <footer class="dash-footer">
     <div class="footer-left">AWA05 · Calidad de agua · Lote 1</div>
     <div class="footer-center">Asociación Amigos del Lago de Atitlán · 2026</div>
-    <div class="footer-right">COGUANOR NTG 290001</div>
+    <div class="footer-right">
+      <span class="footer-standard">COGUANOR NTG 290001</span>
+      <span class="footer-powered-label">Powered by</span>
+      <img src="Raspberry_Pi-Logo.wine.png" alt="Raspberry Pi" class="footer-pi-logo" title="Raspberry Pi">
+    </div>
   </footer>
 
 <script>
@@ -3456,13 +3591,12 @@ function renderConclusions() {
   const tds = awa.values.tds?.value;
   const hardness = awa.values.hardness?.value;
 
-  // Closest pH source
   let phClosest = null, phDiff = Infinity;
   SOURCES.filter(s => s.id !== 'awa05' && s.values.ph?.value != null).forEach(s => {
     const d = Math.abs(s.values.ph.value - ph);
     if (d < phDiff) { phDiff = d; phClosest = s; }
   });
-  // Lowest TDS commercial
+
   let tdsLowest = null, tdsMin = Infinity;
   SOURCES.filter(s => s.id !== 'awa05' && s.values.tds?.value != null).forEach(s => {
     if (s.values.tds.value < tdsMin) { tdsMin = s.values.tds.value; tdsLowest = s; }
@@ -3470,50 +3604,41 @@ function renderConclusions() {
 
   const cards = [
     {
-      icon: '✓',
       title: 'Aptitud para consumo humano',
-      body: `AWA05 Lote 1 obtuvo <strong>dictamen de potabilidad</strong> del laboratorio Atitlab bajo COGUANOR NTG 290001. Los indicadores microbiológicos clave (coliformes, E. coli, Salmonella, Vibrio, Enterobacter) resultaron <strong>negativos</strong>. Este es el requisito fundamental que cualquier agua de consumo debe cumplir.`
+      body: `AWA05 Lote 1 obtuvo <strong>dictamen de potabilidad</strong> del laboratorio Atitlab bajo COGUANOR NTG 290001. Los indicadores microbiológicos clave resultaron <strong>negativos</strong>, incluyendo coliformes, E. coli, Salmonella, Vibrio y Enterobacter.`
     },
     {
-      icon: '💧',
-      title: 'pH: neutro, dentro del rango aceptable',
-      body: `AWA05 reportó <strong>pH 7.22</strong> — neutro, dentro del rango 6.5–8.5 de COGUANOR. ${phClosest ? `La fuente más similar en pH es <strong>${phClosest.name}</strong> (pH ${phClosest.values.ph.value}).` : ''} Un pH de 7.22 no presenta riesgo de corrosión ni exceso de alcalinidad.`
+      title: 'pH dentro del rango aceptable',
+      body: `AWA05 reportó <strong>pH 7.22</strong>, dentro del rango 6.5–8.5 de COGUANOR. ${phClosest ? `La fuente más similar en pH es <strong>${phClosest.name}</strong> (pH ${phClosest.values.ph.value}).` : ''} Este resultado se interpreta como neutro y adecuado para consumo.`
     },
     {
-      icon: '🔬',
-      title: 'TDS: agua de baja mineralización',
-      body: `Con <strong>TDS ${tds} mg/L</strong> y conductividad 14.4 µS/cm, AWA05 es agua de mineralización muy baja. ${tdsLowest ? `La fuente comercial más cercana es <strong>${tdsLowest.name}</strong> (TDS ${tdsLowest.values.tds.value} mg/L).` : ''} Típico de agua atmosférica o destilada: sin carga iónica significativa.`
+      title: 'Baja mineralización',
+      body: `Con <strong>TDS ${tds} mg/L</strong> y conductividad 14.4 µS/cm, AWA05 se comporta como agua de baja mineralización. ${tdsLowest ? `La referencia comercial más cercana por TDS es <strong>${tdsLowest.name}</strong> (TDS ${tdsLowest.values.tds.value} mg/L).` : ''}`
     },
     {
-      icon: '🦠',
-      title: 'Microbiología: todos los indicadores negativos',
-      body: `Los <strong>7 indicadores microbiológicos</strong> ensayados resultaron menores al límite de detección. Indica ausencia de contaminación bacteriana detectable en el Lote 1. Es el resultado esperado en captación atmosférica bien operada.`
+      title: 'Resultado microbiológico favorable',
+      body: `Los indicadores microbiológicos ensayados se reportaron por debajo del límite del método. Esto es el resultado sanitario más importante del Lote 1 y sostiene el dictamen de potabilidad.`
     },
     {
-      icon: '⚖️',
-      title: 'Dureza: agua blanda',
-      body: `Con <strong>${hardness} mg/L CaCO₃</strong> AWA05 es agua blanda. Referencia: S.Pellegrino 540 mg/L (muy dura), Evian 290 mg/L (moderada-dura). El agua blanda no genera incrustaciones y es adecuada para consumo y uso doméstico.`
+      title: 'Dureza baja',
+      body: `Con <strong>${hardness} mg/L como CaCO₃</strong>, AWA05 se clasifica como agua blanda. Frente a aguas minerales como S.Pellegrino o Evian, la carga mineral de AWA05 es considerablemente menor.`
     },
     {
-      icon: '⚠️',
-      title: 'Parámetro a confirmar: calcio',
-      body: `El valor de calcio (100) aparece con <strong>inconsistencia de unidades en el PDF del laboratorio</strong>. Debe verificarse contra el certificado original antes de usarlo en comparaciones cuantitativas. Los demás parámetros no presentan observaciones.`
+      title: 'Calcio requiere verificación de unidad',
+      body: `El valor de calcio aparece como 100 en el certificado, pero la unidad transcrita requiere confirmación antes de usarlo como comparación cuantitativa fuerte. Se recomienda validar ese dato con el laboratorio.`
     },
     {
-      icon: '📊',
       title: 'Comparabilidad con referencias comerciales',
-      body: `<strong>VOSS</strong> es la más comparable a AWA05 por TDS bajo. Las aguas minerales (Evian, Acqua Panna, FIJI) tienen mineralización significativamente mayor. S.Pellegrino (TDS 900, carbonatada) no es comparable directamente. Salvavidas y Cielo no publican parámetros numéricos abiertos.`
+      body: `<strong>VOSS</strong> es la referencia más cercana a AWA05 por baja mineralización. Evian, Acqua Panna, FIJI y S.Pellegrino tienen perfiles minerales más altos. Salvavidas y Cielo permanecen como referencias comerciales locales sin tabla pública abierta de parámetros.`
     },
     {
-      icon: '🔄',
-      title: 'Próximos pasos',
-      body: `Para robustecer el análisis: (1) analizar lotes adicionales para evaluar consistencia; (2) obtener certificados de Salvavidas y Cielo; (3) verificar calcio con el laboratorio; (4) considerar análisis de sílice, relevante en agua atmosférica.`
+      title: 'Siguientes análisis',
+      body: `El siguiente paso es completar los lotes 2 y 3 para evaluar estabilidad, variabilidad y consistencia. También conviene obtener certificados comerciales locales para que Salvavidas y Cielo puedan compararse con el mismo nivel de detalle.`
     }
   ];
 
   grid.innerHTML = cards.map(c => `
     <div class="concl-card">
-      <div class="concl-icon">${c.icon}</div>
       <div>
         <div class="concl-title">${c.title}</div>
         <div class="concl-body">${c.body}</div>
