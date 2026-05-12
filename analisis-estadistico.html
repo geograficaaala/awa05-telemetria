@@ -5482,7 +5482,7 @@
       // ── CONCLUSIONES GENERALES (lenguaje no técnico) ─────────────────
       const gcItems = [
         {
-          icon: '💧',
+          icon: '',
           title: '¿Cuánta agua produce el sistema?',
           fn: () => {
             const tot = fmt.num(total, 1);
@@ -5491,7 +5491,7 @@
           }
         },
         {
-          icon: '🕐',
+          icon: '',
           title: '¿En qué momento del día produce más?',
           fn: () => {
             if (!bestDaypart) return 'No hay suficientes datos por franja horaria todavía.';
@@ -5499,7 +5499,7 @@
           }
         },
         {
-          icon: '💨',
+          icon: '',
           title: '¿Qué condición climática importa más?',
           fn: () => {
             if (!bestCorr) return 'No se encontró una correlación climática dominante en este bloque.';
@@ -5509,7 +5509,7 @@
           }
         },
         {
-          icon: '📊',
+          icon: '',
           title: '¿Qué tan bien predice el modelo?',
           fn: () => {
             const r2pct = (r2 * 100).toFixed(0);
@@ -5518,14 +5518,14 @@
           }
         },
         {
-          icon: '⚠️',
+          icon: '',
           title: '¿Qué no podemos concluir todavía?',
           fn: () => {
             return `Con un solo bloque de datos no podemos afirmar que el sistema siempre se comportará así. Los patrones observados son una primera evidencia, no una garantía. <strong>Cada bloque adicional fortalecerá (o cuestionará) estas conclusiones</strong>. La recomendación es mantener los mismos sensores activos en el próximo bloque.`;
           }
         },
         {
-          icon: '🎯',
+          icon: '',
           title: '¿Qué acción práctica sugieren los datos?',
           fn: () => {
             const dp = bestDaypart ? bestDaypart.daypart : 'nocturna';
@@ -5540,8 +5540,7 @@
         try { body = item.fn(); } catch(e) { body = 'Datos insuficientes para este punto.'; }
         return `
           <div class="card reveal" style="padding:20px;">
-            <div style="display:flex;align-items:flex-start;gap:12px;">
-              <div style="font-size:28px;line-height:1;flex-shrink:0;">${item.icon}</div>
+            <div>
               <div>
                 <div class="card-title" style="margin-bottom:8px;font-size:11px;">${item.title}</div>
                 <div style="font-size:13px;line-height:1.72;color:var(--ink-soft);">${body}</div>
