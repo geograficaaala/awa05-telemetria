@@ -3090,153 +3090,34 @@
       margin: 0 auto;
     }
 
-    /* ══ LOADING SCREEN ═══════════════════════════════════════════ */
+    /* ══ LOADING SCREEN ═════════════════════════════════════════════ */
     #awa-loader {
-      position: fixed;
-      inset: 0;
-      z-index: 99999;
-      display: flex;
-      align-items: flex-end;
-      justify-content: center;
-      background: linear-gradient(160deg, #0f2a50 0%, #1c3f6e 45%, #0d3a6e 100%);
+      position: fixed; inset: 0; z-index: 99999;
+      display: flex; align-items: flex-end; justify-content: center;
+      background: linear-gradient(160deg, #0e274b 0%, #1c3f6e 45%, #087fa5 100%);
       transition: opacity 0.7s ease, transform 0.7s ease;
       overflow: hidden;
     }
-
-    #awa-loader.fade-out {
-      opacity: 0;
-      transform: translateY(-18px);
-      pointer-events: none;
-    }
-
+    #awa-loader.fade-out { opacity: 0; transform: translateY(-18px); pointer-events: none; }
     #awa-loader.gone { display: none; }
-
-    .loader-inner {
-      position: absolute;
-      inset: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .loader-waves {
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      width: 100%;
-      height: 280px;
-      pointer-events: none;
-    }
-
-    .lwave {
-      transform-origin: center bottom;
-    }
-
-    .lwave1 {
-      animation: waveRise1 4s cubic-bezier(.4,0,.2,1) forwards,
-                 waveSway1 3s ease-in-out infinite alternate;
-    }
-
-    .lwave2 {
-      animation: waveRise2 4s cubic-bezier(.4,0,.2,1) forwards,
-                 waveSway2 4s ease-in-out infinite alternate;
-    }
-
-    @keyframes waveRise1 {
-      from { transform: translateY(280px); }
-      to   { transform: translateY(0); }
-    }
-
-    @keyframes waveRise2 {
-      from { transform: translateY(280px); }
-      0%   { transform: translateY(280px); }
-      15%  { transform: translateY(280px); }
-      to   { transform: translateY(0); }
-    }
-
-    @keyframes waveSway1 {
-      from { d: path("M0,180 C200,120 400,240 600,180 C800,120 1000,240 1200,180 L1200,300 L0,300 Z"); }
-      to   { d: path("M0,200 C200,140 400,220 600,160 C800,100 1000,220 1200,160 L1200,300 L0,300 Z"); }
-    }
-
-    @keyframes waveSway2 {
-      from { d: path("M0,210 C250,150 450,270 700,200 C900,140 1050,260 1200,200 L1200,300 L0,300 Z"); }
-      to   { d: path("M0,190 C250,130 450,250 700,180 C900,120 1050,240 1200,180 L1200,300 L0,300 Z"); }
-    }
-
-    .loader-logo {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-      animation: logoFadeIn 0.8s 0.5s both;
-    }
-
-    @keyframes logoFadeIn {
-      from { opacity: 0; transform: translateY(24px) scale(0.95); }
-      to   { opacity: 1; transform: translateY(0) scale(1); }
-    }
-
-    .loader-drop {
-      width: 64px;
-      height: 88px;
-      filter: drop-shadow(0 12px 32px rgba(91,163,224,0.5));
-      animation: dropBob 2.2s ease-in-out infinite;
-    }
-
-    @keyframes dropBob {
-      0%, 100% { transform: translateY(0); }
-      50%       { transform: translateY(-8px); }
-    }
-
-    .loader-wordmark {
-      color: #fff;
-      font-family: 'Playfair Display', serif;
-      font-size: 48px;
-      font-weight: 900;
-      letter-spacing: -0.03em;
-      line-height: 1;
-    }
-
-    .loader-wordmark span {
-      color: #7ec8f4;
-    }
-
-    .loader-sub {
-      color: rgba(255,255,255,0.5);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9.5px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
-
-    .loader-bar-wrap {
-      position: relative;
-      z-index: 2;
-      width: 220px;
-      height: 2px;
-      background: rgba(255,255,255,0.12);
-      border-radius: 999px;
-      margin-top: 28px;
-      overflow: hidden;
-    }
-
-    .loader-bar {
-      height: 100%;
-      width: 0%;
-      background: linear-gradient(90deg, #7ec8f4, #fff, #5ba3e0);
-      border-radius: 999px;
-      animation: barFill 5.2s cubic-bezier(.4,0,.2,1) 0.2s forwards;
-    }
-
-    @keyframes barFill {
-      from { width: 0%; }
-      to   { width: 100%; }
-    }
+    .loader-inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .loader-waves { position: absolute; bottom: 0; left: 0; right: 0; width: 100%; height: 280px; pointer-events: none; }
+    .lwave1 { animation: waveRise1 5s cubic-bezier(.4,0,.2,1) forwards, waveSway 3s ease-in-out infinite alternate; }
+    .lwave2 { animation: waveRise2 5s cubic-bezier(.4,0,.2,1) forwards, waveSway2 4s ease-in-out infinite alternate; }
+    @keyframes waveRise1 { from { transform: translateY(280px); } to { transform: translateY(0); } }
+    @keyframes waveRise2 { 0%,15% { transform: translateY(280px); } to { transform: translateY(0); } }
+    @keyframes waveSway  { from { transform: translateX(-5%) scaleX(1.04); } to { transform: translateX(5%) scaleX(0.97); } }
+    @keyframes waveSway2 { from { transform: translateX(4%) scaleX(0.96); } to { transform: translateX(-4%) scaleX(1.03); } }
+    .loader-logo { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 10px; animation: logoFadeIn 0.8s 0.5s both; }
+    @keyframes logoFadeIn { from { opacity: 0; transform: translateY(24px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
+    .loader-drop { width: 64px; height: 88px; filter: drop-shadow(0 12px 32px rgba(16,168,208,0.5)); animation: dropBob 2.2s ease-in-out infinite; }
+    @keyframes dropBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+    .loader-wordmark { color: #fff; font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 900; letter-spacing: -0.03em; line-height: 1; }
+    .loader-wordmark span { color: #7ee8f4; }
+    .loader-sub { color: rgba(255,255,255,0.5); font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; }
+    .loader-bar-wrap { position: relative; z-index: 2; width: 220px; height: 2px; background: rgba(255,255,255,0.12); border-radius: 999px; margin-top: 28px; overflow: hidden; }
+    .loader-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #10a8d0, #fff, #18a978); border-radius: 999px; animation: barFill 5.2s cubic-bezier(.4,0,.2,1) 0.2s forwards; }
+    @keyframes barFill { from { width: 0%; } to { width: 100%; } }
 
   
     /* ══ BLOCK EXPLAINER ══════════════════════════════════════════ */
@@ -3497,17 +3378,16 @@
 
 </head>
 <body>
-  
   <div id="awa-loader" aria-hidden="true">
     <div class="loader-inner">
       <svg class="loader-waves" viewBox="0 0 1200 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="wg1" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#3b82c4" stop-opacity="0.6"/>
-            <stop offset="100%" stop-color="#0f2a50" stop-opacity="1"/>
+            <stop offset="0%" stop-color="#10a8d0" stop-opacity="0.6"/>
+            <stop offset="100%" stop-color="#0e274b" stop-opacity="1"/>
           </linearGradient>
           <linearGradient id="wg2" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#5ba3e0" stop-opacity="0.45"/>
+            <stop offset="0%" stop-color="#18a978" stop-opacity="0.45"/>
             <stop offset="100%" stop-color="#1c3f6e" stop-opacity="0.9"/>
           </linearGradient>
         </defs>
@@ -3521,7 +3401,7 @@
           <svg viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <radialGradient id="dg" cx="40%" cy="30%">
-                <stop offset="0%" stop-color="#7ec8f4"/>
+                <stop offset="0%" stop-color="#7ee8f4"/>
                 <stop offset="100%" stop-color="#1c3f6e"/>
               </radialGradient>
             </defs>
@@ -3530,7 +3410,7 @@
           </svg>
         </div>
         <div class="loader-wordmark">AWA<span>05</span></div>
-        <div class="loader-sub">Análisis estadístico · Bloque B01</div>
+        <div class="loader-sub">Análisis estadístico · Simulación microclimática</div>
       </div>
       <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
     </div>
@@ -3557,78 +3437,26 @@
     <div class="hd-stat"><div class="hd-stat-val" id="h-inversion">Q --</div><div class="hd-stat-lbl">Energía hoy</div></div>
   </div>
   <div class="hd-right">
-    <a href="index.html" class="hd-hide-sm" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:4px;border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:0.10em;text-decoration:none;text-transform:uppercase;transition:all 0.15s;">← Inicio</a>
-    <a href="analisis-estadistico.html" class="hd-hide-sm" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:4px;border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:0.10em;text-decoration:none;text-transform:uppercase;transition:all 0.15s;">Análisis estadístico</a>
-    <a href="comparativo-calidad-agua.html" class="hd-hide-sm" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:4px;border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:0.10em;text-decoration:none;text-transform:uppercase;transition:all 0.15s;">Calidad de agua</a>
-    <button class="btn hd-hide-sm" onclick="exportXLSX()" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:4px;border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.92);color:#1c3f6e;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:0.10em;cursor:pointer;text-transform:uppercase;">↓ Exportar</button>
+    <a href="index.html" class="top-link hd-hide-sm">← Inicio</a>
+    <a href="dashboard.html" class="top-link hd-hide-sm">Dashboard</a>
+    <a href="analisis-estadistico.html" class="top-link hd-hide-sm active">Análisis estadístico</a>
+    <a href="comparativo-calidad-agua.html" class="top-link hd-hide-sm">Calidad de agua</a>
     <div class="hd-ts" id="header-ts">--</div>
     <button class="btn hd-mobile-menu" id="btn-mobile-menu" onclick="toggleMobileMenu()" aria-label="Menú">☰</button>
   </div>
 </header>
 
-<!-- MENÚ MÓVIL (solo visible en pantallas pequeñas cuando se abre) -->
+<!-- MENÚ MÓVIL — navegación entre páginas -->
 <div id="mobile-menu" class="mobile-menu" style="display:none">
   <nav class="mobile-nav">
-    <a class="mobile-nav-link active" href="#resumen">Resumen ejecutivo</a>
-    <a class="mobile-nav-link" href="#salud-pi">Nodo Pi</a>
-    <a class="mobile-nav-link" href="#nivel">Producción hídrica</a>
-    <a class="mobile-nav-link" href="#produccion-analisis">Diurno / Nocturno</a>
-    <a class="mobile-nav-link" href="#empresa">Análisis empresarial</a>
-    <a class="mobile-nav-link" href="#clima-base">Clima base</a>
-    <a class="mobile-nav-link" href="#clima-avanzado">Viento y radiación</a>
-    <a class="mobile-nav-link" href="#correlacion">Evaluación estadística</a>
+    <a class="mobile-nav-link" href="index.html">Inicio</a>
+    <a class="mobile-nav-link" href="dashboard.html">Dashboard</a>
+    <a class="mobile-nav-link active" href="analisis-estadistico.html">Análisis estadístico</a>
+    <a class="mobile-nav-link" href="comparativo-calidad-agua.html">Calidad de agua</a>
   </nav>
-  <div class="mobile-nav-foot">
-    <a href="index.html" style="display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--mono);font-size:9px;color:var(--cobalt);text-decoration:none;padding:10px 14px;border:1px solid var(--cobalt-rim);border-radius:var(--radius);background:var(--cobalt-pale);letter-spacing:.08em;margin-bottom:10px">← Volver al inicio</a>
-    <a href="analisis-estadistico.html" style="display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--mono);font-size:9px;color:var(--cobalt);text-decoration:none;padding:10px 14px;border:1px solid var(--cobalt-rim);border-radius:var(--radius);background:var(--cobalt-pale);letter-spacing:.08em;margin-bottom:10px">Análisis estadístico</a>
-    <a href="comparativo-calidad-agua.html" style="display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--mono);font-size:9px;color:var(--cobalt);text-decoration:none;padding:10px 14px;border:1px solid var(--cobalt-rim);border-radius:var(--radius);background:var(--cobalt-pale);letter-spacing:.08em;margin-bottom:10px">Calidad de agua</a>
-    <button class="btn-solid btn" onclick="exportXLSX()" style="width:100%;background:var(--cobalt);color:#fff;border-color:var(--cobalt);">↓ Exportar datos XLSX</button>
-  </div>
 </div>
 
 <div class="layout">
-    <aside class="sidebar">
-      <div class="sb-section">
-        <span class="sb-label">Navegación</span>
-        <a class="sb-link active" href="#resumen">Resumen ejecutivo</a>
-        <a class="sb-link" href="#metodologia">Método científico</a>
-        <a class="sb-link" href="#simulador">Simulador climático</a>
-        <a class="sb-link" href="#datos">Bloque y calidad de datos</a>
-        <a class="sb-link" href="#ecuaciones">Ecuaciones</a>
-        <a class="sb-link" href="#produccion">Producción observada</a>
-        <a class="sb-link" href="#supuestos">Supuestos</a>
-        <a class="sb-link" href="#correlaciones">Correlaciones</a>
-        <a class="sb-link" href="#anova">ANOVA / post hoc</a>
-        <a class="sb-link" href="#modelos">Modelos</a>
-        <a class="sb-link" href="#diagnostico">Diagnóstico</a>
-        <a class="sb-link" href="#conclusiones">Conclusiones</a>
-      </div>
-
-      <div class="sb-divider"></div>
-
-      <div class="sb-section">
-        <span class="sb-label">Bloque activo</span>
-        <div class="sb-kpis">
-          <div class="sb-kpi insightable" data-insight="Nombre del conjunto de datos analizado. B01 es el primer bloque — más bloques darán resultados más sólidos.">
-            <div class="sb-kpi-lbl">ID</div>
-            <div class="sb-kpi-val" id="sb-block">B01</div>
-          </div>
-          <div class="sb-kpi insightable" data-insight="Total de mediciones del sensor de agua, incluyendo las descartadas por control de calidad.">
-            <div class="sb-kpi-lbl">Agua</div>
-            <div class="sb-kpi-val" id="sb-water">—</div>
-          </div>
-          <div class="sb-kpi insightable" data-insight="Total de mediciones del sensor climático. Se detectó un registro sin fecha que fue excluido del análisis.">
-            <div class="sb-kpi-lbl">Clima</div>
-            <div class="sb-kpi-val" id="sb-climate">—</div>
-          </div>
-          <div class="sb-kpi insightable" data-insight="R² mide cuánto del comportamiento de la producción explica el clima. Un valor de 0.30 significa que el clima explica el 30% de lo que varía la producción hora a hora.">
-            <div class="sb-kpi-lbl">R² OLS</div>
-            <div class="sb-kpi-val" id="sb-r2">—</div>
-          </div>
-        </div>
-      </div>
-    </aside>
-
     <main>
       <section id="resumen" class="hero insightable" data-insight="Este informe responde: ¿cuánto produce el sistema, bajo qué condiciones climáticas produce más, y qué tan bien puede predecirse eso con un modelo estadístico?">
         <div class="hero-inner">
@@ -5849,7 +5677,7 @@
     }
 
     function installNavigationSpy() {
-      const links = [...document.querySelectorAll('.sb-link, .mobile-nav-link')];
+      const links = [...document.querySelectorAll('.sb-link, .mobile-nav-link')].filter(link => (link.getAttribute('href') || '').startsWith('#'));
       const sections = links
         .map(link => document.querySelector(link.getAttribute('href')))
         .filter(Boolean);
