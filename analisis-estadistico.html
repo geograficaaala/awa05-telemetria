@@ -6039,33 +6039,30 @@
 
 
     // ══ LOADING SCREEN DISMISS ═══════════════════════════════════
-    (function () {
-      function dismissLoader() {
-        const loader = document.getElementById('awa-loader');
-        if (!loader) return;
-        loader.classList.add('fade-out');
-        setTimeout(() => loader.classList.add('gone'), 750);
-      }
-      // Auto-dismiss after 4.1s
-      setTimeout(dismissLoader, 4100);
-      // Also dismiss on first user interaction after 2s
-      let interacted = false;
-      function onInteract() {
-        if (interacted) return;
-        interacted = true;
-        setTimeout(dismissLoader, 300);
-        document.removeEventListener('click', onInteract);
-        document.removeEventListener('keydown', onInteract);
-        document.removeEventListener('scroll', onInteract);
-      }
-      setTimeout(() => {
-        document.addEventListener('click', onInteract);
-        document.addEventListener('keydown', onInteract);
-        document.addEventListener('scroll', onInteract, { passive: true });
-      }, 2000);
-    })();
 
     document.addEventListener('DOMContentLoaded', init);
   </script>
+
+  <script>
+    /* ── AWA05 Loader dismiss — runs immediately, no dependencies ── */
+    (function () {
+      var DISMISS_MS = 3500;
+      function dismiss() {
+        var el = document.getElementById('awa-loader');
+        if (!el || el.classList.contains('fade-out')) return;
+        el.classList.add('fade-out');
+        setTimeout(function () { if (el) el.style.display = 'none'; }, 800);
+      }
+      // Auto-dismiss
+      setTimeout(dismiss, DISMISS_MS);
+      // Click anywhere dismisses immediately (no delay guard)
+      document.addEventListener('click', dismiss, { once: true, capture: true });
+      document.addEventListener('keydown', dismiss, { once: true, capture: true });
+      document.addEventListener('scroll', dismiss, { once: true, passive: true, capture: true });
+      // Failsafe: if page loads, dismiss after 1s
+      window.addEventListener('load', function() { setTimeout(dismiss, 800); });
+    })();
+  </script>
+
 </body>
 </html>
