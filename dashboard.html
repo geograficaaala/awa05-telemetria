@@ -459,10 +459,10 @@
       pointer-events: none;
     }
     .lwave1 {
-      animation: waveRise1 5s cubic-bezier(.4,0,.2,1) forwards, waveSway 3s ease-in-out infinite alternate;
+      animation: waveRise1 7.2s cubic-bezier(.4,0,.2,1) forwards, waveSway 3s ease-in-out infinite alternate;
     }
     .lwave2 {
-      animation: waveRise2 5s cubic-bezier(.4,0,.2,1) forwards, waveSway2 4s ease-in-out infinite alternate;
+      animation: waveRise2 7.2s cubic-bezier(.4,0,.2,1) forwards, waveSway2 4s ease-in-out infinite alternate;
     }
     @keyframes waveRise1 { from { transform: translateY(280px); } to { transform: translateY(0); } }
     @keyframes waveRise2 { 0%,15% { transform: translateY(280px); } to { transform: translateY(0); } }
@@ -518,7 +518,7 @@
       width: 0%;
       border-radius: 999px;
       background: linear-gradient(90deg, #10a8d0, #fff, #18a978);
-      animation: barFill 5.2s cubic-bezier(.4,0,.2,1) 0.2s forwards;
+      animation: barFill 7.2s cubic-bezier(.4,0,.2,1) 0.2s forwards;
     }
     @keyframes barFill { from { width: 0%; } to { width: 100%; } }
     .legend-item.is-hidden {
@@ -530,6 +530,11 @@
       cursor: pointer;
       user-select: none;
     }
+
+
+    /* ── AJUSTE FINAL: SIN NAVEGACIÓN INTERNA LATERAL ───────────── */
+    .layout{grid-template-columns:1fr!important}
+    .sidebar{display:none!important}
 
   </style>
 </head>
@@ -610,53 +615,14 @@
 <!-- MENÚ MÓVIL (solo visible en pantallas pequeñas cuando se abre) -->
 <div id="mobile-menu" class="mobile-menu" style="display:none">
   <nav class="mobile-nav">
-    <a class="mobile-nav-link active" href="#resumen">Resumen ejecutivo</a>
-    <a class="mobile-nav-link" href="#salud-pi">Nodo Pi</a>
-    <a class="mobile-nav-link" href="#nivel">Producción hídrica</a>
-    <a class="mobile-nav-link" href="#produccion-analisis">Diurno / Nocturno</a>
-    <a class="mobile-nav-link" href="#empresa">Análisis empresarial</a>
-    <a class="mobile-nav-link" href="#clima-base">Clima base</a>
-    <a class="mobile-nav-link" href="#clima-avanzado">Viento y radiación</a>
-    <a class="mobile-nav-link" href="#correlacion">Evaluación estadística</a>
+    <a class="mobile-nav-link" href="index.html">Inicio</a>
+    <a class="mobile-nav-link active" href="dashboard.html">Dashboard</a>
+    <a class="mobile-nav-link" href="analisis-estadistico.html">Análisis estadístico</a>
+    <a class="mobile-nav-link" href="comparativo-calidad-agua.html">Calidad de agua</a>
   </nav>
-  <div class="mobile-nav-foot">
-    <a href="index.html" style="display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--mono);font-size:9px;color:var(--cobalt);text-decoration:none;padding:10px 14px;border:1px solid var(--cobalt-rim);border-radius:var(--radius);background:var(--cobalt-pale);letter-spacing:.08em;margin-bottom:10px">← Volver al inicio</a>
-    <a href="analisis-estadistico.html" style="display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--mono);font-size:9px;color:var(--cobalt);text-decoration:none;padding:10px 14px;border:1px solid var(--cobalt-rim);border-radius:var(--radius);background:var(--cobalt-pale);letter-spacing:.08em;margin-bottom:10px">Análisis estadístico</a>
-    <a href="comparativo-calidad-agua.html" style="display:flex;align-items:center;justify-content:center;gap:8px;font-family:var(--mono);font-size:9px;color:var(--cobalt);text-decoration:none;padding:10px 14px;border:1px solid var(--cobalt-rim);border-radius:var(--radius);background:var(--cobalt-pale);letter-spacing:.08em;margin-bottom:10px">Calidad de agua</a>
-    <button class="btn-solid btn" onclick="exportXLSX()" style="width:100%;background:var(--cobalt);color:#fff;border-color:var(--cobalt);">↓ Exportar datos XLSX</button>
-  </div>
 </div>
 
 <div class="layout">
-<!-- ═══════════════════════════════════════════════════════════════
-     SIDEBAR
-════════════════════════════════════════════════════════════════ -->
-<aside class="sidebar">
-  <div class="sb-section">
-    <span class="sb-label">Navegación</span>
-    <a class="sb-link active" href="#resumen">Resumen ejecutivo</a>
-    <a class="sb-link" href="#salud-pi">Nodo Pi</a>
-    <a class="sb-link" href="#nivel">Producción hídrica</a>
-    <a class="sb-link" href="#produccion-analisis">Análisis diurno/nocturno</a>
-    <a class="sb-link" href="#empresa">Análisis empresarial</a>
-    <a class="sb-link" href="#clima-base">Clima — Variables base</a>
-    <a class="sb-link" href="#clima-avanzado">Clima — Variables avanzadas</a>
-    <a class="sb-link" href="#correlacion">Evaluación estadística</a>
-  </div>
-  <div class="sb-divider"></div>
-  <div class="sb-section">
-    <span class="sb-label">En tiempo real</span>
-    <div class="sb-kpis">
-      <div class="sb-kpi"><div class="sb-kpi-lbl">Cisterna</div><div class="sb-kpi-val"><span id="sb-nivel">--</span><span class="sb-kpi-unit"> L</span></div></div>
-      <div class="sb-kpi"><div class="sb-kpi-lbl">Garrafones</div><div class="sb-kpi-val"><span id="sb-garrafones">--</span></div></div>
-      <div class="sb-kpi"><div class="sb-kpi-lbl">Humedad</div><div class="sb-kpi-val"><span id="sb-hum">--</span><span class="sb-kpi-unit"> %</span></div></div>
-      <div class="sb-kpi"><div class="sb-kpi-lbl">Temperatura</div><div class="sb-kpi-val"><span id="sb-temp">--</span><span class="sb-kpi-unit"> °C</span></div></div>
-      <div class="sb-kpi"><div class="sb-kpi-lbl">Presión</div><div class="sb-kpi-val"><span id="sb-pres">--</span><span class="sb-kpi-unit"> inHg</span></div></div>
-      <div class="sb-kpi"><div class="sb-kpi-lbl">Invertido</div><div class="sb-kpi-val">Q <span id="sb-inversion">--</span></div></div>
-    </div>
-  </div>
-</aside>
-
 <!-- ═══════════════════════════════════════════════════════════════
      MAIN
 ════════════════════════════════════════════════════════════════ -->
@@ -2812,8 +2778,8 @@ async function exportXLSX() {
   }
 }
 
-renderDashboard().catch(err => console.error('Error inicial dashboard:', err)).finally(hideAwaLoader);
-setTimeout(hideAwaLoader, 6500);
+renderDashboard().catch(err => console.error('Error inicial dashboard:', err));
+setTimeout(hideAwaLoader, 7500);
 setInterval(renderDashboard, 60000);
 </script>
 </body>
