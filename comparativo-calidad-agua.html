@@ -1,885 +1,152 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>AWA05 · Comparativo de Calidad de Agua</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
-
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,700&family=JetBrains+Mono:wght@300;400;500;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,600;9..40,700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg: #f7f6f1;
-      --surface: #ffffff;
-      --surface2: #faf9f5;
-      --surface3: #f1efe7;
-      --ink: #161712;
-      --ink-mid: #373a34;
-      --ink-soft: #686a61;
-      --ink-faint: #9a9b94;
-      --rule: rgba(37, 39, 32, .11);
-      --rule-strong: rgba(37, 39, 32, .19);
-      --cobalt: #1c3f6e;
-      --cobalt-deep: #0f2a50;
-      --water: #00a9c8;
-      --water-deep: #087ca0;
-      --water-soft: rgba(0, 169, 200, .10);
-      --water-rim: rgba(0, 169, 200, .28);
-      --mint: #1d8164;
-      --mint-soft: rgba(29, 129, 100, .10);
-      --amber: #b05c00;
-      --amber-soft: rgba(176, 92, 0, .10);
-      --rose: #9b2c2c;
-      --rose-soft: rgba(155, 44, 44, .10);
-      --violet: #5b4aa3;
-      --violet-soft: rgba(91, 74, 163, .10);
-      --shadow-sm: 0 1px 3px rgba(0,0,0,.05), 0 2px 8px rgba(0,0,0,.04);
-      --shadow-md: 0 2px 8px rgba(0,0,0,.06), 0 14px 34px rgba(0,0,0,.07);
-      --display: 'Playfair Display', serif;
-      --mono: 'JetBrains Mono', monospace;
-      --body: 'DM Sans', sans-serif;
-      --radius: 5px;
-      --insight-w: 338px;
+      --bg:#f7f6f1; --surface:#fff; --surface2:#faf9f4; --surface3:#efede4;
+      --ink:#171714; --ink-mid:#343229; --ink-soft:#69655d; --ink-faint:#9c9890;
+      --rule:rgba(38,36,28,.11); --rule-strong:rgba(38,36,28,.20);
+      --cobalt:#1c3f6e; --cobalt-deep:#10284d; --cobalt-pale:rgba(28,63,110,.07);
+      --water:#08a9c6; --water-deep:#087998; --water-pale:rgba(8,169,198,.10); --water-rim:rgba(8,169,198,.25);
+      --mint:#1b7f5b; --mint-pale:rgba(27,127,91,.10); --amber:#b06400; --amber-pale:rgba(176,100,0,.09);
+      --danger:#9b2c2c; --danger-pale:rgba(155,44,44,.08);
+      --display:'Playfair Display',serif; --mono:'JetBrains Mono',monospace; --body:'DM Sans',sans-serif;
+      --radius:5px; --shadow-sm:0 1px 3px rgba(0,0,0,.05),0 2px 8px rgba(0,0,0,.04);
+      --shadow-md:0 4px 14px rgba(0,0,0,.06),0 14px 34px rgba(0,0,0,.06); --lens-w:360px;
     }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: var(--body);
-      font-size: 14px;
-      line-height: 1.56;
-      -webkit-font-smoothing: antialiased;
-      overflow-x: hidden;
-    }
-
-    body::after {
-      content: "";
-      position: fixed;
-      inset: 0;
-      pointer-events: none;
-      z-index: 9999;
-      opacity: .36;
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='220' height='220' filter='url(%23n)' opacity='0.022'/%3E%3C/svg%3E");
-    }
-
-    header {
-      position: sticky;
-      top: 0;
-      z-index: 300;
-      min-height: 56px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 32px;
-      gap: 16px;
-      background: linear-gradient(135deg, var(--cobalt) 0%, var(--cobalt-deep) 100%);
-      overflow: hidden;
-    }
-
-    header::before {
-      content: "AWA05";
-      position: absolute;
-      right: -12px;
-      top: -18px;
-      color: rgba(255,255,255,.045);
-      font-family: var(--display);
-      font-size: 96px;
-      font-weight: 900;
-      letter-spacing: -4px;
-      pointer-events: none;
-    }
-
-    .hd-brand, .hd-right, .hd-center { position: relative; z-index: 1; }
-    .hd-brand { display: flex; align-items: center; gap: 12px; flex-shrink: 0; }
-    .hd-name { color: #fff; font-family: var(--display); font-size: 16px; font-weight: 800; font-style: italic; letter-spacing: .02em; }
-    .hd-sep { width: 1px; height: 19px; background: rgba(255,255,255,.18); }
-    .hd-sub { color: rgba(255,255,255,.55); font-family: var(--mono); font-size: 8px; letter-spacing: .15em; text-transform: uppercase; }
-    .hd-center { flex: 1; display: flex; justify-content: center; align-items: center; gap: 22px; }
-    .hd-stat { text-align: center; }
-    .hd-stat-val { color: #fff; font-family: var(--mono); font-size: 11px; font-weight: 700; }
-    .hd-stat-lbl { margin-top: 1px; color: rgba(255,255,255,.43); font-family: var(--mono); font-size: 7px; letter-spacing: .12em; text-transform: uppercase; }
-    .hd-right { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-    .top-link {
-      display: inline-flex;
-      align-items: center;
-      min-height: 31px;
-      padding: 7px 12px;
-      border: 1px solid rgba(255,255,255,.22);
-      border-radius: 4px;
-      background: rgba(255,255,255,.08);
-      color: rgba(255,255,255,.85);
-      font-family: var(--mono);
-      font-size: 8px;
-      font-weight: 600;
-      letter-spacing: .10em;
-      text-decoration: none;
-      text-transform: uppercase;
-      transition: all .15s ease;
-      white-space: nowrap;
-    }
-    .top-link:hover, .top-link.active { background: rgba(255,255,255,.92); color: var(--cobalt); border-color: transparent; }
-    .hd-mobile-menu { display: none; }
-    .mobile-menu {
-      display: none;
-      position: fixed;
-      top: 56px;
-      left: 0;
-      right: 0;
-      z-index: 280;
-      background: var(--surface);
-      border-bottom: 1px solid var(--rule-strong);
-      box-shadow: var(--shadow-md);
-      padding: 14px 16px 18px;
-    }
-    .mobile-menu.open { display: block; }
-    .mobile-menu a {
-      display: block;
-      padding: 10px 12px;
-      color: var(--cobalt);
-      text-decoration: none;
-      font-family: var(--mono);
-      font-size: 9px;
-      letter-spacing: .10em;
-      text-transform: uppercase;
-      border: 1px solid var(--water-rim);
-      background: var(--water-soft);
-      margin-bottom: 8px;
-      border-radius: var(--radius);
-      text-align: center;
-    }
-
-    .layout {
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) var(--insight-w);
-      min-height: calc(100vh - 56px);
-    }
-
-    main {
-      width: 100%;
-      max-width: 1640px;
-      padding: 42px 44px 80px;
-      min-width: 0;
-    }
-
-    .insight-rail {
-      position: sticky;
-      top: 56px;
-      height: calc(100vh - 56px);
-      overflow-y: auto;
-      border-left: 1px solid var(--rule);
-      background: linear-gradient(180deg, #fff, #f7f6f1);
-      padding: 26px 24px 86px;
-      box-shadow: -10px 0 30px rgba(0,0,0,.035);
-    }
-    .lens-kicker { color: var(--water-deep); font-family: var(--mono); font-size: 8px; letter-spacing: .16em; text-transform: uppercase; font-weight: 700; }
-    .lens-title { margin-top: 8px; color: var(--ink); font-family: var(--display); font-size: 26px; font-weight: 900; line-height: 1.05; letter-spacing: -.03em; }
-    .lens-text { margin-top: 14px; color: var(--ink-soft); font-size: 13px; line-height: 1.75; }
-    .lens-meta { margin-top: 16px; display: inline-flex; padding: 5px 8px; border: 1px solid var(--water-rim); background: var(--water-soft); color: var(--water-deep); font-family: var(--mono); font-size: 8px; letter-spacing: .1em; text-transform: uppercase; border-radius: 99px; }
-
-    .hero {
-      position: relative;
-      overflow: hidden;
-      padding: 34px 34px 30px;
-      border: 1px solid var(--rule);
-      border-radius: var(--radius);
-      background:
-        radial-gradient(circle at 76% 12%, rgba(0,169,200,.16), transparent 34%),
-        linear-gradient(135deg, #fff, #fbfaf6 62%, #edf8fb 100%);
-      box-shadow: var(--shadow-sm);
-    }
-    .hero::before {
-      content: "H₂O";
-      position: absolute;
-      right: 22px;
-      bottom: -36px;
-      font-family: var(--display);
-      font-size: 180px;
-      font-weight: 900;
-      color: rgba(0,169,200,.055);
-      letter-spacing: -.06em;
-      pointer-events: none;
-    }
-    .eyebrow { color: var(--cobalt); font-family: var(--mono); font-size: 8px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
-    .hero h1 {
-      max-width: 1100px;
-      margin-top: 12px;
-      font-family: var(--display);
-      font-size: clamp(42px, 6.4vw, 112px);
-      line-height: .92;
-      letter-spacing: -.055em;
-      font-weight: 900;
-      text-wrap: balance;
-    }
-    .hero h1 em { color: var(--water-deep); font-style: italic; }
-    .hero p { position: relative; max-width: 980px; margin-top: 22px; color: var(--ink-soft); font-size: 16px; line-height: 1.72; }
-    .pill-row { position: relative; margin-top: 22px; display: flex; flex-wrap: wrap; gap: 9px; }
-    .pill { display: inline-flex; align-items: center; padding: 7px 12px; border: 1px solid var(--rule-strong); background: rgba(255,255,255,.74); border-radius: 999px; color: var(--ink-soft); font-family: var(--mono); font-size: 8px; letter-spacing: .12em; text-transform: uppercase; }
-    .pill.ok { color: var(--mint); border-color: rgba(29,129,100,.28); background: var(--mint-soft); }
-    .pill.water { color: var(--water-deep); border-color: var(--water-rim); background: var(--water-soft); }
-    .pill.warn { color: var(--amber); border-color: rgba(176,92,0,.26); background: var(--amber-soft); }
-
-    .hero-actions { margin-top: 24px; display: flex; flex-wrap: wrap; gap: 10px; }
-    .hero-action { display: inline-flex; align-items: center; justify-content: center; min-height: 40px; padding: 10px 18px; border-radius: var(--radius); border: 1px solid var(--rule-strong); background: rgba(255,255,255,.72); color: var(--ink-soft); font-family: var(--mono); font-size: 8.5px; font-weight: 700; letter-spacing: .12em; text-decoration: none; text-transform: uppercase; }
-    .hero-action.primary { background: var(--cobalt); border-color: var(--cobalt); color: #fff; }
-
-    .section { margin-top: 42px; }
-    .section-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 20px; }
-    .section-title { margin-top: 7px; font-family: var(--display); font-size: 34px; line-height: 1.05; font-weight: 900; letter-spacing: -.035em; text-wrap: balance; }
-    .section-title em { color: var(--water-deep); font-style: italic; }
-    .section-sub { margin-top: 8px; max-width: 1060px; color: var(--ink-soft); font-size: 13.5px; line-height: 1.7; }
-    .section-rule { height: 1px; background: linear-gradient(90deg, var(--rule-strong), transparent); margin: 18px 0 18px; }
-
-    .badge { display: inline-flex; align-items: center; height: 24px; padding: 0 9px; border: 1px solid var(--rule-strong); border-radius: 3px; background: var(--surface2); color: var(--ink-soft); font-family: var(--mono); font-size: 7.5px; letter-spacing: .12em; text-transform: uppercase; white-space: nowrap; }
-    .badge.ok { color: var(--mint); background: var(--mint-soft); border-color: rgba(29,129,100,.28); }
-    .badge.water { color: var(--water-deep); background: var(--water-soft); border-color: var(--water-rim); }
-    .badge.warn { color: var(--amber); background: var(--amber-soft); border-color: rgba(176,92,0,.25); }
-    .badge.rose { color: var(--rose); background: var(--rose-soft); border-color: rgba(155,44,44,.25); }
-    .badge.violet { color: var(--violet); background: var(--violet-soft); border-color: rgba(91,74,163,.25); }
-
-    .grid-2 { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
-    .grid-3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-    .grid-4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-    .col-span-2 { grid-column: span 2; }
-    .col-span-3 { grid-column: span 3; }
-    .col-span-4 { grid-column: span 4; }
-
-    .card { min-width: 0; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow-sm); overflow: hidden; }
-    .card-head { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 18px 20px 14px; border-bottom: 1px solid var(--rule); }
-    .card-title { color: var(--ink-mid); font-family: var(--mono); font-size: 9px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase; }
-    .card-sub { margin-top: 3px; color: var(--ink-soft); font-size: 11.5px; line-height: 1.45; }
-    .card-body { padding: 18px 20px; }
-
-    .kpi-grid { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 12px; }
-    .kpi-card { position: relative; overflow: hidden; min-height: 138px; padding: 17px 16px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow-sm); cursor: pointer; transition: .16s ease; }
-    .kpi-card:hover, .kpi-card.active { transform: translateY(-2px); box-shadow: var(--shadow-md); border-color: var(--water-rim); }
-    .kpi-card::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 3px; background: var(--water); }
-    .kpi-label { color: var(--ink-faint); font-family: var(--mono); font-size: 7.5px; letter-spacing: .13em; text-transform: uppercase; line-height: 1.4; }
-    .kpi-value { margin-top: 10px; font-family: var(--display); font-size: 33px; line-height: .95; font-weight: 900; letter-spacing: -.04em; color: var(--ink); }
-    .kpi-unit { margin-top: 7px; color: var(--ink-soft); font-family: var(--mono); font-size: 8px; letter-spacing: .10em; text-transform: uppercase; }
-    .kpi-note { margin-top: 10px; color: var(--ink-soft); font-size: 11px; line-height: 1.45; }
-
-    .status-strip { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 12px; }
-    .lot-card { cursor: pointer; position: relative; overflow: hidden; padding: 18px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow-sm); }
-    .lot-card.complete { border-color: rgba(29,129,100,.25); background: linear-gradient(180deg, #fff, rgba(29,129,100,.045)); }
-    .lot-card.pending { opacity: .78; }
-    .lot-label { color: var(--ink-faint); font-family: var(--mono); font-size: 8px; letter-spacing: .13em; text-transform: uppercase; }
-    .lot-title { margin-top: 8px; color: var(--ink); font-family: var(--display); font-size: 26px; font-weight: 900; line-height: 1; }
-    .lot-meta { margin-top: 7px; color: var(--ink-soft); font-size: 12px; line-height: 1.5; }
-
-    .score-shell { display: grid; grid-template-columns: 260px 1fr; gap: 20px; align-items: center; }
-    .water-score {
-      --score-angle: 346deg;
-      width: 220px; height: 220px; border-radius: 50%; margin: auto;
-      background: conic-gradient(var(--water) var(--score-angle), rgba(0,169,200,.12) 0deg);
-      display: grid; place-items: center; position: relative;
-    }
-    .water-score::after { content: ""; position: absolute; inset: 16px; border-radius: 50%; background: var(--surface); box-shadow: inset 0 0 0 1px var(--rule); }
-    .water-score-inner { position: relative; z-index: 1; text-align: center; }
-    .water-score-value { color: var(--water-deep); font-family: var(--display); font-size: 64px; font-weight: 900; line-height: .9; letter-spacing: -.06em; }
-    .water-score-label { margin-top: 8px; color: var(--ink-faint); font-family: var(--mono); font-size: 8px; letter-spacing: .12em; text-transform: uppercase; }
-    .score-text { color: var(--ink-soft); line-height: 1.74; }
-    .score-text strong { color: var(--ink-mid); }
-
-    .table-wrap { width: 100%; overflow-x: auto; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface); }
-    table { width: 100%; border-collapse: collapse; min-width: 860px; }
-    th { position: sticky; top: 0; z-index: 1; background: var(--surface3); color: var(--ink-mid); font-family: var(--mono); font-size: 7.5px; letter-spacing: .12em; text-transform: uppercase; text-align: center; padding: 11px 12px; border-bottom: 1px solid var(--rule-strong); }
-    td { padding: 11px 12px; border-bottom: 1px solid var(--rule); color: var(--ink-soft); text-align: center; vertical-align: middle; }
-    td:first-child, th:first-child { text-align: left; color: var(--ink-mid); font-weight: 600; }
-    tr:last-child td { border-bottom: 0; }
-    tbody tr { cursor: pointer; transition: background .12s ease; }
-    tbody tr:hover td { background: rgba(0,169,200,.06); }
-    tbody tr.selected td { background: rgba(0,169,200,.11); box-shadow: inset 3px 0 0 var(--water); }
-    .param-method { display: block; margin-top: 2px; color: var(--ink-faint); font-size: 10px; line-height: 1.35; font-weight: 400; }
-    .status-pill { display: inline-flex; align-items: center; justify-content: center; min-width: 82px; padding: 4px 8px; border-radius: 999px; font-family: var(--mono); font-size: 7px; letter-spacing: .09em; text-transform: uppercase; border: 1px solid var(--rule); }
-    .status-pill.ok { color: var(--mint); background: var(--mint-soft); border-color: rgba(29,129,100,.26); }
-    .status-pill.excellent { color: var(--water-deep); background: var(--water-soft); border-color: var(--water-rim); }
-    .status-pill.watch { color: var(--amber); background: var(--amber-soft); border-color: rgba(176,92,0,.25); }
-    .status-pill.pending { color: var(--ink-soft); background: var(--surface2); }
-
-    .bar-cell { min-width: 155px; }
-    .bar-track { height: 9px; border-radius: 999px; background: rgba(0,169,200,.12); overflow: hidden; }
-    .bar-fill { height: 100%; width: 0%; border-radius: 999px; background: linear-gradient(90deg, #6ddff1, #087ca0); }
-    .bar-caption { margin-top: 4px; font-family: var(--mono); font-size: 7px; color: var(--ink-faint); }
-
-    .chart-wrap { position: relative; height: 340px; padding: 8px 8px 0; }
-    .chart-wrap.short { height: 275px; }
-
-    .benchmark-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-    .provider-card { position: relative; cursor: pointer; padding: 18px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface); box-shadow: var(--shadow-sm); min-height: 280px; }
-    .provider-card:hover, .provider-card.active { border-color: var(--water-rim); box-shadow: var(--shadow-md); }
-    .provider-tag { display: inline-flex; padding: 4px 8px; border-radius: 999px; color: var(--water-deep); background: var(--water-soft); border: 1px solid var(--water-rim); font-family: var(--mono); font-size: 7px; letter-spacing: .11em; text-transform: uppercase; }
-    .provider-title { margin-top: 14px; font-family: var(--display); font-size: 30px; font-weight: 900; line-height: 1.02; letter-spacing: -.04em; }
-    .provider-meta { margin-top: 10px; color: var(--ink-soft); font-size: 12px; line-height: 1.62; }
-    .provider-list { margin-top: 14px; display: grid; gap: 8px; }
-    .provider-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid var(--rule); padding-top: 8px; color: var(--ink-soft); font-size: 12px; }
-    .provider-row strong { color: var(--ink-mid); font-family: var(--mono); font-size: 10px; }
-
-    .mini-notes { display: grid; gap: 10px; }
-    .note-card { padding: 14px; border: 1px solid var(--rule); background: var(--surface); border-radius: var(--radius); color: var(--ink-soft); font-size: 12.5px; line-height: 1.68; cursor: pointer; }
-    .note-card strong { color: var(--ink-mid); }
-
-    .source-list { display: grid; gap: 10px; }
-    .source-item { padding: 13px 14px; border: 1px solid var(--rule); border-radius: var(--radius); background: var(--surface); color: var(--ink-soft); font-size: 12px; line-height: 1.55; }
-    .source-item a { color: var(--water-deep); text-decoration: none; font-weight: 700; }
-
-    .dash-footer { position: relative; overflow: hidden; height: 52px; display: flex; align-items: center; justify-content: space-between; padding: 0 36px; background: linear-gradient(135deg, var(--cobalt) 0%, var(--cobalt-deep) 100%); color: rgba(255,255,255,.8); }
-    .dash-footer::before { content: "AWA05"; position: absolute; right: -10px; top: -18px; color: rgba(255,255,255,.045); font-family: var(--display); font-size: 96px; font-weight: 900; letter-spacing: -4px; pointer-events: none; }
-    .footer-left, .footer-right, .footer-center { position: relative; z-index: 1; }
-    .footer-left, .footer-right { font-family: var(--mono); font-size: 7.5px; color: rgba(255,255,255,.42); letter-spacing: .10em; text-transform: uppercase; }
-    .footer-center { position: absolute; left: 50%; transform: translateX(-50%); font-family: var(--display); font-style: italic; font-weight: 700; font-size: 14px; color: #fff; white-space: nowrap; }
-
-    .device-mobile .hd-center,
-    .device-tablet .hd-center { display: none; }
-    .device-mobile header { padding: 0 12px; min-height: 50px; }
-    .device-mobile .hd-sub, .device-mobile .top-link:not(.active) { display: none; }
-    .device-mobile .hd-mobile-menu { display: inline-flex; }
-    .device-mobile .layout, .device-tablet .layout { grid-template-columns: 1fr; }
-    .device-mobile .insight-rail, .device-tablet .insight-rail { position: static; height: auto; border-left: 0; border-top: 1px solid var(--rule); padding: 20px 18px 72px; }
-    .device-mobile main { padding: 22px 12px 56px; }
-    .device-tablet main { padding: 30px 24px 66px; }
-    .device-mobile .hero { padding: 24px 18px; }
-    .device-mobile .hero h1 { font-size: 43px; }
-    .device-mobile .section-title { font-size: 27px; }
-    .device-mobile .grid-2, .device-mobile .grid-3, .device-mobile .grid-4, .device-mobile .benchmark-grid, .device-mobile .status-strip, .device-mobile .score-shell, .device-mobile .kpi-grid { grid-template-columns: 1fr; }
-    .device-tablet .kpi-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-    .device-tablet .benchmark-grid { grid-template-columns: 1fr; }
-    .device-tablet .score-shell { grid-template-columns: 220px 1fr; }
-    .device-mobile .col-span-2, .device-mobile .col-span-3, .device-mobile .col-span-4 { grid-column: span 1; }
-    .device-mobile .water-score { width: 180px; height: 180px; }
-    .device-mobile .water-score-value { font-size: 52px; }
-    .device-mobile .chart-wrap { height: 280px; }
-    .device-mobile .dash-footer { height: auto; padding: 14px 12px; justify-content: center; flex-wrap: wrap; gap: 8px; }
-    .device-mobile .footer-center { position: static; transform: none; order: -1; width: 100%; text-align: center; }
-    .device-mobile .footer-left, .device-mobile .footer-right { width: 100%; text-align: center; }
-
-    @media (max-width: 1180px) {
-      .hd-center { display: none; }
-      .layout { grid-template-columns: 1fr; }
-      .insight-rail { position: static; height: auto; border-left: 0; border-top: 1px solid var(--rule); }
-      .kpi-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-      .benchmark-grid, .score-shell { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 760px) {
-      .grid-2, .grid-3, .grid-4, .kpi-grid, .status-strip { grid-template-columns: 1fr; }
-      .section-head { align-items: flex-start; flex-direction: column; }
-      .hero h1 { font-size: 42px; }
-      main { padding-left: 14px; padding-right: 14px; }
-    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:radial-gradient(circle at 10% 8%,rgba(8,169,198,.10),transparent 28%),radial-gradient(circle at 80% 6%,rgba(28,63,110,.08),transparent 34%),var(--bg);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.56;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+    body::after{content:"";position:fixed;inset:0;pointer-events:none;opacity:.45;z-index:9999;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E")}
+    header{position:sticky;top:0;z-index:200;min-height:56px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 32px;background:linear-gradient(135deg,var(--cobalt),var(--cobalt-deep));color:#fff;overflow:hidden}
+    header::before{content:"AWA05";position:absolute;right:-12px;top:-22px;color:rgba(255,255,255,.045);font-family:var(--display);font-size:104px;font-weight:900;letter-spacing:-5px;pointer-events:none}
+    header::after{content:"";position:absolute;bottom:0;left:0;right:0;height:1px;background:rgba(255,255,255,.12)}
+    .hd-brand,.hd-center,.hd-right{position:relative;z-index:1;display:flex;align-items:center}
+    .hd-brand{gap:12px;flex-shrink:0} .hd-name{font-family:var(--display);font-weight:900;font-style:italic;font-size:15px;letter-spacing:.02em} .hd-sep{width:1px;height:18px;background:rgba(255,255,255,.20)}
+    .hd-sub{font-family:var(--mono);font-size:8px;letter-spacing:.16em;text-transform:uppercase;color:rgba(255,255,255,.58)} .hd-center{flex:1;justify-content:center;gap:22px} .hd-stat{text-align:center;min-width:72px}
+    .hd-stat-val{font-family:var(--mono);font-size:11px;font-weight:700;color:#fff} .hd-stat-lbl{margin-top:1px;font-family:var(--mono);font-size:7px;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+    .hd-right{gap:10px;flex-shrink:0} .top-link,.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:30px;padding:7px 13px;border-radius:4px;border:1px solid rgba(255,255,255,.22);background:rgba(255,255,255,.08);color:rgba(255,255,255,.86);font-family:var(--mono);font-size:8.2px;font-weight:700;letter-spacing:.10em;text-decoration:none;text-transform:uppercase;transition:all .15s;cursor:pointer}
+    .top-link:hover,.top-link.active,.btn:hover{background:rgba(255,255,255,.92);border-color:transparent;color:var(--cobalt)} .hd-ts{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,.65);background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:2px;padding:4px 9px}
+    .mobile-menu-button{display:none} .mobile-menu{display:none;position:fixed;top:56px;left:0;right:0;z-index:190;background:var(--surface);border-bottom:1px solid var(--rule-strong);box-shadow:var(--shadow-md);padding:14px} .mobile-menu.is-open{display:grid;gap:8px}
+    .mobile-menu a{padding:12px 14px;border:1px solid var(--rule);background:var(--surface2);color:var(--cobalt);text-decoration:none;font-family:var(--mono);font-size:9px;text-transform:uppercase;letter-spacing:.10em;border-radius:var(--radius)}
+    .layout{display:grid;grid-template-columns:minmax(0,1fr) var(--lens-w);min-height:calc(100vh - 56px)} main{padding:42px 44px 92px;max-width:1580px;width:100%;margin:0 auto;min-width:0}
+    .lens{position:sticky;top:56px;height:calc(100vh - 56px);border-left:1px solid var(--rule);background:linear-gradient(180deg,rgba(255,255,255,.94),rgba(250,249,245,.97));padding:24px 22px;overflow:auto;box-shadow:-10px 0 30px rgba(0,0,0,.035)}
+    .lens-kicker{color:var(--water-deep);font-family:var(--mono);font-size:7.5px;letter-spacing:.18em;text-transform:uppercase;margin-bottom:9px} .lens-title{font-family:var(--display);font-size:25px;font-weight:900;letter-spacing:-.025em;line-height:1.05;margin-bottom:10px;color:var(--ink)}
+    .lens-text{color:var(--ink-soft);font-size:13px;line-height:1.72} .lens-meta{margin-top:14px;padding-top:14px;border-top:1px solid var(--rule);font-family:var(--mono);font-size:8px;color:var(--ink-faint);letter-spacing:.08em;text-transform:uppercase}
+    .lens-list{margin-top:16px;display:grid;gap:8px} .lens-chip{padding:9px 10px;border:1px solid var(--water-rim);background:var(--water-pale);color:var(--cobalt);border-radius:var(--radius);font-family:var(--mono);font-size:8px;line-height:1.45;letter-spacing:.07em;text-transform:uppercase}
+    .hero{position:relative;overflow:hidden;margin-bottom:28px;padding:42px 38px 36px;background:linear-gradient(135deg,rgba(255,255,255,.95),rgba(255,255,255,.76)),radial-gradient(circle at 70% 15%,rgba(8,169,198,.14),transparent 40%);border:1px solid var(--rule);border-radius:var(--radius);box-shadow:var(--shadow-sm)}
+    .hero::before{content:"H₂O";position:absolute;right:24px;bottom:-50px;font-family:var(--display);font-size:190px;font-weight:900;color:rgba(8,169,198,.055);letter-spacing:-.08em;pointer-events:none} .eyebrow{color:var(--cobalt);font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.20em;text-transform:uppercase;margin-bottom:8px}
+    .hero h1{max-width:1100px;font-family:var(--display);font-size:clamp(46px,6.5vw,95px);font-weight:900;line-height:.93;letter-spacing:-.055em;margin-bottom:18px;color:var(--ink);text-wrap:balance} .hero h1 em{color:var(--cobalt);font-style:italic}
+    .hero p{max-width:1080px;color:var(--ink-soft);font-size:16px;line-height:1.75} .hero-actions{position:relative;z-index:1;margin-top:24px;display:flex;flex-wrap:wrap;gap:10px} .hero-action{display:inline-flex;align-items:center;justify-content:center;min-height:42px;padding:10px 18px;border:1px solid var(--rule-strong);border-radius:var(--radius);color:var(--ink-mid);background:rgba(255,255,255,.62);text-decoration:none;font-family:var(--mono);font-size:8.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;transition:all .15s} .hero-action.primary{color:#fff;border-color:var(--cobalt);background:var(--cobalt)} .hero-action:hover{transform:translateY(-1px);box-shadow:var(--shadow-sm)}
+    .pill-row{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px} .pill{padding:7px 11px;border-radius:999px;border:1px solid var(--rule-strong);background:var(--surface2);color:var(--ink-soft);font-family:var(--mono);font-size:7.5px;letter-spacing:.13em;text-transform:uppercase} .pill.ok{background:var(--mint-pale);border-color:rgba(26,127,90,.22);color:var(--mint)} .pill.water{background:var(--water-pale);border-color:var(--water-rim);color:var(--water-deep)} .pill.warn{background:var(--amber-pale);border-color:rgba(176,100,0,.22);color:var(--amber)}
+    .section{margin-top:42px;scroll-margin-top:78px} .section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:22px;margin-bottom:14px} .section-title{font-family:var(--display);font-size:35px;font-weight:900;line-height:1.05;letter-spacing:-.03em;color:var(--ink);text-wrap:balance} .section-title em{color:var(--cobalt);font-style:italic} .section-sub{margin-top:8px;max-width:1080px;color:var(--ink-soft);font-size:14.2px;line-height:1.68} .section-rule{height:1px;background:linear-gradient(90deg,var(--rule-strong),transparent);margin:18px 0 18px}
+    .badge{display:inline-flex;align-items:center;justify-content:center;padding:5px 9px;border:1px solid var(--rule-strong);border-radius:3px;color:var(--ink-soft);background:var(--surface2);font-family:var(--mono);font-size:7.5px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;white-space:nowrap} .badge.ok{border-color:rgba(26,127,90,.24);background:var(--mint-pale);color:var(--mint)} .badge.water{border-color:var(--water-rim);background:var(--water-pale);color:var(--water-deep)} .badge.warn{border-color:rgba(176,100,0,.24);background:var(--amber-pale);color:var(--amber)} .badge.danger{border-color:rgba(155,44,44,.24);background:var(--danger-pale);color:var(--danger)}
+    .grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px} .grid-3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px} .grid-4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px} .col-span-2{grid-column:span 2} .col-span-3{grid-column:span 3} .col-span-4{grid-column:span 4}
+    .card{min-width:0;background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden} .card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:14px;padding:18px 20px 14px;border-bottom:1px solid var(--rule);background:rgba(255,255,255,.62)} .card-title{color:var(--ink-mid);font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase} .card-sub{margin-top:3px;color:var(--ink-soft);font-size:12.3px;line-height:1.55} .card-body{padding:18px 20px 20px}
+    .kpi-grid{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:12px;margin-top:20px} .kpi-card{position:relative;overflow:hidden;padding:16px 15px;background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius);box-shadow:var(--shadow-sm);min-height:132px;cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s} .kpi-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:var(--water-rim)} .kpi-card::before{content:"";position:absolute;inset:0 auto 0 0;width:3px;background:linear-gradient(180deg,var(--water),var(--cobalt))} .kpi-label{color:var(--ink-faint);font-family:var(--mono);font-size:7px;letter-spacing:.13em;text-transform:uppercase;line-height:1.5;min-height:22px} .kpi-value{margin-top:8px;font-family:var(--display);font-size:31px;font-weight:900;line-height:1;letter-spacing:-.045em;color:var(--ink)} .kpi-unit{margin-left:3px;color:var(--ink-soft);font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:.04em} .kpi-note{margin-top:9px;color:var(--ink-soft);font-size:11.5px;line-height:1.45}
+    .provider-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px} .provider-card{position:relative;overflow:hidden;min-height:360px;padding:22px;border:1px solid var(--rule);background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);cursor:pointer;transition:transform .15s,box-shadow .15s,border-color .15s} .provider-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:var(--water-rim)} .provider-card::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 82% 8%,rgba(8,169,198,.12),transparent 28%),linear-gradient(180deg,rgba(255,255,255,.1),rgba(8,169,198,.035));pointer-events:none} .provider-inner{position:relative;z-index:1} .provider-label{color:var(--water-deep);font-family:var(--mono);font-size:7.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin-bottom:8px} .provider-name{font-family:var(--display);font-size:33px;font-weight:900;letter-spacing:-.04em;line-height:1;color:var(--ink);margin-bottom:10px} .provider-type{color:var(--ink-soft);font-size:13px;line-height:1.62;margin-bottom:16px} .provider-metric-row{display:grid;gap:9px;margin-top:16px} .provider-metric{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:10px 0;border-top:1px solid var(--rule);font-size:12px;color:var(--ink-soft)} .provider-metric strong{color:var(--ink-mid);font-family:var(--mono);font-size:10px} .provider-status{margin-top:16px;padding:12px 13px;border-radius:var(--radius);border:1px solid var(--water-rim);background:var(--water-pale);color:var(--cobalt);font-size:12px;line-height:1.6}
+    .filters{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 14px;align-items:center} .filter-input,.filter-select{min-height:38px;border:1px solid var(--rule-strong);border-radius:var(--radius);background:rgba(255,255,255,.74);padding:8px 11px;font-family:var(--mono);font-size:9px;letter-spacing:.06em;color:var(--ink-mid);outline:none} .filter-input{min-width:250px;flex:1} .filter-input:focus,.filter-select:focus{border-color:var(--water);box-shadow:0 0 0 3px var(--water-pale)} .switch{display:inline-flex;align-items:center;gap:8px;min-height:38px;padding:8px 11px;border:1px solid var(--rule-strong);border-radius:var(--radius);background:var(--surface2);color:var(--ink-soft);font-family:var(--mono);font-size:8px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer} .switch input{accent-color:var(--water)}
+    .table-wrap{width:100%;overflow:auto;border:1px solid var(--rule);border-radius:var(--radius);background:var(--surface)} table{width:100%;min-width:980px;border-collapse:collapse} th{position:sticky;top:0;z-index:1;padding:11px 12px;background:linear-gradient(180deg,var(--surface3),#e9e5da);border-bottom:1px solid var(--rule-strong);color:var(--ink-mid);font-family:var(--mono);font-size:7.5px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;text-align:center;white-space:nowrap} td{padding:11px 12px;border-bottom:1px solid var(--rule);color:var(--ink-soft);font-size:12.5px;vertical-align:middle;text-align:center} td:first-child,th:first-child{text-align:left} tr:last-child td{border-bottom:0} .click-row{cursor:pointer;transition:background .12s} .click-row:hover td{background:rgba(8,169,198,.06)} .click-row.selected td{background:rgba(8,169,198,.10);box-shadow:inset 3px 0 0 var(--water)} .td-name{color:var(--ink-mid);font-weight:600} .td-small{font-size:11px;color:var(--ink-faint)} .mini-bar{position:relative;height:10px;border-radius:999px;background:rgba(28,63,110,.10);min-width:90px;overflow:hidden} .mini-fill{position:absolute;inset:0 auto 0 0;width:0%;border-radius:inherit;background:linear-gradient(90deg,var(--water),var(--cobalt))}
+    .status-pill{display:inline-flex;align-items:center;justify-content:center;min-width:68px;padding:5px 8px;border-radius:999px;font-family:var(--mono);font-size:7px;font-weight:700;letter-spacing:.10em;text-transform:uppercase} .status-ok{background:var(--mint-pale);color:var(--mint);border:1px solid rgba(26,127,90,.22)} .status-watch{background:var(--amber-pale);color:var(--amber);border:1px solid rgba(176,100,0,.22)} .status-missing{background:rgba(100,100,100,.06);color:var(--ink-faint);border:1px solid rgba(100,100,100,.15)} .status-bad{background:var(--danger-pale);color:var(--danger);border:1px solid rgba(155,44,44,.22)}
+    .score-board{display:grid;grid-template-columns:minmax(250px,.8fr) minmax(0,1.2fr);gap:16px} .score-ring-card{padding:24px;display:grid;grid-template-columns:160px 1fr;gap:20px;align-items:center} .ring{--angle:0deg;width:150px;height:150px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--water) var(--angle),rgba(8,169,198,.12) 0deg);position:relative} .ring::after{content:"";position:absolute;inset:14px;border-radius:50%;background:var(--surface);box-shadow:inset 0 0 0 1px var(--rule)} .ring-center{position:relative;z-index:1;text-align:center} .ring-value{font-family:var(--display);font-size:46px;font-weight:900;letter-spacing:-.06em;color:var(--ink);line-height:1} .ring-label{margin-top:5px;color:var(--ink-faint);font-family:var(--mono);font-size:7px;letter-spacing:.13em;text-transform:uppercase} .score-text h3{font-family:var(--display);font-size:30px;line-height:1.05;letter-spacing:-.035em;margin-bottom:10px} .score-text p{color:var(--ink-soft);font-size:13.2px;line-height:1.72} .score-components{display:grid;gap:11px;padding:20px} .component{display:grid;grid-template-columns:160px 1fr 56px;gap:12px;align-items:center;cursor:pointer} .component-label{color:var(--ink-mid);font-size:12.5px;font-weight:600} .component-track{height:10px;border-radius:999px;overflow:hidden;background:rgba(8,169,198,.12)} .component-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,var(--water),var(--cobalt))} .component-value{text-align:right;color:var(--cobalt);font-family:var(--mono);font-size:10px;font-weight:700}
+    .market-matrix{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px} .market-column{border:1px solid var(--rule);background:var(--surface);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden} .market-head{padding:18px;background:linear-gradient(135deg,var(--cobalt),var(--cobalt-deep));color:#fff} .market-head.water{background:linear-gradient(135deg,var(--water),var(--water-deep))} .market-head h3{font-family:var(--display);font-size:28px;font-weight:900;line-height:1;letter-spacing:-.035em;margin-bottom:5px} .market-head p{color:rgba(255,255,255,.72);font-size:12px;line-height:1.5} .market-list{padding:12px 18px 18px;display:grid;gap:11px} .market-item{padding:11px 0;border-bottom:1px solid var(--rule)} .market-item:last-child{border-bottom:0} .market-item strong{display:block;color:var(--ink-mid);font-size:12.5px;margin-bottom:4px} .market-item span{color:var(--ink-soft);font-size:12px;line-height:1.55}
+    .builder{display:grid;grid-template-columns:minmax(280px,.9fr) minmax(0,1.1fr);gap:16px} .builder-controls{display:grid;gap:12px} .field{display:grid;gap:7px} .field label{color:var(--ink-mid);font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.12em;text-transform:uppercase} .field input,.field select{min-height:42px;border:1px solid var(--rule-strong);border-radius:var(--radius);padding:9px 11px;background:var(--surface2);color:var(--ink-mid);font-family:var(--mono);font-size:10px} .button-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px} .action-btn{min-height:40px;padding:9px 14px;border:1px solid var(--water-rim);background:var(--water-pale);color:var(--water-deep);border-radius:var(--radius);cursor:pointer;font-family:var(--mono);font-size:8px;font-weight:700;letter-spacing:.10em;text-transform:uppercase} .action-btn.primary{background:var(--cobalt);border-color:var(--cobalt);color:#fff} .compare-panel{padding:20px;background:linear-gradient(180deg,rgba(8,169,198,.06),transparent),var(--surface);border:1px solid var(--rule);border-radius:var(--radius)} .compare-title{font-family:var(--display);font-size:31px;line-height:1.05;font-weight:900;letter-spacing:-.04em;color:var(--ink);margin-bottom:10px} .compare-text{color:var(--ink-soft);font-size:13px;line-height:1.68;margin-bottom:16px} .compare-bars{display:grid;gap:12px} .compare-bar-row{display:grid;grid-template-columns:130px 1fr 100px;gap:12px;align-items:center} .compare-label{color:var(--ink-mid);font-size:12px;font-weight:600} .compare-track{height:14px;border-radius:999px;background:rgba(8,169,198,.12);overflow:hidden} .compare-fill{height:100%;width:0%;border-radius:999px;background:linear-gradient(90deg,var(--water),var(--cobalt))} .compare-number{text-align:right;font-family:var(--mono);font-size:10px;color:var(--cobalt);font-weight:700}
+    .source-grid,.timeline{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px} .source-card,.lot{padding:18px;background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius);box-shadow:var(--shadow-sm)} .source-card h3,.lot h3{font-family:var(--display);font-size:24px;line-height:1.05;margin-bottom:8px} .source-card p,.lot p{color:var(--ink-soft);font-size:12.5px;line-height:1.68} .source-card a{display:inline-flex;margin-top:12px;color:var(--water-deep);font-family:var(--mono);font-size:8px;letter-spacing:.10em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(--water-rim)} .lot{min-height:190px} .lot.done{border-color:var(--water-rim);background:linear-gradient(180deg,var(--water-pale),var(--surface))} .lot-num{color:var(--water-deep);font-family:var(--mono);font-size:8px;letter-spacing:.15em;text-transform:uppercase;margin-bottom:8px}
+    .device-flag{position:fixed;left:12px;bottom:12px;z-index:100;display:none;padding:6px 9px;border-radius:999px;border:1px solid var(--water-rim);background:rgba(255,255,255,.86);backdrop-filter:blur(8px);color:var(--water-deep);font-family:var(--mono);font-size:7px;letter-spacing:.12em;text-transform:uppercase}
+    .dash-footer{position:relative;overflow:hidden;height:52px;display:flex;align-items:center;justify-content:space-between;padding:0 36px;background:linear-gradient(135deg,var(--cobalt),var(--cobalt-deep));color:rgba(255,255,255,.82)} .dash-footer::before{content:"AWA05";position:absolute;right:-10px;top:-18px;color:rgba(255,255,255,.04);font-family:var(--display);font-size:96px;font-weight:900;letter-spacing:-4px;pointer-events:none} .footer-left,.footer-right{position:relative;z-index:1;color:rgba(255,255,255,.40);font-family:var(--mono);font-size:7.5px;letter-spacing:.10em;text-transform:uppercase} .footer-center{position:absolute;left:50%;transform:translateX(-50%);z-index:1;font-family:var(--display);font-size:14px;font-weight:700;font-style:italic;color:rgba(255,255,255,.92);white-space:nowrap}
+    @media(max-width:1320px){.layout{grid-template-columns:1fr}.lens{position:static;height:auto;border-left:0;border-top:1px solid var(--rule)}main{padding:32px 24px 72px}.kpi-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.hd-center{display:none}}
+    @media(max-width:940px){header{min-height:52px;padding:0 14px}.hd-sub,.hd-ts,.top-link{display:none}.mobile-menu-button{display:inline-flex}.mobile-menu{top:52px}main{padding:24px 14px 64px}.hero{padding:30px 18px 28px}.hero h1{font-size:48px}.grid-2,.grid-3,.grid-4,.provider-grid,.market-matrix,.builder,.score-board,.source-grid,.timeline{grid-template-columns:1fr}.col-span-2,.col-span-3,.col-span-4{grid-column:span 1}.kpi-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.section-head{align-items:flex-start;flex-direction:column}.section-title{font-size:29px}.score-ring-card{grid-template-columns:1fr}.component{grid-template-columns:1fr}.compare-bar-row{grid-template-columns:1fr}.dash-footer{height:auto;padding:14px;flex-wrap:wrap;gap:8px;justify-content:center}.footer-center{position:static;transform:none;order:-1;width:100%;text-align:center}.footer-left,.footer-right{width:100%;text-align:center}}
+    @media(max-width:560px){.kpi-grid{grid-template-columns:1fr}.hero h1{font-size:38px}.provider-name{font-size:29px}.ring{width:128px;height:128px}.lens-title{font-size:22px}.filter-input,.filter-select,.switch{width:100%}}
+    body.device-phone .device-flag,body.device-tablet .device-flag{display:inline-flex} body.device-phone table{min-width:920px}
   </style>
 </head>
-
 <body>
   <header>
-    <div class="hd-brand">
-      <span class="hd-name">AWA05</span>
-      <div class="hd-sep"></div>
-      <span class="hd-sub">Calidad de agua</span>
-    </div>
-
-    <div class="hd-center">
-      <div class="hd-stat"><div class="hd-stat-val">Sí cumple</div><div class="hd-stat-lbl">COGUANOR</div></div>
-      <div class="hd-sep"></div>
-      <div class="hd-stat"><div class="hd-stat-val">1 / 3</div><div class="hd-stat-lbl">Lotes</div></div>
-      <div class="hd-sep"></div>
-      <div class="hd-stat"><div class="hd-stat-val">0</div><div class="hd-stat-lbl">Fuera LMA</div></div>
-      <div class="hd-sep"></div>
-      <div class="hd-stat"><div class="hd-stat-val">Negativo</div><div class="hd-stat-lbl">Microbiología</div></div>
-    </div>
-
-    <div class="hd-right">
-      <a class="top-link" href="index.html">Inicio</a>
-      <a class="top-link" href="dashboard.html">Dashboard</a>
-      <a class="top-link" href="analisis-estadistico.html">Análisis</a>
-      <a class="top-link active" href="comparativo-calidad-agua.html">Calidad</a>
-      <button class="top-link hd-mobile-menu" onclick="toggleMobileMenu()">Menú</button>
-    </div>
+    <div class="hd-brand"><span class="hd-name">AWA05</span><div class="hd-sep"></div><span class="hd-sub">Calidad de agua</span></div>
+    <div class="hd-center"><div class="hd-stat"><div class="hd-stat-val">1/3</div><div class="hd-stat-lbl">Análisis</div></div><div class="hd-sep"></div><div class="hd-stat"><div class="hd-stat-val">29</div><div class="hd-stat-lbl">Parámetros</div></div><div class="hd-sep"></div><div class="hd-stat"><div class="hd-stat-val">Sí</div><div class="hd-stat-lbl">Potable</div></div><div class="hd-sep"></div><div class="hd-stat"><div class="hd-stat-val">COGUANOR</div><div class="hd-stat-lbl">Referencia</div></div></div>
+    <div class="hd-right"><a class="top-link" href="index.html">Inicio</a><a class="top-link" href="dashboard.html">Dashboard</a><a class="top-link" href="analisis-estadistico.html">Análisis</a><a class="top-link active" href="comparativo-calidad-agua.html">Calidad</a><div class="hd-ts">Lote 1</div><button class="btn mobile-menu-button" id="mobileBtn">☰</button></div>
   </header>
-
-  <div id="mobile-menu" class="mobile-menu">
-    <a href="index.html">Inicio</a>
-    <a href="dashboard.html">Dashboard</a>
-    <a href="analisis-estadistico.html">Análisis estadístico</a>
-    <a href="comparativo-calidad-agua.html">Calidad de agua</a>
-    <a href="#tabla-parametros" onclick="toggleMobileMenu(false)">Tabla de parámetros</a>
-    <a href="#benchmark" onclick="toggleMobileMenu(false)">Benchmark mercado</a>
-  </div>
-
+  <nav class="mobile-menu" id="mobileMenu"><a href="index.html">Inicio</a><a href="dashboard.html">Dashboard</a><a href="analisis-estadistico.html">Análisis estadístico</a><a href="comparativo-calidad-agua.html">Calidad de agua</a></nav>
   <div class="layout">
     <main>
-      <section class="hero">
-        <div class="eyebrow">Informe comparativo · Lote 1 · AWA05</div>
-        <h1>Calidad del agua generada por <em>AWA05</em></h1>
-        <p>
-          Lectura interactiva del análisis de laboratorio del Lote 1, comparado contra COGUANOR NTG 290001 y contra referencias del mercado.
-          El informe del laboratorio concluye que la muestra analizada es potable y cumple la norma aplicable; esta página convierte ese resultado en KPIs, tabla técnica y lectura comparativa.
-        </p>
-        <div class="pill-row">
-          <span class="pill ok">Sí es potable</span>
-          <span class="pill ok">Sí cumple COGUANOR</span>
-          <span class="pill water">Lote 1 completado</span>
-          <span class="pill warn">2 lotes pendientes</span>
-          <span class="pill">29 parámetros revisados</span>
-        </div>
-        <div class="hero-actions">
-          <a class="hero-action primary" href="#tabla-parametros">Ver parámetros</a>
-          <a class="hero-action" href="#score">Ver score</a>
-          <a class="hero-action" href="#benchmark">Ver comparativo</a>
-        </div>
+      <section class="hero" id="inicio">
+        <div class="eyebrow">Comparativo técnico · AWA05 · Mercado guatemalteco</div>
+        <h1>Calidad de agua AWA05 frente a <em>referencias comerciales</em></h1>
+        <p>Esta página compara el Lote 1 de AWA05 contra la norma COGUANOR y contra referencias de mercado: Agua Pura Salvavidas como agua embotellada comercial, y Ecofiltro como tecnología de filtración. La comparación separa valores de laboratorio, certificaciones, evidencia microbiológica y datos no publicados.</p>
+        <div class="pill-row"><span class="pill ok">AWA05: certificado por lote</span><span class="pill water">COGUANOR NTG 290001</span><span class="pill">Salvavidas: certificaciones/proceso</span><span class="pill">Ecofiltro: filtración/microbiología</span><span class="pill warn">2 análisis pendientes</span></div>
+        <div class="hero-actions"><a class="hero-action primary" href="#comparador">Comparar fuentes</a><a class="hero-action" href="#parametros">Ver parámetros AWA05</a><a class="hero-action" href="#constructor">Cargar valores comerciales</a><a class="hero-action" href="#lotes">Estado de lotes</a></div>
       </section>
-
-      <section class="section">
-        <div class="kpi-grid" id="kpi-grid"></div>
+      <section class="section" id="kpis"><div class="kpi-grid" id="kpiGrid"></div></section>
+      <section class="section" id="comparador">
+        <div class="section-head"><div><div class="eyebrow">Tres referencias, tres tipos de evidencia</div><h2 class="section-title">No todo compite en la misma categoría</h2><p class="section-sub">AWA05 tiene una muestra analizada parámetro por parámetro. Salvavidas declara certificaciones, control interno y aval externo, pero las fuentes públicas revisadas no publican una tabla de lote comparable. Ecofiltro no es agua embotellada: es un sistema de filtración cuyo desempeño depende del agua que entra.</p></div><span class="badge water">Comparador principal</span></div>
+        <div class="section-rule"></div><div class="provider-grid" id="providerGrid"></div>
       </section>
-
-      <section class="section" id="estado-lotes">
-        <div class="section-head">
-          <div>
-            <div class="eyebrow">Programa de validación</div>
-            <h2 class="section-title">Estado de análisis por <em>lote</em></h2>
-            <p class="section-sub">El primer análisis ya permite validar potabilidad del Lote 1. Los próximos dos análisis servirán para medir estabilidad entre muestras.</p>
-          </div>
-          <span class="badge water">1 de 3</span>
-        </div>
-        <div class="section-rule"></div>
-        <div class="status-strip">
-          <div class="lot-card complete js-lens" data-title="Lote 1 completado" data-meta="Análisis disponible" data-text="Muestra tomada el 28 de abril de 2026 y resultados emitidos el 3 de mayo de 2026. Este lote corresponde al agua obtenida por medio de la planta AWA05 instalada en Amigos del Lago, Santa Catarina Palopó.">
-            <div class="lot-label">Completado</div>
-            <div class="lot-title">Lote 1</div>
-            <div class="lot-meta">28 abril 2026 · resultado 3 mayo 2026 · cumple COGUANOR.</div>
-          </div>
-          <div class="lot-card pending js-lens" data-title="Lote 2 pendiente" data-meta="Próxima validación" data-text="Cuando se cargue el segundo análisis, la página podrá calcular variación entre lotes, promedio, mínimo, máximo y consistencia microbiológica.">
-            <div class="lot-label">Pendiente</div>
-            <div class="lot-title">Lote 2</div>
-            <div class="lot-meta">Sin PDF cargado todavía. Se reserva espacio para comparación longitudinal.</div>
-          </div>
-          <div class="lot-card pending js-lens" data-title="Lote 3 pendiente" data-meta="Cierre de validación" data-text="Con tres lotes será posible calcular un perfil de estabilidad de calidad y no solo una fotografía puntual del Lote 1.">
-            <div class="lot-label">Pendiente</div>
-            <div class="lot-title">Lote 3</div>
-            <div class="lot-meta">Pendiente. Permitirá fortalecer el argumento de repetibilidad del sistema.</div>
-          </div>
-        </div>
-      </section>
-
       <section class="section" id="score">
-        <div class="section-head">
-          <div>
-            <div class="eyebrow">Lectura sanitaria</div>
-            <h2 class="section-title">Potabilidad, seguridad microbiológica y mineralización</h2>
-            <p class="section-sub">El score es un índice interno de comunicación técnica; no reemplaza el dictamen del laboratorio. Su función es resumir cumplimiento, microbiología, metales y parámetros organolépticos.</p>
-          </div>
-          <span class="badge ok">Resultado favorable</span>
-        </div>
-        <div class="section-rule"></div>
-        <div class="grid-2">
-          <div class="card col-span-2">
-            <div class="card-head">
-              <div>
-                <div class="card-title">Índice interno AWA05 Water Quality</div>
-                <div class="card-sub">Resumen visual del Lote 1</div>
-              </div>
-              <span class="badge water">96 / 100</span>
-            </div>
-            <div class="card-body score-shell">
-              <div class="water-score" style="--score-angle: 346deg">
-                <div class="water-score-inner">
-                  <div class="water-score-value">96</div>
-                  <div class="water-score-label">AWA05 WQI</div>
-                </div>
-              </div>
-              <div class="score-text">
-                <p><strong>Lectura:</strong> el Lote 1 presenta una combinación favorable: turbidez baja, sólidos disueltos muy bajos, conductividad baja, pH dentro del rango aceptable y microbiología reportada como negativa.</p>
-                <p>El informe del laboratorio declara que el agua del Lote 1 es potable y cumple la norma COGUANOR NTG 290001. La calificación se mantiene como <strong>parcial</strong> porque todavía faltan dos análisis para evaluar repetibilidad entre lotes.</p>
-                <p>Los puntos de vigilancia no invalidan el cumplimiento: cloro residual no detectado, mineralización baja y manganeso dentro del límite máximo aceptable, pero útil de monitorear en los siguientes lotes.</p>
-              </div>
-            </div>
-          </div>
-
-          <div class="card">
-            <div class="card-head">
-              <div>
-                <div class="card-title">Parámetros críticos vs LMA</div>
-                <div class="card-sub">Porcentaje del límite máximo aceptable utilizado</div>
-              </div>
-              <span class="badge water">Agua</span>
-            </div>
-            <div class="chart-wrap"><canvas id="chart-lma"></canvas></div>
-          </div>
-
-          <div class="card">
-            <div class="card-head">
-              <div>
-                <div class="card-title">Microbiología</div>
-                <div class="card-sub">Todos los indicadores reportados como negativos</div>
-              </div>
-              <span class="badge ok">Negativo</span>
-            </div>
-            <div class="chart-wrap"><canvas id="chart-micro"></canvas></div>
-          </div>
-        </div>
+        <div class="section-head"><div><div class="eyebrow">Lectura ejecutiva del Lote 1</div><h2 class="section-title">Índice interno de calidad del agua AWA05</h2><p class="section-sub">El score no reemplaza la certificación de laboratorio. Sirve para leer el lote de forma rápida, separando microbiología, claridad, mineralización, metales y nutrientes.</p></div><span class="badge ok">Lote 1 aprobado</span></div>
+        <div class="section-rule"></div><div class="score-board"><div class="card score-ring-card"><div class="ring" id="scoreRing"><div class="ring-center"><div class="ring-value" id="scoreValue">—</div><div class="ring-label">Score interno</div></div></div><div class="score-text"><h3>Potable y con microbiología negativa</h3><p>El resultado fuerte del lote está en microbiología: coliformes, E. coli, Salmonella, Vibrio y Enterobacter aparecen negativos. La fisicoquímica se mantiene dentro de límites reportados, con agua de baja mineralización y turbidez baja.</p></div></div><div class="card score-components" id="scoreComponents"></div></div>
       </section>
-
-      <section class="section" id="tabla-parametros">
-        <div class="section-head">
-          <div>
-            <div class="eyebrow">Tabla técnica interactiva</div>
-            <h2 class="section-title">Parámetros fisicoquímicos y microbiológicos</h2>
-            <p class="section-sub">Haz clic en cualquier fila para enviar una interpretación técnica a la lente lateral. Los valores numéricos se centran para facilitar lectura y comparación.</p>
-          </div>
-          <span class="badge water">Filas clickeables</span>
-        </div>
-        <div class="section-rule"></div>
-        <div class="card">
-          <div class="card-head">
-            <div>
-              <div class="card-title">Resultado AWA05 Lote 1</div>
-              <div class="card-sub">COGUANOR NTG 290001 · Acuerdo Gubernativo 178-2009</div>
-            </div>
-            <span class="badge ok">Cumple</span>
-          </div>
-          <div id="param-table" class="table-wrap"></div>
-        </div>
+      <section class="section" id="mercado">
+        <div class="section-head"><div><div class="eyebrow">Matriz de mercado</div><h2 class="section-title">Qué se puede comparar hoy</h2><p class="section-sub">La tabla siguiente deja claro dónde hay valor numérico, dónde hay evidencia institucional y dónde hace falta certificado público. Esto evita una comparación falsa entre una muestra de laboratorio y una marca que no publica sus parámetros de lote.</p></div><span class="badge">Mercado</span></div>
+        <div class="section-rule"></div><div class="market-matrix"><div class="market-column"><div class="market-head water"><h3>Físico-químico</h3><p>pH, turbidez, TDS, conductividad, metales y nutrientes.</p></div><div class="market-list"><div class="market-item"><strong>AWA05</strong><span>Comparable por parámetro: tiene valores de laboratorio en el Lote 1.</span></div><div class="market-item"><strong>Salvavidas</strong><span>Comparable solo si se consigue certificado de lote o ficha técnica pública con valores.</span></div><div class="market-item"><strong>Ecofiltro</strong><span>No es agua de lote; la salida depende del agua de entrada y del estado del filtro.</span></div></div></div><div class="market-column"><div class="market-head"><h3>Microbiológico</h3><p>Coliformes, E. coli, bacterias indicadoras y patógenos.</p></div><div class="market-list"><div class="market-item"><strong>AWA05</strong><span>Resultado negativo en todos los indicadores microbiológicos del lote.</span></div><div class="market-item"><strong>Salvavidas</strong><span>Declara control de calidad, aval externo y certificaciones de inocuidad.</span></div><div class="market-item"><strong>Ecofiltro</strong><span>Publica resultados microbiológicos y ficha de efectividad de filtración.</span></div></div></div><div class="market-column"><div class="market-head"><h3>Trazabilidad</h3><p>Lote, proceso, certificación o desempeño de dispositivo.</p></div><div class="market-list"><div class="market-item"><strong>AWA05</strong><span>Respaldo por muestra puntual. Faltan dos lotes para estabilidad.</span></div><div class="market-item"><strong>Salvavidas</strong><span>Respaldo por proceso empresarial y certificaciones; faltan valores públicos por parámetro.</span></div><div class="market-item"><strong>Ecofiltro</strong><span>Respaldo por tecnología de tratamiento. La calidad final no se interpreta sin saber el agua inicial.</span></div></div></div></div>
       </section>
-
-      <section class="section" id="benchmark">
-        <div class="section-head">
-          <div>
-            <div class="eyebrow">Referencia de mercado</div>
-            <h2 class="section-title">Comparativo contra proveedores y soluciones comerciales</h2>
-            <p class="section-sub">El comparativo distingue datos de laboratorio disponibles, certificaciones públicas y datos no publicados. No se inventan parámetros para marcas que no publican una tabla equivalente por lote.</p>
-          </div>
-          <span class="badge violet">Benchmark</span>
-        </div>
-        <div class="section-rule"></div>
-
-        <div class="benchmark-grid" id="provider-grid"></div>
-
-        <div class="grid-2" style="margin-top: 16px;">
-          <div class="card">
-            <div class="card-head">
-              <div>
-                <div class="card-title">Matriz comparativa</div>
-                <div class="card-sub">Qué se puede comparar con evidencia pública</div>
-              </div>
-              <span class="badge warn">Sin inventar</span>
-            </div>
-            <div id="market-table" class="table-wrap"></div>
-          </div>
-          <div class="card">
-            <div class="card-head">
-              <div>
-                <div class="card-title">Notas de interpretación</div>
-                <div class="card-sub">Cómo leer el benchmark</div>
-              </div>
-              <span class="badge water">Criterio</span>
-            </div>
-            <div class="card-body mini-notes">
-              <div class="note-card js-lens" data-title="Comparación directa" data-meta="AWA05 vs marcas" data-text="AWA05 tiene un análisis de laboratorio específico del lote. Salvavidas y Ecofiltro pueden tener certificaciones o pruebas públicas, pero no necesariamente una tabla equivalente por lote con los mismos parámetros. Por eso la comparación fuerte está en disponibilidad de evidencia, no en ranking absoluto."><strong>Comparación directa:</strong> solo es válida cuando existen parámetros medidos con método, unidad, fecha y muestra comparable.</div>
-              <div class="note-card js-lens" data-title="Ecofiltro" data-meta="Tipo de solución" data-text="Ecofiltro es una solución de filtración, no una fuente de agua embotellada ni una planta atmosférica. Puede compararse en evidencia microbiológica y certificaciones, pero no como muestra directa de agua final equivalente al Lote 1."><strong>Ecofiltro:</strong> es tecnología de filtración; su desempeño depende del agua de entrada, mantenimiento y cartucho.</div>
-              <div class="note-card js-lens" data-title="Siguiente paso" data-meta="Lotes 2 y 3" data-text="Cuando existan tres análisis AWA05, esta página podrá calcular promedio, rango, desviación estándar, consistencia microbiológica y estabilidad mineral por parámetro."><strong>Siguiente paso:</strong> completar Lotes 2 y 3 para pasar de evidencia puntual a estabilidad del sistema.</div>
-            </div>
-          </div>
-        </div>
+      <section class="section" id="parametros">
+        <div class="section-head"><div><div class="eyebrow">Lote 1 · Atitlab · 28 abril 2026</div><h2 class="section-title">Parámetros del sistema AWA05</h2><p class="section-sub">Cada fila es clickeable. Al seleccionar un parámetro, la lente explica qué significa, cómo se compara con el límite y qué tan útil es para contrastar contra una fuente comercial.</p></div><span class="badge ok">29 filas</span></div>
+        <div class="section-rule"></div><div class="filters"><input id="searchInput" class="filter-input" type="search" placeholder="Buscar parámetro, categoría o unidad..."><select id="categoryFilter" class="filter-select"></select><select id="statusFilter" class="filter-select"><option value="all">Todos los estados</option><option value="ok">Cumple / negativo</option><option value="watch">Monitorear</option></select><label class="switch"><input type="checkbox" id="comparableOnly"> Solo comparables</label><button class="action-btn" id="downloadCsv">Exportar CSV</button></div>
+        <div class="table-wrap"><table id="parameterTable"><thead><tr><th>Parámetro</th><th>Categoría</th><th>AWA05</th><th>LMP</th><th>LMA</th><th>Unidad</th><th>Margen</th><th>Estado</th><th>Comparación comercial</th></tr></thead><tbody id="parameterBody"></tbody></table></div>
       </section>
-
+      <section class="section" id="constructor">
+        <div class="section-head"><div><div class="eyebrow">Comparador editable</div><h2 class="section-title">Carga valores comerciales cuando consigas certificados</h2><p class="section-sub">Si luego tienes análisis de Salvavidas, Ecofiltro u otra fuente, puedes introducir un valor por parámetro. La página calcula el contraste contra AWA05 y lo guarda localmente en este navegador.</p></div><span class="badge water">Herramienta</span></div>
+        <div class="section-rule"></div><div class="builder"><div class="card"><div class="card-head"><div><div class="card-title">Entrada de comparación</div><div class="card-sub">Valores manuales para fuentes comerciales o futuros análisis</div></div></div><div class="card-body builder-controls"><div class="field"><label for="builderProvider">Fuente</label><select id="builderProvider"><option value="salvavidas">Agua Pura Salvavidas</option><option value="ecofiltro">Ecofiltro</option><option value="otro">Otra fuente</option></select></div><div class="field"><label for="builderParam">Parámetro</label><select id="builderParam"></select></div><div class="field"><label for="builderValue">Valor publicado o medido</label><input id="builderValue" type="number" step="any" placeholder="Ej. 7.1"></div><div class="field"><label for="builderSource">Fuente / nota</label><input id="builderSource" type="text" placeholder="Ej. certificado laboratorio, lote, fecha"></div><div class="button-row"><button class="action-btn primary" id="saveBenchmark">Guardar comparación</button><button class="action-btn" id="clearBenchmark">Limpiar valores</button></div></div></div><div class="compare-panel"><div class="compare-title" id="comparePanelTitle">Selecciona un parámetro</div><div class="compare-text" id="comparePanelText">Elige una fuente y un parámetro para ver cómo se ubica frente al resultado AWA05 y al límite COGUANOR.</div><div class="compare-bars" id="compareBars"></div></div></div>
+      </section>
+      <section class="section" id="matriz">
+        <div class="section-head"><div><div class="eyebrow">Matriz parámetro por fuente</div><h2 class="section-title">Contraste directo AWA05 · Salvavidas · Ecofiltro</h2><p class="section-sub">Esta matriz es el centro del comparativo. AWA05 entra con datos medidos; las otras fuentes se muestran con evidencia disponible, datos cargados manualmente o estado “no publicado”.</p></div><span class="badge">Matriz</span></div>
+        <div class="section-rule"></div><div class="table-wrap"><table><thead><tr><th>Parámetro</th><th>AWA05 Lote 1</th><th>Salvavidas</th><th>Ecofiltro</th><th>COGUANOR / lectura</th><th>Decisión de comparación</th></tr></thead><tbody id="matrixBody"></tbody></table></div>
+      </section>
+      <section class="section" id="lotes">
+        <div class="section-head"><div><div class="eyebrow">Evidencia acumulada</div><h2 class="section-title">Estado de análisis por lote</h2><p class="section-sub">Con un solo lote se puede defender potabilidad puntual. Con tres lotes se podrá hablar de estabilidad, variabilidad y consistencia del sistema.</p></div><span class="badge warn">1 de 3</span></div>
+        <div class="section-rule"></div><div class="timeline"><div class="lot done"><div class="lot-num">Lote 01 · completado</div><h3>28 abril 2026</h3><p>Atitlab reportó que la muestra AWA05 es potable y cumple COGUANOR. Este lote alimenta toda la tabla de parámetros.</p></div><div class="lot"><div class="lot-num">Lote 02 · pendiente</div><h3>Próxima muestra</h3><p>Permitirá revisar estabilidad microbiológica y confirmar si parámetros como manganeso y mineralización se mantienen.</p></div><div class="lot"><div class="lot-num">Lote 03 · pendiente</div><h3>Confirmación</h3><p>Con tres lotes se podrán calcular promedio, rango, desviación estándar y cumplimiento global por parámetro.</p></div></div>
+      </section>
       <section class="section" id="fuentes">
-        <div class="section-head">
-          <div>
-            <div class="eyebrow">Trazabilidad</div>
-            <h2 class="section-title">Fuentes y datos utilizados</h2>
-            <p class="section-sub">La página usa el Lote 1 de Atitlab como fuente primaria para AWA05 y fuentes públicas para contextualizar referencias de mercado.</p>
-          </div>
-          <span class="badge water">Fuentes</span>
-        </div>
-        <div class="section-rule"></div>
-        <div class="source-list">
-          <div class="source-item"><strong>Atitlab · LOTE 1 28 04 26.</strong> Resultado fisicoquímico y microbiológico de agua COGUANOR NTG 290001. Muestra de agua obtenida por medio de AWA05 en Amigos del Lago, Santa Catarina Palopó.</div>
-          <div class="source-item"><strong>Agua Pura Salvavidas.</strong> Fuente pública oficial consultada para información institucional y declaración de sistema de gestión de calidad certificado.</div>
-          <div class="source-item"><strong>Ecofiltro Guatemala.</strong> Fuentes públicas consultadas para certificaciones e información de resultados microbiológicos. Los resultados no sustituyen análisis por lote del agua AWA05.</div>
-        </div>
+        <div class="section-head"><div><div class="eyebrow">Fuentes y trazabilidad</div><h2 class="section-title">Base documental del comparativo</h2><p class="section-sub">La página distingue entre certificado de laboratorio, certificaciones institucionales, resultados de efectividad y ausencia de datos publicados.</p></div><span class="badge">Fuentes</span></div>
+        <div class="section-rule"></div><div class="source-grid"><div class="source-card"><h3>AWA05</h3><p>Informe Atitlab del Lote 1: muestra tomada el 28 de abril de 2026 y entregada el 3 de mayo de 2026. Incluye resultados fisicoquímicos y microbiológicos.</p></div><div class="source-card"><h3>Salvavidas</h3><p>Información institucional pública: control interno, aval externo, certificaciones de calidad e inocuidad. No se localizó tabla pública de parámetros por lote.</p><a href="https://www.aguapurasalvavidas.com/" target="_blank" rel="noopener">Ver fuente pública</a></div><div class="source-card"><h3>Ecofiltro</h3><p>Información pública de resultados microbiológicos y ficha de efectividad. Se interpreta como tecnología de filtración, no como agua embotellada de lote.</p><a href="https://ecofiltro.com.gt/resultados-micobiologicos/" target="_blank" rel="noopener">Ver resultados microbiológicos</a></div></div>
       </section>
     </main>
-
-    <aside class="insight-rail" id="lens">
-      <div class="lens-kicker" id="lens-meta">Lente interpretativa</div>
-      <div class="lens-title" id="lens-title">Haz clic en una fila o tarjeta</div>
-      <div class="lens-text" id="lens-text">
-        Esta zona resume el significado técnico del elemento seleccionado. Úsala para leer parámetros, proveedores, lotes y notas sin saturar la pantalla con globos flotantes.
-      </div>
-      <div class="lens-meta" id="lens-pill">Interacción por clic</div>
-    </aside>
+    <aside class="lens" id="lens"><div class="lens-kicker">Lente interpretativa</div><div class="lens-title" id="lensTitle">Seleccione una fila o tarjeta</div><div class="lens-text" id="lensText">Use esta página como comparador técnico. AWA05 tiene datos de laboratorio por parámetro. Las fuentes comerciales se comparan según la evidencia pública disponible o con valores que usted cargue manualmente.</div><div class="lens-list"><div class="lens-chip">Click en cualquier fila de tabla</div><div class="lens-chip">Filtros por metales, microbiología o mineralización</div><div class="lens-chip">Carga manual de certificados comerciales</div></div><div class="lens-meta" id="lensMeta">AWA05 · Calidad de agua · Lote 1</div></aside>
   </div>
-
-  <footer class="dash-footer">
-    <div class="footer-left">AWA05 · Calidad de agua · Lote 1</div>
-    <div class="footer-center">Asociación Amigos del Lago de Atitlán · 2026</div>
-    <div class="footer-right">COGUANOR NTG 290001</div>
-  </footer>
-
-<script>
-const waterParams = [
-  {cat:'Fisicoquímico', name:'Color real', method:'SM 2120 HACH Método 8025', result:0, display:'00', lmp:'5.0', lma:35, unit:'UPtCo', status:'Excelente', tag:'excellent', margin:100, info:'Color real igual a cero. Es favorable porque no hay señal visual de coloración anómala en la muestra analizada.'},
-  {cat:'Fisicoquímico', name:'Olor', method:'Organoléptico', result:null, display:'No rechazable', lmp:'No rechazable', lma:'NR', unit:'—', status:'Cumple', tag:'ok', margin:null, info:'El olor fue reportado como no rechazable. Es un resultado organoléptico favorable para aceptabilidad de consumo.'},
-  {cat:'Fisicoquímico', name:'Temperatura', method:'SM SD 335 Lovibond Multi', result:23.1, display:'23.1', lmp:'15–25', lma:34, unit:'°C', status:'Cumple', tag:'ok', margin:32.1, info:'Temperatura dentro del rango operativo reportado por el laboratorio. No representa incumplimiento de potabilidad.'},
-  {cat:'Fisicoquímico', name:'Turbidez', method:'SM 2130 HACH 2100Q', result:0.85, display:'0.85', lmp:'5.0', lma:15, unit:'UNT', status:'Excelente', tag:'excellent', margin:94.3, info:'Turbidez muy baja frente al límite máximo aceptable. Es uno de los indicadores más fuertes de claridad del agua.'},
-  {cat:'Fisicoquímico', name:'Conductividad eléctrica', method:'SM SD 335 Lovibond Multi', result:14.4, display:'14.4', lmp:'750', lma:1500, unit:'µS/cm', status:'Excelente', tag:'excellent', margin:99.0, info:'Conductividad muy baja. Sugiere baja carga iónica/mineral en la muestra.'},
-  {cat:'Fisicoquímico', name:'Potencial de hidrógeno', method:'SM SD 335 Lovibond Multi', result:7.22, display:'7.22', lmp:'7.0–7.5', lma:'6.5–8.5', unit:'pH', status:'Cumple', tag:'ok', margin:85, info:'pH cercano a neutro y dentro del rango aceptable 6.5–8.5. Es favorable para consumo y estabilidad química.'},
-  {cat:'Fisicoquímico', name:'Sólidos totales disueltos', method:'SM SD 335 Lovibond Multi', result:20.2, display:'20.2', lmp:'500', lma:1000, unit:'mg/L', status:'Excelente', tag:'excellent', margin:98.0, info:'TDS muy bajo. Indica agua de muy baja mineralización; útil para diferenciar el perfil AWA05 frente a aguas más mineralizadas.'},
-  {cat:'Fisicoquímico', name:'Cloro total', method:'SM DPD HACH', result:0.0, display:'0.0', lmp:'0.5', lma:1, unit:'mg/L', status:'Monitorear', tag:'watch', margin:100, info:'No se detectó cloro total. La muestra cumple el dictamen global del laboratorio, pero el cloro residual debe vigilarse si el agua se almacena o distribuye.'},
-  {cat:'Fisicoquímico', name:'Cloro residual libre', method:'SM DPD HACH', result:0.0, display:'0.0', lmp:'0.5', lma:1, unit:'mg/L', status:'Monitorear', tag:'watch', margin:100, info:'Cloro residual libre no detectado. No invalida el resultado potable del lote, pero es relevante para vida útil, almacenamiento y red de distribución.'},
-  {cat:'Fisicoquímico', name:'Cloruros', method:'SM DPD HACH Método', result:62, display:'62', lmp:'100', lma:250, unit:'mg/L', status:'Cumple', tag:'ok', margin:75.2, info:'Cloruros por debajo del límite máximo aceptable. No hay señal de salinidad problemática.'},
-  {cat:'Fisicoquímico', name:'Dureza total (CaCO₃)', method:'SM método colorimétrico HACH', result:25, display:'25', lmp:'100', lma:500, unit:'mg/L', status:'Excelente', tag:'excellent', margin:95, info:'Dureza baja. El agua se comporta como agua blanda, con baja tendencia a incrustaciones.'},
-  {cat:'Fisicoquímico', name:'Alcalinidad total', method:'Water Quality Test Strips HACH', result:40, display:'40', lmp:'30', lma:400, unit:'mg/L', status:'Cumple', tag:'ok', margin:90, info:'Alcalinidad dentro de rango. Ayuda a entender capacidad amortiguadora del agua frente a cambios de pH.'},
-  {cat:'Fisicoquímico', name:'Arsénico', method:'SM Lovibond 400700', result:0.0, display:'0.0', lmp:'0.005', lma:0.010, unit:'mg/L', status:'Excelente', tag:'excellent', margin:100, info:'Arsénico no detectado. Es un resultado crítico favorable porque el arsénico tiene relevancia sanitaria alta.'},
-  {cat:'Fisicoquímico', name:'Calcio', method:'SM 3500-Ca-B HACH', result:100, display:'100', lmp:'75.0', lma:150, unit:'g/L reportado', status:'Cumple', tag:'ok', margin:33.3, info:'Calcio dentro del rango reportado. Nota: el PDF muestra unidad g/L; conviene confirmar unidad en próximos reportes para consistencia técnica.'},
-  {cat:'Fisicoquímico', name:'Cobre', method:'USEPA HACH Método 8506', result:0.021, display:'0.021', lmp:'0.050', lma:1.500, unit:'mg/L', status:'Excelente', tag:'excellent', margin:98.6, info:'Cobre muy por debajo del límite máximo aceptable.'},
-  {cat:'Fisicoquímico', name:'Cromo', method:'HACH Method 8023', result:0.014, display:'0.014', lmp:'0.050', lma:1.500, unit:'mg/L', status:'Excelente', tag:'excellent', margin:99.1, info:'Cromo muy por debajo del límite máximo aceptable.'},
-  {cat:'Fisicoquímico', name:'Magnesio', method:'USEPA HACH 8034', result:35.50, display:'35.50', lmp:'50.0', lma:100, unit:'mg/L', status:'Cumple', tag:'ok', margin:64.5, info:'Magnesio por debajo del máximo aceptable. Contribuye a la lectura de mineralización general.'},
-  {cat:'Fisicoquímico', name:'Manganeso', method:'SM método colorimétrico HACH', result:0.10, display:'0.10', lmp:'0.050', lma:0.40, unit:'mg/L', status:'Monitorear', tag:'watch', margin:75, info:'Manganeso dentro del límite máximo aceptable, pero por encima del valor de referencia menor reportado. Conviene seguirlo en Lotes 2 y 3.'},
-  {cat:'Fisicoquímico', name:'Sulfatos', method:'SM Lovibond 360 Var Sulpha', result:1.00, display:'1.00', lmp:'100', lma:250, unit:'mg/L', status:'Excelente', tag:'excellent', margin:99.6, info:'Sulfatos muy bajos frente al límite máximo aceptable.'},
-  {cat:'Fisicoquímico', name:'Hierro', method:'SM USEPA HACH', result:0.01, display:'0.01', lmp:'0.100', lma:1.0, unit:'mg/L', status:'Excelente', tag:'excellent', margin:99, info:'Hierro muy bajo. Favorable para color, sabor y estabilidad estética del agua.'},
-  {cat:'Fisicoquímico', name:'Nitratos', method:'SM-HACH Method 8171', result:0.02, display:'0.02', lmp:'0.00', lma:50.0, unit:'mg/L', status:'Excelente', tag:'excellent', margin:100, info:'Nitratos prácticamente nulos frente al límite máximo aceptable.'},
-  {cat:'Fisicoquímico', name:'Nitritos', method:'SM HACH Method 8507', result:0.006, display:'0.006', lmp:'0.00', lma:3.0, unit:'mg/L', status:'Excelente', tag:'excellent', margin:99.8, info:'Nitritos muy bajos frente al límite máximo aceptable.'},
-  {cat:'Microbiológico', name:'Recuento aeróbico en placa', method:'Recuento aeróbico en placa', result:null, display:'Menor que 2 · Negativo', lmp:'hasta 500 UFC/ml', lma:'Negativo', unit:'UFC/ml', status:'Excelente', tag:'excellent', margin:100, info:'Recuento aeróbico reportado menor que 2 y negativo. Resultado microbiológico favorable.'},
-  {cat:'Microbiológico', name:'Coliformes totales', method:'Número más probable', result:null, display:'Menor que 2 · Negativo', lmp:'<2', lma:'Negativo', unit:'NMP/ml', status:'Excelente', tag:'excellent', margin:100, info:'Coliformes totales negativos. Indicador clave de seguridad microbiológica.'},
-  {cat:'Microbiológico', name:'Coliformes fecales', method:'Número más probable', result:null, display:'Menor que 2 · Negativo', lmp:'<2', lma:'Negativo', unit:'NMP/ml', status:'Excelente', tag:'excellent', margin:100, info:'Coliformes fecales negativos. Resultado clave para descartar contaminación fecal en la muestra.'},
-  {cat:'Microbiológico', name:'Escherichia coli', method:'Número más probable', result:null, display:'Menor que 2 · Negativo', lmp:'<2', lma:'Negativo', unit:'NMP/ml', status:'Excelente', tag:'excellent', margin:100, info:'E. coli negativo. Es uno de los indicadores sanitarios más importantes para agua de consumo.'},
-  {cat:'Microbiológico', name:'Salmonella spp', method:'Número más probable', result:null, display:'Menor que 2 · Negativo', lmp:'<2', lma:'Negativo', unit:'NMP/ml', status:'Excelente', tag:'excellent', margin:100, info:'Salmonella spp negativa. Resultado microbiológico favorable.'},
-  {cat:'Microbiológico', name:'Vibrio cholerae', method:'Número más probable', result:null, display:'Menor que 2 · Negativo', lmp:'<2', lma:'Negativo', unit:'NMP/ml', status:'Excelente', tag:'excellent', margin:100, info:'Vibrio cholerae negativo. Resultado favorable y relevante para inocuidad.'},
-  {cat:'Microbiológico', name:'Enterobacter cloacae', method:'Número más probable', result:null, display:'Menor que 2 · Negativo', lmp:'<2', lma:'Negativo', unit:'NMP/ml', status:'Excelente', tag:'excellent', margin:100, info:'Enterobacter cloacae negativo. Resultado microbiológico favorable.'}
-];
-
-const providers = [
-  {id:'awa05', title:'AWA05 · Lote 1', tag:'Laboratorio por lote', status:'Sí cumple', coverage:'29 parámetros', micro:'Negativo', evidence:'Fisicoquímico + microbiológico', text:'La muestra del Lote 1 cuenta con análisis específico de laboratorio, fecha, punto de muestreo, métodos y dictamen de potabilidad.'},
-  {id:'salvavidas', title:'Agua Pura Salvavidas', tag:'Referencia comercial', status:'Calidad institucional', coverage:'Tabla pública no localizada', micro:'No publicado por lote', evidence:'Sitio oficial / certificación institucional', text:'Referencia útil como actor de mercado. Para comparación científica por parámetro se requiere tabla pública de resultados por lote o certificado equivalente.'},
-  {id:'ecofiltro', title:'Ecofiltro', tag:'Tecnología de filtración', status:'No es agua embotellada', coverage:'Pruebas microbiológicas públicas', micro:'Resultados publicados', evidence:'Certificaciones y pruebas microbiológicas', text:'Referencia tecnológica. La comparación debe leerse como evidencia de filtración, no como muestra equivalente de agua atmosférica producida por AWA05.'}
-];
-
-const marketRows = [
-  ['Tipo de evidencia', 'Análisis de laboratorio del lote', 'Información institucional pública', 'Certificaciones / microbiología pública'],
-  ['Fisicoquímicos comparables', 'Sí, 22 parámetros', 'No publicado en tabla equivalente revisada', 'No comparable como agua final única'],
-  ['Microbiología comparable', 'Sí, 7 indicadores negativos', 'No publicado por lote revisado', 'Sí, resultados microbiológicos públicos; matriz distinta'],
-  ['Conclusión sanitaria', 'Sí potable según laboratorio', 'No evaluable sin certificado por lote', 'Depende del agua de entrada y uso del filtro'],
-  ['Uso en benchmark', 'Base principal', 'Referencia de mercado', 'Referencia tecnológica']
-];
-
-function fmt(v, d=1) {
-  if (v === null || v === undefined || Number.isNaN(Number(v))) return '—';
-  return Number(v).toLocaleString('es-GT', {maximumFractionDigits:d, minimumFractionDigits:d});
-}
-
-function updateLens(title, text, meta='Interpretación') {
-  document.getElementById('lens-title').textContent = title;
-  document.getElementById('lens-text').textContent = text;
-  document.getElementById('lens-meta').textContent = meta;
-  document.getElementById('lens-pill').textContent = 'Seleccionado';
-}
-
-function setDeviceClass() {
-  const ua = navigator.userAgent || '';
-  const w = window.innerWidth;
-  const touch = navigator.maxTouchPoints > 0;
-  let device = 'desktop';
-  if (w <= 700 || /Android|iPhone|iPod|Mobile/i.test(ua)) device = 'mobile';
-  else if (w <= 1180 || (touch && /iPad|Tablet|Android/i.test(ua))) device = 'tablet';
-  document.body.classList.remove('device-mobile','device-tablet','device-desktop');
-  document.body.classList.add(`device-${device}`);
-}
-
-function toggleMobileMenu(force) {
-  const menu = document.getElementById('mobile-menu');
-  const open = force === undefined ? !menu.classList.contains('open') : force;
-  menu.classList.toggle('open', open);
-}
-
-function renderKpis() {
-  const total = waterParams.length;
-  const micro = waterParams.filter(p => p.cat === 'Microbiológico').length;
-  const physic = waterParams.filter(p => p.cat === 'Fisicoquímico').length;
-  const watch = waterParams.filter(p => p.tag === 'watch').length;
-  const cards = [
-    ['Potabilidad', 'Sí', 'Cumple COGUANOR', 'El dictamen del laboratorio indica que el Lote 1 sí es potable y sí cumple la norma citada.'],
-    ['Análisis completados', '1/3', 'Lotes', 'Hay un análisis completo y dos pendientes. El primer lote valida la muestra; tres lotes permitirán evaluar estabilidad.'],
-    ['Parámetros evaluados', total, 'fisicoquímicos + micro', `Se cargaron ${physic} fisicoquímicos y ${micro} microbiológicos.`],
-    ['Fuera de LMA', '0', 'parámetros', 'Ningún parámetro queda fuera del límite máximo aceptable reportado.'],
-    ['Microbiología', 'Neg.', 'indicadores críticos', 'Coliformes, E. coli, Salmonella, Vibrio y Enterobacter se reportan negativos.'],
-    ['Vigilancia', watch, 'puntos', 'Cloro residual, cloro total y manganeso merecen seguimiento en lotes posteriores.']
-  ];
-  document.getElementById('kpi-grid').innerHTML = cards.map(c => `
-    <div class="kpi-card js-lens" data-title="${c[0]}" data-meta="KPI" data-text="${c[3]}">
-      <div class="kpi-label">${c[0]}</div>
-      <div class="kpi-value">${c[1]}</div>
-      <div class="kpi-unit">${c[2]}</div>
-      <div class="kpi-note">Clic para interpretar</div>
-    </div>
-  `).join('');
-}
-
-function renderParamTable() {
-  const rows = waterParams.map((p, i) => {
-    const bar = p.margin === null ? '—' : `<div class="bar-cell"><div class="bar-track"><div class="bar-fill" style="width:${Math.max(3, Math.min(100, p.margin))}%"></div></div><div class="bar-caption">${fmt(p.margin, 1)}% margen aprox.</div></div>`;
-    return `
-      <tr data-idx="${i}">
-        <td>${p.name}<span class="param-method">${p.method}</span></td>
-        <td>${p.cat}</td>
-        <td><strong>${p.display}</strong></td>
-        <td>${p.unit}</td>
-        <td>${p.lmp}</td>
-        <td>${p.lma}</td>
-        <td><span class="status-pill ${p.tag}">${p.status}</span></td>
-        <td>${bar}</td>
-      </tr>
-    `;
-  }).join('');
-  document.getElementById('param-table').innerHTML = `
-    <table>
-      <thead>
-        <tr>
-          <th>Parámetro / método</th>
-          <th>Categoría</th>
-          <th>Resultado AWA05</th>
-          <th>Unidad</th>
-          <th>LMP</th>
-          <th>LMA</th>
-          <th>Estado</th>
-          <th>Margen visual</th>
-        </tr>
-      </thead>
-      <tbody>${rows}</tbody>
-    </table>
-  `;
-  document.querySelectorAll('#param-table tbody tr').forEach(tr => {
-    tr.addEventListener('click', () => {
-      document.querySelectorAll('#param-table tbody tr').forEach(r => r.classList.remove('selected'));
-      tr.classList.add('selected');
-      const p = waterParams[Number(tr.dataset.idx)];
-      updateLens(p.name, `${p.info} Resultado AWA05: ${p.display} ${p.unit}. LMA: ${p.lma}. Estado: ${p.status}.`, p.cat);
-    });
-  });
-}
-
-function renderProviders() {
-  document.getElementById('provider-grid').innerHTML = providers.map(p => `
-    <div class="provider-card" data-id="${p.id}">
-      <span class="provider-tag">${p.tag}</span>
-      <div class="provider-title">${p.title}</div>
-      <div class="provider-meta">${p.text}</div>
-      <div class="provider-list">
-        <div class="provider-row"><span>Estado</span><strong>${p.status}</strong></div>
-        <div class="provider-row"><span>Cobertura</span><strong>${p.coverage}</strong></div>
-        <div class="provider-row"><span>Microbiología</span><strong>${p.micro}</strong></div>
-        <div class="provider-row"><span>Evidencia</span><strong>${p.evidence}</strong></div>
-      </div>
-    </div>
-  `).join('');
-
-  document.querySelectorAll('.provider-card').forEach(card => {
-    card.addEventListener('click', () => {
-      document.querySelectorAll('.provider-card').forEach(c => c.classList.remove('active'));
-      card.classList.add('active');
-      const p = providers.find(x => x.id === card.dataset.id);
-      updateLens(p.title, p.text + ' La lectura correcta es separar datos medidos por lote, datos institucionales y datos no publicados.', 'Benchmark');
-    });
-  });
-}
-
-function renderMarketTable() {
-  document.getElementById('market-table').innerHTML = `
-    <table>
-      <thead><tr><th>Criterio</th><th>AWA05</th><th>Salvavidas</th><th>Ecofiltro</th></tr></thead>
-      <tbody>${marketRows.map((r, i) => `<tr data-row="${i}">${r.map(c => `<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>
-    </table>
-  `;
-  document.querySelectorAll('#market-table tbody tr').forEach(tr => {
-    tr.addEventListener('click', () => {
-      document.querySelectorAll('#market-table tbody tr').forEach(r => r.classList.remove('selected'));
-      tr.classList.add('selected');
-      const row = marketRows[Number(tr.dataset.row)];
-      updateLens(row[0], `AWA05: ${row[1]}. Salvavidas: ${row[2]}. Ecofiltro: ${row[3]}.`, 'Matriz comparativa');
-    });
-  });
-}
-
-function renderCharts() {
-  const ctx = document.getElementById('chart-lma');
-  const selected = waterParams.filter(p => typeof p.lma === 'number' && typeof p.result === 'number' && ['Turbidez','Conductividad eléctrica','Sólidos totales disueltos','Arsénico','Cobre','Cromo','Manganeso','Hierro','Nitratos','Nitritos'].includes(p.name));
-  new Chart(ctx, {
-    type: 'bar',
-    data: {
-      labels: selected.map(p => p.name),
-      datasets: [{
-        label: '% del LMA utilizado',
-        data: selected.map(p => Math.min(100, (p.result / p.lma) * 100)),
-        backgroundColor: 'rgba(0, 169, 200, .62)',
-        borderColor: 'rgba(8, 124, 160, 1)',
-        borderWidth: 1.4,
-        borderRadius: 5
-      }]
-    },
-    options: chartOptions('% del límite máximo aceptable')
-  });
-
-  const micro = waterParams.filter(p => p.cat === 'Microbiológico');
-  new Chart(document.getElementById('chart-micro'), {
-    type: 'bar',
-    data: {
-      labels: micro.map(p => p.name.replace('Recuento ', '')),
-      datasets: [{
-        label: 'Resultado negativo',
-        data: micro.map(() => 100),
-        backgroundColor: 'rgba(29, 129, 100, .58)',
-        borderColor: 'rgba(29, 129, 100, 1)',
-        borderWidth: 1.4,
-        borderRadius: 5
-      }]
-    },
-    options: chartOptions('Indicadores microbiológicos negativos', 0, 110)
-  });
-}
-
-function chartOptions(title, min=0, max=100) {
-  return {
-    responsive: true,
-    maintainAspectRatio: false,
-    plugins: {
-      legend: { display: false },
-      title: { display: false, text: title },
-      tooltip: {
-        backgroundColor: 'rgba(15,42,80,.94)',
-        titleFont: { family: 'JetBrains Mono', size: 11 },
-        bodyFont: { family: 'DM Sans', size: 12 },
-        padding: 10
-      }
-    },
-    scales: {
-      x: { ticks: { color: '#686a61', font: { size: 10 } }, grid: { display: false } },
-      y: { min, max, ticks: { color: '#686a61', font: { size: 10 } }, grid: { color: 'rgba(37,39,32,.08)' } }
-    }
-  };
-}
-
-function installLensCards() {
-  document.querySelectorAll('.js-lens').forEach(el => {
-    el.addEventListener('click', () => {
-      updateLens(el.dataset.title, el.dataset.text, el.dataset.meta || 'Interpretación');
-    });
-  });
-}
-
-window.addEventListener('resize', setDeviceClass);
-window.addEventListener('orientationchange', setDeviceClass);
-document.addEventListener('DOMContentLoaded', () => {
-  setDeviceClass();
-  renderKpis();
-  renderParamTable();
-  renderProviders();
-  renderMarketTable();
-  renderCharts();
-  installLensCards();
-  updateLens('Resultado del Lote 1', 'El análisis de Atitlab reporta que el agua obtenida por medio de AWA05 es potable y cumple COGUANOR NTG 290001. La lectura técnica más importante es: microbiología negativa, baja turbidez, baja conductividad y TDS muy bajos.', 'Resumen');
-});
-</script>
+  <div class="device-flag" id="deviceFlag">Dispositivo</div>
+  <footer class="dash-footer"><div class="footer-left">AWA05 · Comparativo de calidad de agua</div><div class="footer-center">Asociación Amigos del Lago de Atitlán<sup>®</sup> · 2026</div><div class="footer-right">COGUANOR · Atitlab · Mercado</div></footer>
+  <script>
+    const DATA={"parameters": [{"id": "color", "category": "Fisicoquímico", "name": "Color real", "awa": "0", "value": 0, "unit": "UPtCo", "lmp": "5.0", "lma": "35.0", "type": "max", "limit": 35, "interpretation": "Color 0: agua visualmente limpia; útil contra cualquier ficha comercial si publican color."}, {"id": "olor", "category": "Sensorial", "name": "Olor", "awa": "No rechazable", "value": null, "unit": "", "lmp": "No rechazable", "lma": "NR", "type": "text", "limit": null, "interpretation": "Aceptación sensorial básica. No reemplaza análisis químico ni microbiológico."}, {"id": "temperatura", "category": "Fisicoquímico", "name": "Temperatura", "awa": "23.1", "value": 23.1, "unit": "°C", "lmp": "15–25", "lma": "34", "type": "range", "limit": [15, 34], "interpretation": "Temperatura dentro del rango operativo reportado. Afecta percepción y estabilidad."}, {"id": "turbidez", "category": "Claridad", "name": "Turbidez", "awa": "0.85", "value": 0.85, "unit": "UNT", "lmp": "5.0", "lma": "15.0", "type": "max", "limit": 15, "interpretation": "Turbidez baja. Es uno de los mejores parámetros para mostrar claridad del agua."}, {"id": "conductividad", "category": "Mineralización", "name": "Conductividad eléctrica", "awa": "14.4", "value": 14.4, "unit": "µS/cm", "lmp": "750", "lma": "1500", "type": "max", "limit": 1500, "interpretation": "Conductividad muy baja frente al límite; indica baja carga iónica."}, {"id": "ph", "category": "Equilibrio químico", "name": "pH", "awa": "7.22", "value": 7.22, "unit": "pH", "lmp": "7.0–7.5", "lma": "6.5–8.5", "type": "range", "limit": [6.5, 8.5], "interpretation": "pH prácticamente neutro, favorable para consumo y sabor."}, {"id": "tds", "category": "Mineralización", "name": "Sólidos totales disueltos", "awa": "20.2", "value": 20.2, "unit": "mg/L", "lmp": "500.0", "lma": "1000", "type": "max", "limit": 1000, "interpretation": "TDS bajo; agua de baja mineralización."}, {"id": "cloro_total", "category": "Desinfección", "name": "Cloro total", "awa": "0.0", "value": 0, "unit": "mg/L", "lmp": "0.5", "lma": "1", "type": "max", "limit": 1, "interpretation": "Sin cloro detectable; se interpreta junto con microbiología negativa."}, {"id": "cloro_libre", "category": "Desinfección", "name": "Cloro residual libre", "awa": "0.0", "value": 0, "unit": "mg/L", "lmp": "0.5", "lma": "1", "type": "max", "limit": 1, "interpretation": "No hay residual de protección. La microbiología negativa es clave."}, {"id": "cloruros", "category": "Sales", "name": "Cloruros", "awa": "62", "value": 62, "unit": "mg/L", "lmp": "100", "lma": "250", "type": "max", "limit": 250, "interpretation": "Cloruros por debajo de límite; relevante para sabor y corrosividad."}, {"id": "dureza", "category": "Mineralización", "name": "Dureza total (CaCO3)", "awa": "25", "value": 25, "unit": "mg/L", "lmp": "100", "lma": "500", "type": "max", "limit": 500, "interpretation": "Agua blanda; baja incrustación y perfil mineral ligero."}, {"id": "alcalinidad", "category": "Equilibrio químico", "name": "Alcalinidad total", "awa": "40", "value": 40, "unit": "mg/L", "lmp": "30", "lma": "400", "type": "range", "limit": [30, 400], "interpretation": "Capacidad de amortiguar cambios de pH; dentro del rango reportado."}, {"id": "arsenico", "category": "Metales críticos", "name": "Arsénico", "awa": "0.0", "value": 0, "unit": "mg/L", "lmp": "0.005", "lma": "0.010", "type": "max", "limit": 0.01, "interpretation": "Contaminante crítico. El lote reporta 0.0 mg/L."}, {"id": "calcio", "category": "Minerales", "name": "Calcio", "awa": "100", "value": 100, "unit": "g/L", "lmp": "75.0", "lma": "150.0", "type": "range", "limit": [75, 150], "interpretation": "Cumple según el reporte, pero conviene confirmar unidad en próximos lotes."}, {"id": "cobre", "category": "Metales", "name": "Cobre", "awa": "0.021", "value": 0.021, "unit": "mg/L", "lmp": "0.050", "lma": "1.500", "type": "max", "limit": 1.5, "interpretation": "Valor bajo frente al máximo aceptable."}, {"id": "cromo", "category": "Metales", "name": "Cromo", "awa": "0.014", "value": 0.014, "unit": "mg/L", "lmp": "0.050", "lma": "1.500", "type": "max", "limit": 1.5, "interpretation": "Valor bajo frente al máximo aceptable."}, {"id": "magnesio", "category": "Minerales", "name": "Magnesio", "awa": "35.50", "value": 35.5, "unit": "mg/L", "lmp": "50.0", "lma": "100", "type": "max", "limit": 100, "interpretation": "Dentro de límite; contribuye a dureza y perfil mineral."}, {"id": "manganeso", "category": "Metales", "name": "Manganeso", "awa": "0.10", "value": 0.1, "unit": "mg/L", "lmp": "0.050", "lma": "0.40", "type": "max", "limit": 0.4, "interpretation": "Cumple LMA pero queda sobre LMP; monitorear en Lote 2 y 3."}, {"id": "sulfatos", "category": "Sales", "name": "Sulfatos", "awa": "1.00", "value": 1.0, "unit": "mg/L", "lmp": "100", "lma": "250", "type": "max", "limit": 250, "interpretation": "Muy bajo frente a límite; sin señal de carga salina relevante."}, {"id": "hierro", "category": "Metales", "name": "Hierro", "awa": "0.01", "value": 0.01, "unit": "mg/L", "lmp": "0.100", "lma": "1.0", "type": "max", "limit": 1.0, "interpretation": "Muy bajo; favorece color, claridad y sabor."}, {"id": "nitratos", "category": "Nutrientes", "name": "Nitratos", "awa": "0.02", "value": 0.02, "unit": "mg/L", "lmp": "0.00", "lma": "50.0", "type": "max", "limit": 50, "interpretation": "Casi nulo frente al máximo aceptable."}, {"id": "nitritos", "category": "Nutrientes", "name": "Nitritos", "awa": "0.006", "value": 0.006, "unit": "mg/L", "lmp": "0.00", "lma": "3.0", "type": "max", "limit": 3, "interpretation": "Muy bajo frente al máximo aceptable."}, {"id": "aerobico", "category": "Microbiológico", "name": "Recuento aeróbico en placa", "awa": "<2 Negativo", "value": 2, "unit": "UFC/ml", "lmp": "Negativo", "lma": "Negativo", "type": "micro", "limit": 2, "interpretation": "Resultado negativo; indicador general de baja carga bacteriana."}, {"id": "coliformes_totales", "category": "Microbiológico", "name": "Coliformes totales", "awa": "<2 Negativo", "value": 2, "unit": "NMP/ml", "lmp": "Negativo", "lma": "Negativo", "type": "micro", "limit": 2, "interpretation": "Negativo; indicador básico de potabilidad."}, {"id": "coliformes_fecales", "category": "Microbiológico", "name": "Coliformes fecales", "awa": "<2 Negativo", "value": 2, "unit": "NMP/ml", "lmp": "Negativo", "lma": "Negativo", "type": "micro", "limit": 2, "interpretation": "Negativo; indicador sanitario clave."}, {"id": "ecoli", "category": "Microbiológico", "name": "Escherichia coli", "awa": "<2 Negativo", "value": 2, "unit": "NMP/ml", "lmp": "Negativo", "lma": "Negativo", "type": "micro", "limit": 2, "interpretation": "Negativo; indicador principal de contaminación fecal."}, {"id": "salmonella", "category": "Microbiológico", "name": "Salmonella spp", "awa": "<2 Negativo", "value": 2, "unit": "NMP/ml", "lmp": "Negativo", "lma": "Negativo", "type": "micro", "limit": 2, "interpretation": "Negativo; lectura sanitaria favorable."}, {"id": "vibrio", "category": "Microbiológico", "name": "Vibrio cholerae", "awa": "<2 Negativo", "value": 2, "unit": "NMP/ml", "lmp": "Negativo", "lma": "Negativo", "type": "micro", "limit": 2, "interpretation": "Negativo; relevante para seguridad microbiológica."}, {"id": "enterobacter", "category": "Microbiológico", "name": "Enterobacter cloacae", "awa": "<2 Negativo", "value": 2, "unit": "NMP/ml", "lmp": "Negativo", "lma": "Negativo", "type": "micro", "limit": 2, "interpretation": "Negativo; complementa evidencia microbiológica."}], "providers": [{"id": "awa", "name": "AWA05 Lote 1", "kind": "Agua atmosférica medida por laboratorio", "evidence": "Valores de laboratorio parámetro por parámetro en muestra puntual.", "strength": "Comparación analítica alta", "limits": "Faltan Lote 2 y Lote 3 para estabilidad."}, {"id": "salvavidas", "name": "Agua Pura Salvavidas", "kind": "Agua embotellada comercial", "evidence": "Control de calidad, aval externo y certificaciones institucionales publicadas.", "strength": "Comparación institucional media", "limits": "No se encontró tabla pública de parámetros por lote."}, {"id": "ecofiltro", "name": "Ecofiltro", "kind": "Sistema de filtración", "evidence": "Resultados microbiológicos y ficha de efectividad publicados.", "strength": "Comparación microbiológica/funcional", "limits": "No es agua embotellada; depende del agua de entrada."}]};
+    const $=id=>document.getElementById(id);
+    const fmt={num(v,d=2){if(v===null||v===undefined||Number.isNaN(Number(v)))return '—';return Number(v).toLocaleString('es-GT',{maximumFractionDigits:d,minimumFractionDigits:d})},int(v){if(v===null||v===undefined||Number.isNaN(Number(v)))return '—';return Number(v).toLocaleString('es-GT',{maximumFractionDigits:0})}};
+    function detectDevice(){const touch=navigator.maxTouchPoints>0;const width=window.innerWidth;const coarse=window.matchMedia&&window.matchMedia('(pointer: coarse)').matches;let type='pc';if(width<=700&&(touch||coarse))type='phone';else if(width<=1180&&(touch||coarse))type='tablet';document.body.classList.remove('device-phone','device-tablet','device-pc');document.body.classList.add('device-'+type);$('deviceFlag').textContent=type==='phone'?'Teléfono':type==='tablet'?'Tablet':'PC'}
+    function setLens(title,text,meta='Comparativo de calidad'){$('lensTitle').textContent=title;$('lensText').innerHTML=text;$('lensMeta').textContent=meta}
+    function statusFor(p){if(p.type==='text'||p.type==='micro')return 'ok';if(p.id==='manganeso'||p.id==='calcio')return 'watch';if(p.value===null)return 'ok';if(p.type==='max'&&Number(p.value)<=Number(p.limit))return 'ok';if((p.type==='range')&&Array.isArray(p.limit)&&p.value>=p.limit[0]&&p.value<=p.limit[1])return 'ok';return 'watch'}
+    function statusLabel(st){if(st==='ok')return '<span class="status-pill status-ok">Cumple</span>';if(st==='watch')return '<span class="status-pill status-watch">Monitorear</span>';if(st==='missing')return '<span class="status-pill status-missing">No publicado</span>';return '<span class="status-pill status-bad">Revisar</span>'}
+    function marginPercent(p){if(p.value===null)return 100;if(p.type==='max'&&p.limit)return Math.max(0,Math.min(100,(1-Number(p.value)/Number(p.limit))*100));if(p.type==='range'&&Array.isArray(p.limit)){const mid=(p.limit[0]+p.limit[1])/2;const half=(p.limit[1]-p.limit[0])/2;return Math.max(0,Math.min(100,(1-Math.abs(Number(p.value)-mid)/half)*100))}if(p.type==='micro')return 100;return 90}
+    function marginLabel(p){const m=marginPercent(p);if(p.type==='text')return 'Aceptado';if(p.type==='micro')return 'Negativo';if(p.id==='calcio')return 'Confirmar unidad';if(p.id==='manganeso')return 'Vigilar LMP';return fmt.num(m,0)+'% margen'}
+    function comparable(p){return p.category!=='Sensorial'&&p.id!=='calcio'}
+    function categoryList(){const cats=[...new Set(DATA.parameters.map(p=>p.category))].sort();$('categoryFilter').innerHTML='<option value="all">Todas las categorías</option>'+cats.map(c=>`<option value="${c}">${c}</option>`).join('');$('builderParam').innerHTML=DATA.parameters.filter(comparable).map(p=>`<option value="${p.id}">${p.name} · ${p.unit}</option>`).join('')}
+    function calcScore(){const weights={'Microbiológico':35,'Claridad':12,'Mineralización':16,'Metales':14,'Metales críticos':10,'Nutrientes':8,'Equilibrio químico':5};let tw=0,sc=0;DATA.parameters.forEach(p=>{const w=weights[p.category]||2;tw+=w;let s=100;if(statusFor(p)==='watch')s=78;if(p.type==='max'&&p.limit)s=Math.max(72,Math.min(100,marginPercent(p)));if(p.type==='range')s=Math.max(75,Math.min(100,marginPercent(p)));sc+=s*w});return sc/tw}
+    function renderKPIs(){const total=DATA.parameters.length;const micro=DATA.parameters.filter(p=>p.category==='Microbiológico').length;const ok=DATA.parameters.filter(p=>statusFor(p)==='ok').length;const watch=DATA.parameters.filter(p=>statusFor(p)==='watch').length;const score=calcScore();const kpis=[['Potabilidad','Sí','El laboratorio reportó cumplimiento de COGUANOR.','Resultado Lote 1'],['Parámetros',total,'Fisicoquímicos, metales, nutrientes y microbiología.','Cobertura'],['Microbiología','Negativa',micro+' indicadores microbiológicos sin detección reportada.','Sanitario'],['Cumplimiento',fmt.num(ok/total*100,0)+'%',ok+' parámetros favorables; '+watch+' en monitoreo.','Lectura interna'],['Score',fmt.num(score,0),'Índice interno para resumir el lote.','No sustituye certificado'],['Avance','1/3','Faltan dos análisis para evaluar estabilidad.','Plan']];$('kpiGrid').innerHTML=kpis.map(k=>`<div class="kpi-card" data-title="${k[0]}" data-text="${k[2]}" data-meta="${k[3]}"><div class="kpi-label">${k[0]}</div><div class="kpi-value">${k[1]}${k[0]==='Score'?'<span class="kpi-unit">/100</span>':''}</div><div class="kpi-note">${k[2]}</div></div>`).join('');document.querySelectorAll('.kpi-card').forEach(card=>card.addEventListener('click',()=>setLens(card.dataset.title,card.dataset.text,card.dataset.meta)))}
+    function renderProviders(){const extra={awa:[['Valores por parámetro','Sí'],['Microbiología','Negativa'],['Comparabilidad','Alta'],['Pendiente','2 lotes']],salvavidas:[['Valores por parámetro','No publicados'],['Respaldo','Certificaciones'],['Comparabilidad','Media'],['Requiere','Ficha/lote']],ecofiltro:[['Valores por parámetro','Depende entrada'],['Respaldo','Microbiología'],['Comparabilidad','Condicional'],['Requiere','Antes/después']]};$('providerGrid').innerHTML=DATA.providers.map(p=>`<div class="provider-card" data-id="${p.id}"><div class="provider-inner"><div class="provider-label">${p.strength}</div><div class="provider-name">${p.name}</div><div class="provider-type">${p.kind}</div><div class="provider-metric-row">${extra[p.id].map(row=>`<div class="provider-metric"><span>${row[0]}</span><strong>${row[1]}</strong></div>`).join('')}</div><div class="provider-status">${p.evidence}</div></div></div>`).join('');document.querySelectorAll('.provider-card').forEach(card=>card.addEventListener('click',()=>{const p=DATA.providers.find(x=>x.id===card.dataset.id);setLens(p.name,`<p>${p.evidence}</p><p style="margin-top:10px;">${p.limits}</p>`,p.kind)}))}
+    function renderScore(){const score=calcScore();$('scoreValue').textContent=fmt.num(score,0);$('scoreRing').style.setProperty('--angle',(score*3.6)+'deg');const comps=[['Microbiología',100,'Indicadores negativos en Lote 1'],['Claridad',94,'Turbidez 0.85 UNT y color 0'],['Mineralización',96,'Conductividad y TDS bajos'],['Metales',88,'Cumple; manganeso requiere seguimiento'],['Nutrientes',99,'Nitratos y nitritos muy bajos'],['Trazabilidad',67,'Un lote completo, faltan dos']];$('scoreComponents').innerHTML=comps.map(c=>`<div class="component" data-title="${c[0]}" data-text="${c[2]}"><div class="component-label">${c[0]}</div><div class="component-track"><div class="component-fill" style="width:${c[1]}%"></div></div><div class="component-value">${c[1]}/100</div></div>`).join('');document.querySelectorAll('.component').forEach(el=>el.addEventListener('click',()=>setLens(el.dataset.title,el.dataset.text,'Score interno AWA05')))}
+    function renderParameterTable(){const search=$('searchInput').value.trim().toLowerCase();const cat=$('categoryFilter').value;const status=$('statusFilter').value;const only=$('comparableOnly').checked;const rows=DATA.parameters.filter(p=>{const st=statusFor(p);return(!search||[p.name,p.category,p.unit].join(' ').toLowerCase().includes(search))&&(cat==='all'||p.category===cat)&&(status==='all'||st===status)&&(!only||comparable(p))});$('parameterBody').innerHTML=rows.map(p=>{const m=marginPercent(p);const st=statusFor(p);return `<tr class="click-row" data-id="${p.id}"><td><div class="td-name">${p.name}</div><div class="td-small">${p.interpretation.slice(0,65)}...</div></td><td>${p.category}</td><td><strong>${p.awa}</strong></td><td>${p.lmp}</td><td>${p.lma}</td><td>${p.unit||'—'}</td><td><div class="mini-bar"><div class="mini-fill" style="width:${m}%"></div></div><div class="td-small">${marginLabel(p)}</div></td><td>${statusLabel(st)}</td><td>${comparable(p)?'Comparable con certificado':'Comparación limitada'}</td></tr>`}).join('');document.querySelectorAll('#parameterBody .click-row').forEach(row=>row.addEventListener('click',()=>selectParameter(row.dataset.id,row)))}
+    function selectParameter(id,rowEl=null){const p=DATA.parameters.find(x=>x.id===id);if(!p)return;document.querySelectorAll('.click-row').forEach(r=>r.classList.remove('selected'));if(rowEl)rowEl.classList.add('selected');const st=statusFor(p);const comp=comparable(p)?'Puede contrastarse si la otra fuente publica el mismo parámetro con unidad compatible.':'No es ideal para comparación directa.';setLens(p.name,`<p><strong>Resultado AWA05:</strong> ${p.awa} ${p.unit||''}.</p><p style="margin-top:10px;"><strong>Límites del informe:</strong> LMP ${p.lmp}, LMA ${p.lma}.</p><p style="margin-top:10px;">${p.interpretation}</p><p style="margin-top:10px;"><strong>Comparación comercial:</strong> ${comp}</p><p style="margin-top:10px;"><strong>Estado:</strong> ${st==='ok'?'cumple la lectura del lote':'cumple LMA, pero conviene monitoreo'}.</p>`,p.category);$('builderParam').value=p.id;updateComparePanel()}
+    function benchmarkKey(){return'awa05_water_quality_benchmark_v3'} function loadBenchmarks(){try{return JSON.parse(localStorage.getItem(benchmarkKey())||'{}')}catch(e){return{}}} function saveBenchmarks(obj){localStorage.setItem(benchmarkKey(),JSON.stringify(obj))} function getBench(provider,param){const b=loadBenchmarks();return b[provider+':'+param]||null}
+    function saveBuilderValue(){const provider=$('builderProvider').value;const param=$('builderParam').value;const value=Number($('builderValue').value);const source=$('builderSource').value.trim();if(!Number.isFinite(value)){setLens('Valor faltante','Ingrese un número válido para guardar la comparación.','Comparador editable');return}const b=loadBenchmarks();b[provider+':'+param]={value,source:source||'Valor cargado manualmente',savedAt:new Date().toISOString()};saveBenchmarks(b);updateComparePanel();renderMatrix();setLens('Comparación guardada','El valor quedó guardado localmente en este navegador.','Comparador editable')}
+    function clearBenchmarks(){localStorage.removeItem(benchmarkKey());$('builderValue').value='';$('builderSource').value='';updateComparePanel();renderMatrix();setLens('Valores eliminados','Se limpiaron los valores comerciales cargados manualmente.','Comparador editable')}
+    function normalizeForBar(p,v){if(v===null||v===undefined||!Number.isFinite(Number(v)))return 0;if(p.type==='max'&&p.limit)return Math.min(100,Number(v)/Number(p.limit)*100);if(p.type==='range'&&Array.isArray(p.limit))return Math.min(100,(Number(v)-p.limit[0])/(p.limit[1]-p.limit[0])*100);return Math.min(100,Number(v))}
+    function updateComparePanel(){const provider=$('builderProvider').value;const param=$('builderParam').value;const p=DATA.parameters.find(x=>x.id===param);const bench=getBench(provider,param);if(!p)return;const providerName=provider==='salvavidas'?'Agua Pura Salvavidas':provider==='ecofiltro'?'Ecofiltro':'Otra fuente';$('comparePanelTitle').textContent=p.name;const published=bench?`${providerName}: ${fmt.num(bench.value,4)} ${p.unit||''}. Fuente: ${bench.source}.`:`${providerName} no tiene todavía un valor cargado para este parámetro.`;$('comparePanelText').innerHTML=`<strong>AWA05:</strong> ${p.awa} ${p.unit||''}.<br>${published}<br><br>La comparación se vuelve sólida cuando ambos valores provienen de muestras, unidades y métodos compatibles.`;const awaVal=Number(p.value);const providerVal=bench?Number(bench.value):null;const limitVal=Array.isArray(p.limit)?p.limit[1]:p.limit;const bars=[['AWA05',awaVal,p.awa], [providerName,providerVal,bench?fmt.num(providerVal,4)+' '+(p.unit||''):'No cargado'], ['LMA / referencia',Number(limitVal),limitVal?String(limitVal)+' '+(p.unit||''):'—']];$('compareBars').innerHTML=bars.map(row=>`<div class="compare-bar-row"><div class="compare-label">${row[0]}</div><div class="compare-track"><div class="compare-fill" style="width:${normalizeForBar(p,row[1])}%"></div></div><div class="compare-number">${row[2]||'—'}</div></div>`).join('')}
+    function renderMatrix(){$('matrixBody').innerHTML=DATA.parameters.map(p=>{const sv=getBench('salvavidas',p.id);const eco=getBench('ecofiltro',p.id);const salvText=sv?`<strong>${fmt.num(sv.value,4)} ${p.unit||''}</strong><br><span class="td-small">${sv.source}</span>`:`<span class="status-pill status-missing">No publicado</span><br><span class="td-small">Certificaciones/proceso, sin valor de lote</span>`;const ecoText=eco?`<strong>${fmt.num(eco.value,4)} ${p.unit||''}</strong><br><span class="td-small">${eco.source}</span>`:(p.category==='Microbiológico'?`<span class="status-pill status-ok">Evidencia pública</span><br><span class="td-small">Resultados microbiológicos / efectividad</span>`:`<span class="status-pill status-missing">No comparable</span><br><span class="td-small">Depende del agua de entrada</span>`);return `<tr class="click-row" data-id="${p.id}"><td><div class="td-name">${p.name}</div><div class="td-small">${p.category}</div></td><td><strong>${p.awa}</strong> ${p.unit||''}</td><td>${salvText}</td><td>${ecoText}</td><td>LMP ${p.lmp} · LMA ${p.lma}</td><td>${comparable(p)?'Comparable con certificado o valor cargado':'Comparación limitada'}</td></tr>`}).join('');document.querySelectorAll('#matrixBody .click-row').forEach(row=>row.addEventListener('click',()=>selectParameter(row.dataset.id)))}
+    function exportCSV(){const headers=['Parametro','Categoria','AWA05','Unidad','LMP','LMA','Estado','Comparacion'];const rows=DATA.parameters.map(p=>[p.name,p.category,p.awa,p.unit||'',p.lmp,p.lma,statusFor(p),comparable(p)?'comparable':'limitada']);const csv=[headers,...rows].map(row=>row.map(v=>`"${String(v).replace(/"/g,'""')}"`).join(',')).join('\n');const blob=new Blob([csv],{type:'text/csv;charset=utf-8;'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='awa05_calidad_agua_lote1.csv';a.click();URL.revokeObjectURL(url)}
+    function installEvents(){['searchInput','categoryFilter','statusFilter','comparableOnly'].forEach(id=>$(id).addEventListener(id==='comparableOnly'?'change':'input',renderParameterTable));$('downloadCsv').addEventListener('click',exportCSV);$('builderProvider').addEventListener('change',updateComparePanel);$('builderParam').addEventListener('change',updateComparePanel);$('builderValue').addEventListener('input',updateComparePanel);$('saveBenchmark').addEventListener('click',saveBuilderValue);$('clearBenchmark').addEventListener('click',clearBenchmarks);$('mobileBtn').addEventListener('click',()=>$('mobileMenu').classList.toggle('is-open'));window.addEventListener('resize',detectDevice);window.addEventListener('orientationchange',()=>setTimeout(detectDevice,160))}
+    function boot(){detectDevice();categoryList();renderKPIs();renderProviders();renderScore();renderParameterTable();renderMatrix();updateComparePanel();installEvents();selectParameter('turbidez')}
+    boot();
+  </script>
 </body>
 </html>
