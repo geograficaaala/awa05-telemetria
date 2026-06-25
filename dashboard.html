@@ -287,6 +287,18 @@
     .legend-row{display:flex;flex-wrap:wrap;gap:12px;padding:10px 20px 0}
     .legend-item{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:8.5px;color:var(--ink-soft)}
     .legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+    .chart-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 20px 0;flex-wrap:wrap}
+    .chart-controls{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .chart-chip{border:1px solid var(--rule);background:var(--surface2);color:var(--ink-soft);border-radius:999px;padding:6px 10px;font-family:var(--mono);font-size:7.5px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .15s}
+    .chart-chip:hover{border-color:var(--cobalt);color:var(--cobalt);background:var(--cobalt-pale)}
+    .chart-chip.is-active{background:var(--cobalt);border-color:var(--cobalt);color:#fff}
+    .chart-summary{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .chart-mini-stat{display:flex;flex-direction:column;gap:2px;min-width:92px;padding:8px 10px;border:1px solid var(--rule);border-radius:var(--radius);background:var(--surface2)}
+    .chart-mini-label{font-family:var(--mono);font-size:7px;letter-spacing:.10em;text-transform:uppercase;color:var(--ink-faint)}
+    .chart-mini-value{font-family:var(--mono);font-size:13px;font-weight:600;color:var(--ink-mid)}
+    .level-bar{width:120px;height:8px;background:var(--surface3);border-radius:999px;overflow:hidden;border:1px solid var(--rule)}
+    .level-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--cobalt),var(--cyan));border-radius:999px;transition:width .35s ease}
+    .legend-compact{max-height:74px;overflow:auto;padding-right:20px}
 
     /* ── SCATTER / CORR ─────────────────────────────────────────── */
     .corr-table{width:100%;border-collapse:collapse;font-size:12px}
@@ -531,6 +543,16 @@
       user-select: none;
     }
 
+    .dn-heatmap{padding:16px 20px 10px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+    .dn-heatmap-grid{display:grid;grid-template-columns:76px repeat(24,minmax(22px,1fr));gap:3px;min-width:720px;align-items:center}
+    .dn-heatmap-cell{height:20px;border:1px solid var(--rule);border-radius:2px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:7px;color:rgba(26,25,20,.55);white-space:nowrap;overflow:hidden}
+    .dn-heatmap-hour{height:18px;border:none;color:var(--ink-faint);background:transparent;font-size:7px}
+    .dn-heatmap-date{border:none;justify-content:flex-start;color:var(--ink-soft);background:transparent;font-size:7.5px;padding-right:4px}
+    .dn-heatmap-empty{background:var(--surface2)}
+    .dn-heatmap-legend{display:flex;gap:12px;align-items:center;margin-top:12px;font-family:var(--mono);font-size:8px;color:var(--ink-faint);min-width:720px}
+    .dn-heatmap-swatch{width:38px;height:8px;border-radius:99px;border:1px solid var(--rule)}
+    .dn-heatmap-note{margin-left:auto}
+
 
     /* ── AJUSTE FINAL: SIN NAVEGACIÓN INTERNA LATERAL ───────────── */
     .layout{grid-template-columns:1fr!important}
@@ -703,17 +725,32 @@
   <div class="card">
     <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
       <div>
-        <div class="card-title">Volumen en cisterna</div>
-        <div class="card-sub">0–20 L · Radio 12.9 cm · Altura útil 38.3 cm</div>
+        <div class="card-title">Volumen en garrafón</div>
+        <div class="card-sub">Nivel registrado por el sensor · 0–20 L · Radio 12.9 cm · Altura útil 38.3 cm</div>
       </div>
-      <div class="card-badge">L · tiempo real</div>
+      <div class="card-badge">L almacenados</div>
+    </div>
+    <div class="chart-toolbar">
+      <div class="chart-summary">
+        <div class="chart-mini-stat"><div class="chart-mini-label">Volumen actual</div><div class="chart-mini-value" id="nivel-stat-actual">--</div></div>
+        <div class="chart-mini-stat"><div class="chart-mini-label">Llenado</div><div class="chart-mini-value" id="nivel-stat-pct">--</div></div>
+        <div class="chart-mini-stat"><div class="chart-mini-label">Eventos</div><div class="chart-mini-value" id="nivel-stat-eventos">--</div></div>
+        <div class="level-bar" aria-hidden="true"><div class="level-bar-fill" id="nivel-fill-bar"></div></div>
+      </div>
+      <div class="chart-controls" aria-label="Rango de volumen en garrafón">
+        <button class="chart-chip" data-range-group="nivel" data-range-value="1" onclick="setNivelRange(1)">24 h</button>
+        <button class="chart-chip" data-range-group="nivel" data-range-value="3" onclick="setNivelRange(3)">3 días</button>
+        <button class="chart-chip" data-range-group="nivel" data-range-value="7" onclick="setNivelRange(7)">7 días</button>
+        <button class="chart-chip" data-range-group="nivel" data-range-value="all" onclick="setNivelRange('all')">Mostrar todo el periodo</button>
+      </div>
     </div>
     <div class="legend-row">
-      <div class="legend-item"><div class="legend-dot" style="background:var(--cobalt)"></div>Nivel de agua</div>
+      <div class="legend-item"><div class="legend-dot" style="background:var(--cobalt)"></div>Nivel del garrafón</div>
       <div class="legend-item"><div class="legend-dot" style="background:var(--forest)"></div>Garrafón completado</div>
+      <div class="legend-item"><div class="legend-dot" style="background:rgba(28,63,110,.25)"></div>Capacidad 20 L</div>
     </div>
     <div class="chart-wrap tall"><canvas id="chart-nivel"></canvas></div>
-    <div class="card-foot"><div class="card-ts" id="ts-nivel">--</div><div class="card-ts">Mediana · 15 min · CST Guatemala</div></div>
+    <div class="card-foot"><div class="card-ts" id="ts-nivel">--</div><div class="card-ts" id="ts-nivel-rango">Mediana · 15 min · CST Guatemala</div></div>
   </div>
 </section>
 
@@ -721,15 +758,48 @@
 
 <!-- ─── PRODUCCIÓN DIURNA/NOCTURNA ────────────────────────────── -->
 <section id="produccion-analisis">
-  <div class="section-eyebrow">Análisis de producción — Serie histórica por período</div>
+  <div class="section-eyebrow">Análisis de producción — resolución horaria y día operativo</div>
   <div class="section-title">¿Cuándo produce más su <em>máquina</em>?</div>
-  <div class="section-subtitle">La captación de niebla en el lago de Atitlán es predominantemente nocturna. Estas gráficas descomponen la producción por período diurno (05:30–18:30) y nocturno (18:30–05:30) para cada día de operación.</div>
+  <div class="section-subtitle">Comparación de captación diurna y nocturna normalizada por hora. El período diurno va de 05:30 a 18:30 y el nocturno de 18:30 a 05:30 del día siguiente.</div>
+
+  <div class="kpi-grid" id="dn-kpi-grid">
+    <div class="kpi-card accent-amber">
+      <div class="kpi-label">Producción diurna</div>
+      <div class="kpi-value"><span id="dn-kpi-total-dia">--</span><span class="kpi-unit">L</span></div>
+      <div class="kpi-range" id="dn-kpi-cob-dia">--</div>
+      <div class="kpi-meta">05:30–18:30 · períodos completos</div>
+    </div>
+    <div class="kpi-card accent-cobalt">
+      <div class="kpi-label">Producción nocturna</div>
+      <div class="kpi-value"><span id="dn-kpi-total-noche">--</span><span class="kpi-unit">L</span></div>
+      <div class="kpi-range" id="dn-kpi-cob-noche">--</div>
+      <div class="kpi-meta">18:30–05:30 · períodos completos</div>
+    </div>
+    <div class="kpi-card accent-amber">
+      <div class="kpi-label">Eficiencia diurna</div>
+      <div class="kpi-value"><span id="dn-kpi-rate-dia">--</span><span class="kpi-unit">L/h</span></div>
+      <div class="kpi-range" id="dn-kpi-horas-dia">--</div>
+      <div class="kpi-meta">Litros producidos por hora cubierta</div>
+    </div>
+    <div class="kpi-card accent-cobalt">
+      <div class="kpi-label">Eficiencia nocturna</div>
+      <div class="kpi-value"><span id="dn-kpi-rate-noche">--</span><span class="kpi-unit">L/h</span></div>
+      <div class="kpi-range" id="dn-kpi-horas-noche">--</div>
+      <div class="kpi-meta">Litros producidos por hora cubierta</div>
+    </div>
+    <div class="kpi-card accent-forest">
+      <div class="kpi-label">Lectura comparativa</div>
+      <div class="kpi-value"><span id="dn-kpi-ganador">--</span></div>
+      <div class="kpi-range" id="dn-kpi-delta">--</div>
+      <div class="kpi-meta">Regla: diferencia mínima de 10% en L/h</div>
+    </div>
+  </div>
 
   <div class="card" style="margin-bottom:16px">
     <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
       <div>
-        <div class="card-title">Producción acumulada por período</div>
-        <div class="card-sub">Litros producidos por franja horaria · cada día de operación</div>
+        <div class="card-title">Producción por franja operativa</div>
+        <div class="card-sub">Litros acumulados por día operativo · la noche se asigna al día en que inicia</div>
       </div>
       <div class="card-badge">L / período</div>
     </div>
@@ -738,30 +808,79 @@
       <div class="legend-item"><div class="legend-dot" style="background:var(--cobalt)"></div>Nocturno (18:30–05:30)</div>
     </div>
     <div class="chart-wrap tall"><canvas id="chart-dia-noche"></canvas></div>
-    <div class="card-foot"><div class="card-ts" id="ts-dia-noche">--</div><div class="card-ts">Δ volumen por período · outliers filtrados</div></div>
+    <div class="card-foot"><div class="card-ts" id="ts-dia-noche">--</div><div class="card-ts">Δ volumen positivo · outliers filtrados · día operativo</div></div>
+  </div>
+
+  <div class="grid-2" style="margin-bottom:16px">
+    <div class="card">
+      <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div class="card-title">Eficiencia por franja</div>
+          <div class="card-sub">Litros por hora cubierta · corrige la diferencia de duración entre día y noche</div>
+        </div>
+        <div class="card-badge">L / h</div>
+      </div>
+      <div class="chart-wrap"><canvas id="chart-lh-periodo"></canvas></div>
+      <div class="card-foot"><div class="card-ts" id="ts-lh-periodo">--</div><div class="card-ts">Períodos con cobertura visible en tooltip</div></div>
+    </div>
+    <div class="card">
+      <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div class="card-title">Producción promedio por hora</div>
+          <div class="card-sub">Resolución horaria de captación · promedio ponderado por cobertura</div>
+        </div>
+        <div class="card-badge">L / h</div>
+      </div>
+      <div class="chart-wrap"><canvas id="chart-hora-dia"></canvas></div>
+      <div class="card-foot"><div class="card-ts" id="ts-hora-dia">--</div><div class="card-ts">00:00–23:00 · bucket horario</div></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <div class="card-title">Mapa horario de captación</div>
+        <div class="card-sub">Fecha calendario × hora del día · color según L/h</div>
+      </div>
+      <div class="card-badge">Heatmap</div>
+    </div>
+    <div class="dn-heatmap" id="heatmap-horario"></div>
+    <div class="card-foot"><div class="card-ts" id="ts-heatmap-horario">--</div><div class="card-ts">Mayor intensidad = mayor captación horaria</div></div>
   </div>
 
   <div class="grid-2">
     <div class="card">
       <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
         <div>
-          <div class="card-title">Producción total por día</div>
-          <div class="card-sub">Litros producidos cada día calendario</div>
+          <div class="card-title">Producción total por día operativo</div>
+          <div class="card-sub">Suma de período diurno y nocturno asignada al mismo ciclo de operación</div>
         </div>
         <div class="card-badge">L / día</div>
       </div>
       <div class="chart-wrap"><canvas id="chart-prod-diaria"></canvas></div>
-      <div class="card-foot"><div class="card-ts" id="ts-prod-diaria">--</div><div class="card-ts">Suma diurno + nocturno</div></div>
+      <div class="card-foot"><div class="card-ts" id="ts-prod-diaria">--</div><div class="card-ts">Diurno + nocturno</div></div>
     </div>
     <div class="card">
       <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
         <div>
           <div class="card-title">Curva de llenado por día</div>
-          <div class="card-sub">Cada línea = un día · Reinicio en 0 tras vaciado</div>
+          <div class="card-sub">Cada línea = un día calendario · Reinicio visual desde mínimo diario</div>
         </div>
         <div class="card-badge">Comparativo</div>
       </div>
-      <div class="legend-row" id="legend-dias"></div>
+      <div class="chart-toolbar">
+        <div class="chart-summary">
+          <div class="chart-mini-stat"><div class="chart-mini-label">Vista actual</div><div class="chart-mini-value" id="curvas-stat-rango">--</div></div>
+          <div class="chart-mini-stat"><div class="chart-mini-label">Líneas visibles</div><div class="chart-mini-value" id="curvas-stat-lineas">--</div></div>
+        </div>
+        <div class="chart-controls" aria-label="Rango de curva de llenado">
+          <button class="chart-chip" data-range-group="curvas" data-range-value="3" onclick="setCurvasDiaRange(3)">3 días</button>
+          <button class="chart-chip" data-range-group="curvas" data-range-value="7" onclick="setCurvasDiaRange(7)">7 días</button>
+          <button class="chart-chip" data-range-group="curvas" data-range-value="14" onclick="setCurvasDiaRange(14)">14 días</button>
+          <button class="chart-chip" data-range-group="curvas" data-range-value="all" onclick="setCurvasDiaRange('all')">Mostrar todo el periodo</button>
+        </div>
+      </div>
+      <div class="legend-row legend-compact" id="legend-dias"></div>
       <div class="chart-wrap tall"><canvas id="chart-curvas-dia"></canvas></div>
       <div class="card-foot"><div class="card-ts" id="ts-curvas-dia">--</div><div class="card-ts">Normalizado por hora del día</div></div>
     </div>
@@ -1201,6 +1320,10 @@ const DIAS  = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 const MESES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const DIA_COLORS = ['#1c3f6e','#b05c00','#1a5c38','#951f1f','#0f6b60','#7a4a9e','#b5860a','#2a6080'];
 const CURVAS_DIA_VISIBLE_DESDE = '2026-05-11';
+let nivelRangeDays = 3;
+let curvasDiaRangeDays = 7;
+let nivelChartState = null;
+let curvasDiaState = null;
 
 // ─── MODELO ECONÓMICO ──────────────────────────────────────────────────
 const ECO = {
@@ -1358,6 +1481,58 @@ function barChart(id, labels, data, color, unit) {
   chartRegistry[id]=new Chart(ctx,{type:'bar',data:{labels,datasets:[{data,backgroundColor:color+'99',borderColor:color,borderWidth:1,borderRadius:2}]},options:mergeOpts({scales:{x:{...chartDefaults.scales.x},y:{...chartDefaults.scales.y,min:0,ticks:{...chartDefaults.scales.y.ticks,callback:v=>v+' '+unit}}}})});
 }
 
+function activateRangeButtons(group, value) {
+  document.querySelectorAll('[data-range-group="' + group + '"]').forEach(btn => {
+    btn.classList.toggle('is-active', String(btn.dataset.rangeValue) === String(value));
+  });
+}
+
+function parseDashboardTs(v) {
+  if (!v) return null;
+  const d = new Date(String(v).replace(' ', 'T'));
+  return isNaN(d.getTime()) ? null : d;
+}
+
+function getRangeStartIndex(rawLabels, rangeDays) {
+  if (rangeDays === 'all') return 0;
+  const parsed = rawLabels.map(parseDashboardTs);
+  let last = null;
+  for (let i = parsed.length - 1; i >= 0; i--) {
+    if (parsed[i]) { last = parsed[i]; break; }
+  }
+  if (!last) return Math.max(0, rawLabels.length - 288);
+  const cutoff = new Date(last.getTime() - Number(rangeDays) * 24 * 3600000);
+  const idx = parsed.findIndex(d => d && d >= cutoff);
+  return idx >= 0 ? idx : 0;
+}
+
+function setNivelRange(rangeDays) {
+  nivelRangeDays = rangeDays;
+  renderNivelChartPanel();
+}
+
+function renderNivelChartPanel() {
+  if (!nivelChartState) return;
+  const { rawLabels, nivel, garrafonIdx, ts } = nivelChartState;
+  const start = getRangeStartIndex(rawLabels, nivelRangeDays);
+  const rawSlice = rawLabels.slice(start);
+  const nivelSlice = nivel.slice(start);
+  const idxSlice = garrafonIdx.filter(i => i >= start).map(i => i - start);
+  const labels = formatLabels(rawSlice);
+  nivelChart('chart-nivel', labels, nivelSlice, idxSlice);
+  const valid = nivel.filter(v => v !== null && v !== undefined && isFinite(v));
+  const actual = valid.length ? Number(valid[valid.length - 1]) : null;
+  const pct = actual !== null ? Math.max(0, Math.min(100, actual / 20 * 100)) : null;
+  setText('nivel-stat-actual', actual !== null ? actual.toFixed(2) + ' L' : '--');
+  setText('nivel-stat-pct', pct !== null ? pct.toFixed(0) + '%' : '--');
+  setText('nivel-stat-eventos', garrafonIdx.length);
+  const fill = document.getElementById('nivel-fill-bar');
+  if (fill) fill.style.width = pct !== null ? pct.toFixed(0) + '%' : '0%';
+  setTs('ts-nivel', ts);
+  setText('ts-nivel-rango', nivelRangeDays === 'all' ? 'Todo el periodo · Mediana · 15 min · CST Guatemala' : 'Últimos ' + (Number(nivelRangeDays) === 1 ? '24 h' : Number(nivelRangeDays) + ' días') + ' · Mediana · 15 min · CST Guatemala');
+  activateRangeButtons('nivel', nivelRangeDays);
+}
+
 function nivelChart(id, labels, nivel, garrafonIdx) {
   destroyChart(id);
   const ctx=document.getElementById(id)?.getContext('2d');
@@ -1365,28 +1540,38 @@ function nivelChart(id, labels, nivel, garrafonIdx) {
   const ptColors=nivel.map((_,i)=>garrafonIdx.includes(i)?'#1a5c38':'rgba(0,0,0,0)');
   const ptBorder=nivel.map((_,i)=>garrafonIdx.includes(i)?'#fff':'rgba(0,0,0,0)');
   const ptRadius=nivel.map((_,i)=>garrafonIdx.includes(i)?7:0);
+  const capacidad = nivel.map(() => 20);
+  const mitad = nivel.map(() => 10);
   chartRegistry[id]=new Chart(ctx,{type:'line',data:{labels,datasets:[{
-    data:nivel,borderColor:'#1c3f6e',borderWidth:2.5,
+    label:'Nivel del garrafón',
+    data:nivel,borderColor:'#1c3f6e',borderWidth:2.8,
     pointRadius:ptRadius,
     pointHoverRadius:7,
     pointHoverBackgroundColor:nivel.map((_,i)=>garrafonIdx.includes(i)?'#1a5c38':'#fff'),
     pointHoverBorderColor:'#1c3f6e',pointHoverBorderWidth:2,
     pointBackgroundColor:ptColors,pointBorderColor:ptBorder,pointBorderWidth:2,
-    tension:0.3,fill:true,backgroundColor:'rgba(28,63,110,0.06)'
+    tension:0.28,fill:true,backgroundColor:'rgba(28,63,110,0.06)'
+  },{
+    label:'Capacidad 20 L',data:capacidad,borderColor:'rgba(28,63,110,0.28)',borderWidth:1.4,borderDash:[6,4],pointRadius:0,pointHoverRadius:0,fill:false,tension:0
+  },{
+    label:'Media capacidad 10 L',data:mitad,borderColor:'rgba(40,38,30,0.14)',borderWidth:1,borderDash:[3,4],pointRadius:0,pointHoverRadius:0,fill:false,tension:0
   }]},options:mergeOpts({
     interaction:{mode:'index',intersect:false},
     plugins:{...chartDefaults.plugins,
       tooltip:{...chartDefaults.plugins.tooltip,
+        filter:item=>item.datasetIndex===0,
         callbacks:{
           label:c=>{
             const v=c.parsed.y;
             const isG=garrafonIdx.includes(c.dataIndex);
-            return (isG?'🟢 Garrafón completado: ':'  Nivel: ')+(v!=null?v.toFixed(2):'-')+' L';
+            const pct = v!=null ? Math.max(0, Math.min(100, v/20*100)).toFixed(0) : '--';
+            const base = 'Nivel: ' + (v!=null?v.toFixed(2):'-') + ' L · ' + pct + '%';
+            return isG ? [base, 'Garrafón completado'] : base;
           }
         }
       }
     },
-    scales:{x:{...chartDefaults.scales.x},y:{...chartDefaults.scales.y,min:0,max:21,
+    scales:{x:{...chartDefaults.scales.x,ticks:{...chartDefaults.scales.x.ticks,maxTicksLimit:9}},y:{...chartDefaults.scales.y,min:0,max:21,
       ticks:{...chartDefaults.scales.y.ticks,callback:v=>v+' L'}}}
   })});
 }
@@ -2144,82 +2329,348 @@ function interpretarPi(sistema) {
 
 // ─── PRODUCCIÓN DIURNA / NOCTURNA ─────────────────────────────────────
 function renderProduccionAnalisis(rawLabels, nivel) {
-  if (!rawLabels||rawLabels.length<2) return;
-  const HORA_D_INI=5.5, HORA_D_FIN=18.5;
-  const puntos=rawLabels.map((l,i)=>{
-    if(!l||nivel[i]==null) return null;
-    if(l.length<16) return null;
-    const fecha=l.substring(0,10);
-    const hh=parseInt(l.substring(11,13)), mm=parseInt(l.substring(14,16));
-    const hora=hh+mm/60;
-    return {fecha,hora,diurno:(hora>=HORA_D_INI&&hora<HORA_D_FIN),vol:nivel[i]};
-  }).filter(Boolean);
-  if(puntos.length<2) return;
-  const dias=[...new Set(puntos.map(p=>p.fecha))].sort();
-  const pD={},pN={},pT={};
-  dias.forEach(d=>{pD[d]=0;pN[d]=0;pT[d]=0;});
-  for(let i=1;i<puntos.length;i++){
-    const dv=puntos[i].vol-puntos[i-1].vol;
-    if(dv>0&&dv<=6){
-      const d=puntos[i].fecha;
-      if(puntos[i].diurno) pD[d]+=dv; else pN[d]+=dv;
-      pT[d]+=dv;
+  if (!rawLabels || rawLabels.length < 2 || !nivel || nivel.length < 2) return;
+
+  const DIA_INI = 5.5;
+  const DIA_FIN = 18.5;
+  const MAX_GAP_H = 3;
+  const MIN_COVERAGE = 0.7;
+  const TS_ACT = 'Act: ' + (document.getElementById('header-ts')?.textContent || '--');
+
+  const pad2 = v => String(v).padStart(2, '0');
+  const fmtNum = (v, d = 2) => (v !== null && v !== undefined && isFinite(v)) ? Number(v).toFixed(d) : '--';
+  const parseTs = v => {
+    if (!v) return null;
+    const d = new Date(String(v).replace(' ', 'T'));
+    return isNaN(d.getTime()) ? null : d;
+  };
+  const dateKey = d => d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+  const addDays = (key, delta) => {
+    const d = new Date(key + 'T12:00:00');
+    d.setDate(d.getDate() + delta);
+    return dateKey(d);
+  };
+  const labelFecha = key => {
+    const d = new Date(key + 'T12:00:00');
+    return DIAS[d.getDay()] + ' ' + d.getDate() + ' ' + MESES[d.getMonth()];
+  };
+  const esc = v => String(v).replace(/[&<>'"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;',"'":'&#39;','"':'&quot;'}[c]));
+  const hourFloat = d => d.getHours() + d.getMinutes() / 60 + d.getSeconds() / 3600;
+  const isDayHour = h => h >= DIA_INI && h < DIA_FIN;
+  const periodInfo = d => {
+    const h = hourFloat(d);
+    const day = isDayHour(h);
+    let opDate = dateKey(d);
+    if (!day && h < DIA_INI) opDate = addDays(opDate, -1);
+    return { opDate, period: day ? 'dia' : 'noche', hour: d.getHours(), day };
+  };
+  const nextBoundary = (start, end) => {
+    const candidates = [];
+    const add = d => { if (d > start && d < end) candidates.push(d); };
+    const h = new Date(start); h.setMinutes(0, 0, 0); h.setHours(h.getHours() + 1); add(h);
+    for (let offset = -1; offset <= 2; offset++) {
+      const base = new Date(start);
+      base.setDate(base.getDate() + offset);
+      const b1 = new Date(base); b1.setHours(5, 30, 0, 0); add(b1);
+      const b2 = new Date(base); b2.setHours(18, 30, 0, 0); add(b2);
+    }
+    if (!candidates.length) return end;
+    return candidates.reduce((a, b) => a < b ? a : b);
+  };
+
+  const puntos = rawLabels.map((l, i) => {
+    const ts = parseTs(l);
+    const vol = Number(nivel[i]);
+    if (!ts || !isFinite(vol)) return null;
+    return { ts, vol };
+  }).filter(Boolean).sort((a, b) => a.ts - b.ts);
+  if (puntos.length < 2) return;
+
+  const periodosMap = {};
+  const horas = Array.from({ length: 24 }, () => ({ litros: 0, horas: 0 }));
+  const heat = {};
+  const diasCurvaMap = {};
+
+  puntos.forEach(p => {
+    const k = dateKey(p.ts);
+    if (!diasCurvaMap[k]) diasCurvaMap[k] = [];
+    diasCurvaMap[k].push({ hora: hourFloat(p.ts), vol: p.vol });
+  });
+
+  for (let i = 1; i < puntos.length; i++) {
+    const prev = puntos[i - 1];
+    const curr = puntos[i];
+    const durH = (curr.ts - prev.ts) / 3600000;
+    if (!(durH > 0) || durH > MAX_GAP_H) continue;
+
+    const dv = curr.vol - prev.vol;
+    const prod = (dv > 0 && dv <= 6) ? dv : 0;
+    let cursor = new Date(prev.ts);
+    let guard = 0;
+
+    while (cursor < curr.ts && guard < 96) {
+      const end = nextBoundary(cursor, curr.ts);
+      const segH = (end - cursor) / 3600000;
+      if (!(segH > 0)) break;
+      const litros = prod * (segH / durH);
+      const mid = new Date((cursor.getTime() + end.getTime()) / 2);
+      const info = periodInfo(mid);
+      const op = info.opDate;
+      const cal = dateKey(mid);
+      const hour = info.hour;
+
+      if (!periodosMap[op]) periodosMap[op] = { fecha: op, diaL: 0, nocheL: 0, diaH: 0, nocheH: 0 };
+      if (info.period === 'dia') {
+        periodosMap[op].diaL += litros;
+        periodosMap[op].diaH += segH;
+      } else {
+        periodosMap[op].nocheL += litros;
+        periodosMap[op].nocheH += segH;
+      }
+
+      horas[hour].litros += litros;
+      horas[hour].horas += segH;
+
+      if (!heat[cal]) heat[cal] = Array.from({ length: 24 }, () => ({ litros: 0, horas: 0 }));
+      heat[cal][hour].litros += litros;
+      heat[cal][hour].horas += segH;
+
+      cursor = end;
+      guard++;
     }
   }
-  const DIAS_S=['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
-  const MESES_S=['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
-  const diaLabels=dias.map(d=>{const dt=new Date(d+'T12:00:00');return DIAS_S[dt.getDay()]+' '+dt.getDate()+' '+MESES_S[dt.getMonth()];});
-  const diurnaVals=dias.map(d=>+((pD[d]||0).toFixed(2)));
-  const nocturnaVals=dias.map(d=>+((pN[d]||0).toFixed(2)));
-  const totalVals=dias.map(d=>+((pT[d]||0).toFixed(2)));
+
+  const periodos = Object.values(periodosMap).sort((a, b) => a.fecha.localeCompare(b.fecha)).map(p => {
+    const diaCob = Math.min(1, p.diaH / 13);
+    const nocheCob = Math.min(1, p.nocheH / 11);
+    return {
+      ...p,
+      label: labelFecha(p.fecha),
+      diaRate: p.diaH > 0 ? p.diaL / p.diaH : null,
+      nocheRate: p.nocheH > 0 ? p.nocheL / p.nocheH : null,
+      totalL: p.diaL + p.nocheL,
+      diaCob,
+      nocheCob,
+      diaCompleto: diaCob >= MIN_COVERAGE,
+      nocheCompleto: nocheCob >= MIN_COVERAGE
+    };
+  });
+
+  if (!periodos.length) return;
+
+  const sum = (arr, key) => arr.reduce((a, p) => a + (Number(p[key]) || 0), 0);
+  const compDia = periodos.filter(p => p.diaCompleto);
+  const compNoche = periodos.filter(p => p.nocheCompleto);
+  const totalDia = sum(compDia, 'diaL');
+  const totalNoche = sum(compNoche, 'nocheL');
+  const horasDia = sum(compDia, 'diaH');
+  const horasNoche = sum(compNoche, 'nocheH');
+  const rateDia = horasDia > 0 ? totalDia / horasDia : null;
+  const rateNoche = horasNoche > 0 ? totalNoche / horasNoche : null;
+  const delta = (rateDia && rateNoche) ? ((rateNoche - rateDia) / rateDia) : null;
+  let lectura = 'Similar';
+  if (delta !== null && Math.abs(delta) >= 0.10) lectura = delta > 0 ? 'Nocturna' : 'Diurna';
+
+  setText('dn-kpi-total-dia', fmtNum(totalDia, 1));
+  setText('dn-kpi-total-noche', fmtNum(totalNoche, 1));
+  setText('dn-kpi-rate-dia', fmtNum(rateDia, 2));
+  setText('dn-kpi-rate-noche', fmtNum(rateNoche, 2));
+  setText('dn-kpi-ganador', lectura);
+  setText('dn-kpi-cob-dia', compDia.length + ' períodos válidos');
+  setText('dn-kpi-cob-noche', compNoche.length + ' períodos válidos');
+  setText('dn-kpi-horas-dia', fmtNum(horasDia, 1) + ' h cubiertas');
+  setText('dn-kpi-horas-noche', fmtNum(horasNoche, 1) + ' h cubiertas');
+  setText('dn-kpi-delta', delta === null ? '--' : ((delta >= 0 ? '+' : '') + fmtNum(delta * 100, 1) + '% vs diurno'));
+
+  const labels = periodos.map(p => p.label);
+  const diaVals = periodos.map(p => +p.diaL.toFixed(2));
+  const nocheVals = periodos.map(p => +p.nocheL.toFixed(2));
+  const diaRateVals = periodos.map(p => p.diaRate === null ? null : +p.diaRate.toFixed(3));
+  const nocheRateVals = periodos.map(p => p.nocheRate === null ? null : +p.nocheRate.toFixed(3));
+  const totalVals = periodos.map(p => +p.totalL.toFixed(2));
 
   destroyChart('chart-dia-noche');
-  const ctx1=document.getElementById('chart-dia-noche')?.getContext('2d');
-  if(ctx1){chartRegistry['chart-dia-noche']=new Chart(ctx1,{type:dias.length===1?'bar':'line',data:{labels:diaLabels,datasets:[{label:'Diurno',data:diurnaVals,borderColor:'#b05c00',backgroundColor:'rgba(176,92,0,0.07)',borderWidth:2.5,pointRadius:6,pointBackgroundColor:'#fff',pointBorderColor:'#b05c00',pointBorderWidth:2,fill:true,tension:0.3},{label:'Nocturno',data:nocturnaVals,borderColor:'#1c3f6e',backgroundColor:'rgba(28,63,110,0.07)',borderWidth:2.5,pointRadius:6,pointBackgroundColor:'#fff',pointBorderColor:'#1c3f6e',pointBorderWidth:2,fill:true,tension:0.3}]},options:mergeOpts({plugins:{legend:{display:true,position:'top',labels:{font:{family:"'JetBrains Mono'",size:8},color:'#6b6860',boxWidth:10,padding:14}}},scales:{x:{...chartDefaults.scales.x},y:{...chartDefaults.scales.y,min:0,ticks:{...chartDefaults.scales.y.ticks,callback:v=>v+' L'}}}})});setText('ts-dia-noche','Act: '+(document.getElementById('header-ts')?.textContent||'--'));}
+  const ctx1 = document.getElementById('chart-dia-noche')?.getContext('2d');
+  if (ctx1) {
+    chartRegistry['chart-dia-noche'] = new Chart(ctx1, {
+      type: 'bar',
+      data: { labels, datasets: [
+        { label: 'Diurno', data: diaVals, backgroundColor: 'rgba(176,92,0,0.72)', borderColor: '#b05c00', borderWidth: 1.5, borderRadius: 3 },
+        { label: 'Nocturno', data: nocheVals, backgroundColor: 'rgba(28,63,110,0.72)', borderColor: '#1c3f6e', borderWidth: 1.5, borderRadius: 3 }
+      ]},
+      options: mergeOpts({
+        plugins: { legend: { display: true, position: 'top', labels: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6860', boxWidth: 10, padding: 14 } }, tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: c => {
+          const p = periodos[c.dataIndex];
+          const isDia = c.dataset.label === 'Diurno';
+          const h = isDia ? p.diaH : p.nocheH;
+          const cob = isDia ? p.diaCob : p.nocheCob;
+          const rate = h > 0 ? c.parsed.y / h : null;
+          return ' ' + c.dataset.label + ': ' + fmtNum(c.parsed.y, 2) + ' L · ' + fmtNum(rate, 2) + ' L/h · ' + fmtNum(cob * 100, 0) + '% cobertura';
+        } } } },
+        scales: { x: { ...chartDefaults.scales.x }, y: { ...chartDefaults.scales.y, min: 0, ticks: { ...chartDefaults.scales.y.ticks, callback: v => v + ' L' } } }
+      })
+    });
+    setText('ts-dia-noche', TS_ACT);
+  }
 
-  destroyChart('chart-prod-diaria');
-  const ctx2=document.getElementById('chart-prod-diaria')?.getContext('2d');
-  if(ctx2){chartRegistry['chart-prod-diaria']=new Chart(ctx2,{type:'bar',data:{labels:diaLabels,datasets:[{data:totalVals,backgroundColor:dias.map((_,i)=>DIA_COLORS[i%DIA_COLORS.length]+'cc'),borderColor:dias.map((_,i)=>DIA_COLORS[i%DIA_COLORS.length]),borderWidth:1.5,borderRadius:3}]},options:mergeOpts({plugins:{legend:{display:false}},scales:{x:{...chartDefaults.scales.x},y:{...chartDefaults.scales.y,min:0,ticks:{...chartDefaults.scales.y.ticks,callback:v=>v+' L'}}}})});setText('ts-prod-diaria','Act: '+(document.getElementById('header-ts')?.textContent||'--'));}
+  destroyChart('chart-lh-periodo');
+  const ctxLH = document.getElementById('chart-lh-periodo')?.getContext('2d');
+  if (ctxLH) {
+    chartRegistry['chart-lh-periodo'] = new Chart(ctxLH, {
+      type: 'bar',
+      data: { labels, datasets: [
+        { label: 'Diurno', data: diaRateVals, backgroundColor: 'rgba(176,92,0,0.72)', borderColor: '#b05c00', borderWidth: 1.5, borderRadius: 3 },
+        { label: 'Nocturno', data: nocheRateVals, backgroundColor: 'rgba(28,63,110,0.72)', borderColor: '#1c3f6e', borderWidth: 1.5, borderRadius: 3 }
+      ]},
+      options: mergeOpts({
+        plugins: { legend: { display: true, position: 'top', labels: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6860', boxWidth: 10, padding: 14 } }, tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: c => ' ' + c.dataset.label + ': ' + fmtNum(c.parsed.y, 3) + ' L/h' } } },
+        scales: { x: { ...chartDefaults.scales.x }, y: { ...chartDefaults.scales.y, min: 0, ticks: { ...chartDefaults.scales.y.ticks, callback: v => v.toFixed(1) + ' L/h' } } }
+      })
+    });
+    setText('ts-lh-periodo', TS_ACT);
+  }
 
-  destroyChart('chart-curvas-dia');
-  const ctx3=document.getElementById('chart-curvas-dia')?.getContext('2d');
-  if(ctx3){
-    const datasets=[];
-    const legendEl=document.getElementById('legend-dias');
-    if(legendEl) legendEl.innerHTML='';
-    dias.forEach((dia,dIdx)=>{
-      const pts=puntos.filter(p=>p.fecha===dia);
-      if(pts.length<2) return;
-      const volBase=Math.min(...pts.map(p=>p.vol));
-      const color=DIA_COLORS[dIdx%DIA_COLORS.length];
-      const visibleDefault = dia >= CURVAS_DIA_VISIBLE_DESDE;
-      const datasetIndex = datasets.length;
-      datasets.push({label:diaLabels[dIdx],data:pts.map(p=>({x:+p.hora.toFixed(2),y:+Math.max(0,p.vol-volBase).toFixed(2)})),borderColor:color,backgroundColor:'transparent',borderWidth:2,pointRadius:0,pointHoverRadius:6,pointHoverBackgroundColor:'#fff',pointHoverBorderColor:color,pointHoverBorderWidth:2,tension:0.3,fill:false,hidden:!visibleDefault});
-      if(legendEl){
-        const item=document.createElement('div');
-        item.className='legend-item'+(!visibleDefault?' is-hidden':'');
-        item.dataset.datasetIndex=String(datasetIndex);
-        item.title='Mostrar / ocultar '+diaLabels[dIdx];
-        item.innerHTML=`<div class="legend-dot" style="background:${color}"></div>${diaLabels[dIdx]}`;
-        legendEl.appendChild(item);
+  const horaLabels = Array.from({ length: 24 }, (_, h) => pad2(h) + ':00');
+  const horaRates = horas.map(h => h.horas > 0 ? +(h.litros / h.horas).toFixed(3) : 0);
+  const horaColors = horas.map((_, h) => (h >= 6 && h < 19) ? 'rgba(176,92,0,0.72)' : 'rgba(28,63,110,0.72)');
+  const horaBorders = horas.map((_, h) => (h >= 6 && h < 19) ? '#b05c00' : '#1c3f6e');
+
+  destroyChart('chart-hora-dia');
+  const ctxHora = document.getElementById('chart-hora-dia')?.getContext('2d');
+  if (ctxHora) {
+    chartRegistry['chart-hora-dia'] = new Chart(ctxHora, {
+      type: 'bar',
+      data: { labels: horaLabels, datasets: [{ label: 'Promedio horario', data: horaRates, backgroundColor: horaColors, borderColor: horaBorders, borderWidth: 1, borderRadius: 2 }] },
+      options: mergeOpts({
+        plugins: { legend: { display: false }, tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: c => {
+          const h = horas[c.dataIndex];
+          return ' ' + fmtNum(c.parsed.y, 3) + ' L/h · ' + fmtNum(h.litros, 2) + ' L en ' + fmtNum(h.horas, 1) + ' h';
+        } } } },
+        scales: { x: { ...chartDefaults.scales.x, ticks: { ...chartDefaults.scales.x.ticks, maxTicksLimit: 12 } }, y: { ...chartDefaults.scales.y, min: 0, ticks: { ...chartDefaults.scales.y.ticks, callback: v => v.toFixed(1) + ' L/h' } } }
+      })
+    });
+    setText('ts-hora-dia', TS_ACT);
+  }
+
+  const heatEl = document.getElementById('heatmap-horario');
+  if (heatEl) {
+    const fechas = Object.keys(heat).sort();
+    const rates = [];
+    fechas.forEach(f => heat[f].forEach(c => { if (c.horas > 0) rates.push(c.litros / c.horas); }));
+    const maxRate = Math.max(0.01, ...rates);
+    let html = '<div class="dn-heatmap-grid"><div></div>';
+    for (let h = 0; h < 24; h++) html += '<div class="dn-heatmap-cell dn-heatmap-hour">' + pad2(h) + '</div>';
+    fechas.forEach(f => {
+      html += '<div class="dn-heatmap-cell dn-heatmap-date">' + esc(labelFecha(f)) + '</div>';
+      for (let h = 0; h < 24; h++) {
+        const cell = heat[f][h];
+        const rate = cell.horas > 0 ? cell.litros / cell.horas : 0;
+        const isDay = h >= 6 && h < 19;
+        const base = isDay ? '176,92,0' : '28,63,110';
+        const alpha = rate > 0 ? Math.min(0.88, 0.08 + (rate / maxRate) * 0.78) : 0;
+        const bg = rate > 0 ? 'rgba(' + base + ',' + alpha.toFixed(3) + ')' : 'var(--surface2)';
+        const fg = alpha > 0.48 ? '#fff' : 'rgba(26,25,20,.55)';
+        const title = labelFecha(f) + ' ' + pad2(h) + ':00 · ' + fmtNum(rate, 3) + ' L/h · ' + fmtNum(cell.litros, 2) + ' L';
+        html += '<div class="dn-heatmap-cell' + (rate > 0 ? '' : ' dn-heatmap-empty') + '" title="' + esc(title) + '" style="background:' + bg + ';color:' + fg + '">' + (rate > 0 ? fmtNum(rate, 1) : '') + '</div>';
       }
     });
-    chartRegistry['chart-curvas-dia']=new Chart(ctx3,{type:'line',data:{datasets},options:mergeOpts({plugins:{legend:{display:false}},scales:{x:{type:'linear',min:0,max:24,...chartDefaults.scales.x,ticks:{...chartDefaults.scales.x.ticks,callback:v=>String(Math.floor(v)).padStart(2,'0')+':00',stepSize:3}},y:{...chartDefaults.scales.y,min:0,ticks:{...chartDefaults.scales.y.ticks,callback:v=>'+'+v+' L'}}}})});
-    if(legendEl){
-      legendEl.querySelectorAll('[data-dataset-index]').forEach(item=>{
-        item.addEventListener('click',()=>{
-          const chart=chartRegistry['chart-curvas-dia'];
-          if(!chart) return;
-          const idx=Number(item.dataset.datasetIndex);
-          const visible=chart.isDatasetVisible(idx);
-          chart.setDatasetVisibility(idx,!visible);
-          item.classList.toggle('is-hidden',visible);
-          chart.update();
-        });
-      });
-    }
-    setText('ts-curvas-dia','Act: '+(document.getElementById('header-ts')?.textContent||'--'));
+    html += '</div><div class="dn-heatmap-legend"><span>Diurno</span><span class="dn-heatmap-swatch" style="background:rgba(176,92,0,.55)"></span><span>Nocturno</span><span class="dn-heatmap-swatch" style="background:rgba(28,63,110,.55)"></span><span class="dn-heatmap-note">Celdas: L/h</span></div>';
+    heatEl.innerHTML = html;
+    setText('ts-heatmap-horario', TS_ACT);
   }
+
+  destroyChart('chart-prod-diaria');
+  const ctx2 = document.getElementById('chart-prod-diaria')?.getContext('2d');
+  if (ctx2) {
+    chartRegistry['chart-prod-diaria'] = new Chart(ctx2, {
+      type: 'bar',
+      data: { labels, datasets: [{ data: totalVals, backgroundColor: periodos.map((_, i) => DIA_COLORS[i % DIA_COLORS.length] + 'cc'), borderColor: periodos.map((_, i) => DIA_COLORS[i % DIA_COLORS.length]), borderWidth: 1.5, borderRadius: 3 }] },
+      options: mergeOpts({ plugins: { legend: { display: false } }, scales: { x: { ...chartDefaults.scales.x }, y: { ...chartDefaults.scales.y, min: 0, ticks: { ...chartDefaults.scales.y.ticks, callback: v => v + ' L' } } } })
+    });
+    setText('ts-prod-diaria', TS_ACT);
+  }
+
+  curvasDiaState = { diasCurvaMap, labelFecha, TS_ACT };
+  renderCurvasDiaChart();
+}
+
+function setCurvasDiaRange(rangeDays) {
+  curvasDiaRangeDays = rangeDays;
+  renderCurvasDiaChart();
+}
+
+function renderCurvasDiaChart() {
+  if (!curvasDiaState) return;
+  const { diasCurvaMap, labelFecha, TS_ACT } = curvasDiaState;
+  destroyChart('chart-curvas-dia');
+  const ctx3 = document.getElementById('chart-curvas-dia')?.getContext('2d');
+  if (!ctx3) return;
+  const diasCurva = Object.keys(diasCurvaMap).sort();
+  const selectedDays = curvasDiaRangeDays === 'all' ? diasCurva : diasCurva.slice(-Number(curvasDiaRangeDays));
+  const selectedSet = new Set(selectedDays);
+  const latest = diasCurva[diasCurva.length - 1];
+  const prev = diasCurva[diasCurva.length - 2];
+  const datasets = [];
+  const legendEl = document.getElementById('legend-dias');
+  if (legendEl) legendEl.innerHTML = '';
+  selectedDays.forEach((dia) => {
+    const pts = diasCurvaMap[dia].sort((a, b) => a.hora - b.hora);
+    if (pts.length < 2) return;
+    const volBase = Math.min(...pts.map(p => p.vol));
+    const isLatest = dia === latest;
+    const isPrev = dia === prev;
+    const muted = !isLatest && !isPrev;
+    const color = isLatest ? '#1c3f6e' : isPrev ? '#b05c00' : 'rgba(28,63,110,0.22)';
+    const hoverColor = isLatest ? '#1c3f6e' : isPrev ? '#b05c00' : '#6b6860';
+    const datasetIndex = datasets.length;
+    datasets.push({
+      label: labelFecha(dia),
+      data: pts.map(p => ({ x: +p.hora.toFixed(2), y: +Math.max(0, p.vol - volBase).toFixed(2) })),
+      borderColor: color,
+      backgroundColor: 'transparent',
+      borderWidth: isLatest ? 3.2 : isPrev ? 2.4 : 1.4,
+      pointRadius: 0,
+      pointHoverRadius: isLatest || isPrev ? 6 : 4,
+      pointHoverBackgroundColor: '#fff',
+      pointHoverBorderColor: hoverColor,
+      pointHoverBorderWidth: 2,
+      tension: 0.26,
+      fill: false,
+      spanGaps: true
+    });
+    if (legendEl) {
+      const item = document.createElement('div');
+      item.className = 'legend-item';
+      item.dataset.datasetIndex = String(datasetIndex);
+      item.title = 'Mostrar / ocultar ' + labelFecha(dia);
+      item.innerHTML = `<div class="legend-dot" style="background:${color}"></div>${labelFecha(dia)}${isLatest ? ' · Hoy' : isPrev ? ' · Ayer' : ''}`;
+      legendEl.appendChild(item);
+    }
+  });
+  chartRegistry['chart-curvas-dia'] = new Chart(ctx3, { type: 'line', data: { datasets }, options: mergeOpts({
+    interaction: { mode: 'nearest', intersect: false },
+    plugins: { legend: { display: false }, tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: c => ' ' + c.dataset.label + ': +' + (c.parsed.y != null ? c.parsed.y.toFixed(2) : '-') + ' L' } } },
+    scales: { x: { type: 'linear', min: 0, max: 24, ...chartDefaults.scales.x, ticks: { ...chartDefaults.scales.x.ticks, callback: v => String(Math.floor(v)).padStart(2, '0') + ':00', stepSize: 3, maxTicksLimit: 9 } }, y: { ...chartDefaults.scales.y, min: 0, ticks: { ...chartDefaults.scales.y.ticks, callback: v => '+' + v + ' L' } } }
+  }) });
+  if (legendEl) {
+    legendEl.querySelectorAll('[data-dataset-index]').forEach(item => {
+      item.addEventListener('click', () => {
+        const chart = chartRegistry['chart-curvas-dia'];
+        if (!chart) return;
+        const idx = Number(item.dataset.datasetIndex);
+        const visible = chart.isDatasetVisible(idx);
+        chart.setDatasetVisibility(idx, !visible);
+        item.classList.toggle('is-hidden', visible);
+        chart.update();
+      });
+    });
+  }
+  const rangoTxt = curvasDiaRangeDays === 'all' ? 'Todo' : String(curvasDiaRangeDays) + ' días';
+  setText('curvas-stat-rango', rangoTxt);
+  setText('curvas-stat-lineas', datasets.length);
+  setText('ts-curvas-dia', TS_ACT + ' · ' + (curvasDiaRangeDays === 'all' ? 'todo el periodo' : 'últimos ' + curvasDiaRangeDays + ' días'));
+  activateRangeButtons('curvas', curvasDiaRangeDays);
+
 }
 
 // ─── MÓDULO ECONÓMICO — SOLO COSTOS ───────────────────────────────────
@@ -2585,7 +3036,8 @@ async function renderDashboard() {
   setText('h-garraf',garrafones);
 
   interpretarPi(payload.sistema);
-  nivelChart('chart-nivel',labelsNivel,nivel,garrafonIdx);
+  nivelChartState = { rawLabels: rawNivelLabels, nivel, garrafonIdx, ts };
+  renderNivelChartPanel();
 
   lineChart('chart-hum',labelsClima,hum,'#0f6b60','%',0,100);
   lineChart('chart-temp',labelsClima,temp,'#b05c00','°C');
