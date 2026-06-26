@@ -287,11 +287,14 @@
     .legend-row{display:flex;flex-wrap:wrap;gap:12px;padding:10px 20px 0}
     .legend-item{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:8.5px;color:var(--ink-soft)}
     .legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
-    .chart-toolbar{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 20px 0;flex-wrap:wrap}
-    .chart-controls{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-    .chart-chip{border:1px solid var(--rule);background:var(--surface2);color:var(--ink-soft);border-radius:999px;padding:6px 10px;font-family:var(--mono);font-size:7.5px;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all .15s}
-    .chart-chip:hover{border-color:var(--cobalt);color:var(--cobalt);background:var(--cobalt-pale)}
-    .chart-chip.is-active{background:var(--cobalt);border-color:var(--cobalt);color:#fff}
+    .chart-toolbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 20px 0;flex-wrap:wrap}
+    .chart-toolbar.tight{padding:10px 20px 0}
+    .chart-controls{display:inline-flex;align-items:center;gap:4px;flex-wrap:wrap;padding:4px;border:1px solid rgba(40,38,30,0.10);border-radius:999px;background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(250,249,245,.76));box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 8px 22px rgba(28,63,110,.055)}
+    .chart-chip{position:relative;border:0;background:transparent;color:var(--ink-soft);border-radius:999px;padding:7px 12px;font-family:var(--mono);font-size:7.4px;font-weight:700;letter-spacing:.10em;text-transform:uppercase;cursor:pointer;transition:transform .16s ease,background .16s ease,color .16s ease,box-shadow .16s ease;white-space:nowrap}
+    .chart-chip:hover{color:var(--cobalt);background:rgba(28,63,110,.075);transform:translateY(-1px)}
+    .chart-chip.is-active{background:linear-gradient(135deg,var(--cobalt),#17345c);color:#fff;box-shadow:0 7px 18px rgba(28,63,110,.22),inset 0 1px 0 rgba(255,255,255,.18)}
+    .chart-chip.is-wide{padding-left:15px;padding-right:15px}
+    .chart-chip:focus-visible{outline:2px solid rgba(28,63,110,.38);outline-offset:2px}
     .chart-summary{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
     .chart-mini-stat{display:flex;flex-direction:column;gap:2px;min-width:92px;padding:8px 10px;border:1px solid var(--rule);border-radius:var(--radius);background:var(--surface2)}
     .chart-mini-label{font-family:var(--mono);font-size:7px;letter-spacing:.10em;text-transform:uppercase;color:var(--ink-faint)}
@@ -543,15 +546,6 @@
       user-select: none;
     }
 
-    .dn-heatmap{padding:16px 20px 10px;overflow-x:auto;-webkit-overflow-scrolling:touch}
-    .dn-heatmap-grid{display:grid;grid-template-columns:76px repeat(24,minmax(22px,1fr));gap:3px;min-width:720px;align-items:center}
-    .dn-heatmap-cell{height:20px;border:1px solid var(--rule);border-radius:2px;display:flex;align-items:center;justify-content:center;font-family:var(--mono);font-size:7px;color:rgba(26,25,20,.55);white-space:nowrap;overflow:hidden}
-    .dn-heatmap-hour{height:18px;border:none;color:var(--ink-faint);background:transparent;font-size:7px}
-    .dn-heatmap-date{border:none;justify-content:flex-start;color:var(--ink-soft);background:transparent;font-size:7.5px;padding-right:4px}
-    .dn-heatmap-empty{background:var(--surface2)}
-    .dn-heatmap-legend{display:flex;gap:12px;align-items:center;margin-top:12px;font-family:var(--mono);font-size:8px;color:var(--ink-faint);min-width:720px}
-    .dn-heatmap-swatch{width:38px;height:8px;border-radius:99px;border:1px solid var(--rule)}
-    .dn-heatmap-note{margin-left:auto}
 
 
     /* ── AJUSTE FINAL: SIN NAVEGACIÓN INTERNA LATERAL ───────────── */
@@ -614,7 +608,7 @@
     <span class="hd-sub hd-hide-sm">Telemetría Ambiental · Atitlán</span>
   </div>
   <div class="hd-center">
-    <div class="hd-stat"><div class="hd-stat-val" id="h-nivel">-- L</div><div class="hd-stat-lbl">Nivel cisterna</div></div>
+    <div class="hd-stat"><div class="hd-stat-val" id="h-nivel">-- L</div><div class="hd-stat-lbl">Nivel garrafón</div></div>
     <div class="hd-sep"></div>
     <div class="hd-stat"><div class="hd-stat-val" id="h-garraf">--</div><div class="hd-stat-lbl">Garrafones</div></div>
     <div class="hd-sep"></div>
@@ -656,9 +650,19 @@
   <div class="section-title">Su cosechadora de agua<br>trabaja <em>ahora mismo</em></div>
   <div class="section-subtitle">Este tablero integra telemetría en tiempo real del sensor de nivel JSN-SR04T, la estación meteorológica WS-2000 y el nodo Raspberry Pi. Todos los cálculos económicos se actualizan con cada lectura.</div>
 
+  <div class="chart-toolbar" style="padding:0;margin:18px 0 22px">
+    <div class="chart-summary">
+      <div class="chart-mini-stat"><div class="chart-mini-label">Periodo visible</div><div class="chart-mini-value" id="global-range-label">7 días</div></div>
+    </div>
+    <div class="chart-controls" aria-label="Periodo visible de gráficas">
+      <button class="chart-chip" data-range-group="global" data-range-value="7" onclick="setDashboardRange(7)">Últimos 7 días</button>
+      <button class="chart-chip is-wide" data-range-group="global" data-range-value="all" onclick="setDashboardRange('all')">Mostrar todo el periodo</button>
+    </div>
+  </div>
+
   <div class="kpi-grid">
     <div class="kpi-card accent-cobalt">
-      <div class="kpi-label">Nivel cisterna</div>
+      <div class="kpi-label">Nivel garrafón</div>
       <div class="kpi-value"><span id="kpi-nivel">--</span><span class="kpi-unit">L</span></div>
       <div class="kpi-range" id="trend-nivel">--</div>
       <div class="kpi-meta">Capacidad máx: 20 L</div>
@@ -738,10 +742,8 @@
         <div class="level-bar" aria-hidden="true"><div class="level-bar-fill" id="nivel-fill-bar"></div></div>
       </div>
       <div class="chart-controls" aria-label="Rango de volumen en garrafón">
-        <button class="chart-chip" data-range-group="nivel" data-range-value="1" onclick="setNivelRange(1)">24 h</button>
-        <button class="chart-chip" data-range-group="nivel" data-range-value="3" onclick="setNivelRange(3)">3 días</button>
-        <button class="chart-chip" data-range-group="nivel" data-range-value="7" onclick="setNivelRange(7)">7 días</button>
-        <button class="chart-chip" data-range-group="nivel" data-range-value="all" onclick="setNivelRange('all')">Mostrar todo el periodo</button>
+        <button class="chart-chip" data-range-group="nivel" data-range-value="7" onclick="setNivelRange(7)">Últimos 7 días</button>
+        <button class="chart-chip is-wide" data-range-group="nivel" data-range-value="all" onclick="setNivelRange('all')">Mostrar todo el periodo</button>
       </div>
     </div>
     <div class="legend-row">
@@ -803,6 +805,12 @@
       </div>
       <div class="card-badge">L / período</div>
     </div>
+    <div class="chart-toolbar tight">
+      <div class="chart-controls" aria-label="Rango de producción por franja">
+        <button class="chart-chip" data-range-group="produccion" data-range-value="7" onclick="setProduccionRange(7)">Últimos 7 días</button>
+        <button class="chart-chip is-wide" data-range-group="produccion" data-range-value="all" onclick="setProduccionRange('all')">Mostrar todo el periodo</button>
+      </div>
+    </div>
     <div class="legend-row">
       <div class="legend-item"><div class="legend-dot" style="background:var(--amber)"></div>Diurno (05:30–18:30)</div>
       <div class="legend-item"><div class="legend-dot" style="background:var(--cobalt)"></div>Nocturno (18:30–05:30)</div>
@@ -820,6 +828,12 @@
         </div>
         <div class="card-badge">L / h</div>
       </div>
+      <div class="chart-toolbar tight">
+        <div class="chart-controls" aria-label="Rango de eficiencia por franja">
+          <button class="chart-chip" data-range-group="produccion" data-range-value="7" onclick="setProduccionRange(7)">Últimos 7 días</button>
+          <button class="chart-chip is-wide" data-range-group="produccion" data-range-value="all" onclick="setProduccionRange('all')">Mostrar todo el periodo</button>
+        </div>
+      </div>
       <div class="chart-wrap"><canvas id="chart-lh-periodo"></canvas></div>
       <div class="card-foot"><div class="card-ts" id="ts-lh-periodo">--</div><div class="card-ts">Períodos con cobertura visible en tooltip</div></div>
     </div>
@@ -831,21 +845,15 @@
         </div>
         <div class="card-badge">L / h</div>
       </div>
+      <div class="chart-toolbar tight">
+        <div class="chart-controls" aria-label="Rango de producción promedio por hora">
+          <button class="chart-chip" data-range-group="produccion" data-range-value="7" onclick="setProduccionRange(7)">Últimos 7 días</button>
+          <button class="chart-chip is-wide" data-range-group="produccion" data-range-value="all" onclick="setProduccionRange('all')">Mostrar todo el periodo</button>
+        </div>
+      </div>
       <div class="chart-wrap"><canvas id="chart-hora-dia"></canvas></div>
       <div class="card-foot"><div class="card-ts" id="ts-hora-dia">--</div><div class="card-ts">00:00–23:00 · bucket horario</div></div>
     </div>
-  </div>
-
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
-      <div>
-        <div class="card-title">Mapa horario de captación</div>
-        <div class="card-sub">Fecha calendario × hora del día · color según L/h</div>
-      </div>
-      <div class="card-badge">Heatmap</div>
-    </div>
-    <div class="dn-heatmap" id="heatmap-horario"></div>
-    <div class="card-foot"><div class="card-ts" id="ts-heatmap-horario">--</div><div class="card-ts">Mayor intensidad = mayor captación horaria</div></div>
   </div>
 
   <div class="grid-2">
@@ -856,6 +864,12 @@
           <div class="card-sub">Suma de período diurno y nocturno asignada al mismo ciclo de operación</div>
         </div>
         <div class="card-badge">L / día</div>
+      </div>
+      <div class="chart-toolbar tight">
+        <div class="chart-controls" aria-label="Rango de producción total por día operativo">
+          <button class="chart-chip" data-range-group="produccion" data-range-value="7" onclick="setProduccionRange(7)">Últimos 7 días</button>
+          <button class="chart-chip is-wide" data-range-group="produccion" data-range-value="all" onclick="setProduccionRange('all')">Mostrar todo el periodo</button>
+        </div>
       </div>
       <div class="chart-wrap"><canvas id="chart-prod-diaria"></canvas></div>
       <div class="card-foot"><div class="card-ts" id="ts-prod-diaria">--</div><div class="card-ts">Diurno + nocturno</div></div>
@@ -874,10 +888,8 @@
           <div class="chart-mini-stat"><div class="chart-mini-label">Líneas visibles</div><div class="chart-mini-value" id="curvas-stat-lineas">--</div></div>
         </div>
         <div class="chart-controls" aria-label="Rango de curva de llenado">
-          <button class="chart-chip" data-range-group="curvas" data-range-value="3" onclick="setCurvasDiaRange(3)">3 días</button>
-          <button class="chart-chip" data-range-group="curvas" data-range-value="7" onclick="setCurvasDiaRange(7)">7 días</button>
-          <button class="chart-chip" data-range-group="curvas" data-range-value="14" onclick="setCurvasDiaRange(14)">14 días</button>
-          <button class="chart-chip" data-range-group="curvas" data-range-value="all" onclick="setCurvasDiaRange('all')">Mostrar todo el periodo</button>
+          <button class="chart-chip" data-range-group="curvas" data-range-value="7" onclick="setCurvasDiaRange(7)">Últimos 7 días</button>
+          <button class="chart-chip is-wide" data-range-group="curvas" data-range-value="all" onclick="setCurvasDiaRange('all')">Mostrar todo el periodo</button>
         </div>
       </div>
       <div class="legend-row legend-compact" id="legend-dias"></div>
@@ -1320,8 +1332,11 @@ const DIAS  = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 const MESES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const DIA_COLORS = ['#1c3f6e','#b05c00','#1a5c38','#951f1f','#0f6b60','#7a4a9e','#b5860a','#2a6080'];
 const CURVAS_DIA_VISIBLE_DESDE = '2026-05-11';
-let nivelRangeDays = 3;
+let nivelRangeDays = 7;
 let curvasDiaRangeDays = 7;
+let produccionRangeDays = 7;
+let dashboardRangeDays = 7;
+let produccionAnalisisState = null;
 let nivelChartState = null;
 let curvasDiaState = null;
 
@@ -1506,6 +1521,24 @@ function getRangeStartIndex(rawLabels, rangeDays) {
   return idx >= 0 ? idx : 0;
 }
 
+function sliceByTimeRange(rawLabels, arrays, rangeDays) {
+  const start = getRangeStartIndex(rawLabels || [], rangeDays);
+  return {
+    rawLabels: (rawLabels || []).slice(start),
+    arrays: (arrays || []).map(arr => Array.isArray(arr) ? arr.slice(start) : arr)
+  };
+}
+
+function setDashboardRange(rangeDays) {
+  dashboardRangeDays = rangeDays;
+  nivelRangeDays = rangeDays;
+  curvasDiaRangeDays = rangeDays;
+  produccionRangeDays = rangeDays;
+  setText('global-range-label', rangeDays === 'all' ? 'Todo' : '7 días');
+  activateRangeButtons('global', rangeDays);
+  renderDashboard();
+}
+
 function setNivelRange(rangeDays) {
   nivelRangeDays = rangeDays;
   renderNivelChartPanel();
@@ -1537,9 +1570,9 @@ function nivelChart(id, labels, nivel, garrafonIdx) {
   destroyChart(id);
   const ctx=document.getElementById(id)?.getContext('2d');
   if(!ctx) return;
-  const ptColors=nivel.map((_,i)=>garrafonIdx.includes(i)?'#1a5c38':'rgba(0,0,0,0)');
-  const ptBorder=nivel.map((_,i)=>garrafonIdx.includes(i)?'#fff':'rgba(0,0,0,0)');
-  const ptRadius=nivel.map((_,i)=>garrafonIdx.includes(i)?7:0);
+  const ptColors=nivel.map((_,i)=>garrafonIdx.includes(i)?'#1a5c38':'#ffffff');
+  const ptBorder=nivel.map((_,i)=>garrafonIdx.includes(i)?'#ffffff':'rgba(28,63,110,0.44)');
+  const ptRadius=nivel.map((_,i)=>garrafonIdx.includes(i)?7:2.2);
   const capacidad = nivel.map(() => 20);
   const mitad = nivel.map(() => 10);
   chartRegistry[id]=new Chart(ctx,{type:'line',data:{labels,datasets:[{
@@ -2329,6 +2362,22 @@ function interpretarPi(sistema) {
 
 // ─── PRODUCCIÓN DIURNA / NOCTURNA ─────────────────────────────────────
 function renderProduccionAnalisis(rawLabels, nivel) {
+  produccionAnalisisState = { rawLabels, nivel };
+  renderProduccionAnalisisPanel();
+}
+
+function setProduccionRange(rangeDays) {
+  produccionRangeDays = rangeDays;
+  renderProduccionAnalisisPanel();
+}
+
+function renderProduccionAnalisisPanel() {
+  if (!produccionAnalisisState) return;
+  const srcLabels = produccionAnalisisState.rawLabels || [];
+  const srcNivel = produccionAnalisisState.nivel || [];
+  const sliced = sliceByTimeRange(srcLabels, [srcNivel], produccionRangeDays);
+  const rawLabels = sliced.rawLabels;
+  const nivel = sliced.arrays[0];
   if (!rawLabels || rawLabels.length < 2 || !nivel || nivel.length < 2) return;
 
   const DIA_INI = 5.5;
@@ -2388,7 +2437,6 @@ function renderProduccionAnalisis(rawLabels, nivel) {
 
   const periodosMap = {};
   const horas = Array.from({ length: 24 }, () => ({ litros: 0, horas: 0 }));
-  const heat = {};
   const diasCurvaMap = {};
 
   puntos.forEach(p => {
@@ -2430,10 +2478,6 @@ function renderProduccionAnalisis(rawLabels, nivel) {
 
       horas[hour].litros += litros;
       horas[hour].horas += segH;
-
-      if (!heat[cal]) heat[cal] = Array.from({ length: 24 }, () => ({ litros: 0, horas: 0 }));
-      heat[cal][hour].litros += litros;
-      heat[cal][hour].horas += segH;
 
       cursor = end;
       guard++;
@@ -2552,33 +2596,6 @@ function renderProduccionAnalisis(rawLabels, nivel) {
     setText('ts-hora-dia', TS_ACT);
   }
 
-  const heatEl = document.getElementById('heatmap-horario');
-  if (heatEl) {
-    const fechas = Object.keys(heat).sort();
-    const rates = [];
-    fechas.forEach(f => heat[f].forEach(c => { if (c.horas > 0) rates.push(c.litros / c.horas); }));
-    const maxRate = Math.max(0.01, ...rates);
-    let html = '<div class="dn-heatmap-grid"><div></div>';
-    for (let h = 0; h < 24; h++) html += '<div class="dn-heatmap-cell dn-heatmap-hour">' + pad2(h) + '</div>';
-    fechas.forEach(f => {
-      html += '<div class="dn-heatmap-cell dn-heatmap-date">' + esc(labelFecha(f)) + '</div>';
-      for (let h = 0; h < 24; h++) {
-        const cell = heat[f][h];
-        const rate = cell.horas > 0 ? cell.litros / cell.horas : 0;
-        const isDay = h >= 6 && h < 19;
-        const base = isDay ? '176,92,0' : '28,63,110';
-        const alpha = rate > 0 ? Math.min(0.88, 0.08 + (rate / maxRate) * 0.78) : 0;
-        const bg = rate > 0 ? 'rgba(' + base + ',' + alpha.toFixed(3) + ')' : 'var(--surface2)';
-        const fg = alpha > 0.48 ? '#fff' : 'rgba(26,25,20,.55)';
-        const title = labelFecha(f) + ' ' + pad2(h) + ':00 · ' + fmtNum(rate, 3) + ' L/h · ' + fmtNum(cell.litros, 2) + ' L';
-        html += '<div class="dn-heatmap-cell' + (rate > 0 ? '' : ' dn-heatmap-empty') + '" title="' + esc(title) + '" style="background:' + bg + ';color:' + fg + '">' + (rate > 0 ? fmtNum(rate, 1) : '') + '</div>';
-      }
-    });
-    html += '</div><div class="dn-heatmap-legend"><span>Diurno</span><span class="dn-heatmap-swatch" style="background:rgba(176,92,0,.55)"></span><span>Nocturno</span><span class="dn-heatmap-swatch" style="background:rgba(28,63,110,.55)"></span><span class="dn-heatmap-note">Celdas: L/h</span></div>';
-    heatEl.innerHTML = html;
-    setText('ts-heatmap-horario', TS_ACT);
-  }
-
   destroyChart('chart-prod-diaria');
   const ctx2 = document.getElementById('chart-prod-diaria')?.getContext('2d');
   if (ctx2) {
@@ -2591,6 +2608,7 @@ function renderProduccionAnalisis(rawLabels, nivel) {
   }
 
   curvasDiaState = { diasCurvaMap, labelFecha, TS_ACT };
+  activateRangeButtons('produccion', produccionRangeDays);
   renderCurvasDiaChart();
 }
 
@@ -2987,15 +3005,20 @@ async function renderDashboard() {
   const s = payload.series;
   const rawNivelLabels = s.labels_nivel || s.labels;
   const labelsNivel = formatLabels(rawNivelLabels);
-  const labelsClima = formatLabels(s.labels || []);
-  const nivel=s.nivel_l||[], hum=s.humedad_pct||[], temp=s.temp_c||[];
-  const dew=s.punto_rocio_c||[], pres=s.presion_inhg||[], wind=s.viento_kmh||[];
-  const dir=s.viento_dir_deg||[], rain=s.lluvia_hora_mm||[];
-  const solar=s.radiacion_solar_wm2||[], uv=s.uv||[];
+  const nivel=s.nivel_l||[];
+  const humFull=s.humedad_pct||[], tempFull=s.temp_c||[], dewFull=s.punto_rocio_c||[], presFull=s.presion_inhg||[], windFull=s.viento_kmh||[], solarFull=s.radiacion_solar_wm2||[];
+  const climaSlice = sliceByTimeRange(s.labels || [], [humFull, tempFull, dewFull, presFull, windFull, s.viento_dir_deg || [], s.lluvia_hora_mm || [], solarFull, s.uv || []], dashboardRangeDays);
+  const labelsClima = formatLabels(climaSlice.rawLabels || []);
+  const hum=climaSlice.arrays[0]||[], temp=climaSlice.arrays[1]||[];
+  const dew=climaSlice.arrays[2]||[], pres=climaSlice.arrays[3]||[], wind=climaSlice.arrays[4]||[];
+  const dir=climaSlice.arrays[5]||[], rain=climaSlice.arrays[6]||[];
+  const solar=climaSlice.arrays[7]||[], uv=climaSlice.arrays[8]||[];
   const ts=payload.actualizado||'--';
 
   setText('header-ts',ts);
   setText('footer-ts','Actualizado: '+ts);
+  setText('global-range-label', dashboardRangeDays === 'all' ? 'Todo' : '7 días');
+  activateRangeButtons('global', dashboardRangeDays);
   ['ts-nivel','ts-hum','ts-temp','ts-dew','ts-pres','ts-wind','ts-dir','ts-rain','ts-solar','ts-uv'].forEach(id=>setTs(id,ts));
 
   // Lluvia desde Ambient Weather
@@ -3007,8 +3030,9 @@ async function renderDashboard() {
   setText2('rain-mes',    kpis.lluvia_mes_mm    !== null && kpis.lluvia_mes_mm    !== undefined ? kpis.lluvia_mes_mm    : null, ' mm');
   if (kpis.lluvia_ambient_ts) setTs('ts-rain', 'Ambient · ' + kpis.lluvia_ambient_ts);
   // Gráfica acumulado diario desde Ambient
-  const rainDiaLabels = formatLabels(s.lluvia_dia_labels || []);
-  const rainDiaVals   = s.lluvia_dia_mm || [];
+  const rainDailySlice = sliceByTimeRange(s.lluvia_dia_labels || [], [s.lluvia_dia_mm || []], dashboardRangeDays);
+  const rainDiaLabels = formatLabels(rainDailySlice.rawLabels || []);
+  const rainDiaVals   = rainDailySlice.arrays[0] || [];
   if (rainDiaLabels.length && rainDiaVals.length) {
     barChart('chart-rain-dia', rainDiaLabels, rainDiaVals, '#0f6b60', 'mm');
   }
@@ -3049,12 +3073,14 @@ async function renderDashboard() {
 
   renderProduccionAnalisis(rawNivelLabels,nivel);
   renderEmpresa(rawNivelLabels,nivel,hum,temp);
-  renderEstadistica(nivel,hum,temp,dew,pres,wind,solar);
+  renderEstadistica(nivel,humFull,tempFull,dewFull,presFull,windFull,solarFull);
 
-  scatterChart('chart-corr-hum',hum,nivel,'#0f6b60','Humedad %','Nivel L');
-  scatterChart('chart-corr-temp',temp,nivel,'#b05c00','Temperatura °C','Nivel L');
-  scatterChart('chart-corr-dew',dew,nivel,'#1c3f6e','Punto rocío °C','Nivel L');
-  scatterChart('chart-corr-solar',solar,nivel,'#c4960a','Rad. solar W/m²','Nivel L');
+  const nivelScatterSlice = sliceByTimeRange(rawNivelLabels || [], [nivel], dashboardRangeDays);
+  const nivelScatter = nivelScatterSlice.arrays[0] || nivel;
+  scatterChart('chart-corr-hum',hum,nivelScatter,'#0f6b60','Humedad %','Nivel L');
+  scatterChart('chart-corr-temp',temp,nivelScatter,'#b05c00','Temperatura °C','Nivel L');
+  scatterChart('chart-corr-dew',dew,nivelScatter,'#1c3f6e','Punto rocío °C','Nivel L');
+  scatterChart('chart-corr-solar',solar,nivelScatter,'#c4960a','Rad. solar W/m²','Nivel L');
 
   // Estadística avanzada — ver renderEstadistica()
 }
@@ -3182,7 +3208,7 @@ async function exportXLSX() {
     const k = p?.kpis || {};
     const kpiRows = [
       ['KPI', 'Valor', 'Unidad', 'Fuente'],
-      ['Nivel cisterna',           k.nivel_l,             'L',     'JSN-SR04T'],
+      ['Nivel garrafón',           k.nivel_l,             'L',     'JSN-SR04T'],
       ['Humedad relativa',         k.humedad_pct,         '%',     'WS-2000'],
       ['Temperatura',              k.temp_c,              '°C',    'WS-2000'],
       ['Punto de rocío',           k.punto_rocio_c,       '°C',    'WS-2000'],
