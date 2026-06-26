@@ -1663,18 +1663,19 @@ function nivelChart(id, labels, nivel, garrafonIdx) {
   destroyChart(id);
   const ctx=document.getElementById(id)?.getContext('2d');
   if(!ctx) return;
-  const ptColors=nivel.map((_,i)=>garrafonIdx.includes(i)?'#1a5c38':'#ffffff');
-  const ptBorder=nivel.map((_,i)=>garrafonIdx.includes(i)?'#ffffff':'rgba(28,63,110,0.44)');
-  const ptRadius=nivel.map((_,i)=>garrafonIdx.includes(i)?7:2.2);
+  const ptColors=nivel.map((_,i)=>garrafonIdx.includes(i)?'#1a5c38':'rgba(255,255,255,0)');
+  const ptBorder=nivel.map((_,i)=>garrafonIdx.includes(i)?'#ffffff':'rgba(255,255,255,0)');
+  const ptRadius=nivel.map((_,i)=>garrafonIdx.includes(i)?7:0);
+  const ptHoverRadius=nivel.map((_,i)=>garrafonIdx.includes(i)?8:0);
   const capacidad = nivel.map(() => 20);
   const mitad = nivel.map(() => 10);
   chartRegistry[id]=new Chart(ctx,{type:'line',data:{labels,datasets:[{
     label:'Nivel del garrafón',
     data:nivel,borderColor:'#1c3f6e',borderWidth:2.8,
     pointRadius:ptRadius,
-    pointHoverRadius:7,
-    pointHoverBackgroundColor:nivel.map((_,i)=>garrafonIdx.includes(i)?'#1a5c38':'#fff'),
-    pointHoverBorderColor:'#1c3f6e',pointHoverBorderWidth:2,
+    pointHoverRadius:ptHoverRadius,
+    pointHoverBackgroundColor:nivel.map((_,i)=>garrafonIdx.includes(i)?'#1a5c38':'rgba(255,255,255,0)'),
+    pointHoverBorderColor:nivel.map((_,i)=>garrafonIdx.includes(i)?'#ffffff':'rgba(255,255,255,0)'),pointHoverBorderWidth:2,
     pointBackgroundColor:ptColors,pointBorderColor:ptBorder,pointBorderWidth:2,
     tension:0.28,fill:true,backgroundColor:'rgba(28,63,110,0.06)'
   },{
@@ -3439,6 +3440,7 @@ async function renderDashboard() {
   lineChart('chart-solar',labelsClima,solar,'#b05c00','W/m²',0);
 
   renderProduccionAnalisis(rawNivelLabels,nivel);
+  renderEnergiaHorario(rawNivelLabels,nivel,s.labels||[],humFull,tempFull,dewFull,presFull,windFull,solarFull);
   renderEmpresa(rawNivelLabels,nivel,hum,temp);
   renderEstadistica(nivel,humFull,tempFull,dewFull,presFull,windFull,solarFull);
 
