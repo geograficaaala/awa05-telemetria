@@ -31,6 +31,7 @@
       --forest:   #1a5c38;
       --forest-pale:rgba(26,92,56,0.09);
       --teal:     #0f6b60;
+      --cyan:     #10a8d0;
       --teal-pale:rgba(15,107,96,0.08);
       --gold:     #c4960a;
       --gold-pale:rgba(196,150,10,0.10);
@@ -48,12 +49,12 @@
     html{scroll-behavior:smooth}
     body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:13.5px;overflow-x:hidden;-webkit-font-smoothing:antialiased;line-height:1.55}
 
-    /* Grain overlay */
+    
     body::after{content:"";position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");pointer-events:none;z-index:9999;opacity:0.5}
 
-    /* ── HEADER ─────────────────────────────────────────────────── */
+    
     header{position:sticky;top:0;z-index:200;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:linear-gradient(135deg,var(--cobalt) 0%,#0f2a50 100%);overflow:hidden;gap:16px}
-    /* Marca de agua */
+    
     header::before{content:"AWA05";position:absolute;right:-10px;top:-18px;font-family:var(--display);font-size:96px;font-weight:900;color:rgba(255,255,255,0.04);letter-spacing:-4px;pointer-events:none;user-select:none}
     header::after{content:"";position:absolute;bottom:0;left:0;right:0;height:1px;background:rgba(255,255,255,0.10)}
     .hd-brand{display:flex;align-items:center;gap:12px;flex-shrink:0;position:relative;z-index:1}
@@ -69,80 +70,80 @@
     .hd-stat-lbl{font-family:var(--mono);font-size:7.5px;color:rgba(255,255,255,0.45);letter-spacing:.10em;text-transform:uppercase;margin-top:1px}
     .hd-right{display:flex;align-items:center;gap:10px;flex-shrink:0;position:relative;z-index:1}
     .hd-ts{font-family:var(--mono);font-size:8px;color:rgba(255,255,255,0.70);background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.18);border-radius:2px;padding:4px 10px;letter-spacing:.04em}
-    /* ── Botón menú móvil (oculto en desktop) ── */
+    
     .hd-mobile-menu{display:none!important}
-    /* ── Menú móvil desplegable ── */
+    
     .mobile-menu{position:fixed;top:56px;left:0;right:0;z-index:198;background:var(--surface);border-bottom:1px solid var(--rule-strong);padding:16px 20px 20px;box-shadow:var(--shadow-md)}
     .mobile-nav{display:flex;flex-direction:column;gap:2px;margin-bottom:16px}
     .mobile-nav-link{font-family:var(--body);font-size:13px;color:var(--ink-soft);text-decoration:none;padding:10px 14px;border-radius:var(--radius);border-left:2px solid transparent;transition:all .12s}
     .mobile-nav-link:hover,.mobile-nav-link.active{color:var(--cobalt);background:var(--cobalt-pale);border-left-color:var(--cobalt)}
     .mobile-nav-foot{border-top:1px solid var(--rule);padding-top:14px;display:flex;flex-direction:column;gap:0}
-    /* ── RESPONSIVE ── */
+    
     @media(max-width:768px){\
-      /* Header */
+      
       header{padding:0 16px;height:52px}
       .hd-hide-sm{display:none!important}
       .hd-mobile-menu{display:inline-flex!important}
       .hd-center{display:none!important}
       .hd-ts{font-size:7.5px;padding:3px 8px;max-width:110px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-      /* Layout — colapsa sidebar */
+      
       .layout{grid-template-columns:1fr!important}
       .sidebar{display:none!important}
-      /* Main — menos padding */
+      
       main{padding:16px 12px 80px!important}
-      /* Secciones */
+      
       .section-eyebrow{font-size:7px!important}
       .section-title{font-size:20px!important}
       .section-subtitle{font-size:11.5px!important;margin-bottom:16px!important}
-      /* Grids — todo a 1 columna */
+      
       .grid-2,.grid-3,.grid-4,.kpi-grid,.pi-grid,.irr-grid,.precio-grid{grid-template-columns:1fr!important;gap:12px!important}
       .col-span-2,.col-span-3,.col-span-4{grid-column:span 1!important}
-      /* Cards */
+      
       .card{padding:14px 12px!important}
       .card-head{flex-direction:row!important;gap:8px;align-items:flex-start}
       .card-badge{align-self:flex-start;flex-shrink:0}
       .card-title{font-size:12px!important}
       .card-sub{font-size:10px!important}
-      /* KPI cards — más compactas */
+      
       .kpi-card{padding:12px 10px!important}
       .kpi-value{font-size:20px!important}
       .kpi-label{font-size:7px!important}
-      /* Charts — altura reducida */
+      
       .chart-wrap{height:160px!important}
       .chart-wrap.tall{height:200px!important}
       .chart-wrap.short{height:120px!important}
-      /* Rosa de vientos */
+      
       .rose-wrap{height:220px!important}
-      /* Panel inversión */
+      
       .inv-display{padding:16px 14px 36px!important}
       .inv-grid{grid-template-columns:1fr 1fr!important}
       .inv-item{border-right:none!important;border-bottom:1px solid rgba(255,255,255,0.10);padding:8px 0!important}
       .inv-item-val{font-size:18px!important}
       .inv-ticker{padding:6px 14px!important;gap:12px!important;flex-wrap:wrap;height:auto!important}
-      /* Precio cards */
+      
       .precio-grid{grid-template-columns:1fr!important}
-      /* Tablas — scroll horizontal */
+      
       .fin-table,.corr-table{font-size:10.5px}
       .card-body{overflow-x:auto;-webkit-overflow-scrolling:touch}
-      /* Heatmap — scroll y apilado vertical */
+      
       #heatmap-corr{overflow-x:auto;-webkit-overflow-scrolling:touch}
       #hm-container{flex-direction:column!important;gap:16px!important}
       .hm-cell{width:38px!important;height:38px!important;font-size:7px!important}
       .hm-label-col{font-size:7px!important;padding:0 4px 0 0!important}
       .hm-label-row{max-width:38px!important;font-size:6.5px!important}
       .hm-interp{max-width:100%!important;min-width:0!important;width:100%!important}
-      /* Header móvil */
+      
       header{padding:0 12px!important;height:48px!important}
       .hd-brand img{height:24px!important}
       .hd-name{font-size:13px!important}
       .hd-ts{display:none!important}
-      /* Producción */
+      
       .garrafon-display{flex-direction:column!important;gap:8px}
-      /* Lluvia — 2 columnas en móvil */
+      
       #rain-grid{grid-template-columns:1fr 1fr!important}
-      /* Sección rule */
+      
       .section-rule{margin:20px 0 16px!important}
-      /* Footer */
+      
       .dash-footer{height:auto!important;padding:14px 16px!important;flex-wrap:wrap;gap:8px;justify-content:center}
       .footer-center{position:static!important;transform:none!important;order:-1;width:100%;justify-content:center;text-align:center}
       .footer-org{font-size:12px!important}
@@ -163,10 +164,10 @@
     .btn-solid{background:rgba(255,255,255,0.92);color:var(--cobalt);border-color:transparent;font-weight:600}
     .btn-solid:hover{background:#fff;color:#0f2a50}
 
-    /* ── LAYOUT ─────────────────────────────────────────────────── */
+    
     .layout{display:grid;grid-template-columns:var(--sidebar-w) 1fr;min-height:calc(100vh - 56px)}
 
-    /* ── SIDEBAR ────────────────────────────────────────────────── */
+    
     .sidebar{position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;padding:24px 0;border-right:1px solid var(--rule);background:var(--surface);scrollbar-width:thin;scrollbar-color:var(--rule-strong) transparent}
     .sb-section{margin-bottom:4px}
     .sb-label{font-family:var(--mono);font-size:7.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);padding:12px 20px 4px;display:block}
@@ -181,17 +182,17 @@
     .sb-kpi-val{font-family:var(--mono);font-size:14px;font-weight:500;color:var(--cobalt)}
     .sb-kpi-unit{font-size:9px;color:var(--ink-soft);margin-left:2px}
 
-    /* ── MAIN ───────────────────────────────────────────────────── */
+    
     main{padding:40px 36px 80px;min-width:0}
 
-    /* ── SECTION HEADER ─────────────────────────────────────────── */
+    
     .section-eyebrow{font-family:var(--mono);font-size:8px;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:6px}
     .section-title{font-family:var(--display);font-size:26px;font-weight:700;color:var(--ink);line-height:1.2;margin-bottom:4px}
     .section-title em{font-style:italic;color:var(--cobalt)}
     .section-subtitle{font-family:var(--body);font-size:12.5px;color:var(--ink-soft);margin-bottom:28px;line-height:1.5;max-width:680px}
     .section-rule{height:1px;background:linear-gradient(to right,var(--rule-strong),transparent);margin:36px 0 32px}
 
-    /* ── CARDS ──────────────────────────────────────────────────── */
+    
     .card{background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius);box-shadow:var(--shadow-sm);overflow:hidden}
     .card-head{padding:18px 20px 14px;border-bottom:1px solid var(--rule)}
     .card-title{font-family:var(--mono);font-size:9.5px;font-weight:500;letter-spacing:.10em;text-transform:uppercase;color:var(--ink-mid);margin-bottom:2px}
@@ -201,7 +202,7 @@
     .card-foot{padding:10px 20px;border-top:1px solid var(--rule);background:var(--surface2);display:flex;justify-content:space-between;align-items:center}
     .card-ts{font-family:var(--mono);font-size:8px;color:var(--ink-faint)}
 
-    /* ── CHART GRIDS ────────────────────────────────────────────── */
+    
     .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
     .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
     .grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
@@ -212,7 +213,7 @@
     .chart-wrap.tall{height:300px}
     .chart-wrap.short{height:160px}
 
-    /* ── KPI CARDS ──────────────────────────────────────────────── */
+    
     .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:20px}
     .kpi-card{background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius);padding:18px 16px;box-shadow:var(--shadow-sm)}
     .kpi-card.accent-cobalt{border-left:3px solid var(--cobalt)}
@@ -229,7 +230,7 @@
     .kpi-meta.up{color:var(--forest)}
     .kpi-meta.down{color:var(--crimson)}
 
-    /* ── EMPRESA: INVERSION DISPLAY ────────────────────────────── */
+    
     .inv-display{background:linear-gradient(135deg,var(--cobalt) 0%,#0f2a50 100%);border-radius:var(--radius);padding:32px 36px;color:#fff;position:relative;overflow:hidden;margin-bottom:20px}
     .inv-display::before{content:"AWA05";position:absolute;right:-10px;top:-20px;font-family:var(--display);font-size:120px;font-weight:900;color:rgba(255,255,255,0.04);letter-spacing:-4px;pointer-events:none}
     .inv-grid{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:0;position:relative;z-index:1}
@@ -247,7 +248,7 @@
     .inv-ticker-item{font-family:var(--mono);font-size:7.5px;color:rgba(255,255,255,0.45);letter-spacing:.08em;white-space:nowrap}
     .inv-ticker-item span{color:rgba(255,255,255,0.75)}
 
-    /* ── PRECIO PROPUESTO ───────────────────────────────────────── */
+    
     .precio-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:20px}
     .precio-card{background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius);padding:20px;text-align:center;box-shadow:var(--shadow-sm);position:relative}
     .precio-card.recomendado{border-color:var(--forest);box-shadow:0 0 0 2px rgba(26,92,56,0.15),var(--shadow-sm)}
@@ -261,7 +262,7 @@
     .precio-margen.neg{color:var(--crimson)}
     .precio-detalle{font-family:var(--body);font-size:11px;color:var(--ink-soft);margin-top:8px;line-height:1.4}
 
-    /* ── TABLA FINANCIERA ───────────────────────────────────────── */
+    
     .fin-table{width:100%;border-collapse:collapse;font-family:var(--body);font-size:12.5px}
     .fin-table th{font-family:var(--mono);font-size:8px;letter-spacing:.10em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:10px 14px;border-bottom:2px solid var(--rule-strong);background:var(--surface2)}
     .fin-table th:not(:first-child){text-align:right}
@@ -272,7 +273,7 @@
     .fin-table .val-pos{color:var(--forest);font-weight:500}
     .fin-table .val-neg{color:var(--crimson);font-weight:500}
 
-    /* ── IRR / NPV DISPLAY ──────────────────────────────────────── */
+    
     .irr-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
     .irr-card{background:var(--surface);border:1px solid var(--rule);border-radius:var(--radius);padding:24px;box-shadow:var(--shadow-sm)}
     .irr-card-title{font-family:var(--mono);font-size:8px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:12px}
@@ -283,7 +284,7 @@
     .irr-card-main.neutral{color:var(--cobalt)}
     .irr-card-sub{font-family:var(--body);font-size:12px;color:var(--ink-soft);line-height:1.45}
 
-    /* ── LEGEND ─────────────────────────────────────────────────── */
+    
     .legend-row{display:flex;flex-wrap:wrap;gap:12px;padding:10px 20px 0}
     .legend-item{display:flex;align-items:center;gap:6px;font-family:var(--mono);font-size:8.5px;color:var(--ink-soft)}
     .legend-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
@@ -303,14 +304,14 @@
     .level-bar-fill{height:100%;width:0%;background:linear-gradient(90deg,var(--cobalt),var(--cyan));border-radius:999px;transition:width .35s ease}
     .legend-compact{max-height:74px;overflow:auto;padding-right:20px}
 
-    /* ── SCATTER / CORR ─────────────────────────────────────────── */
+    
     .corr-table{width:100%;border-collapse:collapse;font-size:12px}
     .corr-table th{font-family:var(--mono);font-size:8px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-soft);text-align:left;padding:9px 14px;border-bottom:1px solid var(--rule-strong);background:var(--surface2)}
     .corr-table td{padding:9px 14px;border-bottom:1px solid var(--rule);font-family:var(--mono);font-size:11px}
     .corr-table tr:hover td{background:var(--cobalt-pale)}
     .corr-bar{height:6px;border-radius:3px;min-width:2px;display:inline-block;vertical-align:middle}
 
-    /* ── PI HEALTH ──────────────────────────────────────────────── */
+    
     .pi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
     .pi-stat{background:var(--surface2);border:1px solid var(--rule);border-radius:var(--radius);padding:12px 14px}
     .pi-stat-label{font-family:var(--mono);font-size:7.5px;letter-spacing:.10em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:5px}
@@ -319,21 +320,21 @@
     .pi-stat-val.warn{color:var(--amber)}
     .pi-stat-val.crit{color:var(--crimson)}
 
-    /* ── WIND ROSE ──────────────────────────────────────────────── */
+    
     .rose-wrap{position:relative;height:280px;display:flex;align-items:center;justify-content:center;overflow:hidden}
 
-    /* ── GARRAFON COUNTER ───────────────────────────────────────── */
+    
     .garrafon-display{display:flex;align-items:center;gap:20px;padding:20px}
     .garrafon-num{font-family:var(--display);font-size:72px;font-weight:900;color:var(--cobalt);line-height:1}
     .garrafon-label{font-family:var(--body);font-size:13px;color:var(--ink-soft)}
     .garrafon-sub{font-family:var(--mono);font-size:9px;color:var(--ink-faint);margin-top:4px}
 
-    /* ── SCROLLBAR ──────────────────────────────────────────────── */
+    
     ::-webkit-scrollbar{width:4px}
     ::-webkit-scrollbar-track{background:transparent}
     ::-webkit-scrollbar-thumb{background:var(--rule-strong);border-radius:4px}
 
-    /* ── FOOTER ─────────────────────────────────────────────────── */
+    
     .dash-footer{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--cobalt) 0%,#0f2a50 100%);padding:0 36px;height:52px;display:flex;align-items:center;justify-content:space-between;border-top:none}
     .dash-footer::before{content:"AWA05";position:absolute;right:-10px;top:-18px;font-family:var(--display);font-size:96px;font-weight:900;color:rgba(255,255,255,0.04);letter-spacing:-4px;pointer-events:none;user-select:none}
     .dash-footer::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:rgba(255,255,255,0.10)}
@@ -350,35 +351,35 @@
       .footer-center{position:static;transform:none;order:-1;width:100%;justify-content:center}
     }
 
-    /* ── ANIMATIONS ─────────────────────────────────────────────── */
-    /* ── ANIMACIONES ─────────────────────────────────────────────── */
+    
+    
     @keyframes fadeUp   {from{opacity:0;transform:translateY(22px)}to{opacity:1;transform:translateY(0)}}
     @keyframes fadeIn   {from{opacity:0}to{opacity:1}}
     @keyframes scaleIn  {from{opacity:0;transform:scale(0.97)}to{opacity:1;transform:scale(1)}}
     @keyframes slideRight{from{opacity:0;transform:translateX(-16px)}to{opacity:1;transform:translateX(0)}}
 
-    /* Estado inicial — todo invisible hasta que IntersectionObserver lo activa */
+    
     section{opacity:0}
     .card{opacity:0;transform:translateY(18px);transition:opacity 0.45s cubic-bezier(.22,.68,0,1.2),transform 0.45s cubic-bezier(.22,.68,0,1.2)}
     .kpi-card{opacity:0;transform:translateY(14px);transition:opacity 0.4s cubic-bezier(.22,.68,0,1.2),transform 0.4s cubic-bezier(.22,.68,0,1.2)}
 
-    /* Estado visible */
+    
     section.visible{opacity:1;animation:fadeUp 0.55s cubic-bezier(.22,.68,0,1.2) both}
     .card.visible{opacity:1;transform:translateY(0)}
     .kpi-card.visible{opacity:1;transform:translateY(0)}
 
-    /* Hover en cards */
+    
     .card{will-change:transform}
     .card:hover{box-shadow:var(--shadow-lg);transform:translateY(-2px)!important}
     .kpi-card:hover{box-shadow:var(--shadow-md);transform:translateY(-1px)!important}
 
-    /* Sidebar links */
+    
     .sb-link{transition:all 0.18s cubic-bezier(.22,.68,0,1.2)}
 
-    /* Smooth scroll nativo */
+    
     html{scroll-behavior:smooth}
 
-    /* Skeleton loader para KPIs mientras carga */
+    
     @keyframes shimmer{0%{background-position:-400px 0}100%{background-position:400px 0}}
     .loading .kpi-value,.loading .hd-stat-val{
       background:linear-gradient(90deg,var(--surface3) 25%,var(--surface2) 50%,var(--surface3) 75%);
@@ -387,13 +388,13 @@
       border-radius:4px;color:transparent!important;
     }
 
-    /* Transición del panel de interpretación heatmap */
+    
     .hm-interp{transition:all 0.25s cubic-bezier(.22,.68,0,1.2)}
 
-    /* Transición menú móvil */
+    
     .mobile-menu{animation:fadeIn 0.18s ease both}
 
-    /* ── RESPONSIVE TABLET ──────────────────────────────────────── */
+    
     @media(max-width:1100px){
       .layout{grid-template-columns:1fr}
       .sidebar{display:none}
@@ -409,13 +410,13 @@
       .grid-4{grid-template-columns:1fr}
     }
 
-    /* ── HEATMAP CORRELACIÓN ────────────────────────────────────── */
+    
     .hm-table{border-collapse:collapse;font-family:var(--mono);font-size:9px}
     .hm-cell{width:52px;height:52px;text-align:center;vertical-align:middle;cursor:default;transition:opacity 0.15s;font-size:8.5px;font-weight:500;position:relative}
     .hm-cell:hover{opacity:0.75;outline:2px solid var(--ink-mid)}
     .hm-label-col{font-family:var(--mono);font-size:8px;color:var(--ink-soft);padding:0 8px 0 0;text-align:right;white-space:nowrap;font-weight:400}
     .hm-label-row{font-family:var(--mono);font-size:8px;color:var(--ink-soft);padding:4px 2px 0;text-align:center;white-space:nowrap;font-weight:400;max-width:52px;overflow:hidden;text-overflow:ellipsis}
-    /* Panel interpretación heatmap */
+    
     .hm-interp{flex:1;min-width:220px;max-width:380px;background:var(--surface2);border:1px solid var(--rule);border-radius:var(--radius);padding:20px;align-self:flex-start;transition:all 0.2s}
     .hm-interp-empty{color:var(--ink-faint);font-family:var(--mono);font-size:9px;letter-spacing:.08em;text-transform:uppercase;text-align:center;padding:32px 0}
     .hm-interp-header{margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--rule)}
@@ -427,7 +428,7 @@
     .hm-interp-body p{margin-bottom:8px}
     .hm-interp-body p:last-child{margin-bottom:0}
     .hm-interp-tag{display:inline-block;font-family:var(--mono);font-size:7.5px;letter-spacing:.10em;text-transform:uppercase;border:1px solid var(--rule-strong);padding:3px 8px;border-radius:2px;color:var(--ink-faint);margin-top:10px}
-    /* ── IMPORTANCIA BARS ────────────────────────────────────────── */
+    
     .imp-bar-wrap{display:flex;flex-direction:column;gap:8px;padding:16px 20px}
     .imp-row{display:flex;align-items:center;gap:10px}
     .imp-name{font-family:var(--mono);font-size:9px;color:var(--ink-soft);width:100px;flex-shrink:0;text-align:right}
@@ -436,7 +437,7 @@
     .imp-bar-val{font-family:var(--mono);font-size:8px;color:#fff;font-weight:500;white-space:nowrap}
 
 
-    /* ══ LOADING SCREEN · AWA05 ═════════════════════════════════════ */
+    
     #awa-loader {
       position: fixed;
       inset: 0;
@@ -548,7 +549,25 @@
 
 
 
-    /* ── AJUSTE FINAL: SIN NAVEGACIÓN INTERNA LATERAL ───────────── */
+    
+
+    .model-strip{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;margin-bottom:16px}
+    .model-panel{background:linear-gradient(135deg,#ffffff 0%,#f7f6f1 100%);border:1px solid var(--rule);border-radius:var(--radius);box-shadow:var(--shadow-sm);padding:18px 20px;position:relative;overflow:hidden}
+    .model-panel::after{content:"";position:absolute;right:-42px;top:-58px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(28,63,110,.12),transparent 64%);pointer-events:none}
+    .model-title{font-family:var(--mono);font-size:8.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:8px}
+    .equation-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .equation-chip{border:1px solid var(--rule);background:rgba(255,255,255,.72);border-radius:6px;padding:9px 10px;min-height:52px}
+    .equation-main{font-family:var(--mono);font-size:10.5px;color:var(--cobalt);font-weight:700;letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .equation-sub{font-family:var(--body);font-size:10.5px;color:var(--ink-soft);line-height:1.35;margin-top:4px}
+    .selector-stack{display:flex;flex-direction:column;gap:10px}
+    .selector-label{font-family:var(--mono);font-size:7px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:5px}
+    .selector-row{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+    .chart-chip.is-green.is-active{background:linear-gradient(135deg,var(--forest),#123f28);box-shadow:0 7px 18px rgba(26,92,56,.20),inset 0 1px 0 rgba(255,255,255,.18)}
+    .chart-chip.is-gold.is-active{background:linear-gradient(135deg,var(--amber),#7e4100);box-shadow:0 7px 18px rgba(176,92,0,.20),inset 0 1px 0 rgba(255,255,255,.18)}
+    .energy-hour-chip{font-family:var(--mono);font-size:8px;letter-spacing:.08em;color:var(--ink-soft);background:var(--surface2);border:1px solid var(--rule);border-radius:999px;padding:4px 9px;display:inline-flex;align-items:center;gap:5px;margin:2px 4px 2px 0}
+    .energy-hour-chip strong{color:var(--ink-mid);font-weight:700}
+    @media(max-width:768px){.model-strip{grid-template-columns:1fr}.equation-grid{grid-template-columns:1fr}.selector-row{gap:6px}.chart-chip{font-size:7px;padding:6px 9px}}
+
     .layout{grid-template-columns:1fr!important}
     .sidebar{display:none!important}
 
@@ -556,9 +575,7 @@
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     LOADING SCREEN
-════════════════════════════════════════════════════════════════ -->
+
 <div id="awa-loader" aria-hidden="true">
   <div class="loader-inner">
     <svg class="loader-waves" viewBox="0 0 1200 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
@@ -596,9 +613,7 @@
 </div>
 
 
-<!-- ═══════════════════════════════════════════════════════════════
-     HEADER
-════════════════════════════════════════════════════════════════ -->
+
 <header>
   <div class="hd-brand">
     <img src="aala_logo.png" alt="AALA" style="height:30px;width:auto;opacity:0.92;filter:none;flex-shrink:0;">
@@ -628,7 +643,7 @@
   </div>
 </header>
 
-<!-- MENÚ MÓVIL (solo visible en pantallas pequeñas cuando se abre) -->
+
 <div id="mobile-menu" class="mobile-menu" style="display:none">
   <nav class="mobile-nav">
     <a class="mobile-nav-link" href="index.html">Inicio</a>
@@ -639,12 +654,10 @@
 </div>
 
 <div class="layout">
-<!-- ═══════════════════════════════════════════════════════════════
-     MAIN
-════════════════════════════════════════════════════════════════ -->
+
 <main>
 
-<!-- ─── RESUMEN EJECUTIVO ─────────────────────────────────────── -->
+
 <section id="resumen">
   <div class="section-eyebrow">AWA05 · Santa Catarina Palopó, Sololá · Sistema activo</div>
   <div class="section-title">Su cosechadora de agua<br>trabaja <em>ahora mismo</em></div>
@@ -702,7 +715,7 @@
 
 <div class="section-rule"></div>
 
-<!-- ─── SALUD PI ───────────────────────────────────────────────── -->
+
 <section id="salud-pi">
   <div class="section-eyebrow">Raspberry Pi · Nodo de campo AWA05</div>
   <div class="section-title">Estado del <em>nodo</em> de telemetría</div>
@@ -721,7 +734,7 @@
 
 <div class="section-rule"></div>
 
-<!-- ─── NIVEL / PRODUCCIÓN ────────────────────────────────────── -->
+
 <section id="nivel">
   <div class="section-eyebrow">Sensor JSN-SR04T · Mediana 11 muestras · 15 min</div>
   <div class="section-title">Producción <em>hídrica</em> en tiempo real</div>
@@ -758,7 +771,7 @@
 
 <div class="section-rule"></div>
 
-<!-- ─── PRODUCCIÓN DIURNA/NOCTURNA ────────────────────────────── -->
+
 <section id="produccion-analisis">
   <div class="section-eyebrow">Análisis de producción — resolución horaria y día operativo</div>
   <div class="section-title">¿Cuándo produce más su <em>máquina</em>?</div>
@@ -899,17 +912,112 @@
   </div>
 </section>
 
+
 <div class="section-rule"></div>
 
-<!-- ═══════════════════════════════════════════════════════════════
-     SECCIÓN EMPRESARIAL — ANÁLISIS DE COSTOS
-════════════════════════════════════════════════════════════════ -->
+<section id="energia-horaria">
+  <div class="section-eyebrow">Modelo energético · psicrometría operativa · kWh/L</div>
+  <div class="section-title">Eficiencia energética por <em>horario</em></div>
+  <div class="section-subtitle">Cruce entre producción real, duración de operación y condiciones psicrométricas para separar horarios pico de horarios secos y traducirlos a kWh/L o Q por garrafón.</div>
+
+  <div class="model-strip">
+    <div class="model-panel">
+      <div class="model-title">Ecuaciones activas del modelo</div>
+      <div class="equation-grid">
+        <div class="equation-chip"><div class="equation-main">eₛ(T)=0.61094·exp(17.625T/(T+243.04))</div><div class="equation-sub">Presión de vapor de saturación para leer disponibilidad de condensación.</div></div>
+        <div class="equation-chip"><div class="equation-main">AH=216.7·e/(T+273.15)</div><div class="equation-sub">Humedad absoluta en g/m³ ponderada por temperatura y punto de rocío.</div></div>
+        <div class="equation-chip"><div class="equation-main">η=L/kWh · SEC=kWh/L</div><div class="equation-sub">Eficiencia horaria y consumo específico de energía.</div></div>
+        <div class="equation-chip"><div class="equation-main">C₂₀L=SEC·tarifa·20</div><div class="equation-sub">Costo energético de un garrafón de 20 L por horario.</div></div>
+      </div>
+    </div>
+    <div class="model-panel">
+      <div class="selector-stack">
+        <div>
+          <div class="selector-label">Periodo</div>
+          <div class="selector-row">
+            <button class="chart-chip" data-range-group="energia-range" data-range-value="7" onclick="setEnergiaRange(7)">Últimos 7 días</button>
+            <button class="chart-chip is-wide" data-range-group="energia-range" data-range-value="all" onclick="setEnergiaRange('all')">Mostrar todo el periodo</button>
+          </div>
+        </div>
+        <div>
+          <div class="selector-label">Potencia operativa</div>
+          <div class="selector-row">
+            <button class="chart-chip is-green" data-range-group="energia-power" data-range-value="600" onclick="setEnergiaPower(600)">600 W</button>
+            <button class="chart-chip is-green" data-range-group="energia-power" data-range-value="750" onclick="setEnergiaPower(750)">750 W</button>
+            <button class="chart-chip is-green" data-range-group="energia-power" data-range-value="900" onclick="setEnergiaPower(900)">900 W</button>
+          </div>
+        </div>
+        <div>
+          <div class="selector-label">Tarifa eléctrica</div>
+          <div class="selector-row">
+            <button class="chart-chip is-gold" data-range-group="energia-tarifa" data-range-value="2.05" onclick="setEnergiaTarifa(2.05)">Q2.05</button>
+            <button class="chart-chip is-gold" data-range-group="energia-tarifa" data-range-value="1.50" onclick="setEnergiaTarifa(1.50)">Q1.50</button>
+            <button class="chart-chip is-gold" data-range-group="energia-tarifa" data-range-value="1" onclick="setEnergiaTarifa(1)">Q1.00</button>
+          </div>
+        </div>
+        <div>
+          <div class="selector-label">Métrica visual</div>
+          <div class="selector-row">
+            <button class="chart-chip" data-range-group="energia-metric" data-range-value="kwhl" onclick="setEnergiaMetric('kwhl')">kWh/L</button>
+            <button class="chart-chip" data-range-group="energia-metric" data-range-value="lkwh" onclick="setEnergiaMetric('lkwh')">L/kWh</button>
+            <button class="chart-chip" data-range-group="energia-metric" data-range-value="qgarrafon" onclick="setEnergiaMetric('qgarrafon')">Q/garrafón</button>
+            <button class="chart-chip" data-range-group="energia-metric" data-range-value="clima" onclick="setEnergiaMetric('clima')">Índice climático</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="kpi-grid" id="energia-kpi-grid">
+    <div class="kpi-card accent-cobalt"><div class="kpi-label">Consumo específico</div><div class="kpi-value"><span id="ener-kpi-sec">--</span><span class="kpi-unit">kWh/L</span></div><div class="kpi-range" id="ener-kpi-lkwh">--</div><div class="kpi-meta">Producción real y energía horaria integrada</div></div>
+    <div class="kpi-card accent-forest"><div class="kpi-label">Horario pico</div><div class="kpi-value"><span id="ener-kpi-pico-hora">--</span></div><div class="kpi-range" id="ener-kpi-pico-sec">--</div><div class="kpi-meta">Cuartil de menor kWh/L</div></div>
+    <div class="kpi-card accent-amber"><div class="kpi-label">Horario seco</div><div class="kpi-value"><span id="ener-kpi-seco-hora">--</span></div><div class="kpi-range" id="ener-kpi-seco-sec">--</div><div class="kpi-meta">Cuartil de mayor kWh/L</div></div>
+    <div class="kpi-card accent-forest"><div class="kpi-label">Pico vs seco</div><div class="kpi-value"><span id="ener-kpi-delta">--</span><span class="kpi-unit">×</span></div><div class="kpi-range" id="ener-kpi-cost20">--</div><div class="kpi-meta">Diferencia de costo energético por horario</div></div>
+  </div>
+
+  <div class="grid-2">
+    <div class="card">
+      <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div class="card-title">Perfil horario de eficiencia</div>
+          <div class="card-sub">Cada barra representa una hora del día con producción, energía y condiciones ambientales integradas</div>
+        </div>
+        <div class="card-badge" id="ener-badge-hora">kWh/L</div>
+      </div>
+      <div class="legend-row">
+        <div class="legend-item"><div class="legend-dot" style="background:var(--forest)"></div>Horario pico</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--crimson)"></div>Horario seco</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--cobalt)"></div>Resto del día</div>
+      </div>
+      <div class="chart-wrap tall"><canvas id="chart-energia-hora"></canvas></div>
+      <div class="card-foot"><div class="card-ts" id="ts-energia-hora">--</div><div class="card-ts" id="ener-foot-hora">Modelo horario</div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
+        <div>
+          <div class="card-title">Horarios pico vs horarios secos</div>
+          <div class="card-sub">Comparación ejecutiva entre el mejor cuartil horario, promedio operativo y peor cuartil horario</div>
+        </div>
+        <div class="card-badge" id="ener-badge-pico">kWh/L</div>
+      </div>
+      <div class="card-body" style="padding-bottom:0">
+        <div id="ener-hour-tags">--</div>
+      </div>
+      <div class="chart-wrap tall"><canvas id="chart-energia-pico-seco"></canvas></div>
+      <div class="card-foot"><div class="card-ts" id="ts-energia-pico-seco">--</div><div class="card-ts">Pico = mejor 25% · seco = peor 25%</div></div>
+    </div>
+  </div>
+</section>
+
+
+
 <section id="empresa">
   <div class="section-eyebrow">Análisis de costos · DEOCSA Sololá · T(600,750,900) W · Q2.05/kWh · Q7.64/USD</div>
   <div class="section-title">¿Cuánto está <em>costando</em> operar la AWA05?</div>
   <div class="section-subtitle">Todo el análisis se centra en el costo real de operación: energía consumida, costo por litro producido y comparación directa contra lo que costaría comprar el mismo volumen de agua en el mercado de Sololá. No hay proyecciones de venta — solo la realidad del experimento.</div>
 
-  <!-- PANEL OSCURO — INVERSIÓN ACUMULADA -->
+  
   <div class="inv-display">
     <div class="inv-grid">
       <div class="inv-item">
@@ -943,7 +1051,7 @@
     </div>
   </div>
 
-  <!-- KPIs DE COSTO -->
+  
   <div class="kpi-grid">
     <div class="kpi-card accent-cobalt">
       <div class="kpi-label">Costo energético / litro</div>
@@ -983,14 +1091,14 @@
     </div>
   </div>
 
-  <!-- COMPARATIVA VS MERCADO OCULTA: IDs conservados para no alterar la lógica JS -->
+  
   <div style="display:none" aria-hidden="true">
     <span id="comp-mkt-min">--</span>
     <span id="comp-mkt-med">--</span>
     <span id="comp-mkt-max">--</span>
   </div>
 
-  <!-- COMPARATIVA ENERGÍA VS MERCADO DETALLADA -->
+  
   <div class="irr-grid" style="margin-bottom:16px">
     <div class="irr-card">
       <div class="irr-card-title">Costo energético real acumulado</div>
@@ -1014,7 +1122,7 @@
     </div>
   </div>
 
-  <!-- TABLA DE COSTOS ACUMULADOS -->
+  
   <div class="card" style="margin-bottom:16px">
     <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
       <div>
@@ -1039,7 +1147,7 @@
     <div class="card-foot"><div class="card-ts" id="ts-tabla-costos">--</div><div class="card-ts">Basado en producción real del sensor · tarifa DEOCSA Q2.05/kWh</div></div>
   </div>
 
-  <!-- GRÁFICAS -->
+  
   <div class="card" style="margin-bottom:16px">
     <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
       <div>
@@ -1092,7 +1200,7 @@
 
 <div class="section-rule"></div>
 
-<!-- ─── CLIMA BASE ────────────────────────────────────────────── -->
+
 <section id="clima-base">
   <div class="section-eyebrow">WS-2000 · Variables primarias · submuestreo 1h</div>
   <div class="section-title">Condiciones <em>climáticas</em> del sitio</div>
@@ -1109,7 +1217,7 @@
 
 <div class="section-rule"></div>
 
-<!-- ─── CLIMA AVANZADO ────────────────────────────────────────── -->
+
 <section id="clima-avanzado">
   <div class="section-eyebrow">WS-2000 · Variables secundarias</div>
   <div class="section-title">Viento, lluvia, <em>radiación</em> y UV</div>
@@ -1154,13 +1262,13 @@
 
 <div class="section-rule"></div>
 
-<!-- ─── EVALUACIÓN ESTADÍSTICA ────────────────────────────────── -->
+
 <section id="correlacion">
   <div class="section-eyebrow">Evaluación estadística multivariable · Regresión OLS · Análisis de umbral · Importancia de variables</div>
   <div class="section-title">¿Qué <em>determina</em> la producción de agua?</div>
   <div class="section-subtitle">La correlación de Pearson simple asume linealidad y no detecta umbrales ni interacciones. Este bloque implementa regresión lineal múltiple OLS, análisis de umbral por rangos de humedad, importancia de variables por permutación de R², y matriz de correlación completa entre todas las variables climáticas. Basado en literatura científica de captación de niebla (Schemenauer, Castillo-Botón et al.).</div>
 
-  <!-- RESUMEN DEL MODELO OLS -->
+  
   <div class="inv-display" style="margin-bottom:16px">
     <div class="inv-grid" style="grid-template-columns:repeat(5,1fr)">
       <div class="inv-item">
@@ -1197,7 +1305,7 @@
     </div>
   </div>
 
-  <!-- FILA 1: Importancia + Umbral HR -->
+  
   <div class="grid-2" style="margin-bottom:16px">
     <div class="card">
       <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
@@ -1223,7 +1331,7 @@
     </div>
   </div>
 
-  <!-- FILA 2: Coeficientes OLS + Residuales -->
+  
   <div class="grid-2" style="margin-bottom:16px">
     <div class="card">
       <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
@@ -1249,27 +1357,7 @@
     </div>
   </div>
 
-  <!-- FILA 3: Matriz de correlación + Scatter múltiple -->
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
-      <div>
-        <div class="card-title">Matriz de correlación completa — Heatmap de Pearson</div>
-        <div class="card-sub">Correlación entre todas las variables climáticas y el nivel. Detecta multicolinealidad entre predictores (problema para la regresión) y relaciones cruzadas.</div>
-      </div>
-      <div class="card-badge">Heatmap r</div>
-    </div>
-    <div style="padding:16px 20px;display:flex;gap:24px;align-items:flex-start;flex-wrap:wrap" id="hm-container">
-      <div style="overflow-x:auto;-webkit-overflow-scrolling:touch;flex-shrink:0;max-width:100%">
-        <div id="heatmap-corr" style="display:inline-block;min-width:380px"></div>
-      </div>
-      <div class="hm-interp" id="hm-interp" style="flex:1;min-width:200px">
-        <div class="hm-interp-empty">Haz clic en una celda<br>para interpretar la correlación</div>
-      </div>
-    </div>
-    <div class="card-foot"><div class="card-ts" id="ts-heatmap">--</div><div class="card-ts">Pearson r · celda roja = correlación positiva · azul = negativa · blanco = sin correlación</div></div>
-  </div>
-
-  <!-- FILA 4: Tabla OLS completa -->
+  
   <div class="card" style="margin-bottom:16px">
     <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
       <div>
@@ -1287,7 +1375,7 @@
     <div class="card-foot"><div class="card-ts" id="ts-tabla-ols">--</div><div class="card-ts">VIF > 10 = multicolinealidad severa · β* permite comparar variables en distintas unidades</div></div>
   </div>
 
-  <!-- FILA 5: Scatter con regresión por variable top -->
+  
   <div class="grid-2">
     <div class="card"><div class="card-head" style="display:flex;justify-content:space-between"><div><div class="card-title">Nivel vs Humedad relativa</div><div class="card-sub">Scatter + OLS + banda de confianza 95%</div></div><div class="card-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-hum"></canvas></div></div>
     <div class="card"><div class="card-head" style="display:flex;justify-content:space-between"><div><div class="card-title">Nivel vs Punto de rocío</div><div class="card-sub">Temperatura de condensación como predictor físico principal</div></div><div class="card-badge">Scatter</div></div><div class="chart-wrap"><canvas id="chart-corr-dew"></canvas></div></div>
@@ -1314,7 +1402,6 @@
 
 
 <script>
-
 function hideAwaLoader() {
   const loader = document.getElementById('awa-loader');
   if (!loader || loader.classList.contains('fade-out')) return;
@@ -1322,9 +1409,9 @@ function hideAwaLoader() {
   setTimeout(() => loader.classList.add('gone'), 750);
 }
 
-// ═══════════════════════════════════════════════════════════════════════
-// CONSTANTES GLOBALES
-// ═══════════════════════════════════════════════════════════════════════
+
+
+
 const chartRegistry = {};
 let globalPayload = null;
 
@@ -1339,26 +1426,31 @@ let dashboardRangeDays = 7;
 let produccionAnalisisState = null;
 let nivelChartState = null;
 let curvasDiaState = null;
+let energiaRangeDays = 7;
+let energiaPowerW = 750;
+let energiaTarifa = 2.05;
+let energiaMetric = 'kwhl';
+let energiaHorarioState = null;
 
-// ─── MODELO ECONÓMICO ──────────────────────────────────────────────────
+
 const ECO = {
   P_MIN: 600, P_MODA: 750, P_MAX: 900,
-  TARIFA: 2.05,               // Q/kWh · DEOCSA Sololá feb–abr 2026
+  TARIFA: 2.05,
   GARRAFON_L: 20,
   PRECIO_MKT_MIN: 8,
   PRECIO_MKT_MED: 13.50,
   PRECIO_MKT_MAX: 19,
-  USD_GTQ: 7.64,              // Banco de Guatemala, abr 2026
-  CAPEX_USD: 19000,           // Máquina $12,000 + equipamiento $7,000
+  USD_GTQ: 7.64,
+  CAPEX_USD: 19000,
   VIDA_UTIL_ANOS: 10,
-  TASA_DESC: 0.10,            // 10% anual — referencia mercado Guatemala
+  TASA_DESC: 0.10,
   INICIO: new Date('2026-04-23T12:29:11'),
 };
-ECO.CAPEX_Q = ECO.CAPEX_USD * ECO.USD_GTQ;          // Q145,160
-ECO.P_CENTRAL = (ECO.P_MIN + ECO.P_MODA + ECO.P_MAX) / 3;  // 750W exacto
-// Sin precio de venta — el modelo es de costos únicamente
+ECO.CAPEX_Q = ECO.CAPEX_USD * ECO.USD_GTQ;
+ECO.P_CENTRAL = (ECO.P_MIN + ECO.P_MODA + ECO.P_MAX) / 3;
 
-// ─── HELPERS ──────────────────────────────────────────────────────────
+
+
 function toggleMobileMenu() {
   const menu = document.getElementById('mobile-menu');
   const btn  = document.getElementById('btn-mobile-menu');
@@ -1367,7 +1459,7 @@ function toggleMobileMenu() {
   menu.style.display = open ? 'none' : 'block';
   if (btn) btn.textContent = open ? '☰' : '✕';
 }
-// Cierra el menú al hacer click en un link interno
+
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelectorAll('.mobile-nav-link').forEach(link => {
     link.addEventListener('click', () => {
@@ -1412,7 +1504,7 @@ function indicesGarrafones(nivel) {
   return idx;
 }
 
-// ─── FORMAT LABELS ────────────────────────────────────────────────────
+
 function formatLabels(rawLabels) {
   let lastDate='';
   return rawLabels.map(l => {
@@ -1428,7 +1520,7 @@ function formatLabels(rawLabels) {
   });
 }
 
-// ─── FALLBACK ─────────────────────────────────────────────────────────
+
 function buildFallback() {
   const labels=[], labels_nivel=[], now=new Date();
   const pad=v=>String(v).padStart(2,'0');
@@ -1440,7 +1532,7 @@ function buildFallback() {
   return {actualizado:new Date().toLocaleString('es-GT'),kpis:{nivel_l:n.at(-1),humedad_pct:h.at(-1),temp_c:t.at(-1),punto_rocio_c:dew.at(-1),presion_inhg:p.at(-1),viento_kmh:w.at(-1)},sistema:{cpu_temp_c:null,voltaje_v:null,ram_uso_pct:null,disco_uso_pct:null,uptime:null},series:{labels,labels_nivel,nivel_l:n,humedad_pct:h,temp_c:t,punto_rocio_c:dew,presion_inhg:p,viento_kmh:w,viento_dir_deg:dr,lluvia_hora_mm:r,radiacion_solar_wm2:s,uv:u}};
 }
 
-// ─── FETCH ─────────────────────────────────────────────────────────────
+
 async function fetchData() {
   try {
     const r = await fetch('./data/processed/dashboard_data.json?t='+Date.now());
@@ -1453,7 +1545,7 @@ async function fetchData() {
   } catch { return buildFallback(); }
 }
 
-// ─── CHART HELPERS ────────────────────────────────────────────────────
+
 const chartDefaults = {
   responsive:true, maintainAspectRatio:false,
   animation:{duration:700,easing:'easeInOutQuart'},
@@ -1534,6 +1626,7 @@ function setDashboardRange(rangeDays) {
   nivelRangeDays = rangeDays;
   curvasDiaRangeDays = rangeDays;
   produccionRangeDays = rangeDays;
+  energiaRangeDays = rangeDays;
   setText('global-range-label', rangeDays === 'all' ? 'Todo' : '7 días');
   activateRangeButtons('global', rangeDays);
   renderDashboard();
@@ -1610,26 +1703,26 @@ function nivelChart(id, labels, nivel, garrafonIdx) {
 }
 
 function windRoseChart(id, directions) {
-  // Usamos canvas 2D directo para tener control total sobre puntos cardinales
+
   const canvas = document.getElementById(id);
   if (!canvas || !directions || !directions.length) return;
   const ctx = canvas.getContext('2d');
 
-  // Bins de 16 sectores de 22.5° cada uno, empezando en N=0°
+
   const NSECTORS = 16;
   const bins = Array(NSECTORS).fill(0);
   directions.forEach(d => {
     if (d === null || d === undefined) return;
-    // Sector: redondeamos al sector más cercano, con N arriba
+
     const b = Math.round(((+d + 11.25) % 360) / 22.5) % NSECTORS;
     bins[b]++;
   });
   const maxBin = Math.max(...bins, 1);
 
-  // Labels de los 16 sectores (N en índice 0)
+
   const SECTOR_LABELS = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSO','SO','OSO','O','ONO','NO','NNO'];
-  // Solo los 8 principales se muestran en la rosa
-  const CARD_IDX = [0, 2, 4, 6, 8, 10, 12, 14]; // N,NE,E,SE,S,SO,O,NO
+
+  const CARD_IDX = [0, 2, 4, 6, 8, 10, 12, 14];
 
   function drawRose() {
     const W = canvas.parentElement ? (canvas.parentElement.clientWidth || 240) : 240;
@@ -1641,12 +1734,12 @@ function windRoseChart(id, directions) {
     ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
 
     const cx = W / 2, cy = H / 2;
-    const R  = Math.min(W, H) / 2 - 36; // radio máximo de los pétalos
+    const R  = Math.min(W, H) / 2 - 36;
     const SECTOR_RAD = (2 * Math.PI) / NSECTORS;
 
     ctx.clearRect(0, 0, W, H);
 
-    // ── Círculos de referencia ──
+
     [0.25, 0.5, 0.75, 1.0].forEach(f => {
       ctx.beginPath();
       ctx.arc(cx, cy, R * f, 0, 2 * Math.PI);
@@ -1655,7 +1748,7 @@ function windRoseChart(id, directions) {
       ctx.stroke();
     });
 
-    // ── Líneas de ejes (8 direcciones principales) ──
+
     CARD_IDX.forEach(i => {
       const ang = (i / NSECTORS) * 2 * Math.PI - Math.PI / 2;
       ctx.beginPath();
@@ -1666,7 +1759,7 @@ function windRoseChart(id, directions) {
       ctx.stroke();
     });
 
-    // ── Pétalos ──
+
     const COLORS = ['#1c3f6e','#2558a0','#0f6b60','#b05c00','#1a5c38','#7a4a9e','#951f1f','#c4960a',
                     '#1c3f6e','#2558a0','#0f6b60','#b05c00','#1a5c38','#7a4a9e','#951f1f','#c4960a'];
     bins.forEach((count, i) => {
@@ -1687,13 +1780,13 @@ function windRoseChart(id, directions) {
       ctx.stroke();
     });
 
-    // ── Punto central ──
+
     ctx.beginPath();
     ctx.arc(cx, cy, 3, 0, 2 * Math.PI);
     ctx.fillStyle = 'var(--ink-mid, #3a3830)';
     ctx.fill();
 
-    // ── Etiquetas puntos cardinales ──
+
     const FONT_SIZE = Math.max(9, Math.min(12, W / 20));
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
@@ -1710,7 +1803,7 @@ function windRoseChart(id, directions) {
       const fw = isMainCard ? 700 : 500;
       ctx.font = `${fw} ${fs}px 'JetBrains Mono', monospace`;
 
-      // Fondo pill detrás del texto
+
       const tw = ctx.measureText(label).width;
       const pad = isMainCard ? 5 : 3;
       const bh = fs + 5;
@@ -1721,7 +1814,7 @@ function windRoseChart(id, directions) {
       ctx.roundRect(rx, ry, rw, rh, 2);
       ctx.fill();
 
-      // Borde para cardinales principales
+
       if (isMainCard) {
         ctx.strokeStyle = 'rgba(28,63,110,0.25)';
         ctx.lineWidth = 0.8;
@@ -1732,13 +1825,13 @@ function windRoseChart(id, directions) {
       ctx.fillText(label, x, y);
     });
 
-    // ── Leyenda de escala (% del máximo en anillos) ──
+
     ctx.font = `400 7.5px 'JetBrains Mono', monospace`;
     ctx.fillStyle = 'rgba(40,38,30,0.30)';
     ctx.textAlign = 'left';
     ctx.fillText(`máx: ${maxBin} obs.`, 6, H - 8);
 
-    // Porcentajes en los anillos
+
     [0.25, 0.5, 0.75].forEach(f => {
       const pct = Math.round(f * maxBin);
       const lx = cx + 3;
@@ -1749,7 +1842,7 @@ function windRoseChart(id, directions) {
       ctx.fillText(`${pct}`, lx, ly);
     });
 
-    // ── Flecha norte decorativa ──
+
     const northAng = -Math.PI / 2;
     const arrowTip = R - 2;
     const arrowBase = R - 14;
@@ -1761,7 +1854,7 @@ function windRoseChart(id, directions) {
     ctx.stroke();
   }
 
-  // Dibujar ahora y al redimensionar
+
   drawRose();
   const ro = new ResizeObserver(() => drawRose());
   ro.observe(canvas);
@@ -1784,23 +1877,22 @@ function scatterChart(id, x, y, color, xLabel, yLabel) {
   chartRegistry[id]=new Chart(ctx,{type:'scatter',data:{datasets:[{data:pts,backgroundColor:color+'55',borderColor:color,borderWidth:1,pointRadius:3,pointHoverRadius:5},{type:'line',data:[{x:xMin,y:slope*xMin+inter},{x:xMax,y:slope*xMax+inter}],borderColor:color,borderWidth:1.5,pointRadius:0,borderDash:[4,3]}]},options:mergeOpts({plugins:{legend:{display:false}},scales:{x:{...chartDefaults.scales.x,title:{display:true,text:xLabel,color:'#a09e98',font:{family:"'JetBrains Mono'",size:8}}},y:{...chartDefaults.scales.y,title:{display:true,text:yLabel,color:'#a09e98',font:{family:"'JetBrains Mono'",size:8}}}}})});
 }
 
-// ─── ESTADÍSTICA AVANZADA ─────────────────────────────────────────────
 
-/** Regresión OLS multivariable. X: matriz n×k (sin intercept), y: vector n.
- *  Devuelve {beta, yhat, residuals, r2, r2adj, rmse, se_beta, t_stat} */
+
+
 function olsMultiple(X, y) {
   const n = y.length, k = X[0].length;
   if (n < k + 2) return null;
-  // Añadir columna de unos para el intercepto
+
   const Xa = X.map(row => [1, ...row]);
   const kk = kk_cols = Xa[0].length;
-  // XtX (k×k)
+
   const XtX = Array.from({length:kk}, (_,i) => Array.from({length:kk}, (_,j) => {
     let s=0; for(let r=0;r<n;r++) s+=Xa[r][i]*Xa[r][j]; return s;
   }));
-  // Xt y (k)
+
   const Xty = Array.from({length:kk}, (_,i) => { let s=0; for(let r=0;r<n;r++) s+=Xa[r][i]*y[r]; return s; });
-  // Invertir XtX (Gauss-Jordan)
+
   const inv = XtX.map((row,i)=>[...row, ...Array(kk).fill(0).map((_,j)=>i===j?1:0)]);
   for(let col=0;col<kk;col++){
     let pivot=inv[col][col]; if(Math.abs(pivot)<1e-12) return null;
@@ -1812,25 +1904,25 @@ function olsMultiple(X, y) {
     }
   }
   const XtX_inv = inv.map(row=>row.slice(kk));
-  // beta = XtX_inv * Xty
+
   const beta = XtX_inv.map(row => row.reduce((s,v,j)=>s+v*Xty[j],0));
-  // Predichos y residuales
+
   const yhat = Xa.map(row => row.reduce((s,v,j)=>s+v*beta[j],0));
   const resid = y.map((v,i)=>v-yhat[i]);
-  // R²
+
   const ym = y.reduce((a,b)=>a+b,0)/n;
   const sst = y.reduce((s,v)=>s+(v-ym)**2,0);
   const sse = resid.reduce((s,v)=>s+v**2,0);
   const r2 = 1 - sse/sst;
   const r2adj = 1 - (1-r2)*(n-1)/(n-kk);
   const rmse = Math.sqrt(sse/(n-kk));
-  // Error estándar de beta
+
   const se_beta = XtX_inv.map((_,i)=>Math.sqrt(Math.max(0,XtX_inv[i][i])*sse/(n-kk)));
   const t_stat = beta.map((b,i)=>b/(se_beta[i]||1e-10));
   return {beta, yhat, resid, r2, r2adj, rmse, se_beta, t_stat, n, k:kk-1};
 }
 
-/** Calcula Pearson r entre dos vectores (ignora nulos) */
+
 function pearsonR(x, y) {
   const pairs = x.map((v,i)=>[v,y[i]]).filter(p=>p[0]!=null&&p[1]!=null);
   if(pairs.length<3) return {r:0,p:1,n:0};
@@ -1845,7 +1937,7 @@ function pearsonR(x, y) {
   return {r,p,n};
 }
 
-/** Calcula VIF para variable j en matriz X (n×k, sin intercept) */
+
 function calcVIF(X, j) {
   const k=X[0].length;
   if(k<2) return 1;
@@ -1856,7 +1948,7 @@ function calcVIF(X, j) {
   return res.r2>=1?999:1/(1-res.r2);
 }
 
-/** Color para heatmap: azul (-1) → blanco (0) → rojo (1) */
+
 function heatColor(r) {
   const v=Math.max(-1,Math.min(1,r));
   if(v>=0){const t=v;return `rgb(${Math.round(220-t*170)},${Math.round(220-t*180)},${Math.round(220-t*185)})`;}
@@ -1864,7 +1956,7 @@ function heatColor(r) {
 }
 
 function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
-  // Alinear longitudes — tomar mínimo de pares válidos
+
   const n0=Math.min(nivel.length, hum.length, temp.length, dew.length, pres.length, wind.length, solar.length);
   const rows=[];
   for(let i=0;i<n0;i++){
@@ -1884,11 +1976,11 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
     {name:'Radiación', short:'Rad W/m²', color:'#c4960a'},
   ];
 
-  // ── OLS completo ──
+
   const ols=olsMultiple(X, Y);
   if(!ols) return;
 
-  // ── Importancia por permutación de R² ──
+
   const ym=Y.reduce((a,b)=>a+b,0)/Y.length;
   const sst=Y.reduce((s,v)=>s+(v-ym)**2,0);
   const sse_full=ols.resid.reduce((s,v)=>s+v**2,0);
@@ -1897,16 +1989,16 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
   const importancia=VARS.map((_,j)=>{
     const X_perm=X.map(r=>[...r]);
     const col=X_perm.map(r=>r[j]);
-    // Shuffle col
+
     for(let i=col.length-1;i>0;i--){const k=Math.floor(Math.random()*(i+1));[col[i],col[k]]=[col[k],col[i]];}
     X_perm.forEach((r,i)=>r[j]=col[i]);
     const ols_p=olsMultiple(X_perm,Y);
     if(!ols_p) return 0;
     const sse_p=ols_p.resid.reduce((s,v)=>s+v**2,0);
-    return Math.max(0, (1-sse_p/sst) - r2_full); // negativo = variable importa
-    // Nota: permutación baja R², así que delta = r2_full - r2_perm
+    return Math.max(0, (1-sse_p/sst) - r2_full);
+
   });
-  // Recalcular con el delta correcto
+
   const importanciaReal=VARS.map((_,j)=>{
     const X_perm=X.map(r=>[...r]);
     const col=X_perm.map(r=>r[j]);
@@ -1919,13 +2011,13 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
     return Math.max(0, r2_full - r2_p);
   });
 
-  // ── Pearson bivariado ──
+
   const pearson=VARS.map((_,j)=>pearsonR(X.map(r=>r[j]),Y));
 
-  // ── VIF ──
+
   const vif=VARS.map((_,j)=>calcVIF(X,j));
 
-  // ── KPIs panel oscuro ──
+
   setText('ols-r2', r2_full.toFixed(3));
   setText('ols-r2adj', ols.r2adj.toFixed(3));
   setText('ols-rmse', ols.rmse.toFixed(3));
@@ -1936,7 +2028,7 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
   const tsStr='Act: '+(document.getElementById('header-ts')?.textContent||'--');
   ['ts-importancia','ts-umbral','ts-ols','ts-resid','ts-heatmap','ts-tabla-ols'].forEach(id=>setText(id,tsStr));
 
-  // ── GRÁFICA 1: Importancia por permutación ──
+
   destroyChart('chart-importancia');
   const ctx1=document.getElementById('chart-importancia')?.getContext('2d');
   if(ctx1){
@@ -1957,7 +2049,7 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
     })});
   }
 
-  // ── GRÁFICA 2: Umbral HR ──
+
   destroyChart('chart-umbral-hr');
   const ctx2=document.getElementById('chart-umbral-hr')?.getContext('2d');
   if(ctx2){
@@ -1995,11 +2087,11 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
     })});
   }
 
-  // ── GRÁFICA 3: Coeficientes OLS ──
+
   destroyChart('chart-ols-coef');
   const ctx3=document.getElementById('chart-ols-coef')?.getContext('2d');
   if(ctx3){
-    const betas=ols.beta.slice(1); // sin intercepto
+    const betas=ols.beta.slice(1);
     const se=ols.se_beta.slice(1);
     chartRegistry['chart-ols-coef']=new Chart(ctx3,{type:'bar',data:{
       labels:VARS.map(v=>v.name),
@@ -2021,7 +2113,7 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
     })});
   }
 
-  // ── GRÁFICA 4: Residuales vs predichos ──
+
   destroyChart('chart-residuales');
   const ctx4=document.getElementById('chart-residuales')?.getContext('2d');
   if(ctx4){
@@ -2041,7 +2133,7 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
     })});
   }
 
-  // ── HEATMAP de correlación ──
+
   const ALL_VARS=[...VARS,{name:'Nivel',short:'Nivel',color:'#1c3f6e'}];
   const ALL_DATA=[...X.map(r=>[...r,0]).map((r,i)=>{r[6]=Y[i];return r;})]
     .reduce((acc,row)=>{row.forEach((v,j)=>{if(!acc[j])acc[j]=[];acc[j].push(v);}); return acc;},
@@ -2068,7 +2160,7 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
     hm.innerHTML=html;
   }
 
-  // ── Tabla estadística completa ──
+
   const tbody=document.getElementById('corr-body');
   if(tbody){
     tbody.innerHTML='';
@@ -2078,7 +2170,7 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
       const beta=ols.beta[j+1];
       const t_j=ols.t_stat[j+1];
       const p_ols=2*(1-Math.min(0.9999,Math.abs(t_j)/Math.sqrt(t_j*t_j+rows.length-VARS.length-1)));
-      // Beta estandarizado: beta * std_x / std_y
+
       const xs=X.map(r=>r[j]);
       const ym2=Y.reduce((a,b)=>a+b,0)/Y.length;
       const std_y=Math.sqrt(Y.reduce((s,v)=>s+(v-ym2)**2,0)/Y.length)||1;
@@ -2109,7 +2201,7 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
     });
   }
 
-  // ── Scatters individuales mejorados (con banda de confianza 95%) ──
+
   [
     {id:'chart-corr-hum',  j:0, color:'#0f6b60', label:'Humedad %',     yLabel:'Nivel L'},
     {id:'chart-corr-dew',  j:2, color:'#1c3f6e', label:'Rocío °C',      yLabel:'Nivel L'},
@@ -2126,11 +2218,11 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
     const num=xs.reduce((a,v,i)=>a+(v-xm)*(ys[i]-ym),0);
     const den=xs.reduce((a,v)=>a+(v-xm)**2,0)||1;
     const slope=num/den, inter=ym-slope*xm;
-    // Banda de confianza 95% (aprox: ŷ ± t*se_ŷ)
+
     const n=pts.length;
     const resids=pts.map(p=>p.y-(slope*p.x+inter));
     const s2=resids.reduce((s,v)=>s+v*v,0)/(n-2)||0;
-    const t95=1.96; // aproximación para n grande
+    const t95=1.96;
     const xSorted=[...xs].sort((a,b)=>a-b);
     const bandPts=xSorted.map(xv=>{
       const se=Math.sqrt(s2*(1/n+(xv-xm)**2/den));
@@ -2140,7 +2232,7 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
     const {r,p}=pearsonR(xs,ys);
     const pStr=p<0.001?'p<0.001':p<0.05?'p<0.05':'p='+p.toFixed(3);
     chartRegistry[id]=new Chart(ctx,{type:'scatter',data:{datasets:[
-      // Banda confianza
+
       {type:'line',label:'Banda 95%',
         data:bandPts.map(b=>({x:b.x,y:b.upper})),
         borderColor:'transparent',backgroundColor:color+'22',
@@ -2149,11 +2241,11 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
         data:bandPts.map(b=>({x:b.x,y:b.lower})),
         borderColor:'transparent',backgroundColor:'transparent',
         pointRadius:0,fill:false,tension:0.3},
-      // Regresión
+
       {type:'line',label:`OLS: r=${r.toFixed(2)} ${pStr}`,
         data:[{x:xSorted[0],y:slope*xSorted[0]+inter},{x:xSorted[xSorted.length-1],y:slope*xSorted[xSorted.length-1]+inter}],
         borderColor:color,borderWidth:2,borderDash:[5,3],pointRadius:0,fill:false},
-      // Puntos
+
       {label:'Observaciones',data:pts,
         backgroundColor:color+'55',borderColor:color,borderWidth:1,
         pointRadius:3,pointHoverRadius:6,pointHoverBackgroundColor:'#fff',
@@ -2172,7 +2264,7 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
   });
 }
 
-// ─── CORRELACIÓN LEGACY (ya no se usa, mantenida para compatibilidad) ──
+
 function updateCorrTable() {}
 
 
@@ -2190,7 +2282,7 @@ function interpretHeatCell(nameA, nameB, r, i, j) {
   const dir = r > 0 ? 'positiva' : r < 0 ? 'negativa' : 'sin correlación';
   const esDiag = nameA === nameB;
 
-  // Interpretaciones en lenguaje sencillo — par a par
+
   const INTERP = {
     'HR%_Temp°C': {
       titulo: '¿La temperatura afecta la humedad?',
@@ -2360,7 +2452,7 @@ function interpretarPi(sistema) {
   setText('pi-load',sistema.load_1m||'--');
 }
 
-// ─── PRODUCCIÓN DIURNA / NOCTURNA ─────────────────────────────────────
+
 function renderProduccionAnalisis(rawLabels, nivel) {
   produccionAnalisisState = { rawLabels, nivel };
   renderProduccionAnalisisPanel();
@@ -2691,7 +2783,282 @@ function renderCurvasDiaChart() {
 
 }
 
-// ─── MÓDULO ECONÓMICO — SOLO COSTOS ───────────────────────────────────
+
+function setEnergiaRange(rangeDays) {
+  energiaRangeDays = rangeDays;
+  renderEnergiaHorarioPanel();
+}
+
+function setEnergiaPower(powerW) {
+  energiaPowerW = Number(powerW);
+  renderEnergiaHorarioPanel();
+}
+
+function setEnergiaTarifa(tarifa) {
+  energiaTarifa = Number(tarifa);
+  renderEnergiaHorarioPanel();
+}
+
+function setEnergiaMetric(metric) {
+  energiaMetric = metric;
+  renderEnergiaHorarioPanel();
+}
+
+function renderEnergiaHorario(rawNivelLabels, nivel, rawClimaLabels, hum, temp, dew, pres, wind, solar) {
+  energiaHorarioState = { rawNivelLabels, nivel, rawClimaLabels, hum, temp, dew, pres, wind, solar };
+  renderEnergiaHorarioPanel();
+}
+
+function renderEnergiaHorarioPanel() {
+  if (!energiaHorarioState) return;
+  const srcLabels = energiaHorarioState.rawNivelLabels || [];
+  const srcNivel = energiaHorarioState.nivel || [];
+  const sliced = sliceByTimeRange(srcLabels, [srcNivel], energiaRangeDays);
+  const rawLabels = sliced.rawLabels || [];
+  const nivel = sliced.arrays[0] || [];
+  if (!rawLabels.length || nivel.length < 2) return;
+
+  const fmt = (v, d = 2) => (v !== null && v !== undefined && isFinite(v)) ? Number(v).toFixed(d) : '--';
+  const pad2 = v => String(v).padStart(2, '0');
+  const parseTs = v => {
+    if (!v) return null;
+    const d = new Date(String(v).replace(' ', 'T'));
+    return isNaN(d.getTime()) ? null : d;
+  };
+  const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
+  const satKPa = T => 0.61094 * Math.exp((17.625 * T) / (T + 243.04));
+  const actualKPa = (T, RH, DP) => {
+    if (isFinite(DP)) return satKPa(DP);
+    if (isFinite(T) && isFinite(RH)) return satKPa(T) * clamp(RH, 0, 100) / 100;
+    return null;
+  };
+  const pressureKPa = pInHg => isFinite(pInHg) ? pInHg * 3.386389 : 101.325;
+  const absHumidity = (T, eKPa) => (isFinite(T) && isFinite(eKPa)) ? 216.7 * (eKPa * 10) / (T + 273.15) : null;
+  const humidityRatio = (eKPa, pKPa) => (isFinite(eKPa) && isFinite(pKPa) && pKPa > eKPa) ? 0.621945 * eKPa / (pKPa - eKPa) : null;
+  const hourFloat = d => d.getHours() + d.getMinutes() / 60 + d.getSeconds() / 3600;
+  const nextHour = (start, end) => {
+    const h = new Date(start);
+    h.setMinutes(0, 0, 0);
+    h.setHours(h.getHours() + 1);
+    return h > start && h < end ? h : end;
+  };
+
+  const climaRows = [];
+  const cLabels = energiaHorarioState.rawClimaLabels || [];
+  for (let i = 0; i < cLabels.length; i++) {
+    const ts = parseTs(cLabels[i]);
+    if (!ts) continue;
+    climaRows.push({
+      ts,
+      hum: Number(energiaHorarioState.hum?.[i]),
+      temp: Number(energiaHorarioState.temp?.[i]),
+      dew: Number(energiaHorarioState.dew?.[i]),
+      pres: Number(energiaHorarioState.pres?.[i]),
+      wind: Number(energiaHorarioState.wind?.[i]),
+      solar: Number(energiaHorarioState.solar?.[i])
+    });
+  }
+  climaRows.sort((a, b) => a.ts - b.ts);
+
+  const nearestWeather = ts => {
+    if (!climaRows.length) return null;
+    let lo = 0, hi = climaRows.length - 1;
+    while (lo < hi) {
+      const mid = (lo + hi) >> 1;
+      if (climaRows[mid].ts < ts) lo = mid + 1; else hi = mid;
+    }
+    const a = climaRows[lo];
+    const b = climaRows[Math.max(0, lo - 1)];
+    const best = !b || Math.abs(a.ts - ts) <= Math.abs(b.ts - ts) ? a : b;
+    return Math.abs(best.ts - ts) <= 2 * 3600000 ? best : null;
+  };
+
+  const psychro = (w, ts) => {
+    const T = Number(w?.temp);
+    const RH = Number(w?.hum);
+    const DP = Number(w?.dew);
+    const SOL = Number(w?.solar);
+    const WND = Number(w?.wind);
+    const P = pressureKPa(Number(w?.pres));
+    const es = isFinite(T) ? satKPa(T) : null;
+    const e = actualKPa(T, RH, DP);
+    const ah = absHumidity(T, e);
+    const wr = humidityRatio(e, P);
+    const vpd = (isFinite(es) && isFinite(e)) ? Math.max(0, es - e) : null;
+    const dewGap = (isFinite(T) && isFinite(DP)) ? Math.max(0, T - DP) : null;
+    const h = ts.getHours() + ts.getMinutes() / 60;
+    const night = (h >= 18.5 || h < 5.5) ? 1 : 0;
+    const rhScore = isFinite(RH) ? clamp((RH - 55) / 40, 0, 1) : 0.55;
+    const dewScore = isFinite(dewGap) ? clamp(1 - dewGap / 12, 0, 1) : 0.55;
+    const ahScore = isFinite(ah) ? clamp((ah - 8) / 10, 0, 1) : 0.55;
+    const solarScore = isFinite(SOL) ? clamp(1 - SOL / 550, 0, 1) : 0.65;
+    const windScore = isFinite(WND) ? clamp((WND - 0.4) / 7.5, 0, 1) : 0.5;
+    const vpdScore = isFinite(vpd) ? clamp(1 - vpd / 1.7, 0, 1) : 0.55;
+    const index = clamp(0.24 * rhScore + 0.21 * dewScore + 0.20 * ahScore + 0.16 * vpdScore + 0.10 * solarScore + 0.06 * windScore + 0.03 * night, 0, 1);
+    const solarNorm = isFinite(SOL) ? clamp(SOL / 700, 0, 1) : 0.2;
+    const loadFactor = clamp(0.94 + 0.10 * (1 - index) + 0.035 * solarNorm, 0.92, 1.10);
+    return { index, loadFactor, ah, wr, vpd, RH, T, DP };
+  };
+
+  const puntos = rawLabels.map((l, i) => {
+    const ts = parseTs(l);
+    const vol = Number(nivel[i]);
+    return ts && isFinite(vol) ? { ts, vol } : null;
+  }).filter(Boolean).sort((a, b) => a.ts - b.ts);
+  if (puntos.length < 2) return;
+
+  const hours = Array.from({ length: 24 }, (_, h) => ({ hour: h, litros: 0, horas: 0, kwh: 0, idxHoras: 0, ahHoras: 0, wrHoras: 0, vpdHoras: 0 }));
+  const MAX_GAP_H = 3;
+
+  for (let i = 1; i < puntos.length; i++) {
+    const prev = puntos[i - 1];
+    const curr = puntos[i];
+    const durH = (curr.ts - prev.ts) / 3600000;
+    if (!(durH > 0) || durH > MAX_GAP_H) continue;
+    const dv = curr.vol - prev.vol;
+    const prod = (dv > 0 && dv <= 6) ? dv : 0;
+    let cursor = new Date(prev.ts);
+    let guard = 0;
+    while (cursor < curr.ts && guard < 80) {
+      const end = nextHour(cursor, curr.ts);
+      const segH = (end - cursor) / 3600000;
+      if (!(segH > 0)) break;
+      const mid = new Date((cursor.getTime() + end.getTime()) / 2);
+      const h = mid.getHours();
+      const w = nearestWeather(mid);
+      const ps = psychro(w, mid);
+      const litros = prod * (segH / durH);
+      const kwh = (energiaPowerW / 1000) * segH * ps.loadFactor;
+      hours[h].litros += litros;
+      hours[h].horas += segH;
+      hours[h].kwh += kwh;
+      hours[h].idxHoras += ps.index * segH;
+      if (isFinite(ps.ah)) hours[h].ahHoras += ps.ah * segH;
+      if (isFinite(ps.wr)) hours[h].wrHoras += ps.wr * segH;
+      if (isFinite(ps.vpd)) hours[h].vpdHoras += ps.vpd * segH;
+      cursor = end;
+      guard++;
+    }
+  }
+
+  const valid = hours.map(h => {
+    const sec = h.litros > 0 ? h.kwh / h.litros : null;
+    const lkwh = h.kwh > 0 ? h.litros / h.kwh : null;
+    const qgarrafon = sec !== null ? sec * energiaTarifa * ECO.GARRAFON_L : null;
+    const index = h.horas > 0 ? h.idxHoras / h.horas : null;
+    return { ...h, sec, lkwh, qgarrafon, index };
+  }).filter(h => h.sec !== null && isFinite(h.sec) && h.horas > 0.05 && h.litros > 0.02);
+
+  const totalL = hours.reduce((a, h) => a + h.litros, 0);
+  const totalKwh = hours.reduce((a, h) => a + h.kwh, 0);
+  const avgSec = totalL > 0 ? totalKwh / totalL : null;
+  const avgLkwh = totalKwh > 0 ? totalL / totalKwh : null;
+  const avgCost20 = avgSec !== null ? avgSec * energiaTarifa * ECO.GARRAFON_L : null;
+
+  let best = null, dry = null, peakGroup = [], dryGroup = [];
+  if (valid.length) {
+    const sorted = [...valid].sort((a, b) => a.sec - b.sec);
+    const n = Math.max(1, Math.ceil(sorted.length * 0.25));
+    peakGroup = sorted.slice(0, n);
+    dryGroup = sorted.slice(-n).reverse();
+    best = sorted[0];
+    dry = sorted[sorted.length - 1];
+  }
+  const weighted = group => {
+    const L = group.reduce((a, h) => a + h.litros, 0);
+    const K = group.reduce((a, h) => a + h.kwh, 0);
+    const I = group.reduce((a, h) => a + (h.index || 0) * h.horas, 0);
+    const H = group.reduce((a, h) => a + h.horas, 0);
+    const sec = L > 0 ? K / L : null;
+    return { litros: L, kwh: K, sec, lkwh: K > 0 ? L / K : null, qgarrafon: sec !== null ? sec * energiaTarifa * ECO.GARRAFON_L : null, index: H > 0 ? I / H : null };
+  };
+  const peakAgg = weighted(peakGroup);
+  const dryAgg = weighted(dryGroup);
+  const avgAgg = { sec: avgSec, lkwh: avgLkwh, qgarrafon: avgCost20, index: hours.reduce((a, h) => a + h.idxHoras, 0) / Math.max(0.001, hours.reduce((a, h) => a + h.horas, 0)) };
+  const ratio = peakAgg.sec && dryAgg.sec ? dryAgg.sec / peakAgg.sec : null;
+
+  setText('ener-kpi-sec', fmt(avgSec, 3));
+  setText('ener-kpi-lkwh', fmt(avgLkwh, 2) + ' L/kWh');
+  setText('ener-kpi-pico-hora', best ? pad2(best.hour) + ':00' : '--');
+  setText('ener-kpi-pico-sec', peakAgg.sec !== null ? fmt(peakAgg.sec, 3) + ' kWh/L · Q' + fmt(peakAgg.qgarrafon, 2) + '/20L' : '--');
+  setText('ener-kpi-seco-hora', dry ? pad2(dry.hour) + ':00' : '--');
+  setText('ener-kpi-seco-sec', dryAgg.sec !== null ? fmt(dryAgg.sec, 3) + ' kWh/L · Q' + fmt(dryAgg.qgarrafon, 2) + '/20L' : '--');
+  setText('ener-kpi-delta', fmt(ratio, 1));
+  setText('ener-kpi-cost20', avgCost20 !== null ? 'Promedio Q' + fmt(avgCost20, 2) + ' por 20 L' : '--');
+
+  const metricConfig = {
+    kwhl: { label: 'kWh/L', unit: ' kWh/L', value: h => h.sec, axis: v => fmt(v, 2), betterLow: true, badge: 'kWh/L' },
+    lkwh: { label: 'L/kWh', unit: ' L/kWh', value: h => h.lkwh, axis: v => fmt(v, 1), betterLow: false, badge: 'L/kWh' },
+    qgarrafon: { label: 'Q/garrafón', unit: ' Q/20L', value: h => h.qgarrafon, axis: v => 'Q' + fmt(v, 0), betterLow: true, badge: 'Q/garrafón' },
+    clima: { label: 'Índice climático', unit: '%', value: h => h.index !== null ? h.index * 100 : null, axis: v => fmt(v, 0) + '%', betterLow: false, badge: 'Índice' }
+  };
+  const cfg = metricConfig[energiaMetric] || metricConfig.kwhl;
+  const peakSet = new Set(peakGroup.map(h => h.hour));
+  const drySet = new Set(dryGroup.map(h => h.hour));
+  const labels = hours.map(h => pad2(h.hour) + ':00');
+  const values = hours.map(h => {
+    const sec = h.litros > 0 ? h.kwh / h.litros : null;
+    const obj = { ...h, sec, lkwh: h.kwh > 0 ? h.litros / h.kwh : null, qgarrafon: sec !== null ? sec * energiaTarifa * ECO.GARRAFON_L : null, index: h.horas > 0 ? h.idxHoras / h.horas : null };
+    const v = cfg.value(obj);
+    return v !== null && isFinite(v) ? +v.toFixed(3) : null;
+  });
+  const colors = hours.map(h => peakSet.has(h.hour) ? 'rgba(26,92,56,0.78)' : drySet.has(h.hour) ? 'rgba(149,31,31,0.78)' : 'rgba(28,63,110,0.58)');
+  const borders = hours.map(h => peakSet.has(h.hour) ? '#1a5c38' : drySet.has(h.hour) ? '#951f1f' : '#1c3f6e');
+
+  destroyChart('chart-energia-hora');
+  const ctxH = document.getElementById('chart-energia-hora')?.getContext('2d');
+  if (ctxH) {
+    chartRegistry['chart-energia-hora'] = new Chart(ctxH, {
+      type: 'bar',
+      data: { labels, datasets: [{ label: cfg.label, data: values, backgroundColor: colors, borderColor: borders, borderWidth: 1.4, borderRadius: 3 }] },
+      options: mergeOpts({
+        plugins: { legend: { display: false }, tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: c => {
+          const h = hours[c.dataIndex];
+          const sec = h.litros > 0 ? h.kwh / h.litros : null;
+          const idx = h.horas > 0 ? h.idxHoras / h.horas : null;
+          const main = ' ' + cfg.label + ': ' + (c.parsed.y !== null ? cfg.axis(c.parsed.y) : '--');
+          return [main, 'Producción: ' + fmt(h.litros, 2) + ' L', 'Energía: ' + fmt(h.kwh, 2) + ' kWh', 'SEC: ' + fmt(sec, 3) + ' kWh/L', 'Clima: ' + fmt(idx * 100, 0) + '%'];
+        } } } },
+        scales: { x: { ...chartDefaults.scales.x, ticks: { ...chartDefaults.scales.x.ticks, maxTicksLimit: 12 } }, y: { ...chartDefaults.scales.y, min: 0, ticks: { ...chartDefaults.scales.y.ticks, callback: v => cfg.axis(v) } } }
+      })
+    });
+  }
+
+  const compLabels = ['Promedio', 'Horarios pico', 'Horarios secos'];
+  const compData = [avgAgg, peakAgg, dryAgg].map(h => {
+    const v = cfg.value(h);
+    return v !== null && isFinite(v) ? +v.toFixed(3) : null;
+  });
+  destroyChart('chart-energia-pico-seco');
+  const ctxP = document.getElementById('chart-energia-pico-seco')?.getContext('2d');
+  if (ctxP) {
+    chartRegistry['chart-energia-pico-seco'] = new Chart(ctxP, {
+      type: 'bar',
+      data: { labels: compLabels, datasets: [{ label: cfg.label, data: compData, backgroundColor: ['rgba(28,63,110,0.62)','rgba(26,92,56,0.78)','rgba(149,31,31,0.78)'], borderColor: ['#1c3f6e','#1a5c38','#951f1f'], borderWidth: 1.4, borderRadius: 4 }] },
+      options: mergeOpts({
+        plugins: { legend: { display: false }, tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: c => ' ' + cfg.label + ': ' + cfg.axis(c.parsed.y) } } },
+        scales: { x: { ...chartDefaults.scales.x }, y: { ...chartDefaults.scales.y, min: 0, ticks: { ...chartDefaults.scales.y.ticks, callback: v => cfg.axis(v) } } }
+      })
+    });
+  }
+
+  const tagHtml = '<span class="energy-hour-chip"><strong>Pico</strong> ' + (peakGroup.map(h => pad2(h.hour) + ':00').join(' · ') || '--') + '</span>' +
+                  '<span class="energy-hour-chip"><strong>Seco</strong> ' + (dryGroup.map(h => pad2(h.hour) + ':00').join(' · ') || '--') + '</span>';
+  const tagEl = document.getElementById('ener-hour-tags');
+  if (tagEl) tagEl.innerHTML = tagHtml;
+  setText('ener-badge-hora', cfg.badge);
+  setText('ener-badge-pico', cfg.badge);
+  setText('ener-foot-hora', energiaPowerW + ' W · Q' + fmt(energiaTarifa, 2) + '/kWh');
+  const ts = 'Act: ' + (document.getElementById('header-ts')?.textContent || '--') + ' · ' + (energiaRangeDays === 'all' ? 'todo el periodo' : 'últimos 7 días');
+  setText('ts-energia-hora', ts);
+  setText('ts-energia-pico-seco', ts);
+  activateRangeButtons('energia-range', energiaRangeDays);
+  activateRangeButtons('energia-power', energiaPowerW);
+  activateRangeButtons('energia-tarifa', energiaTarifa);
+  activateRangeButtons('energia-metric', energiaMetric);
+}
+
+
 function renderEmpresa(rawLabels, nivel, hum, temp) {
   if (!rawLabels || rawLabels.length < 2 || !nivel || nivel.length < 2) return;
 
@@ -2700,7 +3067,7 @@ function renderEmpresa(rawLabels, nivel, hum, temp) {
   const ahora = new Date();
   const horas = Math.max(0.01, (ahora - inicio) / 3600000);
 
-  // ── Energía consumida ──
+
   const eC  = (ECO.P_CENTRAL / 1000) * horas;
   const eMin = (ECO.P_MIN    / 1000) * horas;
   const eMax = (ECO.P_MAX    / 1000) * horas;
@@ -2708,7 +3075,7 @@ function renderEmpresa(rawLabels, nivel, hum, temp) {
   const costoMin = eMin * ECO.TARIFA;
   const costoMax = eMax * ECO.TARIFA;
 
-  // ── Producción real ──
+
   let totalL = 0;
   for (let i = 1; i < nivel.length; i++) {
     const d = nivel[i] - nivel[i-1];
@@ -2717,45 +3084,45 @@ function renderEmpresa(rawLabels, nivel, hum, temp) {
   totalL = +totalL.toFixed(2);
   const garrafones = totalL / ECO.GARRAFON_L;
 
-  // ── Costo por litro ──
+
   const cLC   = totalL > 0 ? costoC   / totalL : null;
   const cLMin = totalL > 0 ? costoMin / totalL : null;
   const cLMax = totalL > 0 ? costoMax / totalL : null;
 
-  // ── Costo por garrafón ──
+
   const cGC   = cLC   != null ? cLC   * ECO.GARRAFON_L : null;
   const cGMin = cLMin != null ? cLMin * ECO.GARRAFON_L : null;
   const cGMax = cLMax != null ? cLMax * ECO.GARRAFON_L : null;
 
-  // ── Ahorro vs mercado medio ──
+
   const ahorroAbs = cGC != null ? ECO.PRECIO_MKT_MED - cGC : null;
   const ahorroPct = cGC != null ? (ahorroAbs / ECO.PRECIO_MKT_MED) * 100 : null;
 
-  // ── Eficiencia L/kWh ──
+
   const efC   = eC   > 0 ? totalL / eC   : null;
   const efMin = eMax > 0 ? totalL / eMax : null;
   const efMax = eMin > 0 ? totalL / eMin : null;
 
-  // ── Costos diario y mensual (potencia central) ──
+
   const costoDia = (ECO.P_CENTRAL / 1000) * 24 * ECO.TARIFA;
   const costoMes = costoDia * 30;
 
-  // ── Valor equivalente de mercado ──
+
   const valorMktMin = garrafones * ECO.PRECIO_MKT_MIN;
   const valorMktMed = garrafones * ECO.PRECIO_MKT_MED;
   const valorMktMax = garrafones * ECO.PRECIO_MKT_MAX;
 
-  // Helper formato quetzales — sin decimales absurdos
+
   const fQn = (v, d=2) => {
     if (v == null || !isFinite(v)) return '--';
     const n = +v;
     if (d === 0) return n.toFixed(0);
-    // Si el valor es >= 10 usar d=2, si < 1 usar d=3
+
     const dec = Math.abs(n) >= 10 ? 2 : Math.abs(n) >= 1 ? 2 : 3;
     return n.toFixed(dec);
   };
 
-  // ── Panel oscuro ──
+
   setText('emp-costo-acum',   fQn(costoC));
   setText('emp-costo-rango',  'Q ' + fQn(costoMin) + ' – Q ' + fQn(costoMax) + ' (600–900 W)');
   setText('emp-capex',        ECO.CAPEX_Q.toLocaleString('es-GT', {maximumFractionDigits: 0}));
@@ -2766,7 +3133,7 @@ function renderEmpresa(rawLabels, nivel, hum, temp) {
   setText('h-inversion',      'Q ' + fQn(costoC) + ' energía');
   setText('sb-inversion',     fQn(costoC));
 
-  // ── KPIs operativos ──
+
   setText('emp-costo-litro',         cLC  != null ? fQn(cLC,  3) : '--');
   setText('emp-costo-litro-rango',   cLMin != null ? 'Rango: Q' + fQn(cLMin,3) + ' – Q' + fQn(cLMax,3) + ' /L' : '--');
   setText('emp-costo-garrafon',      cGC  != null ? fQn(cGC)  : '--');
@@ -2789,12 +3156,12 @@ function renderEmpresa(rawLabels, nivel, hum, temp) {
   setText('emp-energia-total',   eC.toFixed(2));
   setText('emp-energia-rango',   'Rango: ' + eMin.toFixed(2) + ' – ' + eMax.toFixed(2) + ' kWh');
 
-  // ── Comparativa vs mercado ──
+
   setText('comp-mkt-min', 'Q ' + fQn(valorMktMin));
   setText('comp-mkt-med', 'Q ' + fQn(valorMktMed));
   setText('comp-mkt-max', 'Q ' + fQn(valorMktMax));
 
-  // ── Paneles de comparativa ──
+
   const empCostoEl = document.getElementById('emp-costo-real-display');
   if (empCostoEl) {
     empCostoEl.textContent = 'Q ' + fQn(costoC);
@@ -2821,7 +3188,7 @@ function renderEmpresa(rawLabels, nivel, hum, temp) {
   setText('emp-costo-dia', 'Q ' + fQn(costoDia));
   setText('emp-costo-mes', 'Q ' + fQn(costoMes));
 
-  // ── Tabla de costos ──
+
   const tbody = document.getElementById('tabla-costos');
   const tsTabla = document.getElementById('ts-tabla-costos');
   if (tbody) {
@@ -2851,7 +3218,7 @@ function renderEmpresa(rawLabels, nivel, hum, temp) {
   const tsStr = 'Act: ' + (document.getElementById('header-ts')?.textContent || '--');
   ['ts-eco-inv','ts-eco-costo','ts-eco-garrafon','ts-eco-scatter'].forEach(id => setText(id, tsStr));
 
-  // ── Series temporales ──
+
   const series = [];
   let acL = 0;
   for (let i = 0; i < nivel.length; i++) {
@@ -2875,7 +3242,7 @@ function renderEmpresa(rawLabels, nivel, hum, temp) {
 
   const xL = series.map(p => p.hFmt);
 
-  // Gráfica 1: Gasto energético acumulado con banda
+
   destroyChart('chart-eco-inversion');
   const ctx1 = document.getElementById('chart-eco-inversion')?.getContext('2d');
   if (ctx1) {
@@ -2900,7 +3267,7 @@ function renderEmpresa(rawLabels, nivel, hum, temp) {
     });
   }
 
-  // Gráfica 2: Costo por litro con banda
+
   destroyChart('chart-eco-costo-litro');
   const ctx2 = document.getElementById('chart-eco-costo-litro')?.getContext('2d');
   if (ctx2) {
@@ -2925,7 +3292,7 @@ function renderEmpresa(rawLabels, nivel, hum, temp) {
     });
   }
 
-  // Gráfica 3: Costo garrafón vs mercado
+
   destroyChart('chart-eco-garrafon');
   const ctx3 = document.getElementById('chart-eco-garrafon')?.getContext('2d');
   if (ctx3) {
@@ -2957,7 +3324,7 @@ function renderEmpresa(rawLabels, nivel, hum, temp) {
     });
   }
 
-  // Gráfica 4: Scatter costo/litro vs humedad
+
   destroyChart('chart-eco-scatter-hum');
   const ctx5 = document.getElementById('chart-eco-scatter-hum')?.getContext('2d');
   if (ctx5 && hum && hum.length) {
@@ -2997,7 +3364,7 @@ function renderEmpresa(rawLabels, nivel, hum, temp) {
   }
 }
 
-// ─── RENDER DASHBOARD ─────────────────────────────────────────────────
+
 
 async function renderDashboard() {
   const payload = await fetchData();
@@ -3021,7 +3388,7 @@ async function renderDashboard() {
   activateRangeButtons('global', dashboardRangeDays);
   ['ts-nivel','ts-hum','ts-temp','ts-dew','ts-pres','ts-wind','ts-dir','ts-rain','ts-solar','ts-uv'].forEach(id=>setTs(id,ts));
 
-  // Lluvia desde Ambient Weather
+
   const kpis = payload.kpis || {};
   const setText2 = (id, val, suf='') => { const el=document.getElementById(id); if(el) el.textContent=(val !== null && val !== undefined ? val+suf : '--'); };
   setText2('rain-hora',   kpis.lluvia_hora_mm   !== null && kpis.lluvia_hora_mm   !== undefined ? kpis.lluvia_hora_mm   : null, ' mm');
@@ -3029,7 +3396,7 @@ async function renderDashboard() {
   setText2('rain-semana', kpis.lluvia_semana_mm !== null && kpis.lluvia_semana_mm !== undefined ? kpis.lluvia_semana_mm : null, ' mm');
   setText2('rain-mes',    kpis.lluvia_mes_mm    !== null && kpis.lluvia_mes_mm    !== undefined ? kpis.lluvia_mes_mm    : null, ' mm');
   if (kpis.lluvia_ambient_ts) setTs('ts-rain', 'Ambient · ' + kpis.lluvia_ambient_ts);
-  // Gráfica acumulado diario desde Ambient
+
   const rainDailySlice = sliceByTimeRange(s.lluvia_dia_labels || [], [s.lluvia_dia_mm || []], dashboardRangeDays);
   const rainDiaLabels = formatLabels(rainDailySlice.rawLabels || []);
   const rainDiaVals   = rainDailySlice.arrays[0] || [];
@@ -3037,12 +3404,12 @@ async function renderDashboard() {
     barChart('chart-rain-dia', rainDiaLabels, rainDiaVals, '#0f6b60', 'mm');
   }
 
-  // Header
+
   setText('h-nivel',(payload.kpis?.nivel_l||'--')+' L');
   setText('h-hum',(payload.kpis?.humedad_pct||'--')+'%');
   setText('h-temp',(payload.kpis?.temp_c||'--')+'°C');
 
-  // KPIs resumen
+
   setText('kpi-nivel',payload.kpis?.nivel_l);setText('kpi-hum',payload.kpis?.humedad_pct);
   setText('kpi-temp',payload.kpis?.temp_c);setText('kpi-dew',payload.kpis?.punto_rocio_c);
   setText('kpi-pres',payload.kpis?.presion_inhg);setText('kpi-wind',payload.kpis?.viento_kmh);
@@ -3082,10 +3449,10 @@ async function renderDashboard() {
   scatterChart('chart-corr-dew',dew,nivelScatter,'#1c3f6e','Punto rocío °C','Nivel L');
   scatterChart('chart-corr-solar',solar,nivelScatter,'#c4960a','Rad. solar W/m²','Nivel L');
 
-  // Estadística avanzada — ver renderEstadistica()
+
 }
 
-// ─── INTERSECTION OBSERVER — animaciones al hacer scroll ───────────
+
 (function initAnimations() {
   const secObs = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); secObs.unobserve(e.target); } });
@@ -3105,7 +3472,7 @@ async function renderDashboard() {
   document.querySelectorAll('.card, .kpi-card').forEach(c => cardObs.observe(c));
 })();
 
-// ─── SCROLL WATCHER sidebar ────────────────────────────────────────
+
 window.addEventListener('scroll', () => {
   const ids = ['resumen','salud-pi','nivel','produccion-analisis','empresa','clima-base','clima-avanzado','correlacion'];
   ids.forEach(id => {
@@ -3118,7 +3485,7 @@ window.addEventListener('scroll', () => {
   });
 }, { passive: true });
 
-// ─── EXPORT XLSX COMPLETO ──────────────────────────────────────────
+
 async function exportXLSX() {
   if (typeof XLSX === 'undefined') { alert('Librería XLSX no disponible.'); return; }
   const btns = document.querySelectorAll('[onclick="exportXLSX()"]');
@@ -3127,7 +3494,7 @@ async function exportXLSX() {
   try {
     const wb = XLSX.utils.book_new();
 
-    // ── Hoja 1: Metadatos ─────────────────────────────────────────
+
     const meta = [
       ['AWA05 — Exportación de datos crudos'],
       ['Sitio', 'Santa Catarina Palopó, Sololá, Guatemala'],
@@ -3165,7 +3532,7 @@ async function exportXLSX() {
     const p = globalPayload;
     const s = p?.series || {};
 
-    // ── Hoja 2: Nivel de agua ─────────────────────────────────────
+
     const labelsN  = s.labels_nivel || [];
     const nivelVals= s.nivel_l || [];
     const nivelRows = [['timestamp','volumen_litros']];
@@ -3174,7 +3541,7 @@ async function exportXLSX() {
     wsNivel['!cols'] = [{wch:22},{wch:16}];
     XLSX.utils.book_append_sheet(wb, wsNivel, 'Nivel_agua');
 
-    // ── Hoja 3: Clima WS-2000 ─────────────────────────────────────
+
     const labelsC = s.labels || [];
     const climaRows = [['timestamp','humedad_pct','temp_c','punto_rocio_c','presion_inhg','viento_kmh','viento_dir_deg','lluvia_hora_mm','radiacion_solar_wm2','uv']];
     labelsC.forEach((ts, i) => {
@@ -3195,7 +3562,7 @@ async function exportXLSX() {
     wsClima['!cols'] = [{wch:22},{wch:12},{wch:10},{wch:16},{wch:14},{wch:12},{wch:16},{wch:16},{wch:20},{wch:8}];
     XLSX.utils.book_append_sheet(wb, wsClima, 'Clima_WS2000');
 
-    // ── Hoja 4: Lluvia Ambient API ────────────────────────────────
+
     const llLabels = s.lluvia_dia_labels || [];
     const llVals   = s.lluvia_dia_mm     || [];
     const llRows   = [['timestamp','lluvia_dia_acumulada_mm']];
@@ -3204,7 +3571,7 @@ async function exportXLSX() {
     wsLluvia['!cols'] = [{wch:22},{wch:26}];
     XLSX.utils.book_append_sheet(wb, wsLluvia, 'Lluvia_Ambient');
 
-    // ── Hoja 5: KPIs actuales ─────────────────────────────────────
+
     const k = p?.kpis || {};
     const kpiRows = [
       ['KPI', 'Valor', 'Unidad', 'Fuente'],
