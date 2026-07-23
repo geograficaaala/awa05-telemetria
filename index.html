@@ -1,12 +1,13 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>AWA05 · Sistema de Telemetría — José Toriello</title>
-  <link rel="preload" as="image" href="load_screen.gif" fetchpriority="high">
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
-  <style>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0, viewport-fit=cover" name="viewport"/>
+<title>AWA05 · Sistema de telemetría ambiental</title>
+<link as="image" fetchpriority="high" href="load_screen.gif" rel="preload"/>
+
+<style>
     :root {
       --bg:         #f7f6f1;
       --surface:    #ffffff;
@@ -28,13 +29,14 @@
       --shadow-sm:  0 1px 3px rgba(0,0,0,0.05),0 2px 8px rgba(0,0,0,0.04);
       --shadow-md:  0 2px 6px rgba(0,0,0,0.06),0 8px 24px rgba(0,0,0,0.06);
       --shadow-lg:  0 4px 16px rgba(0,0,0,0.07),0 20px 48px rgba(0,0,0,0.08);
-      --mono:       'JetBrains Mono', monospace;
-      --display:    'Playfair Display', serif;
-      --body:       'DM Sans', sans-serif;
+      --mono:       Arial, Helvetica, sans-serif;
+      --display:    Arial, Helvetica, sans-serif;
+      --body:       Arial, Helvetica, sans-serif;
       --radius:     4px;
     }
 
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    html,body,button,input,select,textarea{font-family:Arial,Helvetica,sans-serif}
     html{scroll-behavior:smooth}
     body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:14px;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
 
@@ -110,8 +112,8 @@
     }
 
     .loader-title-card {
-      width: min(820px, calc(100vw - 36px));
-      padding: clamp(22px, 4vw, 38px) clamp(24px, 5vw, 54px);
+      width: min(760px, calc(100vw - 36px));
+      padding: clamp(24px, 4vw, 40px) clamp(26px, 5vw, 56px);
       border: 1px solid rgba(255,255,255,.22);
       border-radius: 28px;
       background: rgba(6, 31, 62, .90);
@@ -132,45 +134,16 @@
       transform: translateY(-12px) scale(.985);
     }
 
-    .loader-kicker {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 28px;
-      margin-bottom: 12px;
-      padding: 5px 13px;
-      border: 1px solid rgba(255,255,255,.24);
-      border-radius: 999px;
-      background: rgba(255,255,255,.08);
-      color: rgba(255,255,255,.82);
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 11px;
-      font-weight: 700;
-      letter-spacing: .18em;
-      text-transform: uppercase;
-    }
-
     .loader-greeting {
       margin: 0;
       color: #fff;
-      font-family: "Arial Rounded MT Bold", "Arial Rounded MT", "Trebuchet MS", Arial, sans-serif;
+      font-family: Arial, Helvetica, sans-serif;
       font-size: clamp(30px, 5.2vw, 66px);
       font-weight: 700;
       line-height: 1.06;
       letter-spacing: -.025em;
       text-wrap: balance;
       text-shadow: 0 3px 18px rgba(0,0,0,.32);
-    }
-
-    .loader-sub {
-      margin-top: 14px;
-      color: rgba(255,255,255,.78);
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: clamp(12px, 1.5vw, 16px);
-      font-weight: 600;
-      letter-spacing: .08em;
-      line-height: 1.45;
-      text-transform: uppercase;
     }
 
     .loader-impact-ring {
@@ -296,6 +269,21 @@
     .nav-btn-primary { background:rgba(255,255,255,0.92);color:#1c3f6e;border-color:transparent;font-weight:600 }
     .nav-btn-primary:hover { background:#fff;color:#0f2a50 }
 
+
+
+    .nav-lang-button {
+      display:inline-flex;align-items:center;justify-content:center;
+      min-width:46px;padding:7px 12px;border-radius:var(--radius);
+      border:1px solid rgba(255,255,255,0.22);
+      background:rgba(255,255,255,0.08);color:#fff;
+      font-family:Arial,Helvetica,sans-serif;font-size:10px;font-weight:700;
+      letter-spacing:.08em;text-transform:uppercase;cursor:pointer;
+      transition:all .15s ease;
+    }
+    .nav-lang-button:hover,.nav-lang-button:focus-visible {
+      background:rgba(255,255,255,0.18);border-color:rgba(255,255,255,0.45);
+      outline:none;transform:translateY(-1px);
+    }
 
     /* Menú desplegable de navegación */
     .nav-menu { position:relative; z-index:5 }
@@ -455,17 +443,10 @@
     /* ═══════════════════════════════════════════════════════════
        FOOTER
     ═══════════════════════════════════════════════════════════ */
-    footer{position:relative;overflow:hidden;background:linear-gradient(135deg,#1c3f6e 0%,#0f2a50 100%);padding:0 36px;height:52px;display:flex;align-items:center;justify-content:space-between;border-top:none}
-    footer::before{content:"AWA05";position:absolute;right:-10px;top:-18px;font-family:var(--display);font-size:96px;font-weight:900;color:rgba(255,255,255,0.04);letter-spacing:-4px;pointer-events:none;user-select:none}
+    footer{position:relative;overflow:hidden;background:linear-gradient(135deg,#1c3f6e 0%,#0f2a50 100%);padding:18px 24px;min-height:58px;display:flex;align-items:center;justify-content:center;text-align:center;border-top:none}
+    footer::before{content:"AWA05";position:absolute;right:-10px;top:-18px;font-family:Arial,Helvetica,sans-serif;font-size:96px;font-weight:900;color:rgba(255,255,255,0.04);letter-spacing:-4px;pointer-events:none;user-select:none}
     footer::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:rgba(255,255,255,0.10)}
-    .footer-left{font-family:var(--mono);font-size:7.5px;color:rgba(255,255,255,0.30);letter-spacing:.08em;position:relative;z-index:1}
-    .footer-center{display:flex;align-items:center;position:absolute;left:50%;transform:translateX(-50%);z-index:1}
-    .footer-org{font-family:var(--display);font-size:14px;font-weight:700;font-style:italic;color:rgba(255,255,255,0.90);letter-spacing:0.01em;white-space:nowrap}
-    .footer-org sup{font-family:var(--body);font-size:9px;font-style:normal;vertical-align:super;opacity:0.65;margin-left:1px}
-    .footer-right{display:flex;align-items:center;gap:10px;position:relative;z-index:1;flex-shrink:0}
-    .footer-powered-label{font-family:var(--mono);font-size:7px;color:rgba(255,255,255,0.30);letter-spacing:.14em;text-transform:uppercase}
-    .footer-pi-logo{height:26px;width:auto;transition:opacity .2s}
-    .footer-pi-logo:hover{opacity:0.9}
+    .footer-thanks{position:relative;z-index:1;color:rgba(255,255,255,.92);font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:600;line-height:1.5;letter-spacing:.01em}
 
     /* ═══════════════════════════════════════════════════════════
        RESPONSIVE
@@ -507,11 +488,8 @@
       /* Módulos */
       .modules-grid{grid-template-columns:1fr}
       /* Footer */
-      footer{height:auto;padding:14px 16px;flex-wrap:wrap;gap:8px;justify-content:center}
-      .footer-center{position:static;transform:none;order:-1;width:100%;justify-content:center;text-align:center}
-      .footer-org{font-size:12px}
-      .footer-left{width:100%;text-align:center;order:1}
-      .footer-right{order:0}
+      footer{height:auto;padding:16px 18px}
+      .footer-thanks{font-size:12px}
     }
     @media(max-width:480px){
       .stats-bar{grid-template-columns:1fr}
@@ -525,318 +503,331 @@
   </style>
 </head>
 <body>
-
 <!-- ═══════════════════════════════════════════════════════════
      LOADER DE BIENVENIDA — GIF load_screen.gif
 ═══════════════════════════════════════════════════════════ -->
-<div id="awa-loader" aria-live="polite" aria-label="Cargando sistema AWA05">
-  <img
-    id="loader-gif"
-    class="loader-gif"
-    alt=""
-    aria-hidden="true"
-    decoding="async"
-    fetchpriority="high"
-    data-src="load_screen.gif"
-  >
-  <div class="loader-shade" aria-hidden="true"></div>
-  <div class="loader-impact-ring" aria-hidden="true"></div>
+<div aria-label="Cargando sistema AWA05" aria-live="polite" id="awa-loader">
+<img alt="" aria-hidden="true" class="loader-gif" data-src="load_screen.gif" decoding="async" fetchpriority="high" id="loader-gif"/>
+<div aria-hidden="true" class="loader-shade"></div>
+<div aria-hidden="true" class="loader-impact-ring"></div>
+<div class="loader-title-card">
 
-  <div class="loader-title-card">
-    <div class="loader-kicker">AWA05</div>
-    <h1 class="loader-greeting" id="loader-greeting">Bienvenido al sistema de telemetría AWA05</h1>
-    <div class="loader-sub">Telemetría ambiental · Lago de Atitlán · Sistema activo</div>
-  </div>
+<h1 class="loader-greeting" data-i18n-dynamic="loader.title" id="loader-greeting">Bienvenido al sistema de telemetría AWA05</h1>
+
 </div>
-
-
+</div>
 <!-- ═══════════════════════════════════════════════════════════
      HEADER
 ═══════════════════════════════════════════════════════════ -->
 <nav>
-  <div class="nav-left">
-    <img src="aala_logo.png" alt="AALA" class="nav-logo">
-    <div class="nav-sep"></div>
-    <div class="nav-subtitle">Telemetría Ambiental · Atitlán</div>
-  </div>
-  <div class="nav-right">
-    <div class="nav-menu" id="nav-menu">
-      <button class="nav-menu-button" id="nav-menu-button" type="button" aria-expanded="false" aria-controls="nav-menu-panel">
-        Menú <span class="nav-menu-chevron">⌄</span>
-      </button>
-      <div class="nav-menu-panel" id="nav-menu-panel" role="menu" aria-label="Navegación principal">
-        <a href="index.html" class="nav-menu-item primary" role="menuitem"><span>Inicio</span><span>•</span></a>
-        <a href="dashboard.html" class="nav-menu-item" role="menuitem"><span>Dashboard</span><span>→</span></a>
-        <a href="analisis-estadistico.html" class="nav-menu-item" role="menuitem"><span>Análisis estadístico</span><span>→</span></a>
-        <a href="comparativo-calidad-agua.html" class="nav-menu-item" role="menuitem"><span>Calidad de agua</span><span>→</span></a>
-      </div>
-    </div>
-  </div>
+<div class="nav-left">
+<img alt="AALA" class="nav-logo" src="aala_logo.png"/>
+<div class="nav-sep"></div>
+<div class="nav-subtitle" data-i18n="nav.subtitle">Telemetría ambiental · Atitlán</div>
+</div>
+<div class="nav-right"><button aria-label="Cambiar a inglés" class="nav-lang-button" id="lang-toggle" title="Cambiar a inglés" type="button">EN</button>
+<div class="nav-menu" id="nav-menu">
+<button aria-controls="nav-menu-panel" aria-expanded="false" class="nav-menu-button" data-i18n="nav.menu" id="nav-menu-button" type="button">Menú ⌄</button>
+<div aria-label="Navegación principal" class="nav-menu-panel" id="nav-menu-panel" role="menu">
+<a class="nav-menu-item primary" href="index.html" role="menuitem"><span data-i18n="nav.home">Inicio</span><span>•</span></a>
+<a class="nav-menu-item" href="dashboard.html" role="menuitem"><span data-i18n="nav.dashboard">Dashboard</span><span>→</span></a>
+<a class="nav-menu-item" href="analisis-estadistico.html" role="menuitem"><span data-i18n="nav.analysis">Análisis estadístico</span><span>→</span></a>
+<a class="nav-menu-item" href="comparativo-calidad-agua.html" role="menuitem"><span data-i18n="nav.water">Calidad de agua</span><span>→</span></a>
+</div>
+</div>
+</div>
 </nav>
-
 <!-- ═══════════════════════════════════════════════════════════
      KPI STRIP
 ═══════════════════════════════════════════════════════════ -->
 <div class="kpi-strip">
-  <div class="strip-item"><div class="strip-lbl">Nivel</div><div class="strip-val"><span id="t-nivel">—</span> L</div></div>
-  <div class="strip-item"><div class="strip-lbl">Humedad</div><div class="strip-val"><span id="t-hum">—</span> %</div></div>
-  <div class="strip-item"><div class="strip-lbl">Temperatura</div><div class="strip-val"><span id="t-temp">—</span> °C</div></div>
-  <div class="strip-item"><div class="strip-lbl">Punto de rocío</div><div class="strip-val"><span id="t-dew">—</span> °C</div></div>
-  <div class="strip-item"><div class="strip-lbl">Presión</div><div class="strip-val"><span id="t-pres">—</span> inHg</div></div>
-  <div class="strip-item"><div class="strip-lbl">Viento</div><div class="strip-val"><span id="t-wind">—</span> km/h</div></div>
-  <div class="strip-item"><div class="strip-lbl">UV</div><div class="strip-val"><span id="t-uv">—</span></div></div>
-  <div class="strip-ts" id="strip-ts">—</div>
+<div class="strip-item"><div class="strip-lbl" data-i18n="kpi.level">Nivel</div><div class="strip-val"><span id="t-nivel">—</span> L</div></div>
+<div class="strip-item"><div class="strip-lbl" data-i18n="kpi.humidity">Humedad</div><div class="strip-val"><span id="t-hum">—</span> %</div></div>
+<div class="strip-item"><div class="strip-lbl" data-i18n="kpi.temperature">Temperatura</div><div class="strip-val"><span id="t-temp">—</span> °C</div></div>
+<div class="strip-item"><div class="strip-lbl" data-i18n="kpi.dew">Punto de rocío</div><div class="strip-val"><span id="t-dew">—</span> °C</div></div>
+<div class="strip-item"><div class="strip-lbl" data-i18n="kpi.pressure">Presión</div><div class="strip-val"><span id="t-pres">—</span> inHg</div></div>
+<div class="strip-item"><div class="strip-lbl" data-i18n="kpi.wind">Viento</div><div class="strip-val"><span id="t-wind">—</span> km/h</div></div>
+<div class="strip-item"><div class="strip-lbl" data-i18n="kpi.uv">UV</div><div class="strip-val"><span id="t-uv">—</span></div></div>
+<div class="strip-ts" id="strip-ts">—</div>
 </div>
-
 <!-- ═══════════════════════════════════════════════════════════
      HERO
 ═══════════════════════════════════════════════════════════ -->
 <div class="hero">
-  <div class="hero-eyebrow">Nodo AWA05 · Santa Catarina Palopó · Lago de Atitlán · Guatemala</div>
-  <div class="hero-welcome">Bienvenido,</div>
-  <h1 class="hero-name">José Toriello</h1>
-  <p class="hero-thanks">Gracias por hacer posible la creación del nodo de telemetría</p>
-  <div class="hero-rule"></div>
-  <p class="hero-desc">
-    Este tablero es el resultado de su apoyo. Desde una <strong>Raspberry Pi 4B</strong> en el campo,
-    la máquina cosechadora de agua AWA05 registra en tiempo real el nivel de captación,
-    nueve variables microclimáticas y el estado del hardware, publicándolos aquí de forma automática
-    cada quince minutos. Cada dato que ve en pantalla viajó del sensor al servidor, procesado
-    sin intervención humana, mientras la máquina continúa trabajando.
-  </p>
-
+<div class="hero-eyebrow" data-i18n="hero.eyebrow">Nodo AWA05 · Santa Catarina Palopó · Lago de Atitlán · Guatemala</div>
+<div class="hero-welcome" data-i18n="hero.kicker">Monitoreo ambiental en tiempo real</div>
+<h1 class="hero-name" data-i18n="hero.title">Sistema AWA05</h1>
+<p class="hero-thanks" data-i18n="hero.subtitle">Producción hídrica, clima y estado operativo en una sola plataforma</p>
+<div class="hero-rule"></div>
+<p class="hero-desc" data-i18n-html="hero.description">Este sitio presenta la operación del nodo <strong>AWA05</strong> instalado en campo. Una <strong>Raspberry Pi 4B</strong> registra el nivel de captación, las variables microclimáticas y la salud del hardware; después procesa y publica los datos de forma automática cada quince minutos. El resultado es una vista pública y actualizada del desempeño de la máquina cosechadora de agua.</p>
 </div>
-
 <!-- ═══════════════════════════════════════════════════════════
      STATS BAR
 ═══════════════════════════════════════════════════════════ -->
 <div class="stats-bar">
-  <div class="stat-cell">
-    <div class="stat-lbl">Frecuencia de captura</div>
-    <div class="stat-val">15<span class="stat-unit">min</span></div>
-  </div>
-  <div class="stat-cell">
-    <div class="stat-lbl">Variables monitoreadas</div>
-    <div class="stat-val">9<span class="stat-unit">series</span></div>
-  </div>
-  <div class="stat-cell">
-    <div class="stat-lbl">KPIs del nodo Pi</div>
-    <div class="stat-val">15<span class="stat-unit">indicadores</span></div>
-  </div>
-  <div class="stat-cell">
-    <div class="stat-lbl">Sitio de monitoreo</div>
-    <div class="stat-val" style="font-size:26px">AWA05</div>
-  </div>
+<div class="stat-cell">
+<div class="stat-lbl" data-i18n="stats.capture">Frecuencia de captura</div>
+<div class="stat-val">15<span class="stat-unit" data-i18n="unit.min">min</span></div>
 </div>
-
+<div class="stat-cell">
+<div class="stat-lbl" data-i18n="stats.variables">Variables monitoreadas</div>
+<div class="stat-val">9<span class="stat-unit" data-i18n="unit.series">series</span></div>
+</div>
+<div class="stat-cell">
+<div class="stat-lbl" data-i18n="stats.kpis">KPIs del nodo Pi</div>
+<div class="stat-val">15<span class="stat-unit" data-i18n="unit.indicators">indicadores</span></div>
+</div>
+<div class="stat-cell">
+<div class="stat-lbl" data-i18n="stats.site">Sitio de monitoreo</div>
+<div class="stat-val" style="font-size:26px">AWA05</div>
+</div>
+</div>
 <div class="rule"></div>
-
 <!-- ═══════════════════════════════════════════════════════════
      LO QUE ENCONTRARÁ
 ═══════════════════════════════════════════════════════════ -->
 <div class="section">
-  <div class="section-eyebrow">Contenido del tablero</div>
-  <div class="section-title">Lo que encontrará <em>adentro</em></div>
-  <p class="section-intro">El tablero está organizado en ocho módulos. Cada uno responde una pregunta concreta sobre la máquina, el clima o el costo de operar el sistema.</p>
-
-  <div class="modules-grid">
-    <div class="module-card">
-      <div class="module-num">01</div>
-      <span class="module-icon">⬡</span>
-      <div class="module-title">Resumen ejecutivo</div>
-      <div class="module-desc">Seis indicadores en tiempo real: nivel de cisterna, garrafones producidos, humedad, temperatura, punto de rocío y viento. La primera pantalla que verá al abrir el tablero.</div>
-      <span class="module-tag">Tiempo real</span>
-    </div>
-    <div class="module-card">
-      <div class="module-num">02</div>
-      <span class="module-icon">◈</span>
-      <div class="module-title">Salud del nodo Pi</div>
-      <div class="module-desc">Temperatura de CPU, voltaje, uso de RAM y disco, uptime, señal WiFi e IP Tailscale. El sistema emite alerta de apagado a 75 °C para proteger el hardware.</div>
-      <span class="module-tag">Hardware</span>
-    </div>
-    <div class="module-card">
-      <div class="module-num">03</div>
-      <span class="module-icon">◉</span>
-      <div class="module-title">Producción hídrica</div>
-      <div class="module-desc">Gráfica del nivel de agua en la cisterna a lo largo del tiempo. Los puntos verdes marcan cada momento en que se completó un garrafón de 20 litros.</div>
-      <span class="module-tag">Sensor JSN-SR04T</span>
-    </div>
-    <div class="module-card">
-      <div class="module-num">04</div>
-      <span class="module-icon">◑</span>
-      <div class="module-title">Análisis diurno / nocturno</div>
-      <div class="module-desc">La captación de niebla en el lago de Atitlán es predominantemente nocturna. Este módulo descompone la producción por franja horaria y por día de experimento.</div>
-      <span class="module-tag">Análisis temporal</span>
-    </div>
-    <div class="module-card">
-      <div class="module-num">05</div>
-      <span class="module-icon">◎</span>
-      <div class="module-title">Análisis empresarial</div>
-      <div class="module-desc">¿Cuánto cuesta producir un litro de agua? ¿Un garrafón? ¿Cuánto se ahorra versus comprarlo en el mercado? Calculado con la tarifa real de DEOCSA Sololá y distribución triangular de consumo eléctrico.</div>
-      <span class="module-tag">Costos · Q/L · Q/garrafón</span>
-    </div>
-    <div class="module-card">
-      <div class="module-num">06</div>
-      <span class="module-icon">◐</span>
-      <div class="module-title">Variables climáticas base</div>
-      <div class="module-desc">Series de temperatura, humedad relativa, punto de rocío y presión barométrica registradas por la estación meteorológica WS-2000, submuestreadas a una lectura por hora.</div>
-      <span class="module-tag">WS-2000</span>
-    </div>
-    <div class="module-card">
-      <div class="module-num">07</div>
-      <span class="module-icon">◒</span>
-      <div class="module-title">Viento, lluvia y radiación</div>
-      <div class="module-desc">Velocidad y dirección del viento con rosa de vientos y puntos cardinales, precipitación horaria y radiación solar. El viento es el motor principal de la captación de niebla.</div>
-      <span class="module-tag">WS-2000 · Rosa de vientos</span>
-    </div>
-    <div class="module-card">
-      <div class="module-num">08</div>
-      <span class="module-icon">◓</span>
-      <div class="module-title">Evaluación estadística</div>
-      <div class="module-desc">Regresión OLS multivariable, importancia de variables por permutación de R², análisis de umbral de humedad, diagnóstico de residuales y heatmap de correlación interactivo entre todas las variables.</div>
-      <span class="module-tag">OLS · Pearson · VIF · ΔR²</span>
-    </div>
-  </div>
+<div class="section-eyebrow" data-i18n="modules.eyebrow">Contenido del sistema</div>
+<div class="section-title" data-i18n-html="modules.title">Módulos de <em>monitoreo</em></div>
+<p class="section-intro" data-i18n="modules.intro">El sistema está organizado en ocho módulos que resumen la producción, el clima, la operación del nodo y el desempeño económico de AWA05.</p>
+<div class="modules-grid">
+<div class="module-card">
+<div class="module-num">01</div>
+<span class="module-icon">⬡</span>
+<div class="module-title" data-i18n="module.1.title">Resumen ejecutivo</div>
+<div class="module-desc" data-i18n="module.1.desc">Seis indicadores en tiempo real: nivel de cisterna, garrafones producidos, humedad, temperatura, punto de rocío y viento.</div>
+<span class="module-tag" data-i18n="module.1.tag">Tiempo real</span>
 </div>
-
+<div class="module-card">
+<div class="module-num">02</div>
+<span class="module-icon">◈</span>
+<div class="module-title" data-i18n="module.2.title">Salud del nodo Pi</div>
+<div class="module-desc" data-i18n="module.2.desc">Temperatura de CPU, voltaje, uso de RAM y disco, uptime, señal WiFi e IP Tailscale. El sistema emite alerta de apagado a 75 °C para proteger el hardware.</div>
+<span class="module-tag" data-i18n="module.2.tag">Hardware</span>
+</div>
+<div class="module-card">
+<div class="module-num">03</div>
+<span class="module-icon">◉</span>
+<div class="module-title" data-i18n="module.3.title">Producción hídrica</div>
+<div class="module-desc" data-i18n="module.3.desc">Gráfica del nivel de agua en la cisterna a lo largo del tiempo. Los puntos verdes marcan cada momento en que se completó un garrafón de 20 litros.</div>
+<span class="module-tag" data-i18n="module.3.tag">Sensor JSN-SR04T</span>
+</div>
+<div class="module-card">
+<div class="module-num">04</div>
+<span class="module-icon">◑</span>
+<div class="module-title" data-i18n="module.4.title">Análisis diurno / nocturno</div>
+<div class="module-desc" data-i18n="module.4.desc">La captación de niebla en el lago de Atitlán es predominantemente nocturna. Este módulo descompone la producción por franja horaria y por día de experimento.</div>
+<span class="module-tag" data-i18n="module.4.tag">Análisis temporal</span>
+</div>
+<div class="module-card">
+<div class="module-num">05</div>
+<span class="module-icon">◎</span>
+<div class="module-title" data-i18n="module.5.title">Análisis empresarial</div>
+<div class="module-desc" data-i18n="module.5.desc">Calcula el costo de producir un litro y un garrafón, además del ahorro frente al precio de mercado, usando la tarifa eléctrica local y escenarios de consumo.</div>
+<span class="module-tag" data-i18n="module.5.tag">Costos · Q/L · Q/garrafón</span>
+</div>
+<div class="module-card">
+<div class="module-num">06</div>
+<span class="module-icon">◐</span>
+<div class="module-title" data-i18n="module.6.title">Variables climáticas base</div>
+<div class="module-desc" data-i18n="module.6.desc">Series de temperatura, humedad relativa, punto de rocío y presión barométrica registradas por la estación meteorológica WS-2000.</div>
+<span class="module-tag" data-i18n="module.6.tag">WS-2000</span>
+</div>
+<div class="module-card">
+<div class="module-num">07</div>
+<span class="module-icon">◒</span>
+<div class="module-title" data-i18n="module.7.title">Viento, lluvia y radiación</div>
+<div class="module-desc" data-i18n="module.7.desc">Velocidad y dirección del viento, precipitación horaria y radiación solar. Estas variables ayudan a explicar las condiciones de captación de niebla.</div>
+<span class="module-tag" data-i18n="module.7.tag">WS-2000 · Rosa de vientos</span>
+</div>
+<div class="module-card">
+<div class="module-num">08</div>
+<span class="module-icon">◓</span>
+<div class="module-title" data-i18n="module.8.title">Evaluación estadística</div>
+<div class="module-desc" data-i18n="module.8.desc">Regresión multivariable, importancia de variables, análisis de humedad, diagnóstico de residuales y correlaciones entre las series disponibles.</div>
+<span class="module-tag" data-i18n="module.8.tag">OLS · Pearson · VIF · ΔR²</span>
+</div>
+</div>
+</div>
 <div class="rule"></div>
-
 <!-- ═══════════════════════════════════════════════════════════
      PIPELINE
 ═══════════════════════════════════════════════════════════ -->
 <div class="section">
-  <div class="section-eyebrow">Arquitectura del sistema</div>
-  <div class="section-title">Del sensor a su <em>pantalla</em></div>
-  <p class="section-intro">Cuatro etapas automáticas entre la medición física y el dato que usted ve. Sin intervención manual, sin servidor en la nube: solo la Raspberry Pi y GitHub.</p>
-
-  <div class="pipeline">
-    <div class="pipe-step">
-      <div class="pipe-dot">01</div>
-      <div class="pipe-title">Adquisición</div>
-      <div class="pipe-desc">El sensor JSN-SR04T mide el nivel cada 15 minutos. La WS-2000 envía clima cada 60 segundos al servidor Flask interno.</div>
-    </div>
-    <div class="pipe-step">
-      <div class="pipe-dot">02</div>
-      <div class="pipe-title">Procesamiento</div>
-      <div class="pipe-desc">Python filtra outliers, convierte unidades (°F→°C, mph→km/h), calcula KPIs y genera el archivo JSON del tablero.</div>
-    </div>
-    <div class="pipe-step">
-      <div class="pipe-dot">03</div>
-      <div class="pipe-title">Publicación</div>
-      <div class="pipe-desc">PyGithub sube el JSON al repositorio. GitHub Pages despliega automáticamente los nuevos datos en este sitio.</div>
-    </div>
-    <div class="pipe-step">
-      <div class="pipe-dot">04</div>
-      <div class="pipe-title">Visualización</div>
-      <div class="pipe-desc">El tablero carga el JSON al abrirse y se refresca cada 60 segundos. No requiere servidor: es HTML estático puro.</div>
-    </div>
-  </div>
+<div class="section-eyebrow" data-i18n="pipeline.eyebrow">Arquitectura del sistema</div>
+<div class="section-title" data-i18n-html="pipeline.title">Del sensor al <em>tablero</em></div>
+<p class="section-intro" data-i18n="pipeline.intro">Cuatro etapas automáticas conectan la medición física con la visualización pública de los datos.</p>
+<div class="pipeline">
+<div class="pipe-step">
+<div class="pipe-dot">01</div>
+<div class="pipe-title" data-i18n="pipeline.1.title">Adquisición</div>
+<div class="pipe-desc" data-i18n="pipeline.1.desc">El sensor JSN-SR04T mide el nivel cada 15 minutos. La WS-2000 envía clima cada 60 segundos al servidor Flask interno.</div>
 </div>
-
+<div class="pipe-step">
+<div class="pipe-dot">02</div>
+<div class="pipe-title" data-i18n="pipeline.2.title">Procesamiento</div>
+<div class="pipe-desc" data-i18n="pipeline.2.desc">Python filtra outliers, convierte unidades, calcula KPIs y genera el archivo JSON del tablero.</div>
+</div>
+<div class="pipe-step">
+<div class="pipe-dot">03</div>
+<div class="pipe-title" data-i18n="pipeline.3.title">Publicación</div>
+<div class="pipe-desc" data-i18n="pipeline.3.desc">PyGithub sube el JSON al repositorio y GitHub Pages despliega automáticamente los datos actualizados.</div>
+</div>
+<div class="pipe-step">
+<div class="pipe-dot">04</div>
+<div class="pipe-title" data-i18n="pipeline.4.title">Visualización</div>
+<div class="pipe-desc" data-i18n="pipeline.4.desc">El tablero carga el JSON al abrirse y se refresca cada 60 segundos mediante HTML estático.</div>
+</div>
+</div>
+</div>
 <div class="rule"></div>
-
 <!-- ═══════════════════════════════════════════════════════════
      VARIABLES
 ═══════════════════════════════════════════════════════════ -->
 <div class="section" style="padding-bottom:0">
-  <div class="section-eyebrow">Cobertura de datos</div>
-  <div class="section-title">Variables <em>monitoreadas</em></div>
-  <p class="section-intro">Nueve series climáticas más la medición de nivel. Cada variable tiene un rol en explicar cuándo y cuánto agua produce la máquina.</p>
-
-  <div class="vars-grid">
-    <div class="var-card" style="border-left:2.5px solid var(--cobalt)">
-      <div class="var-name">Nivel de agua</div><div class="var-source">JSN-SR04T</div>
-      <div class="var-desc">Distancia ultrasónica convertida a volumen cilíndrico. Radio 12.9 cm · Altura útil 38.3 cm · Máx 20 L.</div>
-    </div>
-    <div class="var-card" style="border-left:2.5px solid var(--teal)">
-      <div class="var-name">Humedad relativa</div><div class="var-source">WS-2000</div>
-      <div class="var-desc">Variable más determinante para la captación. La niebla se forma con HR ≥ 70%. Umbral analizado en el módulo estadístico.</div>
-    </div>
-    <div class="var-card" style="border-left:2.5px solid var(--amber)">
-      <div class="var-name">Temperatura exterior</div><div class="var-source">WS-2000</div>
-      <div class="var-desc">Serie térmica ambiental. Influye en la tasa de evaporación y la condensación nocturna. Convertida de °F a °C.</div>
-    </div>
-    <div class="var-card" style="border-left:2.5px solid var(--cobalt)">
-      <div class="var-name">Punto de rocío</div><div class="var-source">WS-2000</div>
-      <div class="var-desc">Temperatura de condensación. Cuando Td se acerca a T, la humedad relativa tiende a 100% y la captación se activa.</div>
-    </div>
-    <div class="var-card" style="border-left:2.5px solid var(--forest)">
-      <div class="var-name">Presión barométrica</div><div class="var-source">WS-2000</div>
-      <div class="var-desc">Variaciones de presión indican frentes de aire. Los frentes húmedos del lago generan los eventos de mayor captación.</div>
-    </div>
-    <div class="var-card" style="border-left:2.5px solid var(--cobalt)">
-      <div class="var-name">Velocidad del viento</div><div class="var-source">WS-2000</div>
-      <div class="var-desc">Motor físico de la captación de niebla. La velocidad superficial empuja las gotitas hacia la malla colectora.</div>
-    </div>
-    <div class="var-card" style="border-left:2.5px solid var(--ink-soft)">
-      <div class="var-name">Dirección del viento</div><div class="var-source">WS-2000</div>
-      <div class="var-desc">Analizada en rosa de vientos por sectores de 22.5° con puntos cardinales. Determina la exposición efectiva al flujo de niebla.</div>
-    </div>
-    <div class="var-card" style="border-left:2.5px solid var(--cobalt)">
-      <div class="var-name">Precipitación horaria</div><div class="var-source">WS-2000</div>
-      <div class="var-desc">Registro en mm/h. Permite distinguir el agua captada por condensación de la lluvia directa que entra al contenedor.</div>
-    </div>
-    <div class="var-card" style="border-left:2.5px solid var(--amber)">
-      <div class="var-name">Radiación solar y UV</div><div class="var-source">WS-2000</div>
-      <div class="var-desc">Predictor inverso de la producción. A mayor radiación diurna, menor captación. Confirma el patrón nocturno del sistema.</div>
-    </div>
-  </div>
+<div class="section-eyebrow" data-i18n="variables.eyebrow">Cobertura de datos</div>
+<div class="section-title" data-i18n-html="variables.title">Variables <em>monitoreadas</em></div>
+<p class="section-intro" data-i18n="variables.intro">Nueve series climáticas y la medición de nivel permiten estudiar cuándo y cuánto agua produce la máquina.</p>
+<div class="vars-grid">
+<div class="var-card" style="border-left:2.5px solid var(--cobalt)">
+<div class="var-name" data-i18n="var.1.name">Nivel de agua</div><div class="var-source">JSN-SR04T</div>
+<div class="var-desc" data-i18n="var.1.desc">Distancia ultrasónica convertida a volumen cilíndrico. Radio 12.9 cm · Altura útil 38.3 cm · Máx 20 L.</div>
 </div>
-
+<div class="var-card" style="border-left:2.5px solid var(--teal)">
+<div class="var-name" data-i18n="var.2.name">Humedad relativa</div><div class="var-source">WS-2000</div>
+<div class="var-desc" data-i18n="var.2.desc">Variable clave para la formación de niebla y la captación. El análisis evalúa su relación con la producción.</div>
+</div>
+<div class="var-card" style="border-left:2.5px solid var(--amber)">
+<div class="var-name" data-i18n="var.3.name">Temperatura exterior</div><div class="var-source">WS-2000</div>
+<div class="var-desc" data-i18n="var.3.desc">Serie térmica ambiental que influye en la evaporación y la condensación nocturna. Convertida de °F a °C.</div>
+</div>
+<div class="var-card" style="border-left:2.5px solid var(--cobalt)">
+<div class="var-name" data-i18n="var.4.name">Punto de rocío</div><div class="var-source">WS-2000</div>
+<div class="var-desc" data-i18n="var.4.desc">Temperatura de condensación. Cuando se acerca a la temperatura ambiental, la humedad relativa tiende a aumentar.</div>
+</div>
+<div class="var-card" style="border-left:2.5px solid var(--forest)">
+<div class="var-name" data-i18n="var.5.name">Presión barométrica</div><div class="var-source">WS-2000</div>
+<div class="var-desc" data-i18n="var.5.desc">Las variaciones de presión ayudan a identificar cambios de masas de aire y condiciones meteorológicas.</div>
+</div>
+<div class="var-card" style="border-left:2.5px solid var(--cobalt)">
+<div class="var-name" data-i18n="var.6.name">Velocidad del viento</div><div class="var-source">WS-2000</div>
+<div class="var-desc" data-i18n="var.6.desc">Variable física relevante para transportar las gotas de niebla hacia la superficie colectora.</div>
+</div>
+<div class="var-card" style="border-left:2.5px solid var(--ink-soft)">
+<div class="var-name" data-i18n="var.7.name">Dirección del viento</div><div class="var-source">WS-2000</div>
+<div class="var-desc" data-i18n="var.7.desc">Analizada por sectores y puntos cardinales para estimar la exposición de la máquina al flujo de niebla.</div>
+</div>
+<div class="var-card" style="border-left:2.5px solid var(--cobalt)">
+<div class="var-name" data-i18n="var.8.name">Precipitación horaria</div><div class="var-source">WS-2000</div>
+<div class="var-desc" data-i18n="var.8.desc">Registro en mm/h para diferenciar los aportes de lluvia directa y los eventos de condensación.</div>
+</div>
+<div class="var-card" style="border-left:2.5px solid var(--amber)">
+<div class="var-name" data-i18n="var.9.name">Radiación solar y UV</div><div class="var-source">WS-2000</div>
+<div class="var-desc" data-i18n="var.9.desc">Variables asociadas al ciclo diurno y a las condiciones que favorecen o reducen la captación.</div>
+</div>
+</div>
+</div>
 <div class="rule" style="margin-top:80px"></div>
-
 <!-- ═══════════════════════════════════════════════════════════
      HARDWARE
 ═══════════════════════════════════════════════════════════ -->
 <div class="section">
-  <div class="section-eyebrow">Infraestructura de campo</div>
-  <div class="section-title">Componentes del <em>nodo</em></div>
-  <p class="section-intro">Hardware de bajo consumo diseñado para operar 24/7 en condiciones de campo. El nodo completo consume menos de 10W de corriente de bajo voltaje.</p>
-
-  <div class="hw-list">
-    <div class="hw-item">
-      <div class="hw-badge">Raspberry Pi 4B</div>
-      <div class="hw-name">Unidad central de procesamiento. Ejecuta el scheduler, el servidor Flask y el cliente GitHub bajo servicio systemd persistente. Supervisión térmica activa con apagado a 75 °C.</div>
-      <div class="hw-detail">Debian Trixie · 64-bit · ARM</div>
-    </div>
-    <div class="hw-item">
-      <div class="hw-badge">JSN-SR04T</div>
-      <div class="hw-name">Transductor ultrasónico sumergible para medición de nivel. Mediana de 11 muestras por lectura para filtrar ruido. Conectado a pines GPIO BCM 17 (TRIG) y 18 (ECHO) con divisor de voltaje 5V→3.3V.</div>
-      <div class="hw-detail">GPIO BCM · Mediana 11 muestras</div>
-    </div>
-    <div class="hw-item">
-      <div class="hw-badge">WS-2000</div>
-      <div class="hw-name">Estación meteorológica Ambient Weather. Transmite por WiFi al endpoint Flask interno en puerto 7777 usando protocolo Wunderground. Intervalo de transmisión de 60 segundos.</div>
-      <div class="hw-detail">Puerto 7777 · Cada 60 s</div>
-    </div>
-    <div class="hw-item">
-      <div class="hw-badge">Tailscale VPN</div>
-      <div class="hw-name">Acceso remoto seguro al nodo desde cualquier red. Permite administración SSH sin exponer puertos públicos. IP visible en el módulo de salud del sistema en el tablero.</div>
-      <div class="hw-detail">WireGuard · Mesh VPN</div>
-    </div>
-    <div class="hw-item">
-      <div class="hw-badge">GitHub Pages</div>
-      <div class="hw-name">Publicación del tablero estático desde la raíz de la rama main. El JSON de datos se actualiza por push automático desde la Pi cada 15 minutos sin intervención manual.</div>
-      <div class="hw-detail">Rama main · Raíz / · Estático</div>
-    </div>
-  </div>
+<div class="section-eyebrow" data-i18n="hardware.eyebrow">Infraestructura de campo</div>
+<div class="section-title" data-i18n-html="hardware.title">Componentes del <em>nodo</em></div>
+<p class="section-intro" data-i18n="hardware.intro">Hardware de bajo consumo preparado para operar de forma continua y publicar telemetría desde el sitio de monitoreo.</p>
+<div class="hw-list">
+<div class="hw-item">
+<div class="hw-badge">Raspberry Pi 4B</div>
+<div class="hw-name" data-i18n="hw.1.desc">Unidad central de procesamiento. Ejecuta el scheduler, el servidor Flask y el cliente GitHub bajo un servicio systemd persistente. Incluye supervisión térmica y apagado preventivo.</div>
+<div class="hw-detail" data-i18n="hw.1.detail">Debian Trixie · 64-bit · ARM</div>
 </div>
-
+<div class="hw-item">
+<div class="hw-badge">JSN-SR04T</div>
+<div class="hw-name" data-i18n="hw.2.desc">Transductor ultrasónico para medición de nivel. Utiliza la mediana de 11 muestras para reducir ruido y está conectado mediante GPIO.</div>
+<div class="hw-detail" data-i18n="hw.2.detail">GPIO BCM · Mediana 11 muestras</div>
+</div>
+<div class="hw-item">
+<div class="hw-badge">WS-2000</div>
+<div class="hw-name" data-i18n="hw.3.desc">Estación meteorológica que transmite por WiFi al endpoint Flask interno mediante un protocolo compatible con Wunderground.</div>
+<div class="hw-detail" data-i18n="hw.3.detail">Puerto 7777 · Cada 60 s</div>
+</div>
+<div class="hw-item">
+<div class="hw-badge">Tailscale VPN</div>
+<div class="hw-name" data-i18n="hw.4.desc">Acceso remoto seguro al nodo desde redes autorizadas. Permite administración SSH sin exponer directamente el puerto a Internet.</div>
+<div class="hw-detail" data-i18n="hw.4.detail">WireGuard · Mesh VPN</div>
+</div>
+<div class="hw-item">
+<div class="hw-badge">GitHub Pages</div>
+<div class="hw-name" data-i18n="hw.5.desc">Publicación del tablero estático desde la rama principal. Los datos procesados se actualizan automáticamente desde la Raspberry Pi.</div>
+<div class="hw-detail" data-i18n="hw.5.detail">Rama main · Raíz / · Estático</div>
+</div>
+</div>
+</div>
 <!-- ═══════════════════════════════════════════════════════════
      FOOTER
 ═══════════════════════════════════════════════════════════ -->
-<footer>
-  <div class="footer-left" id="footer-ts">--</div>
-  <div class="footer-center">
-    <div class="footer-org">Asociación Amigos del Lago de Atitlán<sup>®</sup> &nbsp;·&nbsp; 2026</div>
-  </div>
-  <div class="footer-right">
-    <span class="footer-powered-label">Powered by</span>
-    <img src="Raspberry_Pi-Logo.wine.png" alt="Raspberry Pi" class="footer-pi-logo" title="Raspberry Pi 4B — AWA05">
-  </div>
-</footer>
+<footer><div class="footer-thanks" data-i18n="footer.thanks">Todo este sistema es posible gracias al apoyo de José Toriello.</div></footer>
+<script>  // ── IDIOMA ES / EN ──────────────────────────────────────────
+  window.AWA_I18N = (function() {
+    const messages = {"nav.subtitle":{"es":"Telemetría ambiental · Atitlán","en":"Environmental telemetry · Atitlán"},"nav.menu":{"es":"Menú ⌄","en":"Menu ⌄"},"nav.home":{"es":"Inicio","en":"Home"},"nav.dashboard":{"es":"Dashboard","en":"Dashboard"},"nav.analysis":{"es":"Análisis estadístico","en":"Statistical analysis"},"nav.water":{"es":"Calidad de agua","en":"Water quality"},"kpi.level":{"es":"Nivel","en":"Level"},"kpi.humidity":{"es":"Humedad","en":"Humidity"},"kpi.temperature":{"es":"Temperatura","en":"Temperature"},"kpi.dew":{"es":"Punto de rocío","en":"Dew point"},"kpi.pressure":{"es":"Presión","en":"Pressure"},"kpi.wind":{"es":"Viento","en":"Wind"},"kpi.uv":{"es":"UV","en":"UV"},"common.updated":{"es":"Act:","en":"Updated:"},"hero.eyebrow":{"es":"Nodo AWA05 · Santa Catarina Palopó · Lago de Atitlán · Guatemala","en":"AWA05 Node · Santa Catarina Palopó · Lake Atitlán · Guatemala"},"hero.kicker":{"es":"Monitoreo ambiental en tiempo real","en":"Real-time environmental monitoring"},"hero.title":{"es":"Sistema AWA05","en":"AWA05 System"},"hero.subtitle":{"es":"Producción hídrica, clima y estado operativo en una sola plataforma","en":"Water production, climate and operational status in one platform"},"hero.description":{"es":"Este sitio presenta la operación del nodo <strong>AWA05</strong> instalado en campo. Una <strong>Raspberry Pi 4B</strong> registra el nivel de captación, las variables microclimáticas y la salud del hardware; después procesa y publica los datos de forma automática cada quince minutos. El resultado es una vista pública y actualizada del desempeño de la máquina cosechadora de agua.","en":"This site presents the operation of the <strong>AWA05</strong> field node. A <strong>Raspberry Pi 4B</strong> records water level, microclimate variables and hardware health, then processes and publishes the data automatically every fifteen minutes. The result is a public, up-to-date view of the water-harvesting machine’s performance."},"stats.capture":{"es":"Frecuencia de captura","en":"Capture interval"},"stats.variables":{"es":"Variables monitoreadas","en":"Monitored variables"},"stats.kpis":{"es":"KPIs del nodo Pi","en":"Pi node KPIs"},"stats.site":{"es":"Sitio de monitoreo","en":"Monitoring site"},"unit.min":{"es":"min","en":"min"},"unit.series":{"es":"series","en":"series"},"unit.indicators":{"es":"indicadores","en":"indicators"},"modules.eyebrow":{"es":"Contenido del sistema","en":"System contents"},"modules.title":{"es":"Módulos de <em>monitoreo</em>","en":"Monitoring <em>modules</em>"},"modules.intro":{"es":"El sistema está organizado en ocho módulos que resumen la producción, el clima, la operación del nodo y el desempeño económico de AWA05.","en":"The system is organized into eight modules summarizing production, climate, node operation and the economic performance of AWA05."},"module.1.title":{"es":"Resumen ejecutivo","en":"Executive summary"},"module.1.desc":{"es":"Seis indicadores en tiempo real: nivel de cisterna, garrafones producidos, humedad, temperatura, punto de rocío y viento.","en":"Six real-time indicators: tank level, containers produced, humidity, temperature, dew point and wind."},"module.1.tag":{"es":"Tiempo real","en":"Real time"},"module.2.title":{"es":"Salud del nodo Pi","en":"Pi node health"},"module.2.desc":{"es":"Temperatura de CPU, voltaje, uso de RAM y disco, uptime, señal WiFi e IP Tailscale. El sistema emite alerta de apagado a 75 °C para proteger el hardware.","en":"CPU temperature, voltage, RAM and disk usage, uptime, Wi-Fi signal and Tailscale IP. The system issues a shutdown alert at 75 °C to protect the hardware."},"module.2.tag":{"es":"Hardware","en":"Hardware"},"module.3.title":{"es":"Producción hídrica","en":"Water production"},"module.3.desc":{"es":"Gráfica del nivel de agua en la cisterna a lo largo del tiempo. Los puntos verdes marcan cada momento en que se completó un garrafón de 20 litros.","en":"Tank water-level history. Green points mark each moment when a 20-liter container was completed."},"module.3.tag":{"es":"Sensor JSN-SR04T","en":"JSN-SR04T sensor"},"module.4.title":{"es":"Análisis diurno / nocturno","en":"Day / night analysis"},"module.4.desc":{"es":"La captación de niebla en el lago de Atitlán es predominantemente nocturna. Este módulo descompone la producción por franja horaria y por día de experimento.","en":"Fog harvesting at Lake Atitlán is predominantly nocturnal. This module breaks production down by time of day and experiment day."},"module.4.tag":{"es":"Análisis temporal","en":"Time analysis"},"module.5.title":{"es":"Análisis empresarial","en":"Business analysis"},"module.5.desc":{"es":"Calcula el costo de producir un litro y un garrafón, además del ahorro frente al precio de mercado, usando la tarifa eléctrica local y escenarios de consumo.","en":"Calculates the cost of producing one liter and one container, plus savings versus market prices, using the local electricity tariff and consumption scenarios."},"module.5.tag":{"es":"Costos · Q/L · Q/garrafón","en":"Costs · Q/L · Q/container"},"module.6.title":{"es":"Variables climáticas base","en":"Core climate variables"},"module.6.desc":{"es":"Series de temperatura, humedad relativa, punto de rocío y presión barométrica registradas por la estación meteorológica WS-2000.","en":"Temperature, relative humidity, dew point and barometric pressure series recorded by the WS-2000 weather station."},"module.6.tag":{"es":"WS-2000","en":"WS-2000"},"module.7.title":{"es":"Viento, lluvia y radiación","en":"Wind, rain and radiation"},"module.7.desc":{"es":"Velocidad y dirección del viento, precipitación horaria y radiación solar. Estas variables ayudan a explicar las condiciones de captación de niebla.","en":"Wind speed and direction, hourly precipitation and solar radiation. These variables help explain fog-harvesting conditions."},"module.7.tag":{"es":"WS-2000 · Rosa de vientos","en":"WS-2000 · Wind rose"},"module.8.title":{"es":"Evaluación estadística","en":"Statistical evaluation"},"module.8.desc":{"es":"Regresión multivariable, importancia de variables, análisis de humedad, diagnóstico de residuales y correlaciones entre las series disponibles.","en":"Multivariable regression, variable importance, humidity analysis, residual diagnostics and correlations among the available series."},"module.8.tag":{"es":"OLS · Pearson · VIF · ΔR²","en":"OLS · Pearson · VIF · ΔR²"},"pipeline.eyebrow":{"es":"Arquitectura del sistema","en":"System architecture"},"pipeline.title":{"es":"Del sensor al <em>tablero</em>","en":"From sensor to <em>dashboard</em>"},"pipeline.intro":{"es":"Cuatro etapas automáticas conectan la medición física con la visualización pública de los datos.","en":"Four automated stages connect physical measurement with public data visualization."},"pipeline.1.title":{"es":"Adquisición","en":"Acquisition"},"pipeline.1.desc":{"es":"El sensor JSN-SR04T mide el nivel cada 15 minutos. La WS-2000 envía clima cada 60 segundos al servidor Flask interno.","en":"The JSN-SR04T sensor measures level every 15 minutes. The WS-2000 sends climate data every 60 seconds to the internal Flask server."},"pipeline.2.title":{"es":"Procesamiento","en":"Processing"},"pipeline.2.desc":{"es":"Python filtra outliers, convierte unidades, calcula KPIs y genera el archivo JSON del tablero.","en":"Python filters outliers, converts units, calculates KPIs and generates the dashboard JSON file."},"pipeline.3.title":{"es":"Publicación","en":"Publishing"},"pipeline.3.desc":{"es":"PyGithub sube el JSON al repositorio y GitHub Pages despliega automáticamente los datos actualizados.","en":"PyGithub uploads the JSON to the repository and GitHub Pages automatically deploys the updated data."},"pipeline.4.title":{"es":"Visualización","en":"Visualization"},"pipeline.4.desc":{"es":"El tablero carga el JSON al abrirse y se refresca cada 60 segundos mediante HTML estático.","en":"The dashboard loads the JSON when opened and refreshes every 60 seconds using static HTML."},"variables.eyebrow":{"es":"Cobertura de datos","en":"Data coverage"},"variables.title":{"es":"Variables <em>monitoreadas</em>","en":"Monitored <em>variables</em>"},"variables.intro":{"es":"Nueve series climáticas y la medición de nivel permiten estudiar cuándo y cuánto agua produce la máquina.","en":"Nine climate series and the level measurement make it possible to study when and how much water the machine produces."},"var.1.name":{"es":"Nivel de agua","en":"Water level"},"var.1.desc":{"es":"Distancia ultrasónica convertida a volumen cilíndrico. Radio 12.9 cm · Altura útil 38.3 cm · Máx 20 L.","en":"Ultrasonic distance converted to cylindrical volume. Radius 12.9 cm · Useful height 38.3 cm · Max 20 L."},"var.2.name":{"es":"Humedad relativa","en":"Relative humidity"},"var.2.desc":{"es":"Variable clave para la formación de niebla y la captación. El análisis evalúa su relación con la producción.","en":"A key variable for fog formation and harvesting. The analysis evaluates its relationship with production."},"var.3.name":{"es":"Temperatura exterior","en":"Outdoor temperature"},"var.3.desc":{"es":"Serie térmica ambiental que influye en la evaporación y la condensación nocturna. Convertida de °F a °C.","en":"Ambient temperature series influencing evaporation and nighttime condensation. Converted from °F to °C."},"var.4.name":{"es":"Punto de rocío","en":"Dew point"},"var.4.desc":{"es":"Temperatura de condensación. Cuando se acerca a la temperatura ambiental, la humedad relativa tiende a aumentar.","en":"Condensation temperature. As it approaches ambient temperature, relative humidity tends to rise."},"var.5.name":{"es":"Presión barométrica","en":"Barometric pressure"},"var.5.desc":{"es":"Las variaciones de presión ayudan a identificar cambios de masas de aire y condiciones meteorológicas.","en":"Pressure variations help identify air-mass changes and weather conditions."},"var.6.name":{"es":"Velocidad del viento","en":"Wind speed"},"var.6.desc":{"es":"Variable física relevante para transportar las gotas de niebla hacia la superficie colectora.","en":"A relevant physical variable for carrying fog droplets toward the collection surface."},"var.7.name":{"es":"Dirección del viento","en":"Wind direction"},"var.7.desc":{"es":"Analizada por sectores y puntos cardinales para estimar la exposición de la máquina al flujo de niebla.","en":"Analyzed by sectors and cardinal directions to estimate the machine’s exposure to fog flow."},"var.8.name":{"es":"Precipitación horaria","en":"Hourly precipitation"},"var.8.desc":{"es":"Registro en mm/h para diferenciar los aportes de lluvia directa y los eventos de condensación.","en":"Recorded in mm/h to distinguish direct rainfall inputs from condensation events."},"var.9.name":{"es":"Radiación solar y UV","en":"Solar radiation and UV"},"var.9.desc":{"es":"Variables asociadas al ciclo diurno y a las condiciones que favorecen o reducen la captación.","en":"Variables associated with the daily cycle and conditions that favor or reduce harvesting."},"hardware.eyebrow":{"es":"Infraestructura de campo","en":"Field infrastructure"},"hardware.title":{"es":"Componentes del <em>nodo</em>","en":"Node <em>components</em>"},"hardware.intro":{"es":"Hardware de bajo consumo preparado para operar de forma continua y publicar telemetría desde el sitio de monitoreo.","en":"Low-power hardware prepared for continuous operation and telemetry publishing from the monitoring site."},"hw.1.desc":{"es":"Unidad central de procesamiento. Ejecuta el scheduler, el servidor Flask y el cliente GitHub bajo un servicio systemd persistente. Incluye supervisión térmica y apagado preventivo.","en":"Central processing unit. Runs the scheduler, Flask server and GitHub client under a persistent systemd service. Includes thermal monitoring and preventive shutdown."},"hw.1.detail":{"es":"Debian Trixie · 64-bit · ARM","en":"Debian Trixie · 64-bit · ARM"},"hw.2.desc":{"es":"Transductor ultrasónico para medición de nivel. Utiliza la mediana de 11 muestras para reducir ruido y está conectado mediante GPIO.","en":"Ultrasonic transducer for level measurement. Uses the median of 11 samples to reduce noise and is connected through GPIO."},"hw.2.detail":{"es":"GPIO BCM · Mediana 11 muestras","en":"BCM GPIO · Median of 11 samples"},"hw.3.desc":{"es":"Estación meteorológica que transmite por WiFi al endpoint Flask interno mediante un protocolo compatible con Wunderground.","en":"Weather station transmitting over Wi-Fi to the internal Flask endpoint through a Wunderground-compatible protocol."},"hw.3.detail":{"es":"Puerto 7777 · Cada 60 s","en":"Port 7777 · Every 60 s"},"hw.4.desc":{"es":"Acceso remoto seguro al nodo desde redes autorizadas. Permite administración SSH sin exponer directamente el puerto a Internet.","en":"Secure remote access to the node from authorized networks. Enables SSH administration without directly exposing the port to the Internet."},"hw.4.detail":{"es":"WireGuard · Mesh VPN","en":"WireGuard · Mesh VPN"},"hw.5.desc":{"es":"Publicación del tablero estático desde la rama principal. Los datos procesados se actualizan automáticamente desde la Raspberry Pi.","en":"Static dashboard publishing from the main branch. Processed data is updated automatically from the Raspberry Pi."},"hw.5.detail":{"es":"Rama main · Raíz / · Estático","en":"Main branch · Root / · Static"},"footer.thanks":{"es":"Todo este sistema es posible gracias al apoyo de José Toriello.","en":"This entire system is possible thanks to the support of José Toriello."},"lang.toEnglish":{"es":"Cambiar a inglés","en":"Switch to English"},"lang.toSpanish":{"es":"Cambiar a español","en":"Switch to Spanish"},"loader.morning":{"es":"Buenos días, bienvenido al sistema de telemetría AWA05","en":"Good morning, welcome to the AWA05 telemetry system"},"loader.afternoon":{"es":"Buenas tardes, bienvenido al sistema de telemetría AWA05","en":"Good afternoon, welcome to the AWA05 telemetry system"},"loader.evening":{"es":"Buenas noches, bienvenido al sistema de telemetría AWA05","en":"Good evening, welcome to the AWA05 telemetry system"},"document.title":{"es":"AWA05 · Sistema de telemetría ambiental","en":"AWA05 · Environmental telemetry system"}};
+    const saved = localStorage.getItem('awa05-language');
+    let language = saved === 'en' ? 'en' : 'es';
 
-<script>
+    function t(key) {
+      const item = messages[key];
+      return item ? item[language] : key;
+    }
+
+    function loaderTitle() {
+      const hour = new Date().getHours();
+      if (hour >= 5 && hour < 12) return t('loader.morning');
+      if (hour >= 12 && hour < 19) return t('loader.afternoon');
+      return t('loader.evening');
+    }
+
+    function apply() {
+      document.documentElement.lang = language;
+      document.title = t('document.title');
+
+      document.querySelectorAll('[data-i18n]').forEach((element) => {
+        element.textContent = t(element.dataset.i18n);
+      });
+
+      document.querySelectorAll('[data-i18n-html]').forEach((element) => {
+        element.innerHTML = t(element.dataset.i18nHtml);
+      });
+
+      const toggle = document.getElementById('lang-toggle');
+      if (toggle) {
+        const nextIsEnglish = language === 'es';
+        toggle.textContent = nextIsEnglish ? 'EN' : 'ES';
+        const label = nextIsEnglish ? t('lang.toEnglish') : t('lang.toSpanish');
+        toggle.setAttribute('aria-label', label);
+        toggle.title = label;
+      }
+
+      const loader = document.getElementById('awa-loader');
+      if (loader) loader.setAttribute('aria-label', language === 'es' ? 'Cargando sistema AWA05' : 'Loading AWA05 system');
+      const menuPanel = document.getElementById('nav-menu-panel');
+      if (menuPanel) menuPanel.setAttribute('aria-label', language === 'es' ? 'Navegación principal' : 'Main navigation');
+
+      document.dispatchEvent(new CustomEvent('awa:languagechange', { detail: { language } }));
+    }
+
+    function toggle() {
+      language = language === 'es' ? 'en' : 'es';
+      localStorage.setItem('awa05-language', language);
+      apply();
+    }
+
+    const button = document.getElementById('lang-toggle');
+    if (button) button.addEventListener('click', toggle);
+    apply();
+
+    return { t, apply, toggle, loaderTitle, get language() { return language; } };
+  })();
+
+
   // ── LOADER GIF — apertura sincronizada con la caída ───────────
   (function() {
     const loader = document.getElementById('awa-loader');
@@ -860,16 +851,14 @@
 
     document.body.classList.add('loader-active');
 
-    function getGreeting() {
-      const h = new Date().getHours();
-      if (h >= 5 && h < 12) return 'Buenos días';
-      if (h >= 12 && h < 19) return 'Buenas tardes';
-      return 'Buenas noches';
+    function updateLoaderTitle() {
+      if (greetingEl && window.AWA_I18N) {
+        greetingEl.textContent = window.AWA_I18N.loaderTitle();
+      }
     }
 
-    if (greetingEl) {
-      greetingEl.textContent = `${getGreeting()}, bienvenido al sistema de telemetría AWA05`;
-    }
+    updateLoaderTitle();
+    document.addEventListener('awa:languagechange', updateLoaderTitle);
 
     function finishLoader() {
       if (finished) return;
@@ -981,8 +970,7 @@
     setText('t-wind',   k.viento_kmh);
     setText('t-uv',     k.uv);
     const ts = d.actualizado || '—';
-    document.getElementById('strip-ts').textContent = 'Act: ' + ts;
-    document.getElementById('footer-ts').textContent = ts;
+    document.getElementById('strip-ts').textContent = `${window.AWA_I18N.t('common.updated')} ${ts}`;
   }
 
   update();
