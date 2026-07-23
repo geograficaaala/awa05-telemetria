@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>AWA05 · Sistema de Telemetría — José Toriello</title>
+  <link rel="preload" as="image" href="load_screen.gif" fetchpriority="high">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -43,23 +44,35 @@
 
 
     /* ═══════════════════════════════════════════════════════════
-       LOADING SCREEN — Bienvenida AWA05
+       LOADING SCREEN — GIF AWA05
+       El tiempo del impacto se controla en DROP_IMPACT_MS (JS).
     ═══════════════════════════════════════════════════════════ */
     #awa-loader {
       position: fixed;
       inset: 0;
       z-index: 100000;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      background: linear-gradient(160deg, #0e274b 0%, #1c3f6e 45%, #087fa5 100%);
+      display: grid;
+      place-items: center;
       overflow: hidden;
-      transition: opacity 0.85s ease, transform 0.85s ease;
+      isolation: isolate;
+      background: #061a32;
+      opacity: 1;
+      transform: scale(1);
+      clip-path: circle(150% at 50% 66%);
+      transition:
+        opacity 0.72s ease,
+        transform 0.9s cubic-bezier(.22,.61,.36,1),
+        clip-path 0.9s cubic-bezier(.65,0,.35,1);
+    }
+
+    body.loader-active {
+      overflow: hidden;
     }
 
     #awa-loader.fade-out {
       opacity: 0;
-      transform: translateY(-18px);
+      transform: scale(1.035);
+      clip-path: circle(0% at 50% 66%);
       pointer-events: none;
     }
 
@@ -67,121 +80,158 @@
       display: none;
     }
 
-    .loader-inner {
-      position: relative;
-      z-index: 2;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 32px;
+    .loader-gif {
+      position: absolute;
+      inset: 0;
+      z-index: -3;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center center;
+      opacity: 0;
+      transform: scale(1.015);
+      transition: opacity 0.28s ease;
+      user-select: none;
+      -webkit-user-drag: none;
     }
 
-    .loader-waves {
+    #awa-loader.gif-ready .loader-gif {
+      opacity: 1;
+    }
+
+    .loader-shade {
       position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      width: 100%;
-      height: 300px;
+      inset: 0;
+      z-index: -2;
+      background:
+        linear-gradient(180deg, rgba(3,18,38,.18) 0%, rgba(3,18,38,.04) 42%, rgba(3,18,38,.30) 100%),
+        radial-gradient(circle at 50% 46%, transparent 20%, rgba(2,16,34,.22) 100%);
       pointer-events: none;
     }
 
-    .lwave1 {
-      animation: waveRise1 7s cubic-bezier(.4,0,.2,1) forwards, waveSway 3.6s ease-in-out infinite alternate;
-    }
-
-    .lwave2 {
-      animation: waveRise2 7s cubic-bezier(.4,0,.2,1) forwards, waveSway2 4.6s ease-in-out infinite alternate;
-    }
-
-    @keyframes waveRise1 {
-      from { transform: translateY(300px); }
-      to { transform: translateY(0); }
-    }
-
-    @keyframes waveRise2 {
-      0%, 15% { transform: translateY(300px); }
-      to { transform: translateY(0); }
-    }
-
-    @keyframes waveSway {
-      from { transform: translateX(-5%) scaleX(1.04); }
-      to { transform: translateX(5%) scaleX(0.97); }
-    }
-
-    @keyframes waveSway2 {
-      from { transform: translateX(4%) scaleX(0.96); }
-      to { transform: translateX(-4%) scaleX(1.03); }
-    }
-
-    .loader-drop {
-      width: 68px;
-      height: 92px;
-      margin-bottom: 16px;
-      filter: drop-shadow(0 12px 32px rgba(16,168,208,0.5));
-      animation: dropBob 2.2s ease-in-out infinite;
-    }
-
-    @keyframes dropBob {
-      0%, 100% { transform: translateY(0); }
-      50% { transform: translateY(-8px); }
-    }
-
-    .loader-wordmark {
+    .loader-title-card {
+      width: min(820px, calc(100vw - 36px));
+      padding: clamp(22px, 4vw, 38px) clamp(24px, 5vw, 54px);
+      border: 1px solid rgba(255,255,255,.22);
+      border-radius: 28px;
+      background: rgba(6, 31, 62, .90);
+      box-shadow:
+        0 24px 80px rgba(0,0,0,.34),
+        inset 0 1px 0 rgba(255,255,255,.10);
       color: #fff;
-      font-family: var(--display);
-      font-size: clamp(42px, 7vw, 72px);
-      font-weight: 900;
-      letter-spacing: -0.04em;
-      line-height: 0.95;
+      text-align: center;
+      backdrop-filter: blur(7px);
+      -webkit-backdrop-filter: blur(7px);
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      transition: opacity .32s ease, transform .45s ease;
     }
 
-    .loader-wordmark span {
-      color: #7ee8f4;
+    #awa-loader.impact .loader-title-card {
+      opacity: 0;
+      transform: translateY(-12px) scale(.985);
     }
 
-    .loader-greeting {
-      max-width: 760px;
-      margin-top: 18px;
-      color: rgba(255,255,255,0.88);
-      font-family: var(--display);
-      font-size: clamp(23px, 3.2vw, 40px);
+    .loader-kicker {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 28px;
+      margin-bottom: 12px;
+      padding: 5px 13px;
+      border: 1px solid rgba(255,255,255,.24);
+      border-radius: 999px;
+      background: rgba(255,255,255,.08);
+      color: rgba(255,255,255,.82);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 11px;
       font-weight: 700;
-      line-height: 1.12;
-      letter-spacing: -0.025em;
-    }
-
-    .loader-sub {
-      margin-top: 12px;
-      color: rgba(255,255,255,0.52);
-      font-family: var(--mono);
-      font-size: 9.5px;
-      letter-spacing: 0.18em;
+      letter-spacing: .18em;
       text-transform: uppercase;
     }
 
-    .loader-bar-wrap {
-      width: min(280px, 70vw);
-      height: 2px;
-      margin-top: 30px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.13);
-      overflow: hidden;
+    .loader-greeting {
+      margin: 0;
+      color: #fff;
+      font-family: "Arial Rounded MT Bold", "Arial Rounded MT", "Trebuchet MS", Arial, sans-serif;
+      font-size: clamp(30px, 5.2vw, 66px);
+      font-weight: 700;
+      line-height: 1.06;
+      letter-spacing: -.025em;
+      text-wrap: balance;
+      text-shadow: 0 3px 18px rgba(0,0,0,.32);
     }
 
-    .loader-bar {
-      height: 100%;
-      width: 0%;
-      border-radius: 999px;
-      background: linear-gradient(90deg, #10a8d0, #fff, #18a978);
-      animation: loaderBarFill 7s cubic-bezier(.4,0,.2,1) forwards;
+    .loader-sub {
+      margin-top: 14px;
+      color: rgba(255,255,255,.78);
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: clamp(12px, 1.5vw, 16px);
+      font-weight: 600;
+      letter-spacing: .08em;
+      line-height: 1.45;
+      text-transform: uppercase;
     }
 
-    @keyframes loaderBarFill {
-      from { width: 0%; }
-      to { width: 100%; }
+    .loader-impact-ring {
+      position: absolute;
+      left: 50%;
+      top: 66%;
+      width: 28px;
+      height: 28px;
+      border: 2px solid rgba(255,255,255,.86);
+      border-radius: 50%;
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(.2);
+      pointer-events: none;
+      box-shadow: 0 0 30px rgba(112,225,255,.68);
+    }
+
+    #awa-loader.impact .loader-impact-ring {
+      animation: loaderImpactRing .78s cubic-bezier(.22,.61,.36,1) both;
+    }
+
+    @keyframes loaderImpactRing {
+      0%   { opacity: .95; transform: translate(-50%, -50%) scale(.2); }
+      55%  { opacity: .58; }
+      100% { opacity: 0; transform: translate(-50%, -50%) scale(18); }
+    }
+
+    #awa-loader.gif-error .loader-gif {
+      display: none;
+    }
+
+    #awa-loader.gif-error {
+      background:
+        radial-gradient(circle at 50% 42%, rgba(26,151,196,.58), transparent 42%),
+        linear-gradient(160deg, #071b35 0%, #123f6e 48%, #087fa5 100%);
+    }
+
+    @media (max-width: 700px) {
+      #awa-loader {
+        clip-path: circle(170% at 50% 64%);
+      }
+      #awa-loader.fade-out {
+        clip-path: circle(0% at 50% 64%);
+      }
+      .loader-title-card {
+        border-radius: 22px;
+        background: rgba(6,31,62,.92);
+      }
+      .loader-impact-ring {
+        top: 64%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #awa-loader,
+      .loader-title-card,
+      .loader-gif {
+        transition-duration: .18s !important;
+      }
+      .loader-impact-ring {
+        display: none;
+      }
     }
 
     /* ═══════════════════════════════════════════════════════════
@@ -477,39 +527,25 @@
 <body>
 
 <!-- ═══════════════════════════════════════════════════════════
-     LOADER DE BIENVENIDA
+     LOADER DE BIENVENIDA — GIF load_screen.gif
 ═══════════════════════════════════════════════════════════ -->
 <div id="awa-loader" aria-live="polite" aria-label="Cargando sistema AWA05">
-  <svg class="loader-waves" viewBox="0 0 1200 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-    <defs>
-      <linearGradient id="loader-wave-1" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#10a8d0" stop-opacity="0.62" />
-        <stop offset="100%" stop-color="#0e274b" stop-opacity="1" />
-      </linearGradient>
-      <linearGradient id="loader-wave-2" x1="0" y1="0" x2="0" y2="1">
-        <stop offset="0%" stop-color="#18a978" stop-opacity="0.44" />
-        <stop offset="100%" stop-color="#1c3f6e" stop-opacity="0.92" />
-      </linearGradient>
-    </defs>
-    <path class="lwave1" fill="url(#loader-wave-1)" d="M0,180 C200,120 400,240 600,180 C800,120 1000,240 1200,180 L1200,300 L0,300 Z" />
-    <path class="lwave2" fill="url(#loader-wave-2)" d="M0,210 C250,150 450,270 700,200 C900,140 1050,260 1200,200 L1200,300 L0,300 Z" />
-  </svg>
+  <img
+    id="loader-gif"
+    class="loader-gif"
+    alt=""
+    aria-hidden="true"
+    decoding="async"
+    fetchpriority="high"
+    data-src="load_screen.gif"
+  >
+  <div class="loader-shade" aria-hidden="true"></div>
+  <div class="loader-impact-ring" aria-hidden="true"></div>
 
-  <div class="loader-inner">
-    <svg class="loader-drop" viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <defs>
-        <radialGradient id="loader-drop-gradient" cx="40%" cy="30%">
-          <stop offset="0%" stop-color="#7ee8f4" />
-          <stop offset="100%" stop-color="#1c3f6e" />
-        </radialGradient>
-      </defs>
-      <path d="M30 4 C30 4 6 44 6 56 C6 69 17 76 30 76 C43 76 54 69 54 56 C54 44 30 4 30 4Z" fill="url(#loader-drop-gradient)" />
-      <ellipse cx="22" cy="42" rx="5" ry="9" fill="rgba(255,255,255,0.24)" transform="rotate(-18,22,42)" />
-    </svg>
-    <div class="loader-wordmark">AWA<span>05</span></div>
-    <div class="loader-greeting" id="loader-greeting">Bienvenido al sistema de telemetría AWA05</div>
-    <div class="loader-sub">Telemetría ambiental · Atitlán · Sistema activo</div>
-    <div class="loader-bar-wrap"><div class="loader-bar"></div></div>
+  <div class="loader-title-card">
+    <div class="loader-kicker">AWA05</div>
+    <h1 class="loader-greeting" id="loader-greeting">Bienvenido al sistema de telemetría AWA05</h1>
+    <div class="loader-sub">Telemetría ambiental · Lago de Atitlán · Sistema activo</div>
   </div>
 </div>
 
@@ -801,8 +837,29 @@
 </footer>
 
 <script>
-  // ── LOADER DE BIENVENIDA — 7 segundos ─────────────────────────
+  // ── LOADER GIF — apertura sincronizada con la caída ───────────
   (function() {
+    const loader = document.getElementById('awa-loader');
+    const gif = document.getElementById('loader-gif');
+    const greetingEl = document.getElementById('loader-greeting');
+
+    if (!loader || !gif) return;
+
+    /*
+      Ajuste principal:
+      cambia DROP_IMPACT_MS si la gota toca el agua antes o después.
+      El contador comienza cuando el GIF termina de cargar.
+    */
+    const DROP_IMPACT_MS = 2700;
+    const EXIT_DURATION_MS = 920;
+    const FALLBACK_OPEN_MS = 5000;
+
+    let started = false;
+    let finished = false;
+    let fallbackTimer = null;
+
+    document.body.classList.add('loader-active');
+
     function getGreeting() {
       const h = new Date().getHours();
       if (h >= 5 && h < 12) return 'Buenos días';
@@ -810,19 +867,51 @@
       return 'Buenas noches';
     }
 
-    const greetingEl = document.getElementById('loader-greeting');
     if (greetingEl) {
       greetingEl.textContent = `${getGreeting()}, bienvenido al sistema de telemetría AWA05`;
     }
 
-    window.addEventListener('load', () => {
-      const loader = document.getElementById('awa-loader');
-      if (!loader) return;
+    function finishLoader() {
+      if (finished) return;
+      finished = true;
+      clearTimeout(fallbackTimer);
+
+      loader.classList.add('impact');
+
+      requestAnimationFrame(() => {
+        setTimeout(() => loader.classList.add('fade-out'), 90);
+      });
+
       setTimeout(() => {
-        loader.classList.add('fade-out');
-        setTimeout(() => loader.classList.add('gone'), 900);
-      }, 7000);
+        loader.classList.add('gone');
+        document.body.classList.remove('loader-active');
+      }, EXIT_DURATION_MS);
+    }
+
+    function startGifClock() {
+      if (started) return;
+      started = true;
+      loader.classList.add('gif-ready');
+
+      const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      setTimeout(finishLoader, reducedMotion ? 500 : DROP_IMPACT_MS);
+    }
+
+    gif.addEventListener('load', startGifClock, { once: true });
+
+    gif.addEventListener('error', () => {
+      loader.classList.add('gif-error', 'gif-ready');
+      setTimeout(finishLoader, 1300);
+    }, { once: true });
+
+    /* Asignar src desde JS ayuda a que el reloj comience junto con el GIF. */
+    requestAnimationFrame(() => {
+      gif.src = gif.dataset.src;
+      if (gif.complete && gif.naturalWidth > 0) startGifClock();
     });
+
+    /* Nunca dejar la página bloqueada si el GIF tarda o falla silenciosamente. */
+    fallbackTimer = setTimeout(finishLoader, FALLBACK_OPEN_MS);
   })();
 
   // ── MENÚ DESPLEGABLE DE NAVEGACIÓN ───────────────────────────
