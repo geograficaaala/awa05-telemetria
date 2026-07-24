@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>AWA05 · Sistema de Telemetría y Análisis Empresarial</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
@@ -38,10 +37,10 @@
       --shadow-sm:0 1px 3px rgba(0,0,0,0.05),0 2px 8px rgba(0,0,0,0.04);
       --shadow-md:0 2px 6px rgba(0,0,0,0.06),0 8px 24px rgba(0,0,0,0.06);
       --shadow-lg:0 4px 16px rgba(0,0,0,0.07),0 20px 48px rgba(0,0,0,0.07);
-      --mono:'JetBrains Mono',monospace;
-      --display:'Playfair Display',serif;
-      --body:'DM Sans',sans-serif;
-      --serif:'Libre Baskerville',serif;
+      --mono:Arial,Helvetica,sans-serif;
+      --display:Arial,Helvetica,sans-serif;
+      --body:Arial,Helvetica,sans-serif;
+      --serif:Arial,Helvetica,sans-serif;
       --radius:4px;
       --sidebar-w:220px;
     }
@@ -571,6 +570,145 @@
     .layout{grid-template-columns:1fr!important}
     .sidebar{display:none!important}
 
+
+    /* ==========================================================
+       AWA05 UX 2026 · Capa de navegación y visualización renovada
+       Tipografía global solicitada: Arial. No modifica cálculos.
+       ========================================================== */
+    :root{
+      --motion-in:cubic-bezier(.4,0,.2,1);
+      --motion-out:cubic-bezier(.4,0,1,1);
+      --filter-h:66px;
+    }
+    html,body,button,input,select,textarea,canvas{font-family:Arial,Helvetica,sans-serif!important}
+    body{font-size:14px;letter-spacing:.005em}
+    .hd-name,.section-title,.kpi-value,.inv-item-val,.precio-val,.irr-card-main,.garrafon-num,.footer-org,.loader-wordmark,.hm-interp-vars{font-style:normal!important;letter-spacing:0!important}
+    .section-title em,.hd-name,.footer-org{font-style:normal!important}
+    .section-title{font-size:28px;line-height:1.18}
+    .card-title{font-size:11px;font-weight:700;letter-spacing:.08em}
+    .card-sub,.section-subtitle{line-height:1.6}
+
+    .period-panel{
+      position:sticky;top:56px;z-index:190;
+      display:flex;align-items:center;justify-content:space-between;gap:16px;
+      min-height:var(--filter-h);padding:10px 32px;
+      background:rgba(255,255,255,.96);border-bottom:1px solid var(--rule-strong);
+      box-shadow:0 8px 24px rgba(28,63,110,.07);backdrop-filter:blur(16px);
+      -webkit-backdrop-filter:blur(16px);transition:box-shadow .25s var(--motion-in),background .25s var(--motion-in)
+    }
+    .period-panel-main{display:flex;align-items:center;gap:14px;min-width:0;flex:1}
+    .period-panel-title{display:flex;flex-direction:column;gap:2px;min-width:170px}
+    .period-panel-title strong{font-size:12px;color:var(--ink);letter-spacing:.02em}
+    .period-panel-title span{font-size:10px;color:var(--ink-soft)}
+    .period-buttons{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .period-btn,.period-apply,.chart-action-btn,.section-collapse-btn{
+      min-height:36px;border-radius:6px;border:1px solid var(--cobalt-rim);
+      display:inline-flex;align-items:center;justify-content:center;gap:7px;
+      padding:0 13px;background:var(--cobalt);color:#fff;font-weight:700;font-size:11px;
+      cursor:pointer;box-shadow:0 4px 12px rgba(28,63,110,.14);
+      transition:transform .2s var(--motion-in),box-shadow .2s var(--motion-in),background .2s var(--motion-in),opacity .2s
+    }
+    .period-btn:hover,.period-apply:hover,.chart-action-btn:hover,.section-collapse-btn:hover{background:var(--cobalt-mid);box-shadow:0 8px 20px rgba(28,63,110,.22);transform:translateY(-1px)}
+    .period-btn:active,.period-apply:active,.chart-action-btn:active,.section-collapse-btn:active{transform:translateY(0);box-shadow:0 0 0 3px rgba(37,88,160,.18)}
+    .period-btn.is-active{background:#fff;color:var(--cobalt);box-shadow:0 0 0 2px rgba(28,63,110,.14),0 5px 16px rgba(28,63,110,.10)}
+    .period-btn:focus-visible,.period-apply:focus-visible,.chart-action-btn:focus-visible,.section-collapse-btn:focus-visible,input:focus-visible{outline:3px solid rgba(16,168,208,.35);outline-offset:2px}
+    .period-btn:disabled,.period-apply:disabled,.chart-action-btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .custom-range{display:none;align-items:center;gap:7px;padding:5px;border:1px solid var(--rule);border-radius:8px;background:var(--surface2)}
+    .custom-range.is-visible{display:flex;animation:uxFade .25s var(--motion-in) both}
+    .custom-range label{font-size:9px;color:var(--ink-soft);font-weight:700;text-transform:uppercase;letter-spacing:.06em}
+    .custom-range input{height:36px;border:1px solid var(--rule-strong);border-radius:5px;padding:0 9px;color:var(--ink);background:#fff;font-size:11px}
+    .period-apply .spinner{display:none;width:13px;height:13px;border:2px solid rgba(255,255,255,.4);border-top-color:#fff;border-radius:50%;animation:uxSpin .7s linear infinite}
+    .period-apply.is-loading .spinner{display:inline-block}
+    .period-panel-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+    .period-active-badge,.period-updated-badge{font-size:10px;border:1px solid var(--rule);border-radius:999px;padding:7px 10px;background:var(--surface2);color:var(--ink-soft);white-space:nowrap}
+    .period-active-badge strong{color:var(--cobalt)}
+    @keyframes uxSpin{to{transform:rotate(360deg)}}
+    @keyframes uxFade{from{opacity:0;transform:translateY(-5px)}to{opacity:1;transform:translateY(0)}}
+
+    main{transition:opacity .25s var(--motion-in),transform .25s var(--motion-in)}
+    main.dashboard-updating{opacity:.52;transform:translateY(3px);pointer-events:none}
+    main.dashboard-updating .card,.card.is-skeleton{position:relative;overflow:hidden}
+    main.dashboard-updating .card::after,.card.is-skeleton::after{
+      content:"";position:absolute;inset:0;z-index:20;pointer-events:none;
+      background:linear-gradient(105deg,transparent 25%,rgba(255,255,255,.66) 45%,transparent 65%);
+      background-size:220% 100%;animation:uxSkeleton 1.1s linear infinite
+    }
+    @keyframes uxSkeleton{to{background-position:-220% 0}}
+
+    section{position:relative;transition:background .3s var(--motion-in),border-color .3s var(--motion-in)}
+    .section-collapse-btn{position:absolute;right:0;top:0;width:38px;padding:0;background:#fff;color:var(--cobalt);z-index:5}
+    .section-collapse-btn svg{width:17px;height:17px;transition:transform .2s var(--motion-in)}
+    .section-collapse-body{overflow:hidden;max-height:24000px;opacity:1;transform:translateY(0);transition:max-height .38s var(--motion-in),opacity .25s var(--motion-in),transform .3s var(--motion-in)}
+    section.is-collapsed{background:var(--surface2);border:1px solid var(--rule);border-radius:8px;padding:18px 20px}
+    section.is-collapsed .section-collapse-body{max-height:0;opacity:0;transform:translateY(-8px);pointer-events:none}
+    section.is-collapsed .section-subtitle{margin-bottom:0;max-width:calc(100% - 54px)}
+    section.is-collapsed .section-collapse-btn svg{transform:rotate(-90deg)}
+
+    .card{transition:opacity .3s var(--motion-in),transform .3s var(--motion-in),box-shadow .25s var(--motion-in),border-color .25s var(--motion-in)}
+    .card:hover{transform:translateY(-2px) scale(1.01)!important}
+    .card[data-expandable="true"] .card-head{padding-right:112px!important;position:relative}
+    .card-actions{position:absolute;top:12px;right:12px;display:flex;align-items:center;gap:6px;z-index:4}
+    .chart-action-btn{width:36px;padding:0;border-radius:50%;background:#fff;color:var(--cobalt);box-shadow:var(--shadow-sm)}
+    .chart-action-btn svg{width:16px;height:16px;pointer-events:none}
+    .viz-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;padding:8px 20px;border-bottom:1px solid var(--rule);background:linear-gradient(90deg,var(--surface2),#fff);font-size:9.5px;color:var(--ink-soft)}
+    .viz-meta .viz-range{font-weight:700;color:var(--ink-mid)}
+    .viz-meta-badge{margin-left:auto;border:1px solid var(--rule);border-radius:999px;padding:3px 7px;background:#fff}
+    .viz-meta-badge.ok{color:var(--forest);border-color:rgba(26,92,56,.22);background:var(--forest-pale)}
+    .viz-meta-badge.warn{color:var(--amber);border-color:rgba(176,92,0,.25);background:var(--amber-pale)}
+    .chart-empty{display:none;position:absolute;inset:12px;z-index:8;align-items:center;justify-content:center;text-align:center;padding:22px;border:1px dashed var(--rule-strong);border-radius:6px;background:rgba(255,255,255,.94);color:var(--ink-soft);font-size:12px;line-height:1.5}
+    .card.has-no-data .chart-empty{display:flex}
+    .card.has-no-data canvas{opacity:.12}
+
+    .chart-wrap,.rose-wrap{transition:height .3s var(--motion-in),opacity .25s var(--motion-in)}
+    .chart-wrap canvas,.rose-wrap canvas{filter:saturate(1.02);transition:filter .2s,opacity .2s}
+    .chart-wrap:hover canvas,.rose-wrap:hover canvas{filter:saturate(1.08)}
+
+    .chart-modal{position:fixed;inset:0;z-index:100000;display:none;align-items:center;justify-content:center;padding:24px;background:rgba(10,18,30,.66);backdrop-filter:blur(8px);opacity:0;transition:opacity .22s var(--motion-out)}
+    .chart-modal.is-open{display:flex;opacity:1}
+    .chart-modal-dialog{width:min(1180px,96vw);height:min(760px,92vh);display:flex;flex-direction:column;background:var(--surface);border:1px solid rgba(255,255,255,.35);border-radius:12px;box-shadow:0 26px 80px rgba(0,0,0,.28);overflow:hidden;transform:scale(.96) translateY(10px);transition:transform .25s var(--motion-in)}
+    .chart-modal.is-open .chart-modal-dialog{transform:scale(1) translateY(0)}
+    .chart-modal-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding:18px 20px;border-bottom:1px solid var(--rule);background:var(--surface2)}
+    .chart-modal-title{font-size:18px;font-weight:800;color:var(--ink);margin-bottom:4px}
+    .chart-modal-sub{font-size:11px;color:var(--ink-soft)}
+    .chart-modal-actions{display:flex;gap:8px;flex-shrink:0}
+    .chart-modal-actions .chart-action-btn{border-radius:6px;width:auto;padding:0 12px}
+    .chart-modal-body{position:relative;flex:1;min-height:0;padding:20px}
+    .chart-modal-body canvas,.chart-modal-body img{width:100%!important;height:100%!important;object-fit:contain}
+    body.modal-open{overflow:hidden}
+
+    .water-tank{width:72px;height:110px;border:3px solid rgba(28,63,110,.26);border-radius:12px 12px 16px 16px;position:relative;overflow:hidden;background:linear-gradient(#fff,var(--surface2));box-shadow:inset 0 0 0 4px rgba(255,255,255,.7)}
+    .water-tank-liquid{position:absolute;left:0;right:0;bottom:0;height:0;background:linear-gradient(180deg,#7ee8f4,#10a8d0 45%,#1c3f6e);transition:height .45s var(--motion-in)}
+    .water-tank-liquid::before{content:"";position:absolute;left:-20%;top:-7px;width:140%;height:14px;border-radius:50%;background:rgba(255,255,255,.42);animation:waterWave 2.5s ease-in-out infinite alternate}
+    .water-tank-value{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;z-index:2;font-size:17px;font-weight:800;color:#fff;text-shadow:0 1px 5px rgba(0,0,0,.35)}
+    @keyframes waterWave{from{transform:translateX(-5%) rotate(-1deg)}to{transform:translateX(5%) rotate(1deg)}}
+    .nivel-visual-summary{display:flex;align-items:center;gap:14px}
+
+    .pi-stat{position:relative;overflow:hidden;transition:transform .25s var(--motion-in),box-shadow .25s var(--motion-in)}
+    .pi-stat:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+    .pi-stat::after{content:"";position:absolute;left:0;bottom:0;height:3px;width:var(--pi-progress,0%);background:linear-gradient(90deg,var(--cyan),var(--forest));transition:width .6s var(--motion-in),background .2s}
+    .pi-stat.is-critical::after{background:var(--crimson)}
+    #pi-uptime{background:var(--forest-pale);border-radius:999px;padding:4px 8px;display:inline-flex;animation:uptimePulse 5s ease-in-out infinite}
+    @keyframes uptimePulse{0%,90%,100%{box-shadow:0 0 0 0 rgba(26,92,56,0)}95%{box-shadow:0 0 0 5px rgba(26,92,56,.10)}}
+
+    @media(max-width:1000px){
+      .period-panel{padding:10px 18px;align-items:flex-start;flex-direction:column}
+      .period-panel-main{width:100%;flex-wrap:wrap}.period-panel-title{min-width:150px}.period-panel-meta{width:100%;justify-content:flex-start}
+    }
+    @media(max-width:768px){
+      :root{--filter-h:auto}
+      .period-panel{top:48px;padding:10px 12px}.period-panel-main{align-items:flex-start;flex-direction:column;gap:9px}.period-panel-title{min-width:0}
+      .period-buttons{width:100%;display:grid;grid-template-columns:repeat(3,1fr)}.period-btn{padding:0 8px}
+      .custom-range{width:100%;display:none;grid-template-columns:1fr 1fr;align-items:end}.custom-range.is-visible{display:grid}.custom-range label{display:flex;flex-direction:column;gap:4px}.period-apply{grid-column:1/-1}
+      .period-panel-meta{display:grid;grid-template-columns:1fr}.period-active-badge,.period-updated-badge{white-space:normal}
+      .section-collapse-btn{top:2px}.section-title{padding-right:46px}.card[data-expandable="true"] .card-head{padding-right:96px!important}
+      .chart-modal{padding:0}.chart-modal-dialog{width:100vw;height:100dvh;max-height:none;border-radius:0}.chart-modal-head{padding:14px}.chart-modal-body{padding:10px}.chart-modal-title{font-size:15px}
+      .viz-meta{padding:8px 12px}.viz-meta-badge{margin-left:0}
+    }
+    @media(max-width:480px){.period-buttons{grid-template-columns:repeat(2,1fr)}.section-title{font-size:21px}}
+    @media(prefers-reduced-motion:reduce){
+      *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.001ms!important}
+    }
+
   </style>
 </head>
 <body>
@@ -643,6 +781,33 @@
   </div>
 </header>
 
+<div class="period-panel" id="period-panel" aria-label="Filtros globales del dashboard">
+  <div class="period-panel-main">
+    <div class="period-panel-title">
+      <strong>Período de análisis</strong>
+      <span>Actualiza todas las visualizaciones compatibles</span>
+    </div>
+    <div class="period-buttons" role="group" aria-label="Seleccionar período">
+      <button class="period-btn is-active" type="button" data-period="24h" onclick="setPeriodo('24h')">24 h</button>
+      <button class="period-btn" type="button" data-period="7d" onclick="setPeriodo('7d')">7 días</button>
+      <button class="period-btn" type="button" data-period="30d" onclick="setPeriodo('30d')">30 días</button>
+      <button class="period-btn" type="button" data-period="90d" onclick="setPeriodo('90d')">90 días</button>
+      <button class="period-btn" type="button" data-period="all" onclick="setPeriodo('all')">Todo</button>
+      <button class="period-btn" type="button" data-period="custom" onclick="mostrarRangoPersonalizado()">Personalizado</button>
+    </div>
+    <div class="custom-range" id="custom-range">
+      <label>Desde<input type="datetime-local" id="period-start" aria-label="Fecha inicial"></label>
+      <label>Hasta<input type="datetime-local" id="period-end" aria-label="Fecha final"></label>
+      <button class="period-apply" id="period-apply" type="button" onclick="aplicarPeriodoPersonalizado()"><span class="spinner" aria-hidden="true"></span><span class="apply-label">Aplicar</span></button>
+    </div>
+  </div>
+  <div class="period-panel-meta" aria-live="polite">
+    <div class="period-active-badge">Activo: <strong id="active-period-label">Últimas 24 horas</strong></div>
+    <div class="period-updated-badge" id="relative-update-label">Actualización pendiente</div>
+  </div>
+</div>
+
+
 
 <div id="mobile-menu" class="mobile-menu" style="display:none">
   <nav class="mobile-nav">
@@ -665,11 +830,9 @@
 
   <div class="chart-toolbar" style="padding:0;margin:18px 0 22px">
     <div class="chart-summary">
-      <div class="chart-mini-stat"><div class="chart-mini-label">Periodo visible</div><div class="chart-mini-value" id="global-range-label">7 días</div></div>
-    </div>
-    <div class="chart-controls" aria-label="Periodo visible de gráficas">
-      <button class="chart-chip" data-range-group="global" data-range-value="7" onclick="setDashboardRange(7)">Últimos 7 días</button>
-      <button class="chart-chip is-wide" data-range-group="global" data-range-value="all" onclick="setDashboardRange('all')">Mostrar todo el periodo</button>
+      <div class="chart-mini-stat"><div class="chart-mini-label">Período visible</div><div class="chart-mini-value" id="global-range-label">24 horas</div></div>
+      <div class="chart-mini-stat"><div class="chart-mini-label">Rango de datos</div><div class="chart-mini-value" id="global-data-range">--</div></div>
+      <div class="chart-mini-stat"><div class="chart-mini-label">Próxima lectura</div><div class="chart-mini-value" id="next-update-label">--</div></div>
     </div>
   </div>
 
@@ -749,6 +912,7 @@
     </div>
     <div class="chart-toolbar">
       <div class="chart-summary">
+        <div class="nivel-visual-summary" title="Nivel visual del tanque"><div class="water-tank"><div class="water-tank-liquid" id="tank-liquid"></div><div class="water-tank-value" id="tank-value">--%</div></div></div>
         <div class="chart-mini-stat"><div class="chart-mini-label">Volumen actual</div><div class="chart-mini-value" id="nivel-stat-actual">--</div></div>
         <div class="chart-mini-stat"><div class="chart-mini-label">Llenado</div><div class="chart-mini-value" id="nivel-stat-pct">--</div></div>
         <div class="chart-mini-stat"><div class="chart-mini-label">Eventos</div><div class="chart-mini-value" id="nivel-stat-eventos">--</div></div>
@@ -1258,6 +1422,10 @@
     </div>
     <div class="card"><div class="card-head" style="display:flex;justify-content:space-between"><div><div class="card-title">Radiación solar</div><div class="card-sub">W/m² · Carga energética</div></div><div class="card-badge">W/m²</div></div><div class="chart-wrap"><canvas id="chart-solar"></canvas></div><div class="card-foot"><div class="card-ts" id="ts-solar">--</div><div class="card-ts">WS-2000</div></div></div>
   </div>
+  <div class="grid-2" style="margin-top:16px">
+    <div class="card"><div class="card-head" style="display:flex;justify-content:space-between"><div><div class="card-title">Índice UV y nivel de riesgo</div><div class="card-sub">Escala contextual: bajo, moderado, alto y muy alto</div></div><div class="card-badge">UV</div></div><div class="chart-wrap short"><canvas id="chart-uv"></canvas></div><div class="card-foot"><div class="card-ts" id="ts-uv">--</div><div class="card-ts">WS-2000 · riesgo por lectura</div></div></div>
+    <div class="card"><div class="card-head" style="display:flex;justify-content:space-between"><div><div class="card-title">Estado del período</div><div class="card-sub">Cobertura y vigencia de los datos ambientales seleccionados</div></div><div class="card-badge">Calidad</div></div><div class="card-body"><div class="pi-grid"><div class="pi-stat"><div class="pi-stat-label">Lecturas clima</div><div class="pi-stat-val" id="period-climate-count">--</div></div><div class="pi-stat"><div class="pi-stat-label">Lecturas nivel</div><div class="pi-stat-val" id="period-level-count">--</div></div><div class="pi-stat"><div class="pi-stat-label">Cobertura</div><div class="pi-stat-val" id="period-coverage">--</div></div></div></div></div>
+  </div>
 </section>
 
 <div class="section-rule"></div>
@@ -1389,6 +1557,27 @@
 </main>
 </div>
 
+
+<div class="chart-modal" id="chart-modal" role="dialog" aria-modal="true" aria-labelledby="chart-modal-title" aria-hidden="true">
+  <div class="chart-modal-dialog">
+    <div class="chart-modal-head">
+      <div>
+        <div class="chart-modal-title" id="chart-modal-title">Visualización ampliada</div>
+        <div class="chart-modal-sub" id="chart-modal-sub">--</div>
+      </div>
+      <div class="chart-modal-actions">
+        <button class="chart-action-btn" type="button" onclick="descargarGraficoActual()" aria-label="Descargar gráfico PNG" title="Descargar PNG">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M5 19h14"/></svg><span>PNG</span>
+        </button>
+        <button class="chart-action-btn" type="button" onclick="cerrarGraficoExpandido()" aria-label="Cerrar visualización" title="Cerrar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="chart-modal-body" id="chart-modal-body"><canvas id="chart-modal-canvas"></canvas></div>
+  </div>
+</div>
+
 <div class="dash-footer">
   <div class="footer-left" id="footer-ts">--</div>
   <div class="footer-center">
@@ -1415,18 +1604,264 @@ function hideAwaLoader() {
 const chartRegistry = {};
 let globalPayload = null;
 
+// =============================================================
+// AWA05 UX 2026 · Estado global, filtros, zoom y accesibilidad
+// =============================================================
+function safeStorageGet(key,fallback='{}'){try{return localStorage.getItem(key)||fallback}catch{return fallback}}
+function safeStorageSet(key,value){try{localStorage.setItem(key,value)}catch{}}
+
+const dashboardUX = {
+  periodoActual: '24h',
+  customStart: null,
+  customEnd: null,
+  colapsados: JSON.parse(safeStorageGet('awa05.sectionState','{}')),
+  zoomed: null,
+  modalChart: null,
+  lastPayload: null
+};
+
+function periodTypeToDays(tipo){ return ({'24h':1,'7d':7,'30d':30,'90d':90})[tipo] ?? (tipo === 'all' ? 'all' : 'custom'); }
+function getPeriodLabel(tipo = dashboardUX.periodoActual){
+  return ({'24h':'Últimas 24 horas','7d':'Últimos 7 días','30d':'Últimos 30 días','90d':'Últimos 90 días','all':'Todo el período','custom':'Período personalizado'})[tipo] || 'Período seleccionado';
+}
+function getCompactPeriodLabel(tipo = dashboardUX.periodoActual){
+  return ({'24h':'24 horas','7d':'7 días','30d':'30 días','90d':'90 días','all':'Todo','custom':'Personalizado'})[tipo] || '--';
+}
+function toLocalInputValue(date){
+  if(!(date instanceof Date) || isNaN(date)) return '';
+  const p=n=>String(n).padStart(2,'0');
+  return `${date.getFullYear()}-${p(date.getMonth()+1)}-${p(date.getDate())}T${p(date.getHours())}:${p(date.getMinutes())}`;
+}
+function formatDateTimeGT(value){
+  const d = value instanceof Date ? value : parseDashboardTs(value);
+  if(!d) return '--';
+  return d.toLocaleString('es-GT',{day:'2-digit',month:'short',year:'numeric',hour:'2-digit',minute:'2-digit'});
+}
+function formatShortDate(value){
+  const d = value instanceof Date ? value : parseDashboardTs(value);
+  if(!d) return '--';
+  return d.toLocaleString('es-GT',{day:'2-digit',month:'short',hour:'2-digit',minute:'2-digit'});
+}
+function relativeTime(value){
+  const d = parseDashboardTs(value);
+  if(!d) return value ? `Actualizado: ${value}` : 'Actualización pendiente';
+  const mins = Math.max(0,Math.round((Date.now()-d.getTime())/60000));
+  if(mins < 1) return 'Actualizado hace menos de 1 minuto';
+  if(mins < 60) return `Actualizado hace ${mins} min`;
+  const hrs = Math.floor(mins/60);
+  if(hrs < 24) return `Actualizado hace ${hrs} h`;
+  return `Actualizado hace ${Math.floor(hrs/24)} d`;
+}
+function setDashboardLoading(active){
+  const main = document.querySelector('main');
+  if(main) main.classList.toggle('dashboard-updating',active);
+  const apply = document.getElementById('period-apply');
+  if(apply){ apply.classList.toggle('is-loading',active); apply.disabled=active; const label=apply.querySelector('.apply-label'); if(label) label.textContent=active?'Procesando…':'Aplicar'; }
+  document.querySelectorAll('.period-btn').forEach(b=>b.disabled=active);
+}
+function syncPeriodUI(){
+  document.querySelectorAll('[data-period]').forEach(btn=>btn.classList.toggle('is-active',btn.dataset.period===dashboardUX.periodoActual));
+  setText('active-period-label',getPeriodLabel());
+  setText('global-range-label',getCompactPeriodLabel());
+  const custom=document.getElementById('custom-range');
+  if(custom) custom.classList.toggle('is-visible',dashboardUX.periodoActual==='custom');
+}
+function mostrarRangoPersonalizado(){
+  dashboardUX.periodoActual='custom';
+  const end = dashboardUX.customEnd || getLastAvailableTimestamp(globalPayload) || new Date();
+  const start = dashboardUX.customStart || new Date(end.getTime()-7*86400000);
+  const startInput=document.getElementById('period-start'), endInput=document.getElementById('period-end');
+  if(startInput&&!startInput.value) startInput.value=toLocalInputValue(start);
+  if(endInput&&!endInput.value) endInput.value=toLocalInputValue(end);
+  syncPeriodUI();
+  startInput?.focus();
+}
+function aplicarPeriodoPersonalizado(){
+  const start=parseDashboardTs(document.getElementById('period-start')?.value);
+  const end=parseDashboardTs(document.getElementById('period-end')?.value);
+  if(!start||!end){ alert('Seleccione una fecha inicial y una fecha final válidas.'); return; }
+  if(start>end){ alert('La fecha inicial debe ser anterior a la fecha final.'); return; }
+  dashboardUX.customStart=start; dashboardUX.customEnd=end;
+  setPeriodo('custom',start,end);
+}
+async function setPeriodo(tipo, fechaInicio=null, fechaFin=null){
+  dashboardUX.periodoActual=tipo;
+  if(tipo==='custom'){ dashboardUX.customStart=fechaInicio||dashboardUX.customStart; dashboardUX.customEnd=fechaFin||dashboardUX.customEnd; }
+  const range=periodTypeToDays(tipo);
+  dashboardRangeDays=range; nivelRangeDays=range; curvasDiaRangeDays=range; produccionRangeDays=range; energiaRangeDays=range;
+  syncPeriodUI();
+  setDashboardLoading(true);
+  try{ await renderDashboard(); }
+  finally{ setDashboardLoading(false); }
+}
+function getLastAvailableTimestamp(payload){
+  const s=payload?.series||{}; const labels=[...(s.labels_nivel||[]),...(s.labels||[])];
+  for(let i=labels.length-1;i>=0;i--){ const d=parseDashboardTs(labels[i]); if(d) return d; }
+  return null;
+}
+function getVisibleBounds(payload=globalPayload){
+  const s=payload?.series||{};
+  const labelSets=[s.labels_nivel||[],s.labels||[],s.lluvia_dia_labels||[]];
+  const dates=[];
+  labelSets.forEach(labels=>labels.forEach(v=>{const d=parseDashboardTs(v);if(d)dates.push(d)}));
+  dates.sort((a,b)=>a-b);
+  if(!dates.length) return {start:null,end:null};
+  if(dashboardUX.periodoActual==='custom') return {start:dashboardUX.customStart,end:dashboardUX.customEnd};
+  if(dashboardUX.periodoActual==='all') return {start:dates[0],end:dates.at(-1)};
+  const end=dates.at(-1); const days=Number(periodTypeToDays(dashboardUX.periodoActual));
+  return {start:new Date(end.getTime()-days*86400000),end};
+}
+function applyPayloadPeriodMetadata(payload){
+  if(!payload) return payload;
+  const b=getVisibleBounds(payload);
+  payload.periodo_actual={inicio:b.start?.toISOString?.()||null,fin:b.end?.toISOString?.()||null,tipo:dashboardUX.periodoActual};
+  if(!payload.datos_proximos){ const d=parseDashboardTs(payload.actualizado); if(d) payload.datos_proximos=new Date(d.getTime()+60*60000).toISOString(); }
+  return payload;
+}
+function getRangeDescription(){
+  const b=getVisibleBounds();
+  return b.start&&b.end ? `Datos de ${formatShortDate(b.start)} a ${formatShortDate(b.end)}` : 'Rango no disponible';
+}
+function updateGlobalMetadata(payload){
+  dashboardUX.lastPayload=payload; dashboardUX.lastPayload&&applyPayloadPeriodMetadata(dashboardUX.lastPayload);
+  const b=getVisibleBounds(payload);
+  setText('global-data-range',b.start&&b.end?`${formatShortDate(b.start)} → ${formatShortDate(b.end)}`:'--');
+  setText('relative-update-label',relativeTime(payload?.actualizado));
+  setText('next-update-label',payload?.datos_proximos?formatShortDate(payload.datos_proximos):'--');
+  setText('period-climate-count',getVisibleSeriesCount(payload?.series?.labels||[]));
+  setText('period-level-count',getVisibleSeriesCount(payload?.series?.labels_nivel||payload?.series?.labels||[]));
+  const climate=getVisibleSeriesCount(payload?.series?.labels||[]), level=getVisibleSeriesCount(payload?.series?.labels_nivel||[]);
+  setText('period-coverage',(climate||level)?(Math.min(100,Math.round(((climate>0?1:0)+(level>0?1:0))/2*100))+'%'):'0%');
+  document.querySelectorAll('.viz-meta').forEach(meta=>{
+    meta.querySelector('.viz-range')?.replaceChildren(document.createTextNode(getRangeDescription()));
+    meta.querySelector('.viz-updated')?.replaceChildren(document.createTextNode(relativeTime(payload?.actualizado)));
+    meta.querySelector('.viz-period')?.replaceChildren(document.createTextNode(getPeriodLabel()));
+  });
+}
+function getVisibleSeriesCount(labels){ return sliceByTimeRange(labels||[],[],periodTypeToDays(dashboardUX.periodoActual)).rawLabels.length; }
+
+function cloneChartValue(value,seen=new WeakMap()){
+  if(value===null||typeof value!=='object') return value;
+  if(seen.has(value)) return seen.get(value);
+  if(Array.isArray(value)){const arr=[];seen.set(value,arr);value.forEach(v=>arr.push(cloneChartValue(v,seen)));return arr;}
+  const out={};seen.set(value,out);Object.keys(value).forEach(k=>{if(k!=='chart'&&k!=='_chart')out[k]=cloneChartValue(value[k],seen)});return out;
+}
+function openCanvasSnapshot(canvas){
+  const body=document.getElementById('chart-modal-body'); if(!body)return;
+  body.innerHTML=''; const img=new Image();img.alt='Vista ampliada del gráfico';img.src=canvas.toDataURL('image/png',1);body.appendChild(img);
+}
+function expandirGrafico(canvasId){
+  const canvas=document.getElementById(canvasId); if(!canvas)return;
+  const card=canvas.closest('.card'); const title=card?.querySelector('.card-title')?.textContent?.trim()||'Visualización ampliada';
+  const modal=document.getElementById('chart-modal'); const body=document.getElementById('chart-modal-body');
+  if(!modal||!body)return;
+  dashboardUX.zoomed={canvasId,title,sourceCanvas:canvas};
+  setText('chart-modal-title',title);setText('chart-modal-sub',`${getRangeDescription()} · ${relativeTime(globalPayload?.actualizado)} · ${getPeriodLabel()}`);
+  if(dashboardUX.modalChart){dashboardUX.modalChart.destroy();dashboardUX.modalChart=null;}
+  body.innerHTML='<canvas id="chart-modal-canvas"></canvas>';
+  const source=chartRegistry[canvasId];
+  if(source?.config){
+    try{
+      const modalCanvas=document.getElementById('chart-modal-canvas');
+      const config={type:source.config.type,data:cloneChartValue(source.config.data),options:cloneChartValue(source.config.options),plugins:source.config.plugins||[]};
+      config.options={...(config.options||{}),responsive:true,maintainAspectRatio:false,animation:{duration:280,easing:'easeOutQuart'}};
+      if(config.options.scales?.x?.ticks) config.options.scales.x.ticks={...config.options.scales.x.ticks,maxTicksLimit:18,font:{family:'Arial',size:11}};
+      if(config.options.scales?.y?.ticks) config.options.scales.y.ticks={...config.options.scales.y.ticks,font:{family:'Arial',size:11}};
+      dashboardUX.modalChart=new Chart(modalCanvas.getContext('2d'),config);
+    }catch(err){console.warn('Se usó captura para el zoom:',err);openCanvasSnapshot(canvas);}
+  }else openCanvasSnapshot(canvas);
+  modal.style.display='flex';requestAnimationFrame(()=>modal.classList.add('is-open'));modal.setAttribute('aria-hidden','false');document.body.classList.add('modal-open');
+  modal.querySelector('[aria-label="Cerrar visualización"]')?.focus();
+}
+function cerrarGraficoExpandido(){
+  const modal=document.getElementById('chart-modal');if(!modal)return;
+  modal.classList.remove('is-open');modal.setAttribute('aria-hidden','true');document.body.classList.remove('modal-open');
+  setTimeout(()=>{modal.style.display='none';if(dashboardUX.modalChart){dashboardUX.modalChart.destroy();dashboardUX.modalChart=null;}},230);
+}
+function descargarGraficoActual(){
+  const source=dashboardUX.modalChart?.canvas||dashboardUX.zoomed?.sourceCanvas;if(!source)return;
+  const a=document.createElement('a');a.download=`AWA05_${(dashboardUX.zoomed?.title||'grafico').replace(/[^a-z0-9áéíóúñ]+/gi,'_')}_${new Date().toISOString().slice(0,10)}.png`;a.href=source.toDataURL('image/png',1);a.click();
+}
+function addVisualizationControls(){
+  document.querySelectorAll('.card').forEach((card,index)=>{
+    const canvas=card.querySelector('canvas');if(!canvas)return;
+    if(!canvas.id)canvas.id=`awa-chart-${index}`;
+    card.dataset.expandable='true';
+    let head=card.querySelector('.card-head');
+    if(!head){head=document.createElement('div');head.className='card-head';card.prepend(head);}
+    if(!head.querySelector('.card-actions')){
+      const actions=document.createElement('div');actions.className='card-actions';
+      const expand=document.createElement('button');expand.type='button';expand.className='chart-action-btn';expand.title='Ampliar gráfico';expand.setAttribute('aria-label','Ampliar gráfico');expand.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/></svg>';expand.addEventListener('click',()=>expandirGrafico(canvas.id));
+      const download=document.createElement('button');download.type='button';download.className='chart-action-btn';download.title='Descargar PNG';download.setAttribute('aria-label','Descargar gráfico PNG');download.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4"/><path d="M5 19h14"/></svg>';download.addEventListener('click',()=>{dashboardUX.zoomed={canvasId:canvas.id,title:card.querySelector('.card-title')?.textContent||'gráfico',sourceCanvas:canvas};descargarGraficoActual();});
+      actions.append(expand,download);head.appendChild(actions);
+    }
+    if(!card.querySelector('.viz-meta')){
+      const meta=document.createElement('div');meta.className='viz-meta';meta.innerHTML='<span class="viz-range">Rango pendiente</span><span>·</span><span class="viz-updated">Actualización pendiente</span><span>·</span><span class="viz-period">24 horas</span><span class="viz-meta-badge ok">Datos disponibles</span>';
+      head.insertAdjacentElement('afterend',meta);
+    }
+    const wrap=canvas.closest('.chart-wrap,.rose-wrap')||canvas.parentElement;
+    if(wrap&&!wrap.querySelector('.chart-empty')){const empty=document.createElement('div');empty.className='chart-empty';empty.innerHTML='<div><strong>No hay datos para este período</strong><br>Pruebe ampliar el rango de fechas.</div>';wrap.appendChild(empty);}
+  });
+}
+function chartHasData(canvasId){
+  const chart=chartRegistry[canvasId];
+  if(!chart)return true;
+  return (chart.data?.datasets||[]).some(ds=>(ds.data||[]).some(v=>v!==null&&v!==undefined&&(typeof v==='object'?Number.isFinite(Number(v.y??v.x)):Number.isFinite(Number(v)))));
+}
+function updateCardDataStates(){
+  document.querySelectorAll('.card[data-expandable="true"]').forEach(card=>{
+    const canvas=card.querySelector('canvas');const has=canvas?chartHasData(canvas.id):false;card.classList.toggle('has-no-data',!has);
+    const badge=card.querySelector('.viz-meta-badge');if(badge){badge.textContent=has?'Datos disponibles':'Datos incompletos';badge.className='viz-meta-badge '+(has?'ok':'warn');}
+  });
+}
+function initCollapsibleSections(){
+  document.querySelectorAll('main section[id]').forEach(section=>{
+    if(section.querySelector(':scope > .section-collapse-btn'))return;
+    const btn=document.createElement('button');btn.type='button';btn.className='section-collapse-btn';btn.setAttribute('aria-label','Colapsar o expandir sección');btn.setAttribute('aria-expanded','true');btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>';
+    const children=[...section.children];const subtitle=section.querySelector(':scope > .section-subtitle');const start=subtitle?children.indexOf(subtitle)+1:Math.min(3,children.length);
+    const body=document.createElement('div');body.className='section-collapse-body';children.slice(start).forEach(el=>body.appendChild(el));section.appendChild(body);section.appendChild(btn);
+    const collapsed=!!dashboardUX.colapsados[section.id];section.classList.toggle('is-collapsed',collapsed);btn.setAttribute('aria-expanded',String(!collapsed));
+    btn.addEventListener('click',()=>{const next=!section.classList.contains('is-collapsed');section.classList.toggle('is-collapsed',next);btn.setAttribute('aria-expanded',String(!next));dashboardUX.colapsados[section.id]=next;safeStorageSet('awa05.sectionState',JSON.stringify(dashboardUX.colapsados));setTimeout(()=>Object.values(chartRegistry).forEach(c=>c?.resize?.()),390);});
+  });
+}
+function animateNumberElement(id,target,duration=600,decimals=1){
+  const el=document.getElementById(id);const end=Number(target);if(!el||!Number.isFinite(end))return;
+  const start=Number(el.dataset.lastNumeric??0);const t0=performance.now();
+  const tick=now=>{const p=Math.min(1,(now-t0)/duration),e=1-Math.pow(1-p,3);el.textContent=(start+(end-start)*e).toFixed(decimals);if(p<1)requestAnimationFrame(tick);else{el.textContent=end.toFixed(decimals);el.dataset.lastNumeric=String(end);}};requestAnimationFrame(tick);
+}
+function animateDashboardKpis(payload){
+  const k=payload?.kpis||{};animateNumberElement('kpi-nivel',k.nivel_l,600,2);animateNumberElement('kpi-hum',k.humedad_pct,600,1);animateNumberElement('kpi-temp',k.temp_c,600,1);animateNumberElement('kpi-dew',k.punto_rocio_c,600,1);animateNumberElement('kpi-wind',k.viento_kmh,600,1);
+}
+function updateTankVisual(){
+  const val=Number(document.getElementById('nivel-stat-pct')?.textContent?.replace('%',''));const pct=Number.isFinite(val)?Math.max(0,Math.min(100,val)):0;
+  const liquid=document.getElementById('tank-liquid');const label=document.getElementById('tank-value');if(liquid)liquid.style.height=pct+'%';if(label)label.textContent=Math.round(pct)+'%';
+}
+function updatePiVisuals(payload){
+  const s=payload?.sistema||{};const pairs=[['pi-cpu-temp',s.cpu_temp_c,100],['pi-ram',s.ram_uso_pct,100],['pi-disco',s.disco_uso_pct,100],['pi-wifi',s.wifi_pct,100]];
+  pairs.forEach(([id,val,max])=>{const el=document.getElementById(id);const card=el?.closest('.pi-stat');if(!card)return;const pct=Math.max(0,Math.min(100,Number(val)/max*100));card.style.setProperty('--pi-progress',Number.isFinite(pct)?pct+'%':'0%');card.classList.toggle('is-critical',Number(val)>80);});
+}
+function afterDashboardRender(payload){
+  applyPayloadPeriodMetadata(payload);updateGlobalMetadata(payload);addVisualizationControls();updateCardDataStates();animateDashboardKpis(payload);updateTankVisual();updatePiVisuals(payload);syncPeriodUI();
+}
+function debounce(fn,wait=160){let t;return(...args)=>{clearTimeout(t);t=setTimeout(()=>fn(...args),wait)}}
+const resizeDashboardCharts=debounce(()=>Object.values(chartRegistry).forEach(c=>c?.resize?.()),180);
+window.addEventListener('resize',resizeDashboardCharts,{passive:true});
+document.addEventListener('keydown',e=>{if(e.key==='Escape'&&document.getElementById('chart-modal')?.classList.contains('is-open'))cerrarGraficoExpandido();});
+document.addEventListener('click',e=>{if(e.target?.id==='chart-modal')cerrarGraficoExpandido();});
+
+
 const DIAS  = ['Dom','Lun','Mar','Mié','Jue','Vie','Sáb'];
 const MESES = ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'];
 const DIA_COLORS = ['#1c3f6e','#b05c00','#1a5c38','#951f1f','#0f6b60','#7a4a9e','#b5860a','#2a6080'];
 const CURVAS_DIA_VISIBLE_DESDE = '2026-05-11';
-let nivelRangeDays = 7;
-let curvasDiaRangeDays = 7;
-let produccionRangeDays = 7;
-let dashboardRangeDays = 7;
+let nivelRangeDays = 1;
+let curvasDiaRangeDays = 1;
+let produccionRangeDays = 1;
+let dashboardRangeDays = 1;
 let produccionAnalisisState = null;
 let nivelChartState = null;
 let curvasDiaState = null;
-let energiaRangeDays = 7;
+let energiaRangeDays = 1;
 let energiaPowerW = 750;
 let energiaTarifa = 2.05;
 let energiaMetric = 'kwhl';
@@ -1546,11 +1981,14 @@ async function fetchData() {
 }
 
 
+
+const referenceBandPlugin={id:'referenceBand',beforeDatasetsDraw(chart,args,opts){if(!opts||opts.from==null||opts.to==null)return;const y=chart.scales?.y;if(!y)return;const {ctx,chartArea}=chart;const top=y.getPixelForValue(opts.to),bottom=y.getPixelForValue(opts.from);ctx.save();ctx.fillStyle=opts.color||'rgba(40,38,30,.05)';ctx.fillRect(chartArea.left,top,chartArea.right-chartArea.left,bottom-top);ctx.restore();}};
+
 const chartDefaults = {
   responsive:true, maintainAspectRatio:false,
-  animation:{duration:700,easing:'easeInOutQuart'},
-  plugins:{legend:{display:false},tooltip:{backgroundColor:'#fff',borderColor:'rgba(40,38,30,0.15)',borderWidth:1,titleColor:'#1c3f6e',bodyColor:'#1a1914',titleFont:{family:"'JetBrains Mono'",size:9},bodyFont:{family:"'DM Sans'",size:12},padding:10}},
-  scales:{x:{grid:{color:'rgba(40,38,30,0.05)'},border:{color:'rgba(40,38,30,0.10)'},ticks:{color:'#a09e98',font:{family:"'JetBrains Mono'",size:8},maxTicksLimit:10}},y:{grid:{color:'rgba(40,38,30,0.05)'},border:{color:'rgba(40,38,30,0.10)',dash:[3,3]},ticks:{color:'#a09e98',font:{family:"'JetBrains Mono'",size:8}}}}
+  animation:{duration:420,easing:'easeOutQuart'},
+  plugins:{legend:{display:false},tooltip:{backgroundColor:'#fff',borderColor:'rgba(40,38,30,0.15)',borderWidth:1,titleColor:'#1c3f6e',bodyColor:'#1a1914',titleFont:{family:'Arial',size:11,weight:'700'},bodyFont:{family:'Arial',size:12},padding:10}},
+  scales:{x:{grid:{color:'rgba(40,38,30,0.05)'},border:{color:'rgba(40,38,30,0.10)'},ticks:{color:'#a09e98',font:{family:'Arial',size:10},maxTicksLimit:10}},y:{grid:{color:'rgba(40,38,30,0.05)'},border:{color:'rgba(40,38,30,0.10)',dash:[3,3]},ticks:{color:'#a09e98',font:{family:'Arial',size:10}}}}
 };
 function mergeOpts(extra) {
   return {
@@ -1564,20 +2002,21 @@ function lineChart(id, labels, data, color, unit, yMin, yMax) {
   destroyChart(id);
   const ctx=document.getElementById(id)?.getContext('2d');
   if(!ctx) return;
+  const height=ctx.canvas.parentElement?.clientHeight||240;
+  const gradient=ctx.createLinearGradient(0,0,0,height);
+  if(id==='chart-temp'){gradient.addColorStop(0,'rgba(176,92,0,.24)');gradient.addColorStop(.55,'rgba(196,150,10,.12)');gradient.addColorStop(1,'rgba(28,63,110,.02)');}
+  else if(id==='chart-solar'){gradient.addColorStop(0,'rgba(196,150,10,.28)');gradient.addColorStop(1,'rgba(196,150,10,.01)');}
+  else{gradient.addColorStop(0,color+'2f');gradient.addColorStop(1,color+'03');}
+  const band = id==='chart-temp' ? {from:18,to:24,color:'rgba(40,38,30,.055)'} : id==='chart-hum' ? {from:70,to:100,color:'rgba(16,168,208,.045)'} : null;
   chartRegistry[id]=new Chart(ctx,{type:'line',data:{labels,datasets:[{
-    data,borderColor:color,borderWidth:2.5,
-    pointRadius:0,pointHoverRadius:6,
-    pointHoverBackgroundColor:'#fff',pointHoverBorderColor:color,pointHoverBorderWidth:2,
-    tension:0.3,fill:true,backgroundColor:color+'18'
-  }]},options:mergeOpts({
-    interaction:{mode:'index',intersect:false},
-    plugins:{...chartDefaults.plugins,
-      tooltip:{...chartDefaults.plugins.tooltip,
-        callbacks:{label:c=>' '+(c.parsed.y!=null?c.parsed.y.toFixed(2):'-')+' '+unit}
-      }
-    },
-    scales:{x:{...chartDefaults.scales.x},y:{...chartDefaults.scales.y,min:yMin,max:yMax,
-      ticks:{...chartDefaults.scales.y.ticks,callback:v=>v+' '+unit}}}
+    label: unit,data,borderColor:color,borderWidth:id==='chart-temp'||id==='chart-solar'?3:2.5,
+    pointRadius:0,pointHoverRadius:6,pointHoverBackgroundColor:'#fff',pointHoverBorderColor:color,pointHoverBorderWidth:2,
+    tension:.34,fill:true,backgroundColor:gradient
+  }]},plugins:[referenceBandPlugin],options:mergeOpts({
+    interaction:{mode:'index',intersect:false},referenceBand:band,
+    animations:{x:{duration:480,easing:'easeOutQuart'},y:{duration:620,easing:'easeOutQuart'}},
+    plugins:{...chartDefaults.plugins,referenceBand:band,tooltip:{...chartDefaults.plugins.tooltip,callbacks:{label:c=>' '+(c.parsed.y!=null?c.parsed.y.toFixed(2):'-')+' '+unit}}},
+    scales:{x:{...chartDefaults.scales.x},y:{...chartDefaults.scales.y,min:yMin,max:yMax,ticks:{...chartDefaults.scales.y.ticks,callback:v=>v+' '+unit}}}
   })});
 }
 
@@ -1585,7 +2024,8 @@ function barChart(id, labels, data, color, unit) {
   destroyChart(id);
   const ctx=document.getElementById(id)?.getContext('2d');
   if(!ctx) return;
-  chartRegistry[id]=new Chart(ctx,{type:'bar',data:{labels,datasets:[{data,backgroundColor:color+'99',borderColor:color,borderWidth:1,borderRadius:2}]},options:mergeOpts({scales:{x:{...chartDefaults.scales.x},y:{...chartDefaults.scales.y,min:0,ticks:{...chartDefaults.scales.y.ticks,callback:v=>v+' '+unit}}}})});
+  const gradient=ctx.createLinearGradient(0,0,0,ctx.canvas.parentElement?.clientHeight||220);gradient.addColorStop(0,'rgba(16,168,208,.92)');gradient.addColorStop(1,'rgba(28,63,110,.58)');
+  chartRegistry[id]=new Chart(ctx,{type:'bar',data:{labels,datasets:[{label:unit,data,backgroundColor:gradient,borderColor:color,borderWidth:1,borderRadius:5,borderSkipped:false}]},options:mergeOpts({animation:{duration:520,easing:'easeOutQuart',delay:c=>Math.min(c.dataIndex*18,260)},plugins:{...chartDefaults.plugins,tooltip:{...chartDefaults.plugins.tooltip,callbacks:{label:c=>` ${c.parsed.y?.toFixed?.(2)??c.parsed.y} ${unit}`}}},scales:{x:{...chartDefaults.scales.x},y:{...chartDefaults.scales.y,min:0,ticks:{...chartDefaults.scales.y.ticks,callback:v=>v+' '+unit}}}})});
 }
 
 function activateRangeButtons(group, value) {
@@ -1600,50 +2040,56 @@ function parseDashboardTs(v) {
   return isNaN(d.getTime()) ? null : d;
 }
 
-function getRangeStartIndex(rawLabels, rangeDays) {
-  if (rangeDays === 'all') return 0;
-  const parsed = rawLabels.map(parseDashboardTs);
-  let last = null;
-  for (let i = parsed.length - 1; i >= 0; i--) {
-    if (parsed[i]) { last = parsed[i]; break; }
+function getRangeIndexes(rawLabels, rangeDays) {
+  const labels = rawLabels || [];
+  if (!labels.length) return { start: 0, end: 0 };
+  const parsed = labels.map(parseDashboardTs);
+  if (rangeDays === 'all') return { start: 0, end: labels.length };
+  if (rangeDays === 'custom') {
+    const startDate = dashboardUX.customStart;
+    const endDate = dashboardUX.customEnd;
+    if (!startDate || !endDate) return { start: 0, end: labels.length };
+    let start = parsed.findIndex(d => d && d >= startDate);
+    if (start < 0) start = labels.length;
+    let end = parsed.findIndex((d, i) => i >= start && d && d > endDate);
+    if (end < 0) end = labels.length;
+    return { start, end };
   }
-  if (!last) return Math.max(0, rawLabels.length - 288);
+  let last = null;
+  for (let i = parsed.length - 1; i >= 0; i--) { if (parsed[i]) { last = parsed[i]; break; } }
+  if (!last) return { start: Math.max(0, labels.length - 288), end: labels.length };
   const cutoff = new Date(last.getTime() - Number(rangeDays) * 24 * 3600000);
   const idx = parsed.findIndex(d => d && d >= cutoff);
-  return idx >= 0 ? idx : 0;
+  return { start: idx >= 0 ? idx : 0, end: labels.length };
 }
 
+function getRangeStartIndex(rawLabels, rangeDays) { return getRangeIndexes(rawLabels, rangeDays).start; }
+
 function sliceByTimeRange(rawLabels, arrays, rangeDays) {
-  const start = getRangeStartIndex(rawLabels || [], rangeDays);
+  const { start, end } = getRangeIndexes(rawLabels || [], rangeDays);
   return {
-    rawLabels: (rawLabels || []).slice(start),
-    arrays: (arrays || []).map(arr => Array.isArray(arr) ? arr.slice(start) : arr)
+    rawLabels: (rawLabels || []).slice(start, end),
+    arrays: (arrays || []).map(arr => Array.isArray(arr) ? arr.slice(start, end) : arr)
   };
 }
 
 function setDashboardRange(rangeDays) {
-  dashboardRangeDays = rangeDays;
-  nivelRangeDays = rangeDays;
-  curvasDiaRangeDays = rangeDays;
-  produccionRangeDays = rangeDays;
-  energiaRangeDays = rangeDays;
-  setText('global-range-label', rangeDays === 'all' ? 'Todo' : '7 días');
-  activateRangeButtons('global', rangeDays);
-  renderDashboard();
+  const tipo = rangeDays === 'all' ? 'all' : ({1:'24h',7:'7d',30:'30d',90:'90d'})[Number(rangeDays)] || '7d';
+  return setPeriodo(tipo);
 }
 
 function setNivelRange(rangeDays) {
-  nivelRangeDays = rangeDays;
-  renderNivelChartPanel();
+  const tipo = rangeDays === 'all' ? 'all' : ({1:'24h',7:'7d',30:'30d',90:'90d'})[Number(rangeDays)] || '7d';
+  return setPeriodo(tipo);
 }
 
 function renderNivelChartPanel() {
   if (!nivelChartState) return;
   const { rawLabels, nivel, garrafonIdx, ts } = nivelChartState;
-  const start = getRangeStartIndex(rawLabels, nivelRangeDays);
-  const rawSlice = rawLabels.slice(start);
-  const nivelSlice = nivel.slice(start);
-  const idxSlice = garrafonIdx.filter(i => i >= start).map(i => i - start);
+  const { start, end } = getRangeIndexes(rawLabels, nivelRangeDays);
+  const rawSlice = rawLabels.slice(start, end);
+  const nivelSlice = nivel.slice(start, end);
+  const idxSlice = garrafonIdx.filter(i => i >= start && i < end).map(i => i - start);
   const labels = formatLabels(rawSlice);
   nivelChart('chart-nivel', labels, nivelSlice, idxSlice);
   const valid = nivel.filter(v => v !== null && v !== undefined && isFinite(v));
@@ -1655,7 +2101,7 @@ function renderNivelChartPanel() {
   const fill = document.getElementById('nivel-fill-bar');
   if (fill) fill.style.width = pct !== null ? pct.toFixed(0) + '%' : '0%';
   setTs('ts-nivel', ts);
-  setText('ts-nivel-rango', nivelRangeDays === 'all' ? 'Todo el periodo · Mediana · 15 min · CST Guatemala' : 'Últimos ' + (Number(nivelRangeDays) === 1 ? '24 h' : Number(nivelRangeDays) + ' días') + ' · Mediana · 15 min · CST Guatemala');
+  setText('ts-nivel-rango', getPeriodLabel() + ' · Mediana · 15 min · CST Guatemala');
   activateRangeButtons('nivel', nivelRangeDays);
 }
 
@@ -1802,7 +2248,7 @@ function windRoseChart(id, directions) {
       const isMainCard = ['N','E','S','O'].includes(label);
       const fs = isMainCard ? FONT_SIZE + 1 : FONT_SIZE - 1;
       const fw = isMainCard ? 700 : 500;
-      ctx.font = `${fw} ${fs}px 'JetBrains Mono', monospace`;
+      ctx.font = `${fw} ${fs}px Arial, monospace`;
 
 
       const tw = ctx.measureText(label).width;
@@ -1827,7 +2273,7 @@ function windRoseChart(id, directions) {
     });
 
 
-    ctx.font = `400 7.5px 'JetBrains Mono', monospace`;
+    ctx.font = `400 7.5px Arial, monospace`;
     ctx.fillStyle = 'rgba(40,38,30,0.30)';
     ctx.textAlign = 'left';
     ctx.fillText(`máx: ${maxBin} obs.`, 6, H - 8);
@@ -1837,7 +2283,7 @@ function windRoseChart(id, directions) {
       const pct = Math.round(f * maxBin);
       const lx = cx + 3;
       const ly = cy - R * f - 2;
-      ctx.font = `400 7px 'JetBrains Mono', monospace`;
+      ctx.font = `400 7px Arial, monospace`;
       ctx.fillStyle = 'rgba(40,38,30,0.25)';
       ctx.textAlign = 'left';
       ctx.fillText(`${pct}`, lx, ly);
@@ -1861,6 +2307,13 @@ function windRoseChart(id, directions) {
   ro.observe(canvas);
 }
 
+
+function uvRiskChart(id, labels, data){
+  destroyChart(id);const ctx=document.getElementById(id)?.getContext('2d');if(!ctx)return;
+  const vals=(data||[]).map(v=>v==null?null:Number(v));const colors=vals.map(v=>v==null?'rgba(160,158,152,.35)':v<=2?'#1a5c38':v<=5?'#b05c00':v<=7?'#d56b00':'#951f1f');
+  chartRegistry[id]=new Chart(ctx,{type:'bar',data:{labels,datasets:[{label:'Índice UV',data:vals,backgroundColor:colors,borderRadius:5,borderSkipped:false}]},options:mergeOpts({indexAxis:'y',animation:{duration:520,easing:'easeOutQuart'},plugins:{...chartDefaults.plugins,tooltip:{...chartDefaults.plugins.tooltip,callbacks:{label:c=>{const v=Number(c.parsed.x);const risk=v<=2?'BAJO':v<=5?'MODERADO':v<=7?'ALTO':'MUY ALTO';return ` UV ${v.toFixed(1)} · ${risk}`;}}}},scales:{x:{...chartDefaults.scales.x,min:0,max:12,ticks:{...chartDefaults.scales.x.ticks,callback:v=>v+' UV'}},y:{...chartDefaults.scales.y,grid:{display:false},ticks:{...chartDefaults.scales.y.ticks,maxTicksLimit:8}}}})});
+}
+
 function scatterChart(id, x, y, color, xLabel, yLabel) {
   destroyChart(id);
   const ctx=document.getElementById(id)?.getContext('2d');
@@ -1875,7 +2328,7 @@ function scatterChart(id, x, y, color, xLabel, yLabel) {
   const den=xs.reduce((a,v)=>a+(v-xm)**2,0);
   const slope=den?num/den:0, inter=ym-slope*xm;
   const xMin=Math.min(...xs),xMax=Math.max(...xs);
-  chartRegistry[id]=new Chart(ctx,{type:'scatter',data:{datasets:[{data:pts,backgroundColor:color+'55',borderColor:color,borderWidth:1,pointRadius:3,pointHoverRadius:5},{type:'line',data:[{x:xMin,y:slope*xMin+inter},{x:xMax,y:slope*xMax+inter}],borderColor:color,borderWidth:1.5,pointRadius:0,borderDash:[4,3]}]},options:mergeOpts({plugins:{legend:{display:false}},scales:{x:{...chartDefaults.scales.x,title:{display:true,text:xLabel,color:'#a09e98',font:{family:"'JetBrains Mono'",size:8}}},y:{...chartDefaults.scales.y,title:{display:true,text:yLabel,color:'#a09e98',font:{family:"'JetBrains Mono'",size:8}}}}})});
+  chartRegistry[id]=new Chart(ctx,{type:'scatter',data:{datasets:[{data:pts,backgroundColor:color+'55',borderColor:color,borderWidth:1,pointRadius:3,pointHoverRadius:5},{type:'line',data:[{x:xMin,y:slope*xMin+inter},{x:xMax,y:slope*xMax+inter}],borderColor:color,borderWidth:1.5,pointRadius:0,borderDash:[4,3]}]},options:mergeOpts({plugins:{legend:{display:false}},scales:{x:{...chartDefaults.scales.x,title:{display:true,text:xLabel,color:'#a09e98',font:{family:'Arial',size:10}}},y:{...chartDefaults.scales.y,title:{display:true,text:yLabel,color:'#a09e98',font:{family:'Arial',size:10}}}}})});
 }
 
 
@@ -2046,7 +2499,7 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
       scales:{x:{...chartDefaults.scales.x,min:0,
         ticks:{...chartDefaults.scales.x.ticks,callback:v=>v.toFixed(3)}},
         y:{...chartDefaults.scales.y,grid:{display:false},
-          ticks:{...chartDefaults.scales.y.ticks,font:{family:"'JetBrains Mono'",size:9}}}}
+          ticks:{...chartDefaults.scales.y.ticks,font:{family:"Arial",size:9}}}}
     })});
   }
 
@@ -2081,7 +2534,7 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
           borderWidth:1.5,borderRadius:3}
       ]
     },options:mergeOpts({
-      plugins:{legend:{display:true,position:'top',labels:{font:{family:"'JetBrains Mono'",size:8},color:'#6b6860',boxWidth:10,padding:12}},
+      plugins:{legend:{display:true,position:'top',labels:{font:{family:'Arial',size:10},color:'#6b6860',boxWidth:10,padding:12}},
         tooltip:{...chartDefaults.plugins.tooltip,callbacks:{label:c=>' '+c.dataset.label+': '+c.parsed.y.toFixed(2)+' L'}}},
       scales:{x:{...chartDefaults.scales.x},
         y:{...chartDefaults.scales.y,min:0,ticks:{...chartDefaults.scales.y.ticks,callback:v=>v+' L'}}}
@@ -2128,8 +2581,8 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
     ]},options:mergeOpts({
       plugins:{legend:{display:false},tooltip:{...chartDefaults.plugins.tooltip,
         callbacks:{label:c=>'Predicho: '+c.parsed.x.toFixed(2)+' L  Residual: '+c.parsed.y.toFixed(3)+' L'}}},
-      scales:{x:{...chartDefaults.scales.x,title:{display:true,text:'Valor predicho (L)',color:'#a09e98',font:{family:"'JetBrains Mono'",size:8}}},
-        y:{...chartDefaults.scales.y,title:{display:true,text:'Residual (L)',color:'#a09e98',font:{family:"'JetBrains Mono'",size:8}},
+      scales:{x:{...chartDefaults.scales.x,title:{display:true,text:'Valor predicho (L)',color:'#a09e98',font:{family:'Arial',size:10}}},
+        y:{...chartDefaults.scales.y,title:{display:true,text:'Residual (L)',color:'#a09e98',font:{family:'Arial',size:10}},
           ticks:{...chartDefaults.scales.y.ticks,callback:v=>v.toFixed(2)+' L'}}}
     })});
   }
@@ -2253,13 +2706,13 @@ function renderEstadistica(nivel, hum, temp, dew, pres, wind, solar) {
         pointHoverBorderColor:color,pointHoverBorderWidth:2},
     ]},options:mergeOpts({
       interaction:{mode:'nearest',intersect:true},
-      plugins:{legend:{display:true,position:'top',labels:{font:{family:"'JetBrains Mono'",size:8},color:'#6b6860',boxWidth:10,padding:10,
+      plugins:{legend:{display:true,position:'top',labels:{font:{family:'Arial',size:10},color:'#6b6860',boxWidth:10,padding:10,
         filter:item=>item.text!=='_lower'&&item.text!=='Banda 95%'}},
         tooltip:{...chartDefaults.plugins.tooltip,callbacks:{
           label:c=>c.dataset.label==='Observaciones'?label+': '+c.parsed.x.toFixed(1)+'  Nivel: '+c.parsed.y.toFixed(2)+' L':c.dataset.label}}},
       scales:{
-        x:{...chartDefaults.scales.x,title:{display:true,text:label,color:'#a09e98',font:{family:"'JetBrains Mono'",size:8}}},
-        y:{...chartDefaults.scales.y,min:0,title:{display:true,text:yLabel,color:'#a09e98',font:{family:"'JetBrains Mono'",size:8}},
+        x:{...chartDefaults.scales.x,title:{display:true,text:label,color:'#a09e98',font:{family:'Arial',size:10}}},
+        y:{...chartDefaults.scales.y,min:0,title:{display:true,text:yLabel,color:'#a09e98',font:{family:'Arial',size:10}},
           ticks:{...chartDefaults.scales.y.ticks,callback:v=>v.toFixed(1)+' L'}}}
     })});
   });
@@ -2460,8 +2913,8 @@ function renderProduccionAnalisis(rawLabels, nivel) {
 }
 
 function setProduccionRange(rangeDays) {
-  produccionRangeDays = rangeDays;
-  renderProduccionAnalisisPanel();
+  const tipo = rangeDays === 'all' ? 'all' : ({1:'24h',7:'7d',30:'30d',90:'90d'})[Number(rangeDays)] || '7d';
+  return setPeriodo(tipo);
 }
 
 function renderProduccionAnalisisPanel() {
@@ -2636,7 +3089,7 @@ function renderProduccionAnalisisPanel() {
         { label: 'Nocturno', data: nocheVals, backgroundColor: 'rgba(28,63,110,0.72)', borderColor: '#1c3f6e', borderWidth: 1.5, borderRadius: 3 }
       ]},
       options: mergeOpts({
-        plugins: { legend: { display: true, position: 'top', labels: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6860', boxWidth: 10, padding: 14 } }, tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: c => {
+        plugins: { legend: { display: true, position: 'top', labels: { font: { family: "Arial", size: 8 }, color: '#6b6860', boxWidth: 10, padding: 14 } }, tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: c => {
           const p = periodos[c.dataIndex];
           const isDia = c.dataset.label === 'Diurno';
           const h = isDia ? p.diaH : p.nocheH;
@@ -2660,7 +3113,7 @@ function renderProduccionAnalisisPanel() {
         { label: 'Nocturno', data: nocheRateVals, backgroundColor: 'rgba(28,63,110,0.72)', borderColor: '#1c3f6e', borderWidth: 1.5, borderRadius: 3 }
       ]},
       options: mergeOpts({
-        plugins: { legend: { display: true, position: 'top', labels: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6860', boxWidth: 10, padding: 14 } }, tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: c => ' ' + c.dataset.label + ': ' + fmtNum(c.parsed.y, 3) + ' L/h' } } },
+        plugins: { legend: { display: true, position: 'top', labels: { font: { family: "Arial", size: 8 }, color: '#6b6860', boxWidth: 10, padding: 14 } }, tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: c => ' ' + c.dataset.label + ': ' + fmtNum(c.parsed.y, 3) + ' L/h' } } },
         scales: { x: { ...chartDefaults.scales.x }, y: { ...chartDefaults.scales.y, min: 0, ticks: { ...chartDefaults.scales.y.ticks, callback: v => v.toFixed(1) + ' L/h' } } }
       })
     });
@@ -2706,8 +3159,8 @@ function renderProduccionAnalisisPanel() {
 }
 
 function setCurvasDiaRange(rangeDays) {
-  curvasDiaRangeDays = rangeDays;
-  renderCurvasDiaChart();
+  const tipo = rangeDays === 'all' ? 'all' : ({1:'24h',7:'7d',30:'30d',90:'90d'})[Number(rangeDays)] || '7d';
+  return setPeriodo(tipo);
 }
 
 function renderCurvasDiaChart() {
@@ -2717,7 +3170,7 @@ function renderCurvasDiaChart() {
   const ctx3 = document.getElementById('chart-curvas-dia')?.getContext('2d');
   if (!ctx3) return;
   const diasCurva = Object.keys(diasCurvaMap).sort();
-  const selectedDays = curvasDiaRangeDays === 'all' ? diasCurva : diasCurva.slice(-Number(curvasDiaRangeDays));
+  const selectedDays = curvasDiaRangeDays === 'all' ? diasCurva : curvasDiaRangeDays === 'custom' ? diasCurva.filter(d => { const x=new Date(d+'T12:00:00'); return (!dashboardUX.customStart||x>=dashboardUX.customStart) && (!dashboardUX.customEnd||x<=dashboardUX.customEnd); }) : diasCurva.slice(-Number(curvasDiaRangeDays));
   const selectedSet = new Set(selectedDays);
   const latest = diasCurva[diasCurva.length - 1];
   const prev = diasCurva[diasCurva.length - 2];
@@ -2776,18 +3229,18 @@ function renderCurvasDiaChart() {
       });
     });
   }
-  const rangoTxt = curvasDiaRangeDays === 'all' ? 'Todo' : String(curvasDiaRangeDays) + ' días';
+  const rangoTxt = getCompactPeriodLabel();
   setText('curvas-stat-rango', rangoTxt);
   setText('curvas-stat-lineas', datasets.length);
-  setText('ts-curvas-dia', TS_ACT + ' · ' + (curvasDiaRangeDays === 'all' ? 'todo el periodo' : 'últimos ' + curvasDiaRangeDays + ' días'));
+  setText('ts-curvas-dia', TS_ACT + ' · ' + getPeriodLabel());
   activateRangeButtons('curvas', curvasDiaRangeDays);
 
 }
 
 
 function setEnergiaRange(rangeDays) {
-  energiaRangeDays = rangeDays;
-  renderEnergiaHorarioPanel();
+  const tipo = rangeDays === 'all' ? 'all' : ({1:'24h',7:'7d',30:'30d',90:'90d'})[Number(rangeDays)] || '7d';
+  return setPeriodo(tipo);
 }
 
 function setEnergiaPower(powerW) {
@@ -3050,7 +3503,7 @@ function renderEnergiaHorarioPanel() {
   setText('ener-badge-hora', cfg.badge);
   setText('ener-badge-pico', cfg.badge);
   setText('ener-foot-hora', energiaPowerW + ' W · Q' + fmt(energiaTarifa, 2) + '/kWh');
-  const ts = 'Act: ' + (document.getElementById('header-ts')?.textContent || '--') + ' · ' + (energiaRangeDays === 'all' ? 'todo el periodo' : 'últimos 7 días');
+  const ts = 'Act: ' + (document.getElementById('header-ts')?.textContent || '--') + ' · ' + getPeriodLabel();
   setText('ts-energia-hora', ts);
   setText('ts-energia-pico-seco', ts);
   activateRangeButtons('energia-range', energiaRangeDays);
@@ -3261,7 +3714,7 @@ function renderEmpresa(rawLabels, nivel, hum, temp) {
           pointRadius: 0, fill: '-1', backgroundColor: 'rgba(28,63,110,0.07)', tension: 0.3 },
       ]},
       options: mergeOpts({ interaction: { mode: 'index', intersect: false },
-        plugins: { legend: { display: true, position: 'top', labels: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6860', boxWidth: 10, padding: 12 } },
+        plugins: { legend: { display: true, position: 'top', labels: { font: { family: "Arial", size: 8 }, color: '#6b6860', boxWidth: 10, padding: 12 } },
           tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: c => c.dataset.label + ': Q ' + c.parsed.y.toFixed(2) } } },
         scales: { x: { ...chartDefaults.scales.x, ticks: { ...chartDefaults.scales.x.ticks, maxTicksLimit: 8 } },
           y: { ...chartDefaults.scales.y, min: 0, ticks: { ...chartDefaults.scales.y.ticks, callback: v => 'Q ' + v.toFixed(2) } } } })
@@ -3286,7 +3739,7 @@ function renderEmpresa(rawLabels, nivel, hum, temp) {
           borderDash: [4,3], pointRadius: 0, fill: '-1', backgroundColor: 'rgba(176,92,0,0.07)', tension: 0.3 },
       ]},
       options: mergeOpts({ interaction: { mode: 'index', intersect: false },
-        plugins: { legend: { display: true, position: 'top', labels: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6860', boxWidth: 10, padding: 12 } },
+        plugins: { legend: { display: true, position: 'top', labels: { font: { family: "Arial", size: 8 }, color: '#6b6860', boxWidth: 10, padding: 12 } },
           tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: c => c.dataset.label + ': Q ' + (c.parsed.y||0).toFixed(3) + '/L' } } },
         scales: { x: { ...chartDefaults.scales.x, ticks: { ...chartDefaults.scales.x.ticks, maxTicksLimit: 8 } },
           y: { ...chartDefaults.scales.y, min: 0, ticks: { ...chartDefaults.scales.y.ticks, callback: v => 'Q ' + v.toFixed(3) } } } })
@@ -3318,7 +3771,7 @@ function renderEmpresa(rawLabels, nivel, hum, temp) {
           borderColor: 'rgba(149,31,31,0.3)', borderWidth: 1, borderDash: [6,3], pointRadius: 0, fill: false },
       ]},
       options: mergeOpts({ interaction: { mode: 'index', intersect: false },
-        plugins: { legend: { display: true, position: 'top', labels: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6860', boxWidth: 10, padding: 12 } },
+        plugins: { legend: { display: true, position: 'top', labels: { font: { family: "Arial", size: 8 }, color: '#6b6860', boxWidth: 10, padding: 12 } },
           tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: c => c.dataset.label + ': Q ' + (c.parsed.y||0).toFixed(2) } } },
         scales: { x: { ...chartDefaults.scales.x, ticks: { ...chartDefaults.scales.x.ticks, maxTicksLimit: 8 } },
           y: { ...chartDefaults.scales.y, min: 0, ticks: { ...chartDefaults.scales.y.ticks, callback: v => 'Q ' + v.toFixed(2) } } } })
@@ -3354,11 +3807,11 @@ function renderEmpresa(rawLabels, nivel, hum, temp) {
             borderColor: '#b05c00', borderWidth: 2, borderDash: [5,3], pointRadius: 0, fill: false },
         ]},
         options: mergeOpts({
-          plugins: { legend: { display: true, position: 'top', labels: { font: { family: "'JetBrains Mono'", size: 8 }, color: '#6b6860', boxWidth: 10, padding: 12 } },
+          plugins: { legend: { display: true, position: 'top', labels: { font: { family: "Arial", size: 8 }, color: '#6b6860', boxWidth: 10, padding: 12 } },
             tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { label: c => 'Q ' + (c.parsed.y||0).toFixed(3) + '/L @ ' + (c.parsed.x||0).toFixed(1) + '% HR' } } },
           scales: {
-            x: { ...chartDefaults.scales.x, title: { display: true, text: 'Humedad relativa (%)', color: '#a09e98', font: { family: "'JetBrains Mono'", size: 8 } } },
-            y: { ...chartDefaults.scales.y, min: 0, title: { display: true, text: 'Costo Q/L', color: '#a09e98', font: { family: "'JetBrains Mono'", size: 8 } },
+            x: { ...chartDefaults.scales.x, title: { display: true, text: 'Humedad relativa (%)', color: '#a09e98', font: { family: "Arial", size: 8 } } },
+            y: { ...chartDefaults.scales.y, min: 0, title: { display: true, text: 'Costo Q/L', color: '#a09e98', font: { family: "Arial", size: 8 } },
               ticks: { ...chartDefaults.scales.y.ticks, callback: v => 'Q ' + v.toFixed(3) } } } })
       });
     }
@@ -3369,7 +3822,7 @@ function renderEmpresa(rawLabels, nivel, hum, temp) {
 
 async function renderDashboard() {
   const payload = await fetchData();
-  globalPayload = payload;
+  globalPayload = applyPayloadPeriodMetadata(payload);
   const s = payload.series;
   const rawNivelLabels = s.labels_nivel || s.labels;
   const labelsNivel = formatLabels(rawNivelLabels);
@@ -3385,8 +3838,9 @@ async function renderDashboard() {
 
   setText('header-ts',ts);
   setText('footer-ts','Actualizado: '+ts);
-  setText('global-range-label', dashboardRangeDays === 'all' ? 'Todo' : '7 días');
+  setText('global-range-label', getCompactPeriodLabel());
   activateRangeButtons('global', dashboardRangeDays);
+  syncPeriodUI();
   ['ts-nivel','ts-hum','ts-temp','ts-dew','ts-pres','ts-wind','ts-dir','ts-rain','ts-solar','ts-uv'].forEach(id=>setTs(id,ts));
 
 
@@ -3435,9 +3889,10 @@ async function renderDashboard() {
   lineChart('chart-temp',labelsClima,temp,'#b05c00','°C');
   lineChart('chart-dew',labelsClima,dew,'#1c3f6e','°C');
   lineChart('chart-pres',labelsClima,pres,'#1a5c38','inHg');
-  lineChart('chart-wind',labelsClima,wind,'#1c3f6e','km/h',0);
+  lineChart('chart-wind',labelsClima,wind,'#b05c00','km/h',0);
   windRoseChart('chart-wind-rose',dir);
-  lineChart('chart-solar',labelsClima,solar,'#b05c00','W/m²',0);
+  lineChart('chart-solar',labelsClima,solar,'#c4960a','W/m²',0);
+  uvRiskChart('chart-uv',labelsClima,uv);
 
   renderProduccionAnalisis(rawNivelLabels,nivel);
   renderEnergiaHorario(rawNivelLabels,nivel,s.labels||[],humFull,tempFull,dewFull,presFull,windFull,solarFull);
@@ -3451,7 +3906,7 @@ async function renderDashboard() {
   scatterChart('chart-corr-dew',dew,nivelScatter,'#1c3f6e','Punto rocío °C','Nivel L');
   scatterChart('chart-corr-solar',solar,nivelScatter,'#c4960a','Rad. solar W/m²','Nivel L');
 
-
+  afterDashboardRender(payload);
 }
 
 
@@ -3625,9 +4080,18 @@ async function exportXLSX() {
   }
 }
 
-renderDashboard().catch(err => console.error('Error inicial dashboard:', err));
+
+document.addEventListener('DOMContentLoaded',()=>{
+  initCollapsibleSections();
+  addVisualizationControls();
+  syncPeriodUI();
+});
+
+setDashboardLoading(true);
+renderDashboard().then(()=>setDashboardLoading(false)).catch(err => { setDashboardLoading(false); console.error('Error inicial dashboard:', err); });
 setTimeout(hideAwaLoader, 7500);
-setInterval(renderDashboard, 60000);
+setInterval(()=>renderDashboard().catch(err=>console.error('Actualización dashboard:',err)),60000);
+setInterval(()=>{if(globalPayload)updateGlobalMetadata(globalPayload)},30000);
 </script>
 </body>
 </html>
