@@ -1,0 +1,111 @@
+{
+  "generated_at": "2026-08-14T02:37:23.938081",
+  "questions": [
+    {
+      "id": "dominant_variable",
+      "question": "¿Qué variable condiciona más la producción de agua?",
+      "short_answer": "La familia de humedad es la señal climática más consistente. Como variable operativa, la humedad relativa es la más útil; como indicadores físicos, humedad absoluta y punto de rocío muestran la asociación más estable entre bloques.",
+      "details": {
+        "humidity_partial_r": 0.1511,
+        "humidity_ols_coef_lph_per_pct": 0.014577,
+        "abs_humidity_meta_r": 0.15683,
+        "dew_point_meta_r": 0.15341,
+        "vpd_meta_r": -0.06881,
+        "predictive_importance_best_feature": "humidity_pct",
+        "warning": "Los efectos son pequeños y asociativos; no demuestran causalidad."
+      }
+    },
+    {
+      "id": "best_block",
+      "question": "¿En qué bloque produjo más?",
+      "short_answer": "B01 tuvo la mayor media horaria (1.613 L/h). Entre los bloques nuevos, B04 fue el mayor (1.291 L/h), seguido de B05 y B03.",
+      "details": {
+        "B01_mean_lph": 1.6125,
+        "B04_mean_lph": 1.290935251798561,
+        "interblock_welch_p": 9.031181322049315e-25
+      }
+    },
+    {
+      "id": "humidity",
+      "question": "¿La humedad realmente ayuda?",
+      "short_answer": "Sí aparece una relación positiva débil pero repetida. El tercil alto promedió 1.016 L/h frente a 0.743 L/h en el tercil bajo; la humedad relativa conserva asociación positiva después de ajustar por bloque, temperatura y radiación.",
+      "details": {
+        "high_vs_low_mean_pct": 36.61555017487223,
+        "partial_r": 0.1511,
+        "partial_fdr": 5.299e-08,
+        "caution": "Welch detecta diferencia por terciles, pero Kruskal-Wallis no; el tamaño de efecto es pequeño."
+      }
+    },
+    {
+      "id": "vpd",
+      "question": "¿El VPD bajo favorece la producción?",
+      "short_answer": "La señal apunta a que sí: el tercil de VPD bajo promedió 1.014 L/h y el alto 0.800 L/h. El meta-análisis también da una asociación negativa pequeña.",
+      "details": {
+        "low_vs_high_mean_pct": 26.78169542385598,
+        "meta_r": -0.06881,
+        "meta_ci95": [
+          -0.13206,
+          -0.00501
+        ],
+        "caution": "Efecto pequeño y evidencia por grupos no totalmente consistente entre pruebas."
+      }
+    },
+    {
+      "id": "daypart",
+      "question": "¿Produce más de noche?",
+      "short_answer": "En el conjunto B01-B10 la tarde y la noche tienen medias algo mayores, pero el efecto horario es pequeño. Con la serie compatible ninguna comparación par a par sobrevive al ajuste múltiple.",
+      "details": {
+        "effect_eta2": 0.00952587434247815,
+        "welch_p": 0.0052190063988229686
+      }
+    },
+    {
+      "id": "predictability",
+      "question": "¿Qué tan confiable es el modelo predictivo?",
+      "short_answer": "Todavía es débil. El mejor modelo (ridge) obtuvo R² fuera de bloque de 0.034 y MAE de 1.010 L/h. Mejora el MAE del predictor ingenuo de media global en aproximadamente 6.2%, pero no alcanza un nivel para pronóstico operativo fuerte.",
+      "details": {
+        "best_model": {
+          "model": "ridge",
+          "n": 1348,
+          "blocks": 10,
+          "LOBO_MAE": 1.0097847355573917,
+          "LOBO_RMSE": 1.1540684357990634,
+          "LOBO_R2": 0.0344190999761712,
+          "fold_MAE_mean": 1.0185762607382471,
+          "fold_MAE_sd": 0.1781482241342364
+        },
+        "naive_leave_one_block_out": {
+          "MAE": 1.0765735374317895,
+          "RMSE": 1.1878867470396455,
+          "R2": -0.022999954541627288
+        }
+      }
+    },
+    {
+      "id": "quality",
+      "question": "¿Los problemas del sensor cambian las conclusiones?",
+      "short_answer": "Cambian los totales, pero no eliminan las conclusiones centrales. El filtro físico estricto reduce la producción modelada total alrededor de 11.7%, mientras la asociación positiva de humedad y la heterogeneidad entre bloques permanecen.",
+      "details": {
+        "compatible_total_l": 1200.68,
+        "strict_total_l": 1060.52,
+        "reduction_pct": 11.6734,
+        "blocks_caution": [
+          "B02",
+          "B09",
+          "B10"
+        ]
+      }
+    },
+    {
+      "id": "rain",
+      "question": "¿La lluvia condiciona la producción?",
+      "short_answer": "No hay evidencia robusta para afirmarlo. Algunas pruebas pooled muestran señal, pero la lluvia fue cero en la mayoría de bloques; el meta-análisis entre bloques es cercano a cero y el efecto lineal desaparece con el filtro físico estricto.",
+      "details": {
+        "meta_r": -0.006954,
+        "meta_I2_pct": 51.98,
+        "ols_fdr": 0.090987,
+        "strict_ols_p": 0.100289
+      }
+    }
+  ]
+}
