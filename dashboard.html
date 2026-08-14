@@ -791,7 +791,54 @@
       *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
     }
 
-</style>
+
+
+    /* AWA05 · nueva sección económica por garrafón */
+    .biz-nav{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 18px;padding:6px;background:rgba(127,196,232,.10);border:1px solid var(--rule);border-radius:999px;width:max-content;max-width:100%}
+    .biz-chip{border:0;border-radius:999px;background:transparent;color:var(--ink-soft);padding:10px 16px;font-size:11px;font-weight:800;cursor:pointer;transition:.18s ease;white-space:nowrap}
+    .biz-chip:hover{background:#fff;color:var(--cobalt);transform:translateY(-1px)}
+    .biz-chip.is-active{background:linear-gradient(135deg,var(--cobalt),#5fb3e0);color:#fff;box-shadow:0 7px 18px rgba(95,179,224,.20)}
+    .biz-context{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-bottom:16px}
+    .biz-context>div{background:var(--surface);border:1px solid var(--rule);border-radius:10px;padding:12px 14px;box-shadow:var(--shadow-sm)}
+    .biz-context span{display:block;font-size:9px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-faint);margin-bottom:4px}
+    .biz-context strong{font-size:14px;color:var(--ink-mid)}
+    .biz-panel{display:none;background:linear-gradient(180deg,#fff 0%,#f8fcfe 100%);border:1px solid var(--rule-strong);border-radius:16px;padding:22px;box-shadow:var(--shadow-sm);animation:bizFade .22s ease both}
+    .biz-panel.is-active{display:block}
+    @keyframes bizFade{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+    .biz-panel-head{display:grid;grid-template-columns:1fr auto;gap:22px;align-items:start;margin-bottom:18px}
+    .biz-kicker{font-size:8px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--cobalt);margin-bottom:6px}
+    .biz-panel h3{font-size:21px;line-height:1.2;color:var(--ink);margin:0 0 8px}
+    .biz-panel p{font-size:12px;line-height:1.65;color:var(--ink-soft);max-width:780px;margin:0}
+    .biz-big{min-width:180px;background:linear-gradient(135deg,var(--cobalt-pale),rgba(168,224,238,.18));border:1px solid var(--cobalt-rim);border-radius:14px;padding:15px 17px;text-align:right}
+    .biz-big small,.biz-big span{display:block;color:var(--ink-soft);font-size:9px}
+    .biz-big strong{display:block;color:var(--cobalt-mid);font-size:27px;line-height:1.1;margin:4px 0}
+    .biz-control-card{background:var(--surface2);border:1px solid var(--rule);border-radius:12px;padding:14px 16px;margin:0 0 14px}
+    .biz-control-title{font-size:11px;font-weight:800;color:var(--ink-mid)}
+    .biz-control-sub{font-size:10px;color:var(--ink-soft);margin:2px 0 10px}
+    .biz-chip-row{display:flex;gap:7px;flex-wrap:wrap}
+    .biz-mini-chip{border:1px solid var(--cobalt-rim);border-radius:999px;background:#fff;color:var(--ink-soft);padding:8px 11px;font-size:10px;font-weight:800;cursor:pointer;transition:.16s ease}
+    .biz-mini-chip:hover{border-color:var(--cobalt);color:var(--cobalt)}
+    .biz-mini-chip.is-active{background:var(--cobalt);border-color:var(--cobalt);color:#fff;box-shadow:0 5px 14px rgba(95,179,224,.18)}
+    .biz-kpi-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin:0 0 14px}
+    .biz-kpi-grid.four{grid-template-columns:repeat(4,minmax(0,1fr))}
+    .biz-kpi{background:#fff;border:1px solid var(--rule);border-radius:12px;padding:15px;min-height:112px}
+    .biz-kpi>span{display:block;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-faint);margin-bottom:8px}
+    .biz-kpi>strong{display:block;font-size:23px;line-height:1.05;color:var(--ink);margin-bottom:6px}
+    .biz-kpi>small{display:block;font-size:9.5px;line-height:1.4;color:var(--ink-soft)}
+    .biz-kpi.featured{border-color:rgba(168,217,189,.8);background:linear-gradient(135deg,rgba(168,217,189,.18),#fff)}
+    .biz-kpi.featured strong{color:#4f9d72}
+    .biz-formula,.biz-explain,.biz-warning{border-radius:10px;padding:12px 14px;font-size:11px;line-height:1.6}
+    .biz-formula{background:var(--cobalt-pale);color:var(--ink-mid);border:1px solid var(--cobalt-rim)}
+    .biz-explain{background:var(--forest-pale);color:var(--ink-mid);border:1px solid rgba(168,217,189,.55);margin-bottom:10px}
+    .biz-warning{background:var(--amber-pale);color:var(--ink-mid);border:1px solid rgba(240,196,138,.45)}
+    .biz-compare{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 10px}
+    .biz-compare>div{display:flex;align-items:center;justify-content:space-between;gap:10px;background:var(--surface2);border:1px solid var(--rule);border-radius:10px;padding:12px 14px}
+    .biz-compare span{font-size:10px;color:var(--ink-soft)}
+    .biz-compare strong{font-size:16px;color:#4f9d72}
+    @media(max-width:900px){.biz-context{grid-template-columns:1fr 1fr}.biz-panel-head{grid-template-columns:1fr}.biz-big{text-align:left}.biz-kpi-grid,.biz-kpi-grid.four{grid-template-columns:1fr 1fr}}
+    @media(max-width:560px){.biz-nav{width:100%;border-radius:14px}.biz-chip{flex:1;padding:9px 8px;font-size:9px}.biz-context,.biz-kpi-grid,.biz-kpi-grid.four,.biz-compare{grid-template-columns:1fr}.biz-panel{padding:15px}.biz-panel h3{font-size:18px}}
+
+  </style>
 </head>
 <body>
 
@@ -1259,188 +1306,106 @@
 
 
 <section id="empresa">
-  <div class="section-eyebrow">Análisis de costos · DEOCSA Sololá · T(600,750,900) W · Q2.05/kWh · Q7.64/USD</div>
-  <div class="section-title">¿Cuánto está <em>costando</em> operar la AWA05?</div>
-  <div class="section-subtitle">Todo el análisis se centra en el costo real de operación: energía consumida, costo por litro producido y comparación directa contra lo que costaría comprar el mismo volumen de agua en el mercado de Sololá. No hay proyecciones de venta — solo la realidad del experimento.</div>
+  <div class="section-eyebrow">Economía de operación · costo por garrafón · recuperación de inversión</div>
+  <div class="section-title">¿Cuánto cuesta producir y a qué precio debe venderse un <em>garrafón?</em></div>
+  <div class="section-subtitle">Esta sección ya no presenta gasto acumulado histórico. Parte del rendimiento real observado por la telemetría para estimar la energía necesaria para producir 20 L y separar claramente inversión, electricidad y precio mínimo de recuperación.</div>
 
-  
-  <div class="inv-display">
-    <div class="inv-grid">
-      <div class="inv-item">
-        <div class="inv-item-label">Gasto energético acumulado</div>
-        <div class="inv-item-val">Q <span id="emp-costo-acum">--</span></div>
-        <div class="inv-item-sub" id="emp-costo-rango">-- – -- Q (600–900 W)</div>
-      </div>
-      <div class="inv-item">
-        <div class="inv-item-label">Inversión de capital (CAPEX)</div>
-        <div class="inv-item-val">Q <span id="emp-capex">145,160</span></div>
-        <div class="inv-item-sub">Máquina $12,000 + Equipo $7,000 · Q7.64/USD</div>
-      </div>
-      <div class="inv-item">
-        <div class="inv-item-label">Gasto total acumulado</div>
-        <div class="inv-item-val">Q <span id="emp-costo-total">--</span></div>
-        <div class="inv-item-sub" id="emp-costo-total-sub">CAPEX + energía desde inicio</div>
-      </div>
-      <div class="inv-item">
-        <div class="inv-item-label">Horas en operación</div>
-        <div class="inv-item-val"><span id="emp-horas">--</span><span class="inv-item-unit"> h</span></div>
-        <div class="inv-item-sub" id="emp-inicio-label">Desde 23 Abr 2026 · 12:29</div>
-      </div>
-    </div>
-    <div class="inv-ticker">
-      <div class="inv-ticker-item">Potencia central: <span>750 W</span></div>
-      <div class="inv-ticker-item">Tarifa DEOCSA: <span>Q2.05/kWh</span></div>
-      <div class="inv-ticker-item">Tipo de cambio: <span>Q7.64/USD</span></div>
-      <div class="inv-ticker-item">Garrafón AWA05: <span>20 L</span></div>
-      <div class="inv-ticker-item">Inicio: <span>23 Abr 2026</span></div>
-      <div class="inv-ticker-item">Vida útil estimada: <span>10 años</span></div>
-    </div>
+  <div class="biz-nav" role="tablist" aria-label="Análisis económico AWA05">
+    <button class="biz-chip is-active" data-biz-tab="capex" onclick="setBizTab('capex')" role="tab">1 · CAPEX</button>
+    <button class="biz-chip" data-biz-tab="actual" onclick="setBizTab('actual')" role="tab">2 · Tarifa actual</button>
+    <button class="biz-chip" data-biz-tab="social" onclick="setBizTab('social')" role="tab">3 · Tarifa social</button>
   </div>
 
-  
-  <div class="kpi-grid">
-    <div class="kpi-card accent-cobalt">
-      <div class="kpi-label">Costo energético / litro</div>
-      <div class="kpi-value"><span id="emp-costo-litro">--</span><span class="kpi-unit">Q/L</span></div>
-      <div class="kpi-range" id="emp-costo-litro-rango">Rango: -- – -- Q/L</div>
-      <div class="kpi-meta">Energía consumida ÷ litros producidos</div>
-    </div>
-    <div class="kpi-card accent-amber">
-      <div class="kpi-label">Costo energético / garrafón</div>
-      <div class="kpi-value"><span id="emp-costo-garrafon">--</span><span class="kpi-unit">Q</span></div>
-      <div class="kpi-range" id="emp-costo-garrafon-rango">Rango: -- – -- Q</div>
-      <div class="kpi-meta">Para producir 20 litros</div>
-    </div>
-    <div class="kpi-card accent-forest">
-      <div class="kpi-label">Ahorro vs comprar en mercado</div>
-      <div class="kpi-value"><span id="emp-ahorro-pct">--</span><span class="kpi-unit">%</span></div>
-      <div class="kpi-range" id="emp-ahorro-abs">-- Q / garrafón</div>
-      <div class="kpi-meta">vs precio medio Q13.50 Sololá</div>
-    </div>
-    <div class="kpi-card accent-teal">
-      <div class="kpi-label">Eficiencia energética</div>
-      <div class="kpi-value"><span id="emp-eficiencia">--</span><span class="kpi-unit">L/kWh</span></div>
-      <div class="kpi-range" id="emp-eficiencia-rango">Rango: -- – -- L/kWh</div>
-      <div class="kpi-meta">Litros producidos por kWh consumido</div>
-    </div>
-    <div class="kpi-card accent-gold">
-      <div class="kpi-label">Agua producida total</div>
-      <div class="kpi-value"><span id="emp-litros-total">--</span><span class="kpi-unit">L</span></div>
-      <div class="kpi-range" id="emp-litros-sub">-- garrafones completados</div>
-      <div class="kpi-meta">Producción real del sensor</div>
-    </div>
-    <div class="kpi-card accent-crimson">
-      <div class="kpi-label">Energía consumida total</div>
-      <div class="kpi-value"><span id="emp-energia-total">--</span><span class="kpi-unit">kWh</span></div>
-      <div class="kpi-range" id="emp-energia-rango">Rango: -- – -- kWh</div>
-      <div class="kpi-meta">Acumulado desde el inicio</div>
-    </div>
+  <div class="biz-context">
+    <div><span>Rendimiento observado</span><strong id="biz-rate-lh">-- L/h</strong></div>
+    <div><span>Energía para 20 L</span><strong id="biz-kwh20">-- kWh</strong></div>
+    <div><span>Producción proyectada</span><strong id="biz-garrafones-ano">-- garrafones/año</strong></div>
+    <div><span>Potencia de referencia</span><strong>750 W</strong></div>
   </div>
 
-  
-  <div style="display:none" aria-hidden="true">
-    <span id="comp-mkt-min">--</span>
-    <span id="comp-mkt-med">--</span>
-    <span id="comp-mkt-max">--</span>
-  </div>
-
-  
-  <div class="irr-grid" style="margin-bottom:16px">
-    <div class="irr-card">
-      <div class="irr-card-title">Costo energético real acumulado</div>
-      <div class="irr-card-main neutral" id="emp-costo-real-display">Q --</div>
-      <div class="irr-card-sub" id="emp-costo-real-sub">Lo que realmente has gastado en electricidad para producir el agua.</div>
-    </div>
-    <div class="irr-card">
-      <div class="irr-card-title">Equivalente en mercado (precio medio)</div>
-      <div class="irr-card-main" id="emp-valor-mkt-display">Q --</div>
-      <div class="irr-card-sub" id="emp-valor-mkt-sub">Lo que habrías pagado comprando el mismo volumen a Q13.50/garrafón.</div>
-    </div>
-    <div class="irr-card">
-      <div class="irr-card-title">Costo energético diario proyectado</div>
-      <div class="irr-card-main neutral" id="emp-costo-dia">Q --</div>
-      <div class="irr-card-sub">Gasto diario en electricidad a 750W · 24h · Q2.05/kWh = Q36.90/día (rango Q22.14–Q44.28).</div>
-    </div>
-    <div class="irr-card">
-      <div class="irr-card-title">Costo energético mensual proyectado</div>
-      <div class="irr-card-main neutral" id="emp-costo-mes">Q --</div>
-      <div class="irr-card-sub">Gasto mensual estimado en electricidad. Solo energía, sin amortizar CAPEX.</div>
-    </div>
-  </div>
-
-  
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
+  <div class="biz-panel is-active" id="biz-panel-capex" data-biz-panel="capex">
+    <div class="biz-panel-head">
       <div>
-        <div class="card-title">Desglose de costos acumulados</div>
-        <div class="card-sub">Comparación directa entre lo gastado y lo que costaría el agua en el mercado</div>
+        <div class="biz-kicker">Inversión de capital</div>
+        <h3>¿Cuánto debe aportar cada garrafón para recuperar la inversión?</h3>
+        <p>El CAPEX configurado es de USD 19,000: USD 12,000 de máquina + USD 7,000 de equipo. A Q7.64/USD equivale a Q145,160. El cálculo reparte esa inversión entre los garrafones que podría producir el sistema al ritmo observado.</p>
       </div>
-      <div class="card-badge">Q acumulado</div>
+      <div class="biz-big"><small>CAPEX</small><strong>Q <span id="biz-capex-total">145,160</span></strong><span>inversión inicial</span></div>
     </div>
-    <div class="card-body" style="padding:0">
-      <table class="fin-table">
-        <thead>
-          <tr>
-            <th>Concepto</th>
-            <th>Escenario mín (600W)</th>
-            <th>Central (750W)</th>
-            <th>Escenario máx (900W)</th>
-          </tr>
-        </thead>
-        <tbody id="tabla-costos"></tbody>
-      </table>
+
+    <div class="biz-control-card">
+      <div class="biz-control-title">Plazo objetivo de recuperación</div>
+      <div class="biz-control-sub">Elige en cuántos años quieres recuperar únicamente la inversión inicial.</div>
+      <div class="biz-chip-row">
+        <button class="biz-mini-chip" data-payback="3" onclick="setBizPayback(3)">3 años</button>
+        <button class="biz-mini-chip is-active" data-payback="5" onclick="setBizPayback(5)">5 años</button>
+        <button class="biz-mini-chip" data-payback="7" onclick="setBizPayback(7)">7 años</button>
+        <button class="biz-mini-chip" data-payback="10" onclick="setBizPayback(10)">10 años</button>
+      </div>
     </div>
-    <div class="card-foot"><div class="card-ts" id="ts-tabla-costos">--</div><div class="card-ts">Basado en producción real del sensor · tarifa DEOCSA Q2.05/kWh</div></div>
+
+    <div class="biz-kpi-grid">
+      <div class="biz-kpi"><span>Garrafones durante el plazo</span><strong id="biz-capex-garrafones">--</strong><small>proyección con rendimiento observado</small></div>
+      <div class="biz-kpi"><span>CAPEX recuperado por garrafón</span><strong>Q <span id="biz-capex-por-garrafon">--</span></strong><small>Q145,160 ÷ garrafones del plazo</small></div>
+      <div class="biz-kpi featured"><span>Precio piso con tarifa actual</span><strong>Q <span id="biz-capex-precio-piso">--</span></strong><small>CAPEX/garrafón + electricidad/garrafón</small></div>
+    </div>
+
+    <div class="biz-formula"><b>Fórmula:</b> aporte CAPEX por garrafón = CAPEX ÷ garrafones esperados durante el plazo. <b>Precio piso</b> = aporte CAPEX + costo eléctrico de producir 20 L.</div>
   </div>
 
-  
-  <div class="card" style="margin-bottom:16px">
-    <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
+  <div class="biz-panel" id="biz-panel-actual" data-biz-panel="actual">
+    <div class="biz-panel-head">
       <div>
-        <div class="card-title">Gasto energético acumulado en el tiempo</div>
-        <div class="card-sub">Quetzales gastados en electricidad desde el inicio del experimento. La banda refleja la incertidumbre de potencia T(600, 750, 900) W.</div>
+        <div class="biz-kicker">Electricidad · escenario actualmente usado por AWA05</div>
+        <h3>Tarifa actual del proyecto: Q2.05 por kWh</h3>
+        <p>Primero se calcula cuántos kWh necesita la AWA05 para producir un garrafón de 20 L al rendimiento observado. Después esos kWh se multiplican por la tarifa eléctrica. No se usa el gasto acumulado desde el inicio.</p>
       </div>
-      <div class="card-badge">Q acumulado</div>
+      <div class="biz-big"><small>Tarifa usada</small><strong>Q2.05</strong><span>por kWh</span></div>
     </div>
-    <div class="chart-wrap tall"><canvas id="chart-eco-inversion"></canvas></div>
-    <div class="card-foot"><div class="card-ts" id="ts-eco-inv">--</div><div class="card-ts">T(600,750,900) W · Q2.05/kWh · DEOCSA Sololá</div></div>
+
+    <div class="biz-kpi-grid four">
+      <div class="biz-kpi"><span>Energía por garrafón</span><strong><span id="biz-actual-kwh20">--</span> kWh</strong><small>energía para producir 20 L</small></div>
+      <div class="biz-kpi"><span>Electricidad por garrafón</span><strong>Q <span id="biz-actual-elec20">--</span></strong><small>kWh/20 L × Q2.05</small></div>
+      <div class="biz-kpi"><span>Recuperación CAPEX</span><strong>Q <span id="biz-actual-capex20">--</span></strong><small>según plazo seleccionado</small></div>
+      <div class="biz-kpi featured"><span>Precio mínimo de recuperación</span><strong>Q <span id="biz-actual-precio">--</span></strong><small>electricidad + recuperación CAPEX</small></div>
+    </div>
+
+    <div class="biz-explain" id="biz-actual-explica">Esperando datos de producción...</div>
+    <div class="biz-warning"><b>Importante:</b> este es un precio mínimo técnico para recuperar energía + CAPEX. No incluye envase, limpieza, mano de obra, mantenimiento, transporte, impuestos, financiamiento ni margen comercial.</div>
   </div>
 
-  <div class="grid-2" style="margin-bottom:16px">
-    <div class="card">
-      <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
-        <div>
-          <div class="card-title">Costo por litro — evolución</div>
-          <div class="card-sub">Baja conforme acumula producción. La banda muestra el rango 600–900 W.</div>
-        </div>
-        <div class="card-badge">Q / L</div>
-      </div>
-      <div class="chart-wrap tall"><canvas id="chart-eco-costo-litro"></canvas></div>
-      <div class="card-foot"><div class="card-ts" id="ts-eco-costo">--</div><div class="card-ts">Costo energético acum. ÷ litros acum.</div></div>
-    </div>
-    <div class="card">
-      <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
-        <div>
-          <div class="card-title">Costo propio vs precio de mercado</div>
-          <div class="card-sub">Costo energético por garrafón (banda) vs precios de mercado en Sololá. Por debajo de la línea verde = más barato que comprar.</div>
-        </div>
-        <div class="card-badge">Q / garrafón</div>
-      </div>
-      <div class="chart-wrap tall"><canvas id="chart-eco-garrafon"></canvas></div>
-      <div class="card-foot"><div class="card-ts" id="ts-eco-garrafon">--</div><div class="card-ts">Q8 mín · Q13.50 medio · Q19 máx · mercado Sololá</div></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
+  <div class="biz-panel" id="biz-panel-social" data-biz-panel="social">
+    <div class="biz-panel-head">
       <div>
-        <div class="card-title">Sensibilidad: costo por litro vs humedad relativa</div>
-        <div class="card-sub">Cada punto es una lectura real. A mayor humedad, mayor producción, menor costo por litro. Muestra la dependencia del costo respecto al clima.</div>
+        <div class="biz-kicker">Escenario comparativo · Tarifa Social Guatemala</div>
+        <h3>¿Cómo cambia el costo usando una tarifa social?</h3>
+        <p>Para DEOCSA, la referencia social localizada para mayo–julio de 2026 es Q2.04/kWh. Los hogares que califican para el aporte INDE pueden pagar valores subsidiados menores según su consumo mensual. Esta subsección permite comparar esos escenarios sin afirmar que AWA05 sea elegible.</p>
       </div>
-      <div class="card-badge">Scatter · Pearson</div>
+      <div class="biz-big"><small>Social DEOCSA</small><strong id="biz-social-rate-big">Q2.04</strong><span>Q/kWh · referencia</span></div>
     </div>
-    <div class="chart-wrap tall"><canvas id="chart-eco-scatter-hum"></canvas></div>
-    <div class="card-foot"><div class="card-ts" id="ts-eco-scatter">--</div><div class="card-ts">Q/L acum. vs %HR · regresión lineal</div></div>
+
+    <div class="biz-control-card">
+      <div class="biz-control-title">Escenario social a comparar</div>
+      <div class="biz-control-sub">La elegibilidad y el aporte dependen del tipo de usuario y del consumo mensual facturado.</div>
+      <div class="biz-chip-row">
+        <button class="biz-mini-chip is-active" data-social-rate="2.04" onclick="setBizSocialRate(2.04,'Tarifa Social DEOCSA')">Social DEOCSA · Q2.04</button>
+        <button class="biz-mini-chip" data-social-rate="0.50" onclick="setBizSocialRate(0.50,'Aporte INDE 1–60 kWh/mes')">INDE 1–60 kWh · Q0.50</button>
+        <button class="biz-mini-chip" data-social-rate="0.87" onclick="setBizSocialRate(0.87,'Aporte INDE 61–88 kWh/mes')">INDE 61–88 kWh · Q0.87</button>
+      </div>
+    </div>
+
+    <div class="biz-kpi-grid four">
+      <div class="biz-kpi"><span>Tarifa seleccionada</span><strong>Q <span id="biz-social-rate">2.04</span>/kWh</strong><small id="biz-social-label">Tarifa Social DEOCSA</small></div>
+      <div class="biz-kpi"><span>Electricidad por garrafón</span><strong>Q <span id="biz-social-elec20">--</span></strong><small>kWh/20 L × tarifa social</small></div>
+      <div class="biz-kpi"><span>Recuperación CAPEX</span><strong>Q <span id="biz-social-capex20">--</span></strong><small>mismo plazo de recuperación</small></div>
+      <div class="biz-kpi featured"><span>Precio mínimo de recuperación</span><strong>Q <span id="biz-social-precio">--</span></strong><small>electricidad social + CAPEX</small></div>
+    </div>
+
+    <div class="biz-compare">
+      <div><span>Ahorro eléctrico por garrafón vs Q2.05</span><strong>Q <span id="biz-social-ahorro">--</span></strong></div>
+      <div><span>Reducción del precio piso</span><strong><span id="biz-social-ahorro-pct">--</span>%</strong></div>
+    </div>
+    <div class="biz-warning"><b>Lectura correcta:</b> los valores Q0.50 y Q0.87 corresponden a escenarios subsidiados para rangos residenciales de bajo consumo. Son una comparación económica; no constituyen una confirmación de elegibilidad para la instalación AWA05.</div>
   </div>
 </section></section>
 
@@ -4162,6 +4127,116 @@ async function exportXLSX() {
   }
 }
 
+
+
+
+// ==========================================================
+// AWA05 · Economía por garrafón (CAPEX / tarifa actual / social)
+// ==========================================================
+let bizTab = 'capex';
+let bizPaybackYears = 5;
+let bizSocialRate = 2.04;
+let bizSocialLabel = 'Tarifa Social DEOCSA';
+let bizState = null;
+
+function setBizTab(tab){
+  bizTab = tab;
+  document.querySelectorAll('[data-biz-tab]').forEach(b=>b.classList.toggle('is-active',b.dataset.bizTab===tab));
+  document.querySelectorAll('[data-biz-panel]').forEach(p=>p.classList.toggle('is-active',p.dataset.bizPanel===tab));
+}
+
+function setBizPayback(years){
+  bizPaybackYears = Number(years) || 5;
+  document.querySelectorAll('[data-payback]').forEach(b=>b.classList.toggle('is-active',Number(b.dataset.payback)===bizPaybackYears));
+  renderBizEconomy();
+}
+
+function setBizSocialRate(rate,label){
+  bizSocialRate = Number(rate) || 2.04;
+  bizSocialLabel = label || 'Tarifa Social DEOCSA';
+  document.querySelectorAll('[data-social-rate]').forEach(b=>b.classList.toggle('is-active',Math.abs(Number(b.dataset.socialRate)-bizSocialRate)<0.001));
+  renderBizEconomy();
+}
+
+function bizFmt(v,d=2){ return (v!=null && isFinite(v)) ? Number(v).toLocaleString('es-GT',{minimumFractionDigits:d,maximumFractionDigits:d}) : '--'; }
+function bizSet(id,val){ const el=document.getElementById(id); if(el) el.textContent=val; }
+
+function buildBizState(rawLabels,nivel){
+  if(!Array.isArray(rawLabels)||!Array.isArray(nivel)||rawLabels.length<2||nivel.length<2){ bizState=null; return; }
+  const pts=[];
+  for(let i=0;i<Math.min(rawLabels.length,nivel.length);i++){
+    const ts=new Date(String(rawLabels[i]||'').replace(' ','T'));
+    const vol=Number(nivel[i]);
+    if(!isNaN(ts.getTime())&&isFinite(vol)) pts.push({ts,vol});
+  }
+  pts.sort((a,b)=>a.ts-b.ts);
+  if(pts.length<2){ bizState=null; return; }
+
+  let validHours=0,totalL=0;
+  const MAX_GAP_H=3;
+  for(let i=1;i<pts.length;i++){
+    const dh=(pts[i].ts-pts[i-1].ts)/3600000;
+    if(!(dh>0)||dh>MAX_GAP_H) continue;
+    validHours+=dh;
+    const dv=pts[i].vol-pts[i-1].vol;
+    if(dv>0&&dv<=6) totalL+=dv;
+  }
+  const rateLH=validHours>0?totalL/validHours:null;
+  const powerKW=0.750;
+  const sec=(rateLH&&rateLH>0)?powerKW/rateLH:null;
+  const kwh20=sec!=null?sec*20:null;
+  const lDay=rateLH!=null?rateLH*24:null;
+  const garYear=lDay!=null?lDay*365/20:null;
+  bizState={validHours,totalL,rateLH,sec,kwh20,lDay,garYear,powerKW};
+}
+
+function renderBizEconomy(){
+  const st=bizState;
+  if(!st||!(st.rateLH>0)||!(st.garYear>0)||!(st.kwh20>=0)){
+    ['biz-rate-lh','biz-kwh20','biz-garrafones-ano','biz-capex-garrafones','biz-capex-por-garrafon','biz-capex-precio-piso','biz-actual-kwh20','biz-actual-elec20','biz-actual-capex20','biz-actual-precio','biz-social-elec20','biz-social-capex20','biz-social-precio','biz-social-ahorro','biz-social-ahorro-pct'].forEach(id=>bizSet(id,'--'));
+    return;
+  }
+
+  const CAPEX_Q=145160;
+  const tarifaActual=2.05;
+  const garPayback=st.garYear*bizPaybackYears;
+  const capex20=garPayback>0?CAPEX_Q/garPayback:null;
+  const elecActual=st.kwh20*tarifaActual;
+  const precioActual=capex20+elecActual;
+  const elecSocial=st.kwh20*bizSocialRate;
+  const precioSocial=capex20+elecSocial;
+  const ahorro=Math.max(0,elecActual-elecSocial);
+  const ahorroPct=precioActual>0?Math.max(0,(precioActual-precioSocial)/precioActual*100):0;
+
+  bizSet('biz-rate-lh',bizFmt(st.rateLH,2)+' L/h');
+  bizSet('biz-kwh20',bizFmt(st.kwh20,2)+' kWh');
+  bizSet('biz-garrafones-ano',bizFmt(st.garYear,0)+' garrafones/año');
+  bizSet('biz-capex-total',CAPEX_Q.toLocaleString('es-GT',{maximumFractionDigits:0}));
+  bizSet('biz-capex-garrafones',bizFmt(garPayback,0));
+  bizSet('biz-capex-por-garrafon',bizFmt(capex20,2));
+  bizSet('biz-capex-precio-piso',bizFmt(precioActual,2));
+  bizSet('biz-actual-kwh20',bizFmt(st.kwh20,2));
+  bizSet('biz-actual-elec20',bizFmt(elecActual,2));
+  bizSet('biz-actual-capex20',bizFmt(capex20,2));
+  bizSet('biz-actual-precio',bizFmt(precioActual,2));
+  bizSet('biz-social-rate',bizFmt(bizSocialRate,2));
+  bizSet('biz-social-rate-big','Q'+bizFmt(bizSocialRate,2));
+  bizSet('biz-social-label',bizSocialLabel);
+  bizSet('biz-social-elec20',bizFmt(elecSocial,2));
+  bizSet('biz-social-capex20',bizFmt(capex20,2));
+  bizSet('biz-social-precio',bizFmt(precioSocial,2));
+  bizSet('biz-social-ahorro',bizFmt(ahorro,2));
+  bizSet('biz-social-ahorro-pct',bizFmt(ahorroPct,1));
+
+  bizSet('biz-actual-explica',
+    'Con el rendimiento observado de '+bizFmt(st.rateLH,2)+' L/h, producir 20 L requiere aproximadamente '+bizFmt(st.kwh20,2)+' kWh. A Q2.05/kWh, la electricidad aporta Q'+bizFmt(elecActual,2)+' por garrafón. Para recuperar Q145,160 en '+bizPaybackYears+' años, cada garrafón debe aportar además Q'+bizFmt(capex20,2)+' de CAPEX. Precio mínimo técnico: Q'+bizFmt(precioActual,2)+'.');
+}
+
+// Sustituye únicamente el análisis empresarial anterior. No usa gasto acumulado histórico.
+function renderEmpresa(rawLabels,nivel,hum,temp){
+  buildBizState(rawLabels,nivel);
+  renderBizEconomy();
+}
 
 document.addEventListener('DOMContentLoaded',()=>{
   initCollapsibleSections();
