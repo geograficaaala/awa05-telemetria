@@ -838,6 +838,28 @@
     @media(max-width:900px){.biz-context{grid-template-columns:1fr 1fr}.biz-panel-head{grid-template-columns:1fr}.biz-big{text-align:left}.biz-kpi-grid,.biz-kpi-grid.four{grid-template-columns:1fr 1fr}}
     @media(max-width:560px){.biz-nav{width:100%;border-radius:14px}.biz-chip{flex:1;padding:9px 8px;font-size:9px}.biz-context,.biz-kpi-grid,.biz-kpi-grid.four,.biz-compare{grid-template-columns:1fr}.biz-panel{padding:15px}.biz-panel h3{font-size:18px}}
 
+
+    /* AWA05 · lectura energética clara por periodo */
+    .energy-period-summary{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:0 0 16px}
+    .energy-period-kpi{background:linear-gradient(180deg,#fff,var(--surface2));border:1px solid var(--rule);border-radius:12px;padding:14px 15px;box-shadow:var(--shadow-sm);min-height:104px}
+    .energy-period-kpi span{display:block;font-size:8px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--ink-faint);margin-bottom:8px}
+    .energy-period-kpi strong{display:block;font-size:21px;line-height:1.06;color:var(--ink);margin-bottom:5px}
+    .energy-period-kpi small{display:block;font-size:9.5px;line-height:1.4;color:var(--ink-soft)}
+    .energy-period-kpi.primary{border-color:var(--cobalt-rim);background:linear-gradient(135deg,var(--cobalt-pale),#fff)}
+    .energy-period-kpi.primary strong{color:var(--cobalt-mid)}
+    .energy-period-kpi.good{border-color:rgba(168,217,189,.65);background:linear-gradient(135deg,var(--forest-pale),#fff)}
+    .energy-period-kpi.good strong{color:#4f9d72}
+    .energy-reading{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,.65fr);gap:12px;margin:0 0 16px}
+    .energy-reading-main,.energy-reading-formula{border-radius:12px;padding:15px 17px;border:1px solid var(--rule)}
+    .energy-reading-main{background:linear-gradient(135deg,rgba(168,224,238,.16),#fff);color:var(--ink-mid);font-size:12px;line-height:1.65}
+    .energy-reading-main b{color:var(--ink)}
+    .energy-reading-formula{background:var(--surface2);font-size:10.5px;line-height:1.65;color:var(--ink-soft)}
+    .energy-reading-formula b{color:var(--ink-mid)}
+    .energy-method-note{margin-top:10px;padding:10px 12px;border-radius:9px;background:var(--amber-pale);border:1px solid rgba(240,196,138,.45);font-size:10.5px;line-height:1.55;color:var(--ink-mid)}
+    .biz-context{grid-template-columns:repeat(auto-fit,minmax(145px,1fr))}
+    @media(max-width:768px){.energy-reading{grid-template-columns:1fr}.energy-period-summary{grid-template-columns:1fr 1fr}}
+    @media(max-width:480px){.energy-period-summary{grid-template-columns:1fr}}
+
   </style>
 </head>
 <body>
@@ -1209,31 +1231,34 @@
 <div class="section-rule"></div>
 
 <section id="energia-horaria">
-  <div class="section-eyebrow">Modelo energético · psicrometría operativa · kWh/L</div>
-  <div class="section-title">Eficiencia energética por <em>horario</em></div>
-  <div class="section-subtitle">Cruce entre producción real, duración de operación y condiciones psicrométricas para separar horarios pico de horarios secos y traducirlos a kWh/L o Q por garrafón.</div>
+  <div class="section-eyebrow">Consumo eléctrico estimado · producción real · costo por 20 L</div>
+  <div class="section-title">¿Cuánta electricidad usa la AWA05 y cuánto cuesta producir un <em>garrafón?</em></div>
+  <div class="section-subtitle">Selecciona 24 horas, 7, 30 o 90 días —o todo el periodo—. El tablero recalcula la energía estimada, horas con telemetría válida, litros producidos, tiempo necesario para completar 20 L y costo eléctrico por garrafón.</div>
 
   <div class="model-strip">
     <div class="model-panel">
-      <div class="model-title">Ecuaciones activas del modelo</div>
+      <div class="model-title">Cómo se calcula</div>
       <div class="equation-grid">
-        <div class="equation-chip"><div class="equation-main">eₛ(T)=0.61094·exp(17.625T/(T+243.04))</div><div class="equation-sub">Presión de vapor de saturación para leer disponibilidad de condensación.</div></div>
-        <div class="equation-chip"><div class="equation-main">AH=216.7·e/(T+273.15)</div><div class="equation-sub">Humedad absoluta en g/m³ ponderada por temperatura y punto de rocío.</div></div>
-        <div class="equation-chip"><div class="equation-main">η=L/kWh · SEC=kWh/L</div><div class="equation-sub">Eficiencia horaria y consumo específico de energía.</div></div>
-        <div class="equation-chip"><div class="equation-main">C₂₀L=SEC·tarifa·20</div><div class="equation-sub">Costo energético de un garrafón de 20 L por horario.</div></div>
+        <div class="equation-chip"><div class="equation-main">E = P(kW) · horas válidas</div><div class="equation-sub">La energía se estima con la potencia seleccionada y las horas cubiertas por telemetría, excluyendo huecos mayores a 3 h.</div></div>
+        <div class="equation-chip"><div class="equation-main">SEC = kWh / L</div><div class="equation-sub">Consumo específico: cuánta electricidad se necesita por litro producido.</div></div>
+        <div class="equation-chip"><div class="equation-main">t₂₀ = horas / (L/20)</div><div class="equation-sub">Tiempo observado equivalente para producir un garrafón de 20 litros.</div></div>
+        <div class="equation-chip"><div class="equation-main">C₂₀ = (kWh / L) · tarifa · 20</div><div class="equation-sub">Costo eléctrico de producir 20 L con la tarifa seleccionada.</div></div>
       </div>
     </div>
     <div class="model-panel">
       <div class="selector-stack">
         <div>
-          <div class="selector-label">Periodo</div>
+          <div class="selector-label">Periodo analizado</div>
           <div class="selector-row">
-            <button class="chart-chip" data-range-group="energia-range" data-range-value="7" onclick="setEnergiaRange(7)">Últimos 7 días</button>
-            <button class="chart-chip is-wide" data-range-group="energia-range" data-range-value="all" onclick="setEnergiaRange('all')">Mostrar todo el periodo</button>
+            <button class="chart-chip" data-range-group="energia-range" data-range-value="1" onclick="setEnergiaRange(1)">24 horas</button>
+            <button class="chart-chip" data-range-group="energia-range" data-range-value="7" onclick="setEnergiaRange(7)">7 días</button>
+            <button class="chart-chip" data-range-group="energia-range" data-range-value="30" onclick="setEnergiaRange(30)">30 días</button>
+            <button class="chart-chip" data-range-group="energia-range" data-range-value="90" onclick="setEnergiaRange(90)">90 días</button>
+            <button class="chart-chip is-wide" data-range-group="energia-range" data-range-value="all" onclick="setEnergiaRange('all')">Todo</button>
           </div>
         </div>
         <div>
-          <div class="selector-label">Potencia operativa</div>
+          <div class="selector-label">Potencia operativa estimada</div>
           <div class="selector-row">
             <button class="chart-chip is-green" data-range-group="energia-power" data-range-value="600" onclick="setEnergiaPower(600)">600 W</button>
             <button class="chart-chip is-green" data-range-group="energia-power" data-range-value="750" onclick="setEnergiaPower(750)">750 W</button>
@@ -1241,19 +1266,19 @@
           </div>
         </div>
         <div>
-          <div class="selector-label">Tarifa eléctrica</div>
+          <div class="selector-label">Tarifa para este análisis</div>
           <div class="selector-row">
-            <button class="chart-chip is-gold" data-range-group="energia-tarifa" data-range-value="2.05" onclick="setEnergiaTarifa(2.05)">Q2.05</button>
-            <button class="chart-chip is-gold" data-range-group="energia-tarifa" data-range-value="1.50" onclick="setEnergiaTarifa(1.50)">Q1.50</button>
-            <button class="chart-chip is-gold" data-range-group="energia-tarifa" data-range-value="1" onclick="setEnergiaTarifa(1)">Q1.00</button>
+            <button class="chart-chip is-gold" data-range-group="energia-tarifa" data-range-value="2.05" onclick="setEnergiaTarifa(2.05)">Q2.05/kWh</button>
+            <button class="chart-chip is-gold" data-range-group="energia-tarifa" data-range-value="1.50" onclick="setEnergiaTarifa(1.50)">Q1.50/kWh</button>
+            <button class="chart-chip is-gold" data-range-group="energia-tarifa" data-range-value="1" onclick="setEnergiaTarifa(1)">Q1.00/kWh</button>
           </div>
         </div>
         <div>
-          <div class="selector-label">Métrica visual</div>
+          <div class="selector-label">Métrica del perfil horario</div>
           <div class="selector-row">
             <button class="chart-chip" data-range-group="energia-metric" data-range-value="kwhl" onclick="setEnergiaMetric('kwhl')">kWh/L</button>
             <button class="chart-chip" data-range-group="energia-metric" data-range-value="lkwh" onclick="setEnergiaMetric('lkwh')">L/kWh</button>
-            <button class="chart-chip" data-range-group="energia-metric" data-range-value="qgarrafon" onclick="setEnergiaMetric('qgarrafon')">Q/garrafón</button>
+            <button class="chart-chip" data-range-group="energia-metric" data-range-value="qgarrafon" onclick="setEnergiaMetric('qgarrafon')">Q/20 L</button>
             <button class="chart-chip" data-range-group="energia-metric" data-range-value="clima" onclick="setEnergiaMetric('clima')">Índice climático</button>
           </div>
         </div>
@@ -1261,11 +1286,37 @@
     </div>
   </div>
 
+  <div class="energy-period-summary" id="energia-resumen-periodo">
+    <div class="energy-period-kpi primary"><span>Energía usada en el periodo</span><strong><span id="ener-period-kwh">--</span> kWh</strong><small id="ener-period-cost">Costo estimado: --</small></div>
+    <div class="energy-period-kpi"><span>Horas con cobertura válida</span><strong><span id="ener-period-hours">--</span> h</strong><small>intervalos válidos de telemetría</small></div>
+    <div class="energy-period-kpi"><span>Agua producida</span><strong><span id="ener-period-liters">--</span> L</strong><small id="ener-period-garrafones">-- garrafones equivalentes</small></div>
+    <div class="energy-period-kpi good"><span>Tiempo por garrafón</span><strong><span id="ener-period-hours20">--</span> h</strong><small>horas observadas por cada 20 L</small></div>
+    <div class="energy-period-kpi"><span>Energía por garrafón</span><strong><span id="ener-period-kwh20">--</span> kWh</strong><small>consumo eléctrico estimado por 20 L</small></div>
+    <div class="energy-period-kpi primary"><span>Electricidad por garrafón</span><strong>Q <span id="ener-period-q20">--</span></strong><small id="ener-period-rate">con tarifa seleccionada</small></div>
+  </div>
+
+  <div class="energy-reading">
+    <div class="energy-reading-main" id="ener-period-reading"><b>Lectura rápida:</b> esperando datos del periodo seleccionado...</div>
+    <div class="energy-reading-formula"><b>Interpretación:</b><br>Menor kWh/L = mejor eficiencia.<br>Menos horas/20 L = mayor productividad.<br>El costo por 20 L cambia con la tarifa; la eficiencia física no cambia por la tarifa.</div>
+  </div>
+
+  <div class="card" style="margin-bottom:16px">
+    <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
+      <div>
+        <div class="card-title">Producción y energía estimada por día</div>
+        <div class="card-sub">Barras = kWh estimados. Línea = litros producidos. Permite ver si más consumo eléctrico realmente se traduce en más agua.</div>
+      </div>
+      <div class="card-badge" id="ener-badge-periodo">kWh + L</div>
+    </div>
+    <div class="chart-wrap tall"><canvas id="chart-energia-periodo"></canvas></div>
+    <div class="card-foot"><div class="card-ts" id="ts-energia-periodo">--</div><div class="card-ts" id="ener-foot-periodo">Potencia × horas con cobertura</div></div>
+  </div>
+
   <div class="kpi-grid" id="energia-kpi-grid">
-    <div class="kpi-card accent-cobalt"><div class="kpi-label">Consumo específico</div><div class="kpi-value"><span id="ener-kpi-sec">--</span><span class="kpi-unit">kWh/L</span></div><div class="kpi-range" id="ener-kpi-lkwh">--</div><div class="kpi-meta">Producción real y energía horaria integrada</div></div>
-    <div class="kpi-card accent-forest"><div class="kpi-label">Horario pico</div><div class="kpi-value"><span id="ener-kpi-pico-hora">--</span></div><div class="kpi-range" id="ener-kpi-pico-sec">--</div><div class="kpi-meta">Cuartil de menor kWh/L</div></div>
-    <div class="kpi-card accent-amber"><div class="kpi-label">Horario seco</div><div class="kpi-value"><span id="ener-kpi-seco-hora">--</span></div><div class="kpi-range" id="ener-kpi-seco-sec">--</div><div class="kpi-meta">Cuartil de mayor kWh/L</div></div>
-    <div class="kpi-card accent-forest"><div class="kpi-label">Pico vs seco</div><div class="kpi-value"><span id="ener-kpi-delta">--</span><span class="kpi-unit">×</span></div><div class="kpi-range" id="ener-kpi-cost20">--</div><div class="kpi-meta">Diferencia de costo energético por horario</div></div>
+    <div class="kpi-card accent-cobalt"><div class="kpi-label">Consumo específico</div><div class="kpi-value"><span id="ener-kpi-sec">--</span><span class="kpi-unit">kWh/L</span></div><div class="kpi-range" id="ener-kpi-lkwh">--</div><div class="kpi-meta">Electricidad estimada ÷ producción observada</div></div>
+    <div class="kpi-card accent-forest"><div class="kpi-label">Horario más eficiente</div><div class="kpi-value"><span id="ener-kpi-pico-hora">--</span></div><div class="kpi-range" id="ener-kpi-pico-sec">--</div><div class="kpi-meta">Cuartil de menor kWh/L</div></div>
+    <div class="kpi-card accent-amber"><div class="kpi-label">Horario menos eficiente</div><div class="kpi-value"><span id="ener-kpi-seco-hora">--</span></div><div class="kpi-range" id="ener-kpi-seco-sec">--</div><div class="kpi-meta">Cuartil de mayor kWh/L</div></div>
+    <div class="kpi-card accent-forest"><div class="kpi-label">Peor vs mejor horario</div><div class="kpi-value"><span id="ener-kpi-delta">--</span><span class="kpi-unit">×</span></div><div class="kpi-range" id="ener-kpi-cost20">--</div><div class="kpi-meta">Diferencia de consumo específico</div></div>
   </div>
 
   <div class="grid-2">
@@ -1273,13 +1324,13 @@
       <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
         <div>
           <div class="card-title">Perfil horario de eficiencia</div>
-          <div class="card-sub">Cada barra representa una hora del día con producción, energía y condiciones ambientales integradas</div>
+          <div class="card-sub">Cada barra resume el desempeño de una hora del día dentro del periodo seleccionado.</div>
         </div>
         <div class="card-badge" id="ener-badge-hora">kWh/L</div>
       </div>
       <div class="legend-row">
-        <div class="legend-item"><div class="legend-dot" style="background:var(--forest)"></div>Horario pico</div>
-        <div class="legend-item"><div class="legend-dot" style="background:var(--crimson)"></div>Horario seco</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--forest)"></div>Mejor cuartil</div>
+        <div class="legend-item"><div class="legend-dot" style="background:var(--crimson)"></div>Peor cuartil</div>
         <div class="legend-item"><div class="legend-dot" style="background:var(--cobalt)"></div>Resto del día</div>
       </div>
       <div class="chart-wrap tall"><canvas id="chart-energia-hora"></canvas></div>
@@ -1289,8 +1340,8 @@
     <div class="card">
       <div class="card-head" style="display:flex;justify-content:space-between;align-items:flex-start">
         <div>
-          <div class="card-title">Horarios pico vs horarios secos</div>
-          <div class="card-sub">Comparación ejecutiva entre el mejor cuartil horario, promedio operativo y peor cuartil horario</div>
+          <div class="card-title">Mejor horario vs promedio vs peor horario</div>
+          <div class="card-sub">Comparación ejecutiva para detectar cuándo conviene más producir agua desde el punto de vista energético.</div>
         </div>
         <div class="card-badge" id="ener-badge-pico">kWh/L</div>
       </div>
@@ -1298,11 +1349,11 @@
         <div id="ener-hour-tags">--</div>
       </div>
       <div class="chart-wrap tall"><canvas id="chart-energia-pico-seco"></canvas></div>
-      <div class="card-foot"><div class="card-ts" id="ts-energia-pico-seco">--</div><div class="card-ts">Pico = mejor 25% · seco = peor 25%</div></div>
+      <div class="card-foot"><div class="card-ts" id="ts-energia-pico-seco">--</div><div class="card-ts">Mejor = 25% menor SEC · peor = 25% mayor SEC</div></div>
     </div>
   </div>
+  <div class="energy-method-note"><b>Nota metodológica:</b> mientras no se incorpore una lectura directa de kWh del medidor eléctrico, estos valores son estimaciones. Se usa la potencia seleccionada (600, 750 o 900 W) multiplicada por las horas con telemetría válida; los huecos mayores a 3 horas no se cuentan. La producción sí proviene de los cambios positivos observados en el sensor de volumen.</div>
 </section>
-
 
 
 <section id="empresa">
@@ -1317,10 +1368,12 @@
   </div>
 
   <div class="biz-context">
+    <div><span>Periodo usado</span><strong id="biz-periodo">--</strong></div>
     <div><span>Rendimiento observado</span><strong id="biz-rate-lh">-- L/h</strong></div>
+    <div><span>Tiempo para 20 L</span><strong id="biz-hours20">-- h/20 L</strong></div>
     <div><span>Energía para 20 L</span><strong id="biz-kwh20">-- kWh</strong></div>
     <div><span>Producción proyectada</span><strong id="biz-garrafones-ano">-- garrafones/año</strong></div>
-    <div><span>Potencia de referencia</span><strong>750 W</strong></div>
+    <div><span>Potencia de referencia</span><strong id="biz-power">750 W</strong></div>
   </div>
 
   <div class="biz-panel is-active" id="biz-panel-capex" data-biz-panel="capex">
@@ -1407,7 +1460,7 @@
     </div>
     <div class="biz-warning"><b>Lectura correcta:</b> los valores Q0.50 y Q0.87 corresponden a escenarios subsidiados para rangos residenciales de bajo consumo. Son una comparación económica; no constituyen una confirmación de elegibilidad para la instalación AWA05.</div>
   </div>
-</section></section>
+</section>
 
 <div class="section-rule"></div>
 
@@ -3293,6 +3346,10 @@ function setEnergiaRange(rangeDays) {
 function setEnergiaPower(powerW) {
   energiaPowerW = Number(powerW);
   renderEnergiaHorarioPanel();
+  if (bizRawState) {
+    buildBizState(bizRawState.rawLabels, bizRawState.nivel);
+    renderBizEconomy();
+  }
 }
 
 function setEnergiaTarifa(tarifa) {
@@ -3409,6 +3466,8 @@ function renderEnergiaHorarioPanel() {
   if (puntos.length < 2) return;
 
   const hours = Array.from({ length: 24 }, (_, h) => ({ hour: h, litros: 0, horas: 0, kwh: 0, idxHoras: 0, ahHoras: 0, wrHoras: 0, vpdHoras: 0 }));
+  const dayMap = {};
+  const dayKey = d => d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
   const MAX_GAP_H = 3;
 
   for (let i = 1; i < puntos.length; i++) {
@@ -3429,7 +3488,14 @@ function renderEnergiaHorarioPanel() {
       const w = nearestWeather(mid);
       const ps = psychro(w, mid);
       const litros = prod * (segH / durH);
-      const kwh = (energiaPowerW / 1000) * segH * ps.loadFactor;
+      // Estimación transparente: potencia seleccionada × horas cubiertas.
+      // El clima se usa para interpretar producción, no para inventar variaciones de potencia.
+      const kwh = (energiaPowerW / 1000) * segH;
+      const dk = dayKey(mid);
+      if (!dayMap[dk]) dayMap[dk] = { key: dk, litros: 0, horas: 0, kwh: 0 };
+      dayMap[dk].litros += litros;
+      dayMap[dk].horas += segH;
+      dayMap[dk].kwh += kwh;
       hours[h].litros += litros;
       hours[h].horas += segH;
       hours[h].kwh += kwh;
@@ -3455,6 +3521,28 @@ function renderEnergiaHorarioPanel() {
   const avgSec = totalL > 0 ? totalKwh / totalL : null;
   const avgLkwh = totalKwh > 0 ? totalL / totalKwh : null;
   const avgCost20 = avgSec !== null ? avgSec * energiaTarifa * ECO.GARRAFON_L : null;
+  const coveredHours = hours.reduce((a, h) => a + h.horas, 0);
+  const garrafonesEq = totalL > 0 ? totalL / ECO.GARRAFON_L : 0;
+  const hoursPer20 = garrafonesEq > 0 ? coveredHours / garrafonesEq : null;
+  const kwhPer20 = garrafonesEq > 0 ? totalKwh / garrafonesEq : null;
+  const costPeriod = totalKwh * energiaTarifa;
+  const costPer20 = kwhPer20 !== null ? kwhPer20 * energiaTarifa : null;
+
+  setText('ener-period-kwh', fmt(totalKwh, 2));
+  setText('ener-period-cost', 'Costo estimado: Q' + fmt(costPeriod, 2));
+  setText('ener-period-hours', fmt(coveredHours, 1));
+  setText('ener-period-liters', fmt(totalL, 1));
+  setText('ener-period-garrafones', fmt(garrafonesEq, 2) + ' garrafones equivalentes');
+  setText('ener-period-hours20', fmt(hoursPer20, 2));
+  setText('ener-period-kwh20', fmt(kwhPer20, 2));
+  setText('ener-period-q20', fmt(costPer20, 2));
+  setText('ener-period-rate', 'Q' + fmt(energiaTarifa, 2) + '/kWh · ' + energiaPowerW + ' W');
+  const periodName = getPeriodLabel();
+  const reading = totalL > 0
+    ? '<b>Lectura rápida — ' + periodName + ':</b> se contabilizan <b>' + fmt(coveredHours,1) + ' h</b> con telemetría válida, <b>' + fmt(totalL,1) + ' L</b> producidos y <b>' + fmt(totalKwh,2) + ' kWh</b> estimados. Eso equivale a <b>' + fmt(hoursPer20,2) + ' h por garrafón de 20 L</b>, <b>' + fmt(kwhPer20,2) + ' kWh por garrafón</b> y <b>Q' + fmt(costPer20,2) + '</b> de electricidad por 20 L con la tarifa seleccionada.'
+    : '<b>Lectura rápida — ' + periodName + ':</b> hay ' + fmt(coveredHours,1) + ' h con cobertura válida, pero no se detectó producción positiva suficiente para calcular costo por garrafón.';
+  const readingEl = document.getElementById('ener-period-reading');
+  if (readingEl) readingEl.innerHTML = reading;
 
   let best = null, dry = null, peakGroup = [], dryGroup = [];
   if (valid.length) {
@@ -3506,6 +3594,29 @@ function renderEnergiaHorarioPanel() {
   const colors = hours.map(h => peakSet.has(h.hour) ? 'rgba(26,92,56,0.78)' : drySet.has(h.hour) ? 'rgba(149,31,31,0.78)' : 'rgba(28,63,110,0.58)');
   const borders = hours.map(h => peakSet.has(h.hour) ? '#a8d9bd' : drySet.has(h.hour) ? '#f0a3a3' : '#7fc4e8');
 
+  const daily = Object.values(dayMap).sort((a,b) => a.key.localeCompare(b.key));
+  destroyChart('chart-energia-periodo');
+  const ctxD = document.getElementById('chart-energia-periodo')?.getContext('2d');
+  if (ctxD) {
+    const dLabels = daily.map(d => d.key.slice(5));
+    chartRegistry['chart-energia-periodo'] = new Chart(ctxD, {
+      type: 'bar',
+      data: { labels: dLabels, datasets: [
+        { label: 'Energía estimada (kWh)', data: daily.map(d => +d.kwh.toFixed(3)), backgroundColor: 'rgba(127,196,232,.58)', borderColor: '#7fc4e8', borderWidth: 1.2, borderRadius: 3, yAxisID: 'y' },
+        { type: 'line', label: 'Agua producida (L)', data: daily.map(d => +d.litros.toFixed(2)), borderColor: '#4f9d72', backgroundColor: 'rgba(168,217,189,.18)', borderWidth: 2.2, pointRadius: daily.length > 45 ? 0 : 2.5, pointHoverRadius: 5, tension: .25, yAxisID: 'y1' }
+      ]},
+      options: mergeOpts({
+        interaction: { mode: 'index', intersect: false },
+        plugins: { legend: { display: true, position: 'top', labels: { font: { family: 'Arial', size: 9 }, color: '#6f8089', boxWidth: 10, padding: 12 } }, tooltip: { ...chartDefaults.plugins.tooltip, callbacks: { afterBody: items => { const d = daily[items?.[0]?.dataIndex]; return d ? ['Horas cubiertas: ' + fmt(d.horas,1) + ' h', 'Costo energía: Q' + fmt(d.kwh * energiaTarifa,2)] : []; } } } },
+        scales: {
+          x: { ...chartDefaults.scales.x, ticks: { ...chartDefaults.scales.x.ticks, maxTicksLimit: 14 } },
+          y: { ...chartDefaults.scales.y, beginAtZero: true, position: 'left', title: { display: true, text: 'kWh estimados', color: '#6f8089', font: { family: 'Arial', size: 8 } } },
+          y1: { beginAtZero: true, position: 'right', grid: { drawOnChartArea: false }, ticks: { color: '#6f8089', font: { family: 'Arial', size: 8 }, callback: v => v + ' L' }, title: { display: true, text: 'Litros', color: '#6f8089', font: { family: 'Arial', size: 8 } } }
+        }
+      })
+    });
+  }
+
   destroyChart('chart-energia-hora');
   const ctxH = document.getElementById('chart-energia-hora')?.getContext('2d');
   if (ctxH) {
@@ -3550,7 +3661,9 @@ function renderEnergiaHorarioPanel() {
   setText('ener-badge-hora', cfg.badge);
   setText('ener-badge-pico', cfg.badge);
   setText('ener-foot-hora', energiaPowerW + ' W · Q' + fmt(energiaTarifa, 2) + '/kWh');
+  setText('ener-foot-periodo', energiaPowerW + ' W · Q' + fmt(energiaTarifa, 2) + '/kWh · huecos >3 h excluidos');
   const ts = 'Act: ' + (document.getElementById('header-ts')?.textContent || '--') + ' · ' + getPeriodLabel();
+  setText('ts-energia-periodo', ts);
   setText('ts-energia-hora', ts);
   setText('ts-energia-pico-seco', ts);
   activateRangeButtons('energia-range', energiaRangeDays);
@@ -4138,6 +4251,7 @@ let bizPaybackYears = 5;
 let bizSocialRate = 2.04;
 let bizSocialLabel = 'Tarifa Social DEOCSA';
 let bizState = null;
+let bizRawState = null;
 
 function setBizTab(tab){
   bizTab = tab;
@@ -4162,11 +4276,15 @@ function bizFmt(v,d=2){ return (v!=null && isFinite(v)) ? Number(v).toLocaleStri
 function bizSet(id,val){ const el=document.getElementById(id); if(el) el.textContent=val; }
 
 function buildBizState(rawLabels,nivel){
+  bizRawState = { rawLabels, nivel };
   if(!Array.isArray(rawLabels)||!Array.isArray(nivel)||rawLabels.length<2||nivel.length<2){ bizState=null; return; }
+  const sliced = sliceByTimeRange(rawLabels, [nivel], energiaRangeDays);
+  const labels = sliced.rawLabels || [];
+  const values = sliced.arrays[0] || [];
   const pts=[];
-  for(let i=0;i<Math.min(rawLabels.length,nivel.length);i++){
-    const ts=new Date(String(rawLabels[i]||'').replace(' ','T'));
-    const vol=Number(nivel[i]);
+  for(let i=0;i<Math.min(labels.length,values.length);i++){
+    const ts=new Date(String(labels[i]||'').replace(' ','T'));
+    const vol=Number(values[i]);
     if(!isNaN(ts.getTime())&&isFinite(vol)) pts.push({ts,vol});
   }
   pts.sort((a,b)=>a.ts-b.ts);
@@ -4182,18 +4300,19 @@ function buildBizState(rawLabels,nivel){
     if(dv>0&&dv<=6) totalL+=dv;
   }
   const rateLH=validHours>0?totalL/validHours:null;
-  const powerKW=0.750;
+  const powerKW=(Number(energiaPowerW)||750)/1000;
   const sec=(rateLH&&rateLH>0)?powerKW/rateLH:null;
   const kwh20=sec!=null?sec*20:null;
+  const hours20=(rateLH&&rateLH>0)?20/rateLH:null;
   const lDay=rateLH!=null?rateLH*24:null;
   const garYear=lDay!=null?lDay*365/20:null;
-  bizState={validHours,totalL,rateLH,sec,kwh20,lDay,garYear,powerKW};
+  bizState={validHours,totalL,rateLH,sec,kwh20,hours20,lDay,garYear,powerKW,period:getPeriodLabel()};
 }
 
 function renderBizEconomy(){
   const st=bizState;
   if(!st||!(st.rateLH>0)||!(st.garYear>0)||!(st.kwh20>=0)){
-    ['biz-rate-lh','biz-kwh20','biz-garrafones-ano','biz-capex-garrafones','biz-capex-por-garrafon','biz-capex-precio-piso','biz-actual-kwh20','biz-actual-elec20','biz-actual-capex20','biz-actual-precio','biz-social-elec20','biz-social-capex20','biz-social-precio','biz-social-ahorro','biz-social-ahorro-pct'].forEach(id=>bizSet(id,'--'));
+    ['biz-periodo','biz-rate-lh','biz-hours20','biz-kwh20','biz-garrafones-ano','biz-power','biz-capex-garrafones','biz-capex-por-garrafon','biz-capex-precio-piso','biz-actual-kwh20','biz-actual-elec20','biz-actual-capex20','biz-actual-precio','biz-social-elec20','biz-social-capex20','biz-social-precio','biz-social-ahorro','biz-social-ahorro-pct'].forEach(id=>bizSet(id,'--'));
     return;
   }
 
@@ -4208,9 +4327,12 @@ function renderBizEconomy(){
   const ahorro=Math.max(0,elecActual-elecSocial);
   const ahorroPct=precioActual>0?Math.max(0,(precioActual-precioSocial)/precioActual*100):0;
 
+  bizSet('biz-periodo',st.period || getPeriodLabel());
   bizSet('biz-rate-lh',bizFmt(st.rateLH,2)+' L/h');
+  bizSet('biz-hours20',bizFmt(st.hours20,2)+' h/20 L');
   bizSet('biz-kwh20',bizFmt(st.kwh20,2)+' kWh');
   bizSet('biz-garrafones-ano',bizFmt(st.garYear,0)+' garrafones/año');
+  bizSet('biz-power',Math.round(st.powerKW*1000)+' W');
   bizSet('biz-capex-total',CAPEX_Q.toLocaleString('es-GT',{maximumFractionDigits:0}));
   bizSet('biz-capex-garrafones',bizFmt(garPayback,0));
   bizSet('biz-capex-por-garrafon',bizFmt(capex20,2));
@@ -4229,7 +4351,7 @@ function renderBizEconomy(){
   bizSet('biz-social-ahorro-pct',bizFmt(ahorroPct,1));
 
   bizSet('biz-actual-explica',
-    'Con el rendimiento observado de '+bizFmt(st.rateLH,2)+' L/h, producir 20 L requiere aproximadamente '+bizFmt(st.kwh20,2)+' kWh. A Q2.05/kWh, la electricidad aporta Q'+bizFmt(elecActual,2)+' por garrafón. Para recuperar Q145,160 en '+bizPaybackYears+' años, cada garrafón debe aportar además Q'+bizFmt(capex20,2)+' de CAPEX. Precio mínimo técnico: Q'+bizFmt(precioActual,2)+'.');
+    'Usando '+(st.period||'el periodo seleccionado')+', el rendimiento observado es '+bizFmt(st.rateLH,2)+' L/h: un garrafón de 20 L requiere aproximadamente '+bizFmt(st.hours20,2)+' h y '+bizFmt(st.kwh20,2)+' kWh a '+Math.round(st.powerKW*1000)+' W. A Q2.05/kWh, la electricidad aporta Q'+bizFmt(elecActual,2)+' por garrafón. Para recuperar Q145,160 en '+bizPaybackYears+' años, cada garrafón debe aportar además Q'+bizFmt(capex20,2)+' de CAPEX. Precio mínimo técnico: Q'+bizFmt(precioActual,2)+'.');
 }
 
 // Sustituye únicamente el análisis empresarial anterior. No usa gasto acumulado histórico.
