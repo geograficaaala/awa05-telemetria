@@ -4,10 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>AWA05 · Análisis Estadístico y Simulación Microclimática</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,700;0,900;1,400;1,700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;1,9..40,300;1,9..40,400&display=swap" rel="stylesheet" />
-
-  <script>
+<script>
     window.MathJax = {
       tex: {
         inlineMath: [['\\(', '\\)'], ['$', '$']],
@@ -24,41 +21,45 @@
 
   <style>
     :root {
-      --bg: #f7f6f1;
-      --bg-warm: #f0ede4;
-      --surface: #ffffff;
-      --surface2: #faf9f5;
-      --surface3: #f2f0e8;
-      --ink: #1a1914;
-      --ink-mid: #3a3830;
-      --ink-soft: #6b6860;
-      --ink-faint: #a09e98;
-      --rule: rgba(40, 38, 30, 0.10);
-      --rule-strong: rgba(40, 38, 30, 0.18);
-      --cobalt: #1c3f6e;
-      --cobalt-deep: #0f2a50;
-      --cobalt-mid: #2558a0;
-      --cobalt-pale: rgba(28, 63, 110, 0.07);
-      --cobalt-rim: rgba(28, 63, 110, 0.22);
-      --amber: #b05c00;
-      --amber-pale: rgba(176, 92, 0, 0.08);
-      --crimson: #951f1f;
-      --crimson-pale: rgba(149, 31, 31, 0.08);
-      --forest: #1a5c38;
-      --forest-pale: rgba(26, 92, 56, 0.09);
-      --teal: #0f6b60;
-      --teal-pale: rgba(15, 107, 96, 0.08);
-      --gold: #c4960a;
-      --gold-pale: rgba(196, 150, 10, 0.10);
-      --violet: #4d3d8f;
-      --violet-pale: rgba(77, 61, 143, 0.08);
-      --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 2px 8px rgba(0,0,0,0.04);
-      --shadow-md: 0 2px 6px rgba(0,0,0,0.06), 0 8px 24px rgba(0,0,0,0.06);
-      --shadow-lg: 0 4px 16px rgba(0,0,0,0.07), 0 20px 48px rgba(0,0,0,0.07);
-      --mono: 'JetBrains Mono', monospace;
-      --display: 'Playfair Display', serif;
-      --body: 'DM Sans', sans-serif;
-      --serif: 'Libre Baskerville', serif;
+      --bg:        #f4f9fc;
+      --bg-warm:   #eef6fa;
+      --surface:   #ffffff;
+      --surface2:  #f7fbfd;
+      --surface3:  #eef6fa;
+      --ink:       #1f2b33;
+      --ink-mid:   #3d4d57;
+      --ink-soft:  #6f8089;
+      --ink-faint: #a3b3ba;
+      --rule:        rgba(30,60,80,0.08);
+      --rule-strong: rgba(30,60,80,0.14);
+
+      --cobalt:      #7fc4e8;
+      --cobalt-deep: #5fb3e0;
+      --cobalt-mid:  #5fb3e0;
+      --cobalt-pale: rgba(127,196,232,0.12);
+      --cobalt-rim:  rgba(127,196,232,0.30);
+
+      --amber:      #f0c48a;
+      --amber-pale: rgba(240,196,138,0.14);
+      --crimson:    #f0a3a3;
+      --crimson-pale: rgba(240,163,163,0.14);
+      --forest:     #a8d9bd;
+      --forest-pale: rgba(168,217,189,0.16);
+      --teal:       #8fd6cc;
+      --teal-pale:  rgba(143,214,204,0.14);
+      --gold:       #f3d98a;
+      --gold-pale:  rgba(243,217,138,0.16);
+      --violet:     #c3b8e8;
+      --violet-pale: rgba(195,184,232,0.14);
+
+      --shadow-sm: 0 1px 3px rgba(90,150,180,0.06), 0 2px 8px rgba(90,150,180,0.05);
+      --shadow-md: 0 2px 6px rgba(90,150,180,0.07), 0 8px 24px rgba(90,150,180,0.07);
+      --shadow-lg: 0 4px 16px rgba(90,150,180,0.08), 0 20px 48px rgba(90,150,180,0.08);
+
+      --mono: Arial, Helvetica, sans-serif;
+      --display: Arial, Helvetica, sans-serif;
+      --body: Arial, Helvetica, sans-serif;
+      --serif: Arial, Helvetica, sans-serif;
       --radius: 4px;
       --sidebar-w: 248px;
       --insight-w: 360px;
@@ -473,7 +474,7 @@
       padding: 18px;
       border: 1px solid var(--cobalt-rim);
       border-radius: var(--radius);
-      background: linear-gradient(135deg, rgba(28,63,110,0.08), rgba(255,255,255,0.92));
+      background: linear-gradient(135deg, rgba(127,196,232,0.08), rgba(255,255,255,0.92));
       box-shadow: var(--shadow-sm);
     }
 
@@ -518,7 +519,7 @@
       max-width: 320px;
       display: none;
       padding: 11px 13px;
-      border: 1px solid rgba(28,63,110,0.22);
+      border: 1px solid rgba(127,196,232,0.22);
       border-radius: 4px;
       background: rgba(255,255,255,0.97);
       box-shadow: var(--shadow-lg);
@@ -551,8 +552,8 @@
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(circle at 85% 20%, rgba(28,63,110,0.12), transparent 36%),
-        linear-gradient(135deg, rgba(28,63,110,0.06), transparent 34%);
+        radial-gradient(circle at 85% 20%, rgba(127,196,232,0.12), transparent 36%),
+        linear-gradient(135deg, rgba(127,196,232,0.06), transparent 34%);
       pointer-events: none;
     }
 
@@ -561,7 +562,7 @@
       position: absolute;
       right: 28px;
       bottom: 18px;
-      color: rgba(28,63,110,0.08);
+      color: rgba(127,196,232,0.08);
       font-family: var(--mono);
       font-size: 22px;
       font-weight: 700;
@@ -658,20 +659,20 @@
     }
 
     .pill.ok {
-      border-color: rgba(26,92,56,0.22);
-      background: rgba(26,92,56,0.06);
+      border-color: rgba(168,217,189,0.22);
+      background: rgba(168,217,189,0.06);
       color: var(--forest);
     }
 
     .pill.warn {
-      border-color: rgba(176,92,0,0.22);
-      background: rgba(176,92,0,0.06);
+      border-color: rgba(240,196,138,0.22);
+      background: rgba(240,196,138,0.06);
       color: var(--amber);
     }
 
     .pill.danger {
-      border-color: rgba(149,31,31,0.22);
-      background: rgba(149,31,31,0.06);
+      border-color: rgba(240,163,163,0.22);
+      background: rgba(240,163,163,0.06);
       color: var(--crimson);
     }
 
@@ -799,26 +800,26 @@
     }
 
     .badge.ok {
-      border-color: rgba(26,92,56,0.26);
-      background: rgba(26,92,56,0.07);
+      border-color: rgba(168,217,189,0.26);
+      background: rgba(168,217,189,0.07);
       color: var(--forest);
     }
 
     .badge.warn {
-      border-color: rgba(176,92,0,0.26);
-      background: rgba(176,92,0,0.07);
+      border-color: rgba(240,196,138,0.26);
+      background: rgba(240,196,138,0.07);
       color: var(--amber);
     }
 
     .badge.danger {
-      border-color: rgba(149,31,31,0.26);
-      background: rgba(149,31,31,0.07);
+      border-color: rgba(240,163,163,0.26);
+      background: rgba(240,163,163,0.07);
       color: var(--crimson);
     }
 
     .badge.violet {
-      border-color: rgba(77,61,143,0.26);
-      background: rgba(77,61,143,0.07);
+      border-color: rgba(195,184,232,0.26);
+      background: rgba(195,184,232,0.07);
       color: var(--violet);
     }
 
@@ -1400,7 +1401,7 @@
       width: 54px;
       height: 34px;
       margin: -2px auto 0;
-      border: 3px solid rgba(28,63,110,0.22);
+      border: 3px solid rgba(127,196,232,0.22);
       border-bottom: 0;
       border-radius: 16px 16px 0 0;
       background: linear-gradient(180deg, rgba(255,255,255,0.60), rgba(214,232,249,0.38));
@@ -1410,7 +1411,7 @@
       position: relative;
       height: 230px;
       margin-top: -1px;
-      border: 3px solid rgba(28,63,110,0.18);
+      border: 3px solid rgba(127,196,232,0.18);
       border-radius: 26px 26px 34px 34px;
       overflow: hidden;
       background:
@@ -1418,7 +1419,7 @@
         linear-gradient(180deg, rgba(228,241,252,0.58), rgba(250,252,255,0.92));
       box-shadow:
         inset 18px 0 28px rgba(255,255,255,0.42),
-        inset -10px 0 18px rgba(28,63,110,0.05);
+        inset -10px 0 18px rgba(127,196,232,0.05);
     }
 
     .garrafon-fill {
@@ -1448,7 +1449,7 @@
       height: 22px;
       border-radius: 45%;
       opacity: 0.82;
-      animation: waveDrift 5s linear infinite;
+      animation: none;
     }
 
     .wave.one {
@@ -1487,14 +1488,14 @@
       gap: 6px;
       font-family: var(--mono);
       font-size: 7px;
-      color: rgba(28,63,110,0.72);
+      color: rgba(127,196,232,0.72);
     }
 
     .garrafon-mark::before {
       content: "";
       width: 12px;
       height: 1px;
-      background: rgba(28,63,110,0.32);
+      background: rgba(127,196,232,0.32);
     }
 
     .garrafon-info {
@@ -1593,7 +1594,7 @@
       width: 108px;
       height: 108px;
       border-radius: 50%;
-      background: conic-gradient(var(--cobalt) var(--gauge-angle), rgba(28,63,110,0.10) 0deg);
+      background: conic-gradient(var(--cobalt) var(--gauge-angle), rgba(127,196,232,0.10) 0deg);
       display: grid;
       place-items: center;
       margin: 0 auto;
@@ -1636,7 +1637,7 @@
       position: relative;
       height: 14px;
       border-radius: 999px;
-      background: rgba(28,63,110,0.10);
+      background: rgba(127,196,232,0.10);
       overflow: hidden;
       margin: 10px 0 12px;
     }
@@ -1648,7 +1649,7 @@
       bottom: 0;
       width: 0%;
       transition: width 0.7s ease;
-      background: linear-gradient(90deg, #96c6ff 0%, #1c3f6e 100%);
+      background: linear-gradient(90deg, #bfe3f5 0%, #7fc4e8 100%);
       border-radius: 999px;
     }
 
@@ -1731,7 +1732,7 @@
       position: relative;
       height: 10px;
       border-radius: 999px;
-      background: rgba(28,63,110,0.10);
+      background: rgba(127,196,232,0.10);
       overflow: hidden;
     }
 
@@ -2141,11 +2142,11 @@
     }
 
     .clickable-row:hover td {
-      background: rgba(28,63,110,0.075) !important;
+      background: rgba(127,196,232,0.075) !important;
     }
 
     .clickable-row.is-selected td {
-      background: rgba(28,63,110,0.115) !important;
+      background: rgba(127,196,232,0.115) !important;
       box-shadow: inset 3px 0 0 var(--cobalt);
     }
 
@@ -2208,8 +2209,8 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      border: 1px solid rgba(28,63,110,0.12);
-      background: rgba(28,63,110,0.035);
+      border: 1px solid rgba(127,196,232,0.12);
+      background: rgba(127,196,232,0.035);
       overflow-x: auto;
     }
 
@@ -2676,7 +2677,7 @@
       border-radius: 50%;
       background: white;
       border: 2px solid var(--cobalt-mid);
-      box-shadow: 0 1px 6px rgba(28,63,110,0.30), 0 0 0 0 rgba(37,88,160,0);
+      box-shadow: 0 1px 6px rgba(127,196,232,0.30), 0 0 0 0 rgba(95,179,224,0);
       transition: box-shadow 0.18s, transform 0.18s;
       cursor: grab;
     }
@@ -2687,18 +2688,18 @@
       border-radius: 50%;
       background: white;
       border: 2px solid var(--cobalt-mid);
-      box-shadow: 0 1px 6px rgba(28,63,110,0.30);
+      box-shadow: 0 1px 6px rgba(127,196,232,0.30);
       cursor: grab;
     }
 
     input[type="range"]:active::-webkit-slider-thumb {
       cursor: grabbing;
-      box-shadow: 0 1px 6px rgba(28,63,110,0.30), 0 0 0 6px rgba(37,88,160,0.12);
+      box-shadow: 0 1px 6px rgba(127,196,232,0.30), 0 0 0 6px rgba(95,179,224,0.12);
       transform: scale(1.12);
     }
 
     input[type="range"]:hover::-webkit-slider-thumb {
-      box-shadow: 0 1px 6px rgba(28,63,110,0.30), 0 0 0 4px rgba(37,88,160,0.09);
+      box-shadow: 0 1px 6px rgba(127,196,232,0.30), 0 0 0 4px rgba(95,179,224,0.09);
     }
 
     /* ── Control value display ────────────────────────── */
@@ -2744,7 +2745,7 @@
       content: "";
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(28,63,110,0.10), rgba(37,88,160,0.06));
+      background: linear-gradient(135deg, rgba(127,196,232,0.10), rgba(95,179,224,0.06));
       opacity: 0;
       transition: opacity 0.2s;
     }
@@ -2755,14 +2756,14 @@
       border-color: var(--cobalt-rim);
       color: var(--cobalt);
       transform: translateY(-2px);
-      box-shadow: 0 4px 16px rgba(28,63,110,0.14);
+      box-shadow: 0 4px 16px rgba(127,196,232,0.14);
     }
 
     .scenario-btn.active {
       border-color: var(--cobalt);
       background: var(--cobalt);
       color: white;
-      box-shadow: 0 4px 20px rgba(28,63,110,0.32);
+      box-shadow: 0 4px 20px rgba(127,196,232,0.32);
       transform: translateY(-1px);
     }
 
@@ -2792,9 +2793,9 @@
       flex-shrink: 0;
     }
 
-    .sim-status-dot.warn { background: var(--amber); box-shadow: 0 0 8px rgba(176,92,0,0.4); }
-    .sim-status-dot.danger { background: var(--crimson); box-shadow: 0 0 8px rgba(149,31,31,0.4); }
-    .sim-status-dot.good { background: var(--forest); box-shadow: 0 0 8px rgba(26,92,56,0.4); }
+    .sim-status-dot.warn { background: var(--amber); box-shadow: 0 0 8px rgba(240,196,138,0.4); }
+    .sim-status-dot.danger { background: var(--crimson); box-shadow: 0 0 8px rgba(240,163,163,0.4); }
+    .sim-status-dot.good { background: var(--forest); box-shadow: 0 0 8px rgba(168,217,189,0.4); }
 
     .sim-status-text {
       font-family: var(--mono);
@@ -2841,7 +2842,7 @@
 
     .method-step:hover {
       border-color: var(--cobalt-rim) !important;
-      box-shadow: 0 4px 20px rgba(28,63,110,0.08);
+      box-shadow: 0 4px 20px rgba(127,196,232,0.08);
       transform: translateY(-2px);
     }
 
@@ -2898,13 +2899,13 @@
 
     .hero-action:not(.primary):hover {
       transform: translateY(-2px);
-      box-shadow: 0 4px 14px rgba(28,63,110,0.12);
+      box-shadow: 0 4px 14px rgba(127,196,232,0.12);
     }
 
     .hero-action.primary:hover {
       background: var(--cobalt-mid);
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(28,63,110,0.30);
+      box-shadow: 0 6px 20px rgba(127,196,232,0.30);
     }
 
     /* ── Garrafon panel enhanced ──────────────────────── */
@@ -3004,7 +3005,7 @@
 
     /* ── Sim panel card feel ──────────────────────────── */
     .sim-readout {
-      background: linear-gradient(135deg, rgba(28,63,110,0.055), rgba(255,255,255,0));
+      background: linear-gradient(135deg, rgba(127,196,232,0.055), rgba(255,255,255,0));
       border-bottom: 1px solid var(--rule);
       margin-bottom: 0;
     }
@@ -3041,7 +3042,7 @@
 
     /* ── Scrollbar style refinement ───────────────────── */
     ::-webkit-scrollbar-thumb:hover {
-      background: rgba(28,63,110,0.30);
+      background: rgba(127,196,232,0.30);
     }
 
   
@@ -3051,12 +3052,12 @@
       width: 160px;
       height: 310px;
       display: block;
-      filter: drop-shadow(0 8px 24px rgba(28,63,110,0.22));
+      filter: drop-shadow(0 8px 24px rgba(127,196,232,0.22));
       overflow: visible;
     }
 
     .garrafon-wave {
-      animation: garrafonWave 4s ease-in-out infinite alternate;
+      animation: none;
     }
 
     .garrafon-wave.wave-b {
@@ -3080,7 +3081,7 @@
       justify-content: space-between;
       font-family: var(--mono);
       font-size: 7px;
-      color: rgba(28,63,110,0.60);
+      color: rgba(127,196,232,0.60);
       pointer-events: none;
     }
 
@@ -3094,7 +3095,7 @@
     #awa-loader {
       position: fixed; inset: 0; z-index: 99999;
       display: flex; align-items: flex-end; justify-content: center;
-      background: linear-gradient(160deg, #0e274b 0%, #1c3f6e 45%, #087fa5 100%);
+      background: linear-gradient(160deg, #0e274b 0%, #7fc4e8 45%, #6fc4d9 100%);
       transition: opacity 0.7s ease, transform 0.7s ease;
       overflow: hidden;
     }
@@ -3102,21 +3103,21 @@
     #awa-loader.gone { display: none; }
     .loader-inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
     .loader-waves { position: absolute; bottom: 0; left: 0; right: 0; width: 100%; height: 280px; pointer-events: none; }
-    .lwave1 { animation: waveRise1 5s cubic-bezier(.4,0,.2,1) forwards, waveSway 3s ease-in-out infinite alternate; }
-    .lwave2 { animation: waveRise2 5s cubic-bezier(.4,0,.2,1) forwards, waveSway2 4s ease-in-out infinite alternate; }
+    .lwave1 { animation: none; }
+    .lwave2 { animation: none; }
     @keyframes waveRise1 { from { transform: translateY(280px); } to { transform: translateY(0); } }
     @keyframes waveRise2 { 0%,15% { transform: translateY(280px); } to { transform: translateY(0); } }
     @keyframes waveSway  { from { transform: translateX(-5%) scaleX(1.04); } to { transform: translateX(5%) scaleX(0.97); } }
     @keyframes waveSway2 { from { transform: translateX(4%) scaleX(0.96); } to { transform: translateX(-4%) scaleX(1.03); } }
     .loader-logo { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 10px; animation: logoFadeIn 0.8s 0.5s both; }
     @keyframes logoFadeIn { from { opacity: 0; transform: translateY(24px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-    .loader-drop { width: 64px; height: 88px; filter: drop-shadow(0 12px 32px rgba(16,168,208,0.5)); animation: dropBob 2.2s ease-in-out infinite; }
+    .loader-drop { width: 64px; height: 88px; filter: drop-shadow(0 12px 32px rgba(16,168,208,0.5)); animation: none; }
     @keyframes dropBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-    .loader-wordmark { color: #fff; font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 900; letter-spacing: -0.03em; line-height: 1; }
-    .loader-wordmark span { color: #7ee8f4; }
-    .loader-sub { color: rgba(255,255,255,0.5); font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; }
+    .loader-wordmark { color: #fff; font-family: Arial, Helvetica, sans-serif; font-size: 48px; font-weight: 900; letter-spacing: -0.03em; line-height: 1; }
+    .loader-wordmark span { color: #a8e0ee; }
+    .loader-sub { color: rgba(255,255,255,0.5); font-family: 'Arial', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; }
     .loader-bar-wrap { position: relative; z-index: 2; width: 220px; height: 2px; background: rgba(255,255,255,0.12); border-radius: 999px; margin-top: 28px; overflow: hidden; }
-    .loader-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #10a8d0, #fff, #18a978); border-radius: 999px; animation: barFill 5.2s cubic-bezier(.4,0,.2,1) 0.2s forwards; }
+    .loader-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #a8e0ee, #fff, #a8d9bd); border-radius: 999px; animation: barFill 5.2s cubic-bezier(.4,0,.2,1) 0.2s forwards; }
     @keyframes barFill { from { width: 0%; } to { width: 100%; } }
 
   
@@ -3128,7 +3129,7 @@
       padding: 18px 20px;
       border: 1px solid var(--cobalt-rim);
       border-radius: 6px;
-      background: linear-gradient(135deg, rgba(28,63,110,0.055), rgba(255,255,255,0));
+      background: linear-gradient(135deg, rgba(127,196,232,0.055), rgba(255,255,255,0));
       border-left: 3px solid var(--cobalt-mid);
     }
 
@@ -3173,7 +3174,7 @@
 
     .card:hover {
       transform: translateY(-3px) scale(1.004) !important;
-      box-shadow: 0 8px 32px rgba(28,63,110,0.10), 0 2px 8px rgba(0,0,0,0.04) !important;
+      box-shadow: 0 8px 32px rgba(127,196,232,0.10), 0 2px 8px rgba(0,0,0,0.04) !important;
     }
 
     /* Method steps — bouncier */
@@ -3227,7 +3228,7 @@
 
     .kpi-card:hover {
       transform: translateY(-3px) scale(1.005);
-      box-shadow: 0 8px 28px rgba(28,63,110,0.10);
+      box-shadow: 0 8px 28px rgba(127,196,232,0.10);
     }
 
     /* Range thumb spring */
@@ -3277,7 +3278,7 @@
        HEADER Y FOOTER SINCRONIZADOS CON DASHBOARD
        Mantiene el mismo diseño, navegación móvil y footer del tablero.
     ───────────────────────────────────────────────────────────── */
-    header{position:sticky;top:0;z-index:300;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:linear-gradient(135deg,var(--cobalt) 0%,#0f2a50 100%);overflow:hidden;gap:16px;animation:none!important}
+    header{position:sticky;top:0;z-index:300;height:56px;display:flex;align-items:center;justify-content:space-between;padding:0 32px;background:linear-gradient(135deg,var(--cobalt) 0%,#5fb3e0 100%);overflow:hidden;gap:16px;animation:none!important}
     header::before{content:"AWA05";position:absolute;right:-10px;top:-18px;font-family:var(--display);font-size:96px;font-weight:900;color:rgba(255,255,255,0.04);letter-spacing:-4px;pointer-events:none;user-select:none}
     header::after{content:"";position:absolute;bottom:0;left:0;right:0;height:1px;background:rgba(255,255,255,0.10)}
     .hd-brand{display:flex;align-items:center;gap:12px;flex-shrink:0;position:relative;z-index:1}
@@ -3299,9 +3300,9 @@
     .btn{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:var(--radius);border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);font-family:var(--mono);font-size:8.5px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;cursor:pointer;transition:all 0.13s;backdrop-filter:blur(4px)}
     .btn:hover{background:rgba(255,255,255,0.16);border-color:rgba(255,255,255,0.40);color:#fff}
     .btn-solid{background:rgba(255,255,255,0.92);color:var(--cobalt);border-color:transparent;font-weight:600}
-    .btn-solid:hover{background:#fff;color:#0f2a50}
+    .btn-solid:hover{background:#fff;color:#5fb3e0}
 
-    .dash-footer{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--cobalt) 0%,#0f2a50 100%);padding:0 36px;height:52px;display:flex;align-items:center;justify-content:space-between;border-top:none}
+    .dash-footer{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--cobalt) 0%,#5fb3e0 100%);padding:0 36px;height:52px;display:flex;align-items:center;justify-content:space-between;border-top:none}
     .dash-footer::before{content:"AWA05";position:absolute;right:-10px;top:-18px;font-family:var(--display);font-size:96px;font-weight:900;color:rgba(255,255,255,0.04);letter-spacing:-4px;pointer-events:none;user-select:none}
     .dash-footer::after{content:"";position:absolute;top:0;left:0;right:0;height:1px;background:rgba(255,255,255,0.10)}
     .footer-left{font-family:var(--mono);font-size:7.5px;color:rgba(255,255,255,0.30);letter-spacing:.08em;position:relative;z-index:1;text-transform:none}
@@ -3327,6 +3328,341 @@
       .footer-org{font-size:12px!important}
       .footer-left{width:100%;text-align:center;order:1}
       .footer-right{order:0}
+    }
+
+  
+
+    /* ═══════════════════════════════════════════════════════════════
+       AWA05 · UNIFICACIÓN VISUAL PASTEL 2026
+       Capa puramente visual: no altera cálculos, datos ni estructura.
+    ═══════════════════════════════════════════════════════════════ */
+    html, body, button, input, select, textarea {
+      font-family: Arial, Helvetica, sans-serif !important;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 10% 8%, rgba(127,196,232,.10), transparent 25%),
+        radial-gradient(circle at 88% 2%, rgba(168,224,238,.08), transparent 28%),
+        linear-gradient(180deg, var(--bg) 0%, #fbfdfe 48%, var(--bg-warm) 100%);
+    }
+
+    header,
+    .dash-footer {
+      background: linear-gradient(135deg, #bfe3f5 0%, #8fcbe8 100%) !important;
+      color: var(--ink) !important;
+    }
+    header::before,
+    .dash-footer::before {
+      color: rgba(31,43,51,.055) !important;
+    }
+    header::after,
+    .dash-footer::after {
+      background: rgba(31,43,51,.08) !important;
+    }
+
+    .hd-name,
+    .hd-stat-val,
+    .hd-sub,
+    .hd-stat-lbl,
+    .hd-ts,
+    .footer-left,
+    .footer-center,
+    .footer-org,
+    .footer-right,
+    .footer-powered-label {
+      color: var(--ink) !important;
+    }
+    .hd-sub,
+    .hd-stat-lbl,
+    .footer-left,
+    .footer-powered-label {
+      opacity: .66;
+    }
+    .hd-ts {
+      background: rgba(255,255,255,.38) !important;
+      border-color: rgba(31,43,51,.12) !important;
+    }
+    .hd-sep {
+      background: rgba(31,43,51,.15) !important;
+    }
+
+    .top-link,
+    header .btn {
+      color: var(--ink-mid) !important;
+      background: rgba(255,255,255,.38) !important;
+      border-color: rgba(31,43,51,.12) !important;
+      box-shadow: none !important;
+    }
+    .top-link:hover,
+    .top-link.active,
+    header .btn:hover {
+      color: var(--ink) !important;
+      background: rgba(255,255,255,.76) !important;
+      border-color: var(--cobalt-rim) !important;
+    }
+    .btn-solid {
+      background: rgba(255,255,255,.88) !important;
+      color: var(--ink) !important;
+    }
+
+    .sidebar {
+      background: rgba(255,255,255,.94);
+      border-right-color: var(--rule);
+    }
+    .sb-link {
+      border-radius: 0 6px 6px 0;
+      transition: background .18s ease, color .18s ease, border-color .18s ease, transform .18s ease;
+    }
+    .sb-link:hover,
+    .sb-link.active {
+      color: #3d84ab;
+      background: var(--cobalt-pale);
+      border-left-color: var(--cobalt-mid);
+    }
+
+    .insight-rail {
+      background: linear-gradient(180deg, rgba(255,255,255,.94), rgba(247,251,253,.96)) !important;
+      border-left: 1px solid var(--rule) !important;
+    }
+    .insight-card {
+      border: 1px solid var(--rule) !important;
+      background: linear-gradient(135deg, #ffffff, var(--surface2)) !important;
+      box-shadow: var(--shadow-sm) !important;
+      border-radius: var(--radius) !important;
+    }
+    .insight-card.awa-insight-pop {
+      animation: awaInsightIn .38s cubic-bezier(.22,.68,0,1) both;
+    }
+    @keyframes awaInsightIn {
+      from { opacity: .55; transform: translateX(7px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .card,
+    .kpi-card,
+    .method-step,
+    .equation-card,
+    .sim-panel,
+    .sim-result-card,
+    .garrafon-panel,
+    .gauge-card,
+    .compare-card,
+    .driver-board,
+    .impact-card,
+    .sim-explain {
+      border-color: var(--rule) !important;
+      box-shadow: var(--shadow-sm) !important;
+    }
+    .card:hover,
+    .kpi-card:hover,
+    .method-step:hover {
+      transform: translateY(-2px) !important;
+      box-shadow: var(--shadow-md) !important;
+    }
+
+    .equation-card {
+      background: linear-gradient(180deg, #ffffff, var(--surface2)) !important;
+      border-left-color: var(--cobalt-mid) !important;
+    }
+
+    .hero::before {
+      background:
+        radial-gradient(circle at 85% 20%, rgba(127,196,232,.14), transparent 36%),
+        linear-gradient(135deg, rgba(127,196,232,.08), transparent 34%) !important;
+    }
+
+    .hero-action.primary,
+    .scenario-btn.active {
+      background: linear-gradient(135deg, var(--cobalt), var(--cobalt-deep)) !important;
+      border-color: var(--cobalt-rim) !important;
+      color: var(--ink) !important;
+      box-shadow: 0 6px 18px rgba(90,150,180,.13) !important;
+    }
+
+    .sim-readout {
+      background: linear-gradient(135deg, rgba(191,227,245,.76), rgba(247,251,253,.98)) !important;
+      color: var(--ink) !important;
+      border: 1px solid var(--rule) !important;
+    }
+    .sim-label,
+    .sim-main span,
+    .sim-sub {
+      color: var(--ink-soft) !important;
+    }
+    .sim-main {
+      color: var(--ink) !important;
+    }
+    .sim-readout::before {
+      color: rgba(31,43,51,.05) !important;
+    }
+
+    .sim-status-dot.warn { box-shadow: 0 0 0 4px var(--amber-pale) !important; }
+    .sim-status-dot.danger { box-shadow: 0 0 0 4px var(--crimson-pale) !important; }
+    .sim-status-dot.good { box-shadow: 0 0 0 4px var(--forest-pale) !important; }
+
+    .compare-track,
+    .driver-track {
+      background: var(--surface3) !important;
+      border: 1px solid var(--rule);
+    }
+    .compare-fill,
+    .driver-fill {
+      background: linear-gradient(90deg, #bfe3f5 0%, #7fc4e8 58%, #5fb3e0 100%) !important;
+      transition: width .8s cubic-bezier(.165,.84,.44,1) !important;
+    }
+
+    @property --gauge-angle {
+      syntax: '<angle>';
+      inherits: false;
+      initial-value: 0deg;
+    }
+    .gauge-ring {
+      background: conic-gradient(var(--cobalt-mid) var(--gauge-angle), var(--surface3) 0deg) !important;
+      transition: --gauge-angle .8s cubic-bezier(.165,.84,.44,1) !important;
+    }
+
+    input[type="range"] {
+      background: linear-gradient(
+        to right,
+        var(--cobalt) 0%,
+        var(--cobalt-mid) var(--pct, 50%),
+        var(--rule-strong) var(--pct, 50%)
+      ) !important;
+    }
+    input[type="range"]::-webkit-slider-thumb {
+      border-color: var(--cobalt-mid) !important;
+      box-shadow: 0 1px 6px rgba(90,150,180,.18) !important;
+    }
+    input[type="range"]::-moz-range-thumb {
+      border-color: var(--cobalt-mid) !important;
+      box-shadow: 0 1px 6px rgba(90,150,180,.18) !important;
+    }
+
+    #reading-progress {
+      background: linear-gradient(90deg, #a8e0ee, #5fb3e0) !important;
+      height: 2px;
+    }
+
+    #awa-loader {
+      align-items: center !important;
+      justify-content: center !important;
+      background: linear-gradient(160deg, #f4f9fc 0%, #d9eef8 52%, #bfe3f5 100%) !important;
+      transition: opacity .5s ease !important;
+    }
+    #awa-loader.fade-out {
+      opacity: 0 !important;
+      transform: none !important;
+      pointer-events: none !important;
+    }
+    .loader-waves {
+      display: none !important;
+    }
+    .loader-logo {
+      animation: logoFadeIn .55s ease both !important;
+    }
+    .loader-drop {
+      width: 54px !important;
+      height: 72px !important;
+      animation: none !important;
+      filter: drop-shadow(0 10px 24px rgba(95,179,224,.18)) !important;
+    }
+    .loader-wordmark {
+      color: var(--ink) !important;
+      font-family: Arial, Helvetica, sans-serif !important;
+      font-size: 44px !important;
+      font-weight: 800 !important;
+      letter-spacing: -.02em !important;
+    }
+    .loader-wordmark span {
+      color: var(--cobalt-mid) !important;
+    }
+    .loader-sub {
+      color: var(--ink-soft) !important;
+      font-family: Arial, Helvetica, sans-serif !important;
+      font-size: 9px !important;
+    }
+    .loader-bar-wrap {
+      height: 3px !important;
+      background: rgba(31,43,51,.08) !important;
+    }
+    .loader-bar {
+      width: 12% !important;
+      animation: none !important;
+      background: linear-gradient(90deg, #a8e0ee, #5fb3e0) !important;
+      transition: width .42s cubic-bezier(.4,0,.2,1) !important;
+    }
+    #awa-loader.rendered .loader-bar {
+      width: 100% !important;
+    }
+
+    .wave,
+    .lwave1,
+    .lwave2 {
+      animation: none !important;
+    }
+    .garrafon-wave {
+      animation: none !important;
+    }
+    .garrafon-wave.awa-wave-pulse {
+      animation: awaGarrafonPulse .55s ease-in-out 2 !important;
+      transform-origin: center;
+    }
+    @keyframes awaGarrafonPulse {
+      0%, 100% { transform: translateX(0) translateY(0) scaleX(1); }
+      50% { transform: translateX(1.5px) translateY(-1px) scaleX(1.006); }
+    }
+
+    .btn,
+    .hero-action,
+    .scenario-btn,
+    .top-link,
+    .sb-link,
+    .mobile-nav-link {
+      position: relative;
+      overflow: hidden;
+    }
+    .btn:active,
+    .hero-action:active,
+    .scenario-btn:active,
+    .top-link:active,
+    .sb-link:active,
+    .mobile-nav-link:active {
+      transform: scale(.97) !important;
+    }
+    .awa-ripple {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      background: rgba(95,179,224,.22);
+      transform: scale(0);
+      animation: awaRipple .42s ease-out forwards;
+    }
+    @keyframes awaRipple {
+      to { transform: scale(1); opacity: 0; }
+    }
+
+    .driver-fill {
+      will-change: width;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto !important; }
+      *,
+      *::before,
+      *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+      }
+      .reveal,
+      .reveal-stagger > * {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+      .awa-ripple {
+        display: none !important;
+      }
     }
 
   </style>
@@ -3383,12 +3719,12 @@
       <svg class="loader-waves" viewBox="0 0 1200 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
         <defs>
           <linearGradient id="wg1" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#10a8d0" stop-opacity="0.6"/>
+            <stop offset="0%" stop-color="#a8e0ee" stop-opacity="0.6"/>
             <stop offset="100%" stop-color="#0e274b" stop-opacity="1"/>
           </linearGradient>
           <linearGradient id="wg2" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#18a978" stop-opacity="0.45"/>
-            <stop offset="100%" stop-color="#1c3f6e" stop-opacity="0.9"/>
+            <stop offset="0%" stop-color="#a8d9bd" stop-opacity="0.45"/>
+            <stop offset="100%" stop-color="#7fc4e8" stop-opacity="0.9"/>
           </linearGradient>
         </defs>
         <path class="lwave lwave1" fill="url(#wg1)"
@@ -3401,8 +3737,8 @@
           <svg viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg">
             <defs>
               <radialGradient id="dg" cx="40%" cy="30%">
-                <stop offset="0%" stop-color="#7ee8f4"/>
-                <stop offset="100%" stop-color="#1c3f6e"/>
+                <stop offset="0%" stop-color="#a8e0ee"/>
+                <stop offset="100%" stop-color="#7fc4e8"/>
               </radialGradient>
             </defs>
             <path d="M30 4 C30 4 6 44 6 56 C6 69 17 76 30 76 C43 76 54 69 54 56 C54 44 30 4 30 4Z" fill="url(#dg)"/>
@@ -3657,7 +3993,7 @@
                           <stop offset="18%"  stop-color="#8abce0"/>
                           <stop offset="50%"  stop-color="#5298d0"/>
                           <stop offset="80%"  stop-color="#3870a8"/>
-                          <stop offset="100%" stop-color="#2558a0"/>
+                          <stop offset="100%" stop-color="#5fb3e0"/>
                         </linearGradient>
                         <!-- Cap gradient -->
                         <linearGradient id="capGrad" x1="0" y1="0" x2="0" y2="1">
@@ -3676,7 +4012,7 @@
                         <!-- Base gradient -->
                         <linearGradient id="baseGrad" x1="0" y1="0" x2="0" y2="1">
                           <stop offset="0%"   stop-color="#4a88c8"/>
-                          <stop offset="100%" stop-color="#1c3f6e"/>
+                          <stop offset="100%" stop-color="#7fc4e8"/>
                         </linearGradient>
                       </defs>
 
@@ -3752,18 +4088,18 @@
                       <rect x="32" y="192" width="96" height="38" rx="5"
                             fill="rgba(255,255,255,0.14)" stroke="rgba(255,255,255,0.22)" stroke-width="0.8"/>
                       <text x="80" y="208" text-anchor="middle"
-                            font-family="Playfair Display, serif" font-size="11" font-weight="700"
+                            font-family="Arial, Helvetica, sans-serif" font-size="11" font-weight="700"
                             fill="rgba(255,255,255,0.55)" letter-spacing="1">AGUA ATMOSFÉRICA</text>
                       <text x="80" y="225" text-anchor="middle"
-                            font-family="Playfair Display, serif" font-size="16" font-weight="900" font-style="italic"
+                            font-family="Arial, Helvetica, sans-serif" font-size="16" font-weight="900" font-style="italic"
                             fill="rgba(255,255,255,0.90)" letter-spacing="0.5">AWA05</text>
 
                       <!-- Scale marks -->
-                      <line x1="10" y1="108" x2="6" y2="108" stroke="rgba(28,63,110,0.45)" stroke-width="1"/>
-                      <line x1="10" y1="148" x2="6" y2="148" stroke="rgba(28,63,110,0.45)" stroke-width="1"/>
-                      <line x1="9"  y1="188" x2="5" y2="188" stroke="rgba(28,63,110,0.45)" stroke-width="1"/>
-                      <line x1="9"  y1="228" x2="5" y2="228" stroke="rgba(28,63,110,0.45)" stroke-width="1"/>
-                      <line x1="9"  y1="248" x2="5" y2="248" stroke="rgba(28,63,110,0.45)" stroke-width="1"/>
+                      <line x1="10" y1="108" x2="6" y2="108" stroke="rgba(127,196,232,0.45)" stroke-width="1"/>
+                      <line x1="10" y1="148" x2="6" y2="148" stroke="rgba(127,196,232,0.45)" stroke-width="1"/>
+                      <line x1="9"  y1="188" x2="5" y2="188" stroke="rgba(127,196,232,0.45)" stroke-width="1"/>
+                      <line x1="9"  y1="228" x2="5" y2="228" stroke="rgba(127,196,232,0.45)" stroke-width="1"/>
+                      <line x1="9"  y1="248" x2="5" y2="248" stroke="rgba(127,196,232,0.45)" stroke-width="1"/>
                     </svg>
                     <!-- Scale labels -->
                     <div class="garrafon-scale-labels">
@@ -4561,8 +4897,8 @@
 
     // AWA05 multi-blue palette
     const AWA_COLORS = [
-      '#2558a0','#5ba3e0','#0f6b60','#3b82c4','#7ec8f4',
-      '#1c3f6e','#4d3d8f','#0e8a7a','#8ab4d8','#1a5c38'
+      '#5fb3e0','#7fc4e8','#8fd6cc','#8fd0e6','#bfe3f5',
+      '#a8d9ec','#c3b8e8','#a8e0ee','#a8d9bd','#f3d98a'
     ];
 
         function plotLayout(title, options = {}) {
@@ -4571,28 +4907,28 @@
         paper_bgcolor: 'rgba(0,0,0,0)',
         plot_bgcolor: 'rgba(0,0,0,0)',
         font: {
-          family: 'DM Sans',
+          family: 'Arial',
           size: 11,
-          color: '#3a3830'
+          color: '#3d4d57'
         },
         title: {
           text: title,
           x: 0,
           font: {
-            family: 'JetBrains Mono',
+            family: 'Arial',
             size: 11,
-            color: '#6b6860'
+            color: '#6f8089'
           }
         },
         xaxis: {
-          gridcolor: 'rgba(40,38,30,.08)',
-          zerolinecolor: 'rgba(40,38,30,.10)',
+          gridcolor: 'rgba(30,60,80,.08)',
+          zerolinecolor: 'rgba(30,60,80,.12)',
           title: options.xTitle || '',
           showline: false
         },
         yaxis: {
-          gridcolor: 'rgba(40,38,30,.06)',
-          zerolinecolor: 'rgba(40,38,30,.10)',
+          gridcolor: 'rgba(30,60,80,.08)',
+          zerolinecolor: 'rgba(30,60,80,.12)',
           title: options.yTitle || '',
           showline: false
         },
@@ -4601,6 +4937,12 @@
           y: -0.23
         },
         hovermode: options.hovermode || 'closest',
+        hoverlabel: {
+          bgcolor: '#ffffff',
+          bordercolor: 'rgba(30,60,80,0.14)',
+          font: { color: '#3d4d57', family: 'Arial', size: 11 }
+        },
+        transition: { duration: 600, easing: 'cubic-in-out' },
         colorway: AWA_COLORS
       };
     }
@@ -5078,7 +5420,7 @@
           y: variables,
           z,
           type: 'heatmap',
-          colorscale: 'RdBu',
+          colorscale: [[0,'#f0a3a3'],[0.5,'#ffffff'],[1,'#7fc4e8']],
           zmid: 0,
           hovertemplate: '<b>%{y}</b><br>Rezago: %{x}<br>ρ=%{z:.3f}<br><i>Mayor magnitud sugiere posible respuesta retardada.</i><extra></extra>'
         }
@@ -5100,7 +5442,7 @@
           type: 'bar',
           name: 'Producción L',
           yaxis: 'y',
-          marker: { color: '#2558a0', line: { width: 0 } },
+          marker: { color: '#5fb3e0', line: { width: 0 } },
           hovertemplate: '<b>%{x}</b><br>Producción: %{y:.2f} L<br><i>Si falta clima ese día no entra al modelo climático.</i><extra></extra>'
         },
         {
@@ -5123,7 +5465,7 @@
         }
       ], {
         ...plotLayout('Producción diaria y clima medio', { hovermode: 'x unified' }),
-        yaxis: { title: 'Producción (L)', gridcolor: 'rgba(40,38,30,.08)' },
+        yaxis: { title: 'Producción (L)', gridcolor: 'rgba(30,60,80,.08)' },
         yaxis2: { title: 'Clima', overlaying: 'y', side: 'right', gridcolor: 'rgba(0,0,0,0)' }
       }, plotConfig());
 
@@ -5140,7 +5482,7 @@
           y: daypart.map(d => d.production_mean),
           type: 'bar',
           name: 'Producción media L/h',
-          marker: { color: ['#1c3f6e','#2558a0','#3b82c4','#5ba3e0','#7ec8f4'], line: { width: 0 } },
+          marker: { color: ['#7fc4e8','#5fb3e0','#8fd0e6','#a8d9ec','#bfe3f5'], line: { width: 0 } },
           customdata: daypart.map(d => [fmt.num(d.humidity_mean, 1), fmt.num(d.vpd_mean, 3), fmt.num(d.solar_mean, 1), fmt.int(d.n)]),
           hovertemplate: '<b>%{x}</b><br>Producción media: %{y:.2f} L/h<br>Humedad: %{customdata[0]}%<br>VPD: %{customdata[1]} kPa<br>Solar: %{customdata[2]} W/m²<br>n=%{customdata[3]}<extra></extra>'
         }
@@ -5160,8 +5502,8 @@
           mode: 'lines+markers',
           name: 'Producción L/h',
           yaxis: 'y',
-          line: { color: '#2558a0', width: 2 },
-          marker: { size: 4, color: '#2558a0', line: { width: 0 } },
+          line: { color: '#5fb3e0', width: 2, shape: 'spline', smoothing: 0.4 },
+          marker: { size: 4, color: '#5fb3e0', line: { width: 0 } },
           customdata: hourly.map(d => [fmt.num(d.humidity_pct, 1), fmt.num(d.temp_c, 1), fmt.num(d.vpd_kpa, 3), fmt.num(d.solar_wm2, 1), d.daypart]),
           hovertemplate: '<b>%{x}</b><br>Producción: %{y:.2f} L/h<br>Humedad: %{customdata[0]}%<br>Temp: %{customdata[1]}°C<br>VPD: %{customdata[2]} kPa<br>Solar: %{customdata[3]} W/m²<br>Franja: %{customdata[4]}<br><i>Lee producción junto con VPD y radiación.</i><extra></extra>'
         },
@@ -5187,7 +5529,7 @@
         }
       ], {
         ...plotLayout('Serie horaria con clima', { hovermode: 'x unified' }),
-        yaxis: { title: 'Producción L/h', gridcolor: 'rgba(40,38,30,.08)' },
+        yaxis: { title: 'Producción L/h', gridcolor: 'rgba(30,60,80,.08)' },
         yaxis2: { title: 'Humedad %', overlaying: 'y', side: 'right', gridcolor: 'rgba(0,0,0,0)' },
         yaxis3: { title: 'VPD', overlaying: 'y', side: 'right', anchor: 'free', position: 0.94, showgrid: false }
       }, plotConfig());
@@ -5259,7 +5601,7 @@
           y: chart.map(d => d.observed),
           type: 'scatter',
           mode: 'markers',
-          marker: { color: '#2558a0', size: 6, opacity: 0.72, line: { width: 0 } },
+          marker: { color: '#5fb3e0', size: 6, opacity: 0.72, line: { width: 0 } },
           text: chart.map(d => d.timestamp),
           hovertemplate: '<b>%{text}</b><br>Predicho: %{x:.2f} L/h<br>Observado: %{y:.2f} L/h<br>Error vertical = residuo<extra></extra>'
         },
@@ -5269,7 +5611,7 @@
           type: 'scatter',
           mode: 'lines',
           name: 'Línea ideal',
-          line: { color: '#5ba3e0', width: 1.5, dash: 'dot' },
+          line: { color: '#a8d9ec', width: 1.5, dash: 'dot' },
           hoverinfo: 'skip'
         }
       ], plotLayout('Observado vs predicho', { xTitle: 'Predicho L/h', yTitle: 'Observado L/h' }), plotConfig());
@@ -5281,8 +5623,8 @@
           type: 'scatter',
           mode: 'lines+markers',
           name: 'Residuo',
-          line: { color: '#3b82c4', width: 1.8 },
-          marker: { size: 3, color: '#3b82c4', line: { width: 0 } },
+          line: { color: '#8fd0e6', width: 1.8 },
+          marker: { size: 3, color: '#8fd0e6', line: { width: 0 } },
           hovertemplate: '<b>%{x}</b><br>Residuo: %{y:.2f} L/h<br><i>Positivo = produjo más de lo predicho.</i><extra></extra>'
         },
         {
@@ -5291,7 +5633,7 @@
           type: 'scatter',
           mode: 'lines',
           name: '0',
-          line: { color: 'rgba(40,38,30,0.20)', width: 1, dash: 'dot' },
+          line: { color: 'rgba(30,60,80,0.20)', width: 1, dash: 'dot' },
           hoverinfo: 'skip'
         }
       ], plotLayout('Residuos del modelo', { hovermode: 'x unified', yTitle: 'Residuo L/h' }), plotConfig());
@@ -5918,25 +6260,53 @@
   </script>
 
   <script>
-    /* ── AWA05 Loader dismiss — runs immediately, no dependencies ── */
+    /* AWA05 Loader: se cierra cuando las gráficas iniciales ya fueron montadas.
+       No modifica init() ni el pipeline estadístico. */
     (function () {
-      var DISMISS_MS = 5500;
-      function dismiss() {
+      var EXPECTED_PLOTS = 9;
+      var started = Date.now();
+      var maxWaitMs = 12000;
+
+      function isRendered() {
+        return document.querySelectorAll('.js-plotly-plot').length >= EXPECTED_PLOTS;
+      }
+
+      function dismissLoader() {
         var el = document.getElementById('awa-loader');
         if (!el || el.classList.contains('fade-out')) return;
-        el.classList.add('fade-out');
-        setTimeout(function () { if (el) el.style.display = 'none'; }, 800);
+        el.classList.add('rendered');
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            setTimeout(function () {
+              el.classList.add('fade-out');
+              setTimeout(function () {
+                if (el) {
+                  el.classList.add('gone');
+                  el.style.display = 'none';
+                }
+              }, 520);
+            }, 160);
+          });
+        });
       }
-      // Auto-dismiss
-      setTimeout(dismiss, DISMISS_MS);
-      // Allow dismiss after 3s via interaction
-      setTimeout(function() {
-        document.addEventListener('click', dismiss, { once: true, capture: true });
-        document.addEventListener('keydown', dismiss, { once: true, capture: true });
-        document.addEventListener('scroll', dismiss, { once: true, passive: true, capture: true });
-      }, 3000);
-      // Failsafe: if page loads, dismiss after 1s
-      window.addEventListener('load', function() { setTimeout(dismiss, 800); });
+
+      function waitForRender() {
+        if (isRendered() || Date.now() - started > maxWaitMs) {
+          dismissLoader();
+          return;
+        }
+        setTimeout(waitForRender, 90);
+      }
+
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', waitForRender, { once: true });
+      } else {
+        waitForRender();
+      }
+
+      window.addEventListener('load', function () {
+        if (isRendered()) dismissLoader();
+      }, { once: true });
     })();
   </script>
 
@@ -5990,6 +6360,205 @@
     }
     updateSharedHeader();
     setInterval(updateSharedHeader, 60000);
+  })();
+</script>
+
+
+
+<script>
+  /* AWA05 · Microinteracciones visuales aditivas. No modifica el motor estadístico. */
+  (function () {
+    var reducedMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    function installRipple() {
+      if (reducedMotion) return;
+      document.addEventListener('pointerdown', function (event) {
+        var target = event.target.closest('.btn,.hero-action,.scenario-btn,.top-link,.sb-link,.mobile-nav-link');
+        if (!target) return;
+        var rect = target.getBoundingClientRect();
+        var size = Math.max(rect.width, rect.height) * 1.8;
+        var ripple = document.createElement('span');
+        ripple.className = 'awa-ripple';
+        ripple.style.width = size + 'px';
+        ripple.style.height = size + 'px';
+        ripple.style.left = (event.clientX - rect.left - size / 2) + 'px';
+        ripple.style.top = (event.clientY - rect.top - size / 2) + 'px';
+        target.appendChild(ripple);
+        ripple.addEventListener('animationend', function () { ripple.remove(); }, { once: true });
+      }, { passive: true });
+    }
+
+    function installInsightAnimation() {
+      if (reducedMotion || !window.MutationObserver) return;
+      var card = document.querySelector('.insight-card');
+      if (!card) return;
+      var nodes = ['insight-title','insight-text','insight-meta']
+        .map(function (id) { return document.getElementById(id); })
+        .filter(Boolean);
+      if (!nodes.length) return;
+      var timer = 0;
+      var obs = new MutationObserver(function () {
+        clearTimeout(timer);
+        card.classList.remove('awa-insight-pop');
+        void card.offsetWidth;
+        card.classList.add('awa-insight-pop');
+        timer = setTimeout(function () { card.classList.remove('awa-insight-pop'); }, 430);
+      });
+      nodes.forEach(function (node) {
+        obs.observe(node, { childList: true, characterData: true, subtree: true });
+      });
+    }
+
+    function installGarrafonPulse() {
+      if (reducedMotion || !window.MutationObserver) return;
+      var lph = document.getElementById('sim-lph');
+      if (!lph) return;
+      var obs = new MutationObserver(function () {
+        document.querySelectorAll('.garrafon-wave').forEach(function (wave) {
+          wave.classList.remove('awa-wave-pulse');
+          void wave.getBoundingClientRect();
+          wave.classList.add('awa-wave-pulse');
+          setTimeout(function () { wave.classList.remove('awa-wave-pulse'); }, 1250);
+        });
+      });
+      obs.observe(lph, { childList: true, characterData: true, subtree: true });
+    }
+
+    function installDriverEntrance() {
+      if (reducedMotion || !('IntersectionObserver' in window)) return;
+      var board = document.querySelector('.driver-board');
+      if (!board) return;
+      var bars = Array.prototype.slice.call(board.querySelectorAll('.driver-fill'));
+      if (!bars.length) return;
+
+      var obs = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting || board.dataset.awaDriverAnimated) return;
+          board.dataset.awaDriverAnimated = '1';
+          var widths = bars.map(function (bar) { return bar.style.width || '0%'; });
+          bars.forEach(function (bar) {
+            bar.style.transition = 'none';
+            bar.style.width = '0%';
+          });
+          requestAnimationFrame(function () {
+            requestAnimationFrame(function () {
+              bars.forEach(function (bar, i) {
+                bar.style.transition = '';
+                bar.style.width = widths[i];
+              });
+            });
+          });
+          obs.disconnect();
+        });
+      }, { threshold: .28 });
+      obs.observe(board);
+    }
+
+    function installPlotEntrance() {
+      if (reducedMotion || typeof Plotly === 'undefined' || !('IntersectionObserver' in window)) return;
+
+      var plotObserver = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (!entry.isIntersecting) return;
+          var gd = entry.target;
+          if (gd.dataset.awaPlotAnimated === '1' || !gd.__awaFinalTraces) return;
+          gd.dataset.awaPlotAnimated = '1';
+
+          var frameData = [];
+          var traces = [];
+          gd.__awaFinalTraces.forEach(function (finalTrace, i) {
+            traces.push(i);
+            if (finalTrace.type === 'bar') {
+              frameData.push(finalTrace.orientation === 'h'
+                ? { x: finalTrace.x }
+                : { y: finalTrace.y });
+            } else {
+              frameData.push({ opacity: finalTrace.opacity });
+            }
+          });
+
+          try {
+            Plotly.animate(
+              gd,
+              { data: frameData, traces: traces },
+              {
+                transition: { duration: 800, easing: 'cubic-in-out' },
+                frame: { duration: 800, redraw: false },
+                mode: 'immediate'
+              }
+            );
+          } catch (err) {
+            gd.__awaFinalTraces.forEach(function (finalTrace, i) {
+              if (finalTrace.type === 'bar') {
+                Plotly.restyle(
+                  gd,
+                  finalTrace.orientation === 'h' ? { x: [finalTrace.x] } : { y: [finalTrace.y] },
+                  [i]
+                );
+              } else {
+                Plotly.restyle(gd, { opacity: finalTrace.opacity }, [i]);
+              }
+            });
+          }
+          plotObserver.unobserve(gd);
+        });
+      }, { threshold: .18, rootMargin: '0px 0px -8% 0px' });
+
+      function preparePlot(gd) {
+        if (!gd || gd.dataset.awaPlotPrepared === '1' || !Array.isArray(gd.data)) return;
+        gd.dataset.awaPlotPrepared = '1';
+        gd.__awaFinalTraces = gd.data.map(function (trace) {
+          return {
+            type: trace.type || 'scatter',
+            orientation: trace.orientation || 'v',
+            x: Array.isArray(trace.x) ? trace.x.slice() : trace.x,
+            y: Array.isArray(trace.y) ? trace.y.slice() : trace.y,
+            opacity: typeof trace.opacity === 'number' ? trace.opacity : 1
+          };
+        });
+
+        gd.__awaFinalTraces.forEach(function (finalTrace, i) {
+          try {
+            if (finalTrace.type === 'bar') {
+              var values = finalTrace.orientation === 'h' ? finalTrace.x : finalTrace.y;
+              if (Array.isArray(values)) {
+                var zeros = values.map(function () { return 0; });
+                Plotly.restyle(gd, finalTrace.orientation === 'h' ? { x: [zeros] } : { y: [zeros] }, [i]);
+              }
+            } else {
+              Plotly.restyle(gd, { opacity: 0.10 }, [i]);
+            }
+          } catch (err) {}
+        });
+
+        plotObserver.observe(gd);
+      }
+
+      function scanPlots() {
+        document.querySelectorAll('.js-plotly-plot').forEach(preparePlot);
+      }
+
+      scanPlots();
+      if (window.MutationObserver) {
+        new MutationObserver(scanPlots).observe(document.body, { childList: true, subtree: true });
+      }
+      setTimeout(scanPlots, 250);
+      setTimeout(scanPlots, 900);
+    }
+
+    function bootAWAVisualUX() {
+      installRipple();
+      installInsightAnimation();
+      installGarrafonPulse();
+      installDriverEntrance();
+      installPlotEntrance();
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', bootAWAVisualUX, { once: true });
+    } else {
+      bootAWAVisualUX();
+    }
   })();
 </script>
 
