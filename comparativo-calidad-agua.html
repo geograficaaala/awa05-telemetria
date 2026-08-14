@@ -4,50 +4,52 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
   <title>AWA05 · Benchmark de Calidad de Agua</title>
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,900;1,700;1,900&family=JetBrains+Mono:wght@300;400;500;600;700&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600;9..40,700&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 
   <style>
     :root {
-      --bg: #f5f8f8;
-      --bg2: #eef6f7;
-      --paper: #fffefa;
-      --surface: #ffffff;
-      --surface2: #f8fbfb;
-      --surface3: #eef6f7;
-      --ink: #111917;
-      --ink2: #283a36;
-      --ink3: #61706d;
-      --ink4: #99a7a4;
-      --rule: rgba(14, 35, 34, .105);
-      --rule2: rgba(14, 35, 34, .18);
-      --cobalt: #1c3f6e;
-      --cobalt-deep: #0e274b;
-      --cobalt-soft: rgba(28, 63, 110, .08);
-      --water: #10a8d0;
-      --water2: #087fa5;
-      --water3: #0b5d7d;
-      --water-soft: rgba(16, 168, 208, .12);
-      --water-rim: rgba(16, 168, 208, .28);
-      --mint: #18a978;
-      --mint2: #0d7451;
-      --mint-soft: rgba(24, 169, 120, .11);
-      --amber: #b36a08;
-      --amber-soft: rgba(179, 106, 8, .11);
-      --red: #a33737;
-      --red-soft: rgba(163, 55, 55, .11);
-      --violet: #6957b0;
-      --violet-soft: rgba(105, 87, 176, .11);
-      --shadow-sm: 0 1px 3px rgba(0,0,0,.05), 0 2px 8px rgba(0,0,0,.04);
-      --shadow-md: 0 8px 28px rgba(10, 35, 38, .08);
-      --shadow-lg: 0 18px 60px rgba(10, 35, 38, .12);
-      --display: 'Playfair Display', serif;
-      --body: 'DM Sans', sans-serif;
-      --mono: 'JetBrains Mono', monospace;
-      --radius: 7px;
+      --bg:        #f4f9fc;
+      --bg2:       #eef6fa;
+      --paper:     #ffffff;
+      --surface:   #ffffff;
+      --surface2:  #f7fbfd;
+      --surface3:  #eef6fa;
+      --ink:       #1f2b33;
+      --ink2:      #3d4d57;
+      --ink3:      #6f8089;
+      --ink4:      #a3b3ba;
+      --rule:      rgba(30,60,80,0.08);
+      --rule2:     rgba(30,60,80,0.14);
+
+      --cobalt:      #7fc4e8;
+      --cobalt-deep: #5fb3e0;
+      --cobalt-soft: rgba(127,196,232,0.10);
+
+      --water:      #a8e0ee;
+      --water2:     #8fd6cc;
+      --water3:     #6fc4d9;
+      --water-soft: rgba(168,224,238,0.16);
+      --water-rim:  rgba(168,224,238,0.32);
+
+      --mint:       #a8d9bd;
+      --mint2:      #8fc9a8;
+      --mint-soft:  rgba(168,217,189,0.14);
+
+      --amber:      #f0c48a;
+      --amber-soft: rgba(240,196,138,0.14);
+      --red:        #f0a3a3;
+      --red-soft:   rgba(240,163,163,0.14);
+      --violet:     #c3b8e8;
+      --violet-soft: rgba(195,184,232,0.14);
+
+      --shadow-sm: 0 1px 3px rgba(90,150,180,0.06), 0 2px 8px rgba(90,150,180,0.05);
+      --shadow-md: 0 8px 24px rgba(90,150,180,0.08);
+      --shadow-lg: 0 18px 50px rgba(90,150,180,0.10);
+
+      --display: Arial, Helvetica, sans-serif;
+      --body:    Arial, Helvetica, sans-serif;
+      --mono:    Arial, Helvetica, sans-serif;
+      --radius: 4px;
       --lens-w: 388px;
     }
 
@@ -70,9 +72,9 @@
       overflow-x: hidden;
       -webkit-font-smoothing: antialiased;
       background:
-        radial-gradient(circle at 10% 8%, rgba(16,168,208,.15), transparent 24%),
-        radial-gradient(circle at 86% 0%, rgba(28,63,110,.11), transparent 26%),
-        linear-gradient(180deg, var(--bg) 0%, #fbfbf6 45%, #efeee6 100%);
+        radial-gradient(circle at 10% 8%, rgba(168,224,238,.11), transparent 24%),
+        radial-gradient(circle at 86% 0%, rgba(127,196,232,.09), transparent 26%),
+        linear-gradient(180deg, var(--bg) 0%, #f9fcfd 45%, #eef6fa 100%);
     }
 
     body::after {
@@ -318,7 +320,7 @@
       background: rgba(255,255,255,.74);
       backdrop-filter: blur(14px);
       overflow-y: auto;
-      box-shadow: -8px 0 30px rgba(10,35,38,.035);
+      box-shadow: -8px 0 30px rgba(90,150,180,.05);
     }
 
     .lens-kicker {
@@ -388,7 +390,7 @@
       border: 1px solid var(--rule);
       border-radius: var(--radius);
       background:
-        radial-gradient(circle at 84% 22%, rgba(16,168,208,.18), transparent 28%),
+        radial-gradient(circle at 84% 22%, rgba(168,224,238,.14), transparent 28%),
         linear-gradient(135deg, rgba(255,255,255,.96), rgba(247,252,252,.92));
       box-shadow: var(--shadow-sm);
     }
@@ -402,7 +404,7 @@
       font-size: 150px;
       font-weight: 900;
       letter-spacing: -.08em;
-      color: rgba(16,168,208,.07);
+      color: rgba(168,224,238,.10);
       pointer-events: none;
     }
 
@@ -546,7 +548,7 @@
     }
 
     .badge.ok {
-      border-color: rgba(24,169,120,.30);
+      border-color: rgba(168,217,189,.44);
       background: var(--mint-soft);
       color: var(--mint2);
     }
@@ -558,19 +560,19 @@
     }
 
     .badge.warn {
-      border-color: rgba(179,106,8,.26);
+      border-color: rgba(240,196,138,.46);
       background: var(--amber-soft);
       color: var(--amber);
     }
 
     .badge.red {
-      border-color: rgba(163,55,55,.26);
+      border-color: rgba(240,163,163,.46);
       background: var(--red-soft);
       color: var(--red);
     }
 
     .badge.violet {
-      border-color: rgba(105,87,176,.26);
+      border-color: rgba(195,184,232,.46);
       background: var(--violet-soft);
       color: var(--violet);
     }
@@ -884,7 +886,7 @@
       z-index: 2;
       padding: 10px 10px;
       border-bottom: 1px solid var(--rule2);
-      background: #eff8fa;
+      background: #eef6fa;
       color: var(--ink2);
       font-family: var(--mono);
       font-size: 7.5px;
@@ -915,7 +917,7 @@
 
     th:first-child {
       z-index: 3;
-      background: #eff8fa;
+      background: #eef6fa;
     }
 
     tr:nth-child(even) td {
@@ -965,25 +967,25 @@
     }
 
     .value-chip.ok {
-      border-color: rgba(24,169,120,.26);
+      border-color: rgba(168,217,189,.40);
       background: var(--mint-soft);
       color: var(--mint2);
     }
 
     .value-chip.warn {
-      border-color: rgba(179,106,8,.26);
+      border-color: rgba(240,196,138,.46);
       background: var(--amber-soft);
       color: var(--amber);
     }
 
     .value-chip.empty {
       color: var(--ink4);
-      background: #f5f5f0;
+      background: #f7fbfd;
       border-style: dashed;
     }
 
     .value-chip.red {
-      border-color: rgba(163,55,55,.26);
+      border-color: rgba(240,163,163,.46);
       background: var(--red-soft);
       color: var(--red);
     }
@@ -1225,6 +1227,48 @@
       }
     }
 
+
+    .eyebrow,
+    .source-type,
+    .lens-kicker,
+    .concl-title,
+    .hero h1 em,
+    .section-title em,
+    .compare-kpi-value {
+      color: #3f7389 !important;
+    }
+
+    .micro-ok {
+      color: #517c63 !important;
+    }
+
+    .badge.ok,
+    .value-chip.ok {
+      border-color: rgba(168,217,189,.48) !important;
+      background: var(--mint-soft) !important;
+      color: #517c63 !important;
+    }
+
+    .badge.warn,
+    .value-chip.warn {
+      border-color: rgba(240,196,138,.52) !important;
+      background: var(--amber-soft) !important;
+      color: #8d632f !important;
+    }
+
+    .badge.red,
+    .value-chip.red {
+      border-color: rgba(240,163,163,.52) !important;
+      background: var(--red-soft) !important;
+      color: #8b5555 !important;
+    }
+
+    .badge.violet {
+      border-color: rgba(195,184,232,.52) !important;
+      background: var(--violet-soft) !important;
+      color: #665b89 !important;
+    }
+
     @media (max-width: 1180px) {
       .page {
         grid-template-columns: 1fr;
@@ -1361,36 +1405,83 @@
       }
     }
   
-    /* ══ LOADING SCREEN ═════════════════════════════════════════════ */
+    /* ══ LOADING SCREEN · AWA05 pastel, una sola ejecución ═════════════ */
     #awa-loader {
-      position: fixed; inset: 0; z-index: 99999;
-      display: flex; align-items: flex-end; justify-content: center;
-      background: linear-gradient(160deg, #0e274b 0%, #1c3f6e 45%, #087fa5 100%);
-      transition: opacity 0.7s ease, transform 0.7s ease;
+      position: fixed;
+      inset: 0;
+      z-index: 99999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: linear-gradient(160deg, #f4f9fc 0%, #d9eef8 52%, #bfe3f5 100%);
+      transition: opacity .5s ease;
       overflow: hidden;
     }
-    #awa-loader.fade-out { opacity: 0; transform: translateY(-18px); pointer-events: none; }
+    #awa-loader.fade-out { opacity: 0; pointer-events: none; }
     #awa-loader.gone { display: none; }
-    .loader-inner { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-    .loader-waves { position: absolute; bottom: 0; left: 0; right: 0; width: 100%; height: 280px; pointer-events: none; }
-    .lwave1 { animation: waveRise1 5s cubic-bezier(.4,0,.2,1) forwards, waveSway 3s ease-in-out infinite alternate; }
-    .lwave2 { animation: waveRise2 5s cubic-bezier(.4,0,.2,1) forwards, waveSway2 4s ease-in-out infinite alternate; }
-    @keyframes waveRise1 { from { transform: translateY(280px); } to { transform: translateY(0); } }
-    @keyframes waveRise2 { 0%,15% { transform: translateY(280px); } to { transform: translateY(0); } }
-    @keyframes waveSway  { from { transform: translateX(-5%) scaleX(1.04); } to { transform: translateX(5%) scaleX(0.97); } }
-    @keyframes waveSway2 { from { transform: translateX(4%) scaleX(0.96); } to { transform: translateX(-4%) scaleX(1.03); } }
-    .loader-logo { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 10px; animation: logoFadeIn 0.8s 0.5s both; }
-    @keyframes logoFadeIn { from { opacity: 0; transform: translateY(24px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
-    .loader-drop { width: 64px; height: 88px; filter: drop-shadow(0 12px 32px rgba(16,168,208,0.5)); animation: dropBob 2.2s ease-in-out infinite; }
-    @keyframes dropBob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
-    .loader-wordmark { color: #fff; font-family: 'Playfair Display', serif; font-size: 48px; font-weight: 900; letter-spacing: -0.03em; line-height: 1; }
-    .loader-wordmark span { color: #7ee8f4; }
-    .loader-sub { color: rgba(255,255,255,0.5); font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 0.18em; text-transform: uppercase; }
-    .loader-bar-wrap { position: relative; z-index: 2; width: 220px; height: 2px; background: rgba(255,255,255,0.12); border-radius: 999px; margin-top: 28px; overflow: hidden; }
-    .loader-bar { height: 100%; width: 0%; background: linear-gradient(90deg, #10a8d0, #fff, #18a978); border-radius: 999px; animation: barFill 5s cubic-bezier(.4,0,.2,1) forwards; }
-    @keyframes barFill { from { width: 0%; } to { width: 100%; } }
+    .loader-inner {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .loader-waves { display: none !important; }
+    .loader-logo {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      animation: logoFadeIn .55s ease both;
+    }
+    @keyframes logoFadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .loader-drop {
+      width: 54px;
+      height: 72px;
+      filter: drop-shadow(0 10px 24px rgba(95,179,224,.18));
+      animation: none !important;
+    }
+    .loader-wordmark {
+      color: var(--ink);
+      font-family: var(--display);
+      font-size: 44px;
+      font-weight: 800;
+      letter-spacing: -.02em;
+      line-height: 1;
+    }
+    .loader-wordmark span { color: #5fb3e0; }
+    .loader-sub {
+      color: var(--ink3);
+      font-family: var(--mono);
+      font-size: 9px;
+      letter-spacing: .16em;
+      text-transform: uppercase;
+    }
+    .loader-bar-wrap {
+      position: relative;
+      z-index: 2;
+      width: 220px;
+      height: 3px;
+      margin-top: 26px;
+      overflow: hidden;
+      border-radius: 999px;
+      background: rgba(31,43,51,.08);
+    }
+    .loader-bar {
+      height: 100%;
+      width: 12%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #a8e0ee, #5fb3e0);
+      transition: width .42s cubic-bezier(.4,0,.2,1);
+    }
+    #awa-loader.rendered .loader-bar { width: 100%; }
 
-  
     /* ══ CONCLUSIONS ════════════════════════════════════════════════ */
     .conclusions-grid {
       display: grid;
@@ -1572,7 +1663,7 @@
     }
 
     #matrix-table tbody tr.selected-row td {
-      background: rgba(16,168,208,0.10) !important;
+      background: rgba(168,224,238,.13) !important;
       box-shadow: inset 3px 0 0 var(--water);
     }
 
@@ -1582,7 +1673,7 @@
     }
 
     .matrix-cell:hover {
-      background: rgba(16,168,208,0.14) !important;
+      background: rgba(168,224,238,.17) !important;
     }
 
     /* ══ HERO ANIMATIONS ════════════════════════════════════════════ */
@@ -1609,11 +1700,11 @@
     }
     .hero-action:not(.primary):hover {
       transform: translateY(-3px) scale(1.02) !important;
-      box-shadow: 0 4px 14px rgba(16,168,208,0.18) !important;
+      box-shadow: 0 4px 14px rgba(168,224,238,.20) !important;
     }
     .hero-action.primary:hover {
       transform: translateY(-3px) scale(1.02) !important;
-      box-shadow: 0 6px 20px rgba(16,168,208,0.35) !important;
+      box-shadow: 0 6px 20px rgba(95,179,224,.24) !important;
     }
 
     /* ══ SECTION NAV LINK ══════════════════════════════════════════ */
@@ -1664,16 +1755,16 @@
 
     #matrix-table th:first-child {
       z-index: 24;
-      background: #eff8fa !important;
+      background: #eef6fa !important;
     }
 
     #matrix-table tr:nth-child(even) td:first-child {
-      background: #f8fbfb !important;
+      background: #f7fbfd !important;
     }
 
     #matrix-table tr:hover td:first-child,
     #matrix-table tr.selected-row td:first-child {
-      background: #e8f8fb !important;
+      background: #eef8fc !important;
     }
 
     #matrix-table th:nth-child(2),
@@ -2158,10 +2249,297 @@
       gap: 8px;
     }
 
+
+    /* ════════════════════════════════════════════════════════════════
+       AWA05 · Unificación visual con dashboard de telemetría
+       Capa visual únicamente: no modifica datos, edición ni exportación.
+       ════════════════════════════════════════════════════════════════ */
+    html, body, button, input, select, textarea, canvas {
+      font-family: Arial, Helvetica, sans-serif !important;
+    }
+
+    body {
+      background:
+        radial-gradient(circle at 10% 8%, rgba(168,224,238,.11), transparent 25%),
+        radial-gradient(circle at 86% 0%, rgba(127,196,232,.09), transparent 27%),
+        linear-gradient(180deg, var(--bg) 0%, #f9fcfd 48%, var(--bg2) 100%);
+    }
+
+    header,
+    .dash-footer {
+      background: linear-gradient(135deg, #bfe3f5 0%, #8fcbe8 100%) !important;
+      color: var(--ink) !important;
+    }
+
+    header::before,
+    .dash-footer::before {
+      color: rgba(31,43,51,.045) !important;
+    }
+
+    header::after,
+    .dash-footer::after {
+      background: rgba(31,43,51,.08) !important;
+    }
+
+    .hd-name,
+    .hd-stat-val,
+    .footer-center,
+    .footer-org {
+      color: var(--ink) !important;
+    }
+
+    .hd-sub,
+    .hd-stat-lbl,
+    .hd-ts,
+    .footer-left,
+    .footer-right,
+    .footer-powered-label {
+      color: rgba(31,43,51,.58) !important;
+    }
+
+    .hd-sep {
+      background: rgba(31,43,51,.14) !important;
+    }
+
+    .hd-ts {
+      border-color: rgba(31,43,51,.12) !important;
+      background: rgba(255,255,255,.28) !important;
+    }
+
+    header .hd-right > a.hd-hide-sm,
+    .hd-mobile-menu {
+      border-color: rgba(31,43,51,.13) !important;
+      background: rgba(255,255,255,.28) !important;
+      color: var(--ink2) !important;
+      box-shadow: none !important;
+    }
+
+    header .hd-right > a.hd-hide-sm:hover,
+    .hd-mobile-menu:hover {
+      background: rgba(255,255,255,.62) !important;
+      color: var(--ink) !important;
+    }
+
+    header .hd-right > a[href="comparativo-calidad-agua.html"] {
+      background: rgba(255,255,255,.76) !important;
+      color: var(--ink) !important;
+      border-color: rgba(31,43,51,.08) !important;
+    }
+
+    .dash-footer .footer-pi-logo {
+      filter: none !important;
+      opacity: .88;
+    }
+
+    .hero-action.primary,
+    .btn.primary {
+      border-color: var(--cobalt-deep);
+      background: linear-gradient(135deg, var(--water), var(--cobalt));
+      color: var(--ink);
+    }
+
+    .badge.ok,
+    .value-chip.ok { color: #517c63; }
+    .badge.warn,
+    .value-chip.warn { color: #8d632f; }
+    .badge.red,
+    .value-chip.red { color: #8b5555; }
+
+    .source-card {
+      --source-color: var(--cobalt);
+      border-top: 3px solid var(--source-color);
+    }
+
+    .source-card.selected {
+      box-shadow: 0 0 0 2px rgba(127,196,232,.16), var(--shadow-md) !important;
+    }
+
+    .source-card.source-highlight {
+      transform: translateY(-3px) !important;
+      box-shadow: 0 0 0 2px color-mix(in srgb, var(--source-color) 28%, transparent), var(--shadow-md) !important;
+    }
+
+    #matrix-table td.matrix-cell {
+      transition: background-color .18s ease, box-shadow .18s ease, color .18s ease;
+    }
+
+    #matrix-table td.matrix-cell.source-highlight {
+      background: rgba(127,196,232,.16) !important;
+      box-shadow: inset 0 0 0 1px rgba(95,179,224,.24);
+      color: var(--ink2);
+    }
+
+    #matrix-table tbody tr {
+      transition: background-color .18s cubic-bezier(.4,0,.2,1);
+    }
+
+    #matrix-table tbody tr.selected-row td {
+      background: rgba(168,224,238,.13) !important;
+    }
+
+    .lens {
+      border: 1px solid var(--rule) !important;
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.92) !important;
+      box-shadow: var(--shadow-sm) !important;
+      margin: 18px 18px 18px 0;
+      top: 112px;
+      height: calc(100vh - 130px);
+    }
+
+    .lens.awa-lens-refresh {
+      animation: awaLensRefresh .32s cubic-bezier(.4,0,.2,1) both;
+    }
+
+    @keyframes awaLensRefresh {
+      from { opacity: .72; transform: translateX(8px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .section-nav {
+      position: sticky;
+      top: 56px;
+      z-index: 285;
+      height: 46px;
+      border-bottom: 1px solid var(--rule2);
+      background: rgba(247,251,253,.94);
+      box-shadow: 0 5px 18px rgba(90,150,180,.06);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+    }
+
+    .section-nav-inner {
+      height: 100%;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      max-width: 1800px;
+      margin: 0 auto;
+      padding: 0 32px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .section-nav-inner::-webkit-scrollbar { display: none; }
+
+    .top-link {
+      min-height: 30px;
+      padding: 7px 11px;
+      border: 1px solid transparent;
+      border-radius: var(--radius);
+      background: transparent;
+      color: var(--ink3);
+      font-family: var(--mono);
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: .10em;
+      text-decoration: none;
+      text-transform: uppercase;
+      white-space: nowrap;
+      transition: background .16s ease, border-color .16s ease, color .16s ease, transform .16s ease;
+    }
+
+    .top-link:hover {
+      background: var(--cobalt-soft);
+      border-color: rgba(127,196,232,.20);
+      color: var(--ink2);
+      transform: translateY(-1px);
+    }
+
+    .top-link.active {
+      background: rgba(127,196,232,.18);
+      border-color: var(--water-rim);
+      color: #315d75;
+      box-shadow: inset 0 -2px 0 var(--cobalt-deep);
+    }
+
+    .top-link:active,
+    .hero-action:active,
+    .btn:active {
+      transform: scale(.97) !important;
+    }
+
+    section {
+      scroll-margin-top: 118px;
+    }
+
+    #reading-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 100000;
+      width: 0;
+      height: 2px;
+      background: var(--cobalt-deep);
+      box-shadow: 0 0 8px rgba(95,179,224,.28);
+      pointer-events: none;
+      transition: width .08s linear;
+    }
+
+    .awa-ripple-host {
+      position: relative !important;
+      overflow: hidden !important;
+    }
+
+    .awa-ripple {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      background: rgba(255,255,255,.48);
+      transform: scale(0);
+      animation: awaRipple .4s ease-out forwards;
+    }
+
+    @keyframes awaRipple {
+      to { transform: scale(1); opacity: 0; }
+    }
+
+    .chart-box canvas {
+      transition: opacity .32s ease;
+    }
+
+    .chart-box canvas.awa-chart-pending {
+      opacity: 0;
+    }
+
+    @media (max-width: 1180px) {
+      .lens {
+        margin: 0;
+        border-left: 0 !important;
+        border-right: 0 !important;
+        border-radius: 0;
+        height: auto;
+        top: auto;
+        box-shadow: none !important;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .section-nav { top: 48px; }
+    }
+
+    @media (max-width: 760px) {
+      .section-nav { display: none; }
+      section { scroll-margin-top: 62px; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      *, *::before, *::after {
+        animation-duration: .01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: .01ms !important;
+        scroll-behavior: auto !important;
+      }
+      .awa-ripple { display: none !important; }
+      .chart-box canvas.awa-chart-pending { opacity: 1 !important; }
+    }
+
   </style>
 </head>
 
 <body>
+  <div id="reading-progress" aria-hidden="true"></div>
   <header>
   <div class="hd-brand">
     <img src="aala_logo.png" alt="AALA" style="height:30px;width:auto;opacity:0.92;filter:none;flex-shrink:0;">
@@ -2185,7 +2563,7 @@
     <a href="index.html" class="hd-hide-sm" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:4px;border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:0.10em;text-decoration:none;text-transform:uppercase;transition:all 0.15s;">← Inicio</a>
     <a href="dashboard.html" class="hd-hide-sm" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:4px;border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:0.10em;text-decoration:none;text-transform:uppercase;transition:all 0.15s;">Dashboard</a>
     <a href="analisis-estadistico.html" class="hd-hide-sm" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:4px;border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.08);color:rgba(255,255,255,0.85);font-family:var(--mono);font-size:9px;font-weight:500;letter-spacing:0.10em;text-decoration:none;text-transform:uppercase;transition:all 0.15s;">Análisis estadístico</a>
-    <a href="comparativo-calidad-agua.html" class="hd-hide-sm" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:4px;border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.92);color:#1c3f6e;font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:0.10em;text-decoration:none;text-transform:uppercase;transition:all 0.15s;">Calidad de agua</a>
+    <a href="comparativo-calidad-agua.html" class="hd-hide-sm" style="display:inline-flex;align-items:center;gap:6px;padding:7px 14px;border-radius:4px;border:1px solid rgba(255,255,255,0.22);background:rgba(255,255,255,0.92);color:var(--ink);font-family:var(--mono);font-size:9px;font-weight:600;letter-spacing:0.10em;text-decoration:none;text-transform:uppercase;transition:all 0.15s;">Calidad de agua</a>
     <div class="hd-ts" id="header-ts">--</div>
     <button class="btn hd-mobile-menu" id="btn-mobile-menu" aria-label="Menú">☰</button>
   </div>
@@ -2201,36 +2579,34 @@
   </nav>
 </div>
 
-  
+  <nav class="section-nav" aria-label="Secciones del benchmark">
+    <div class="section-nav-inner">
+      <a class="top-link active" href="#inicio">Inicio</a>
+      <a class="top-link" href="#kpis">KPIs</a>
+      <a class="top-link" href="#fuentes">Fuentes</a>
+      <a class="top-link" href="#matriz">Matriz</a>
+      <a class="top-link" href="#comparador">Comparador</a>
+      <a class="top-link" href="#graficas">Gráficas</a>
+      <a class="top-link" href="#microbiologia">Microbiología</a>
+      <a class="top-link" href="#lote">Lote 1</a>
+      <a class="top-link" href="#editor">Editor</a>
+      <a class="top-link" href="#conclusiones">Conclusiones</a>
+    </div>
+  </nav>
+
   <div id="awa-loader" aria-hidden="true">
     <div class="loader-inner">
-      <svg class="loader-waves" viewBox="0 0 1200 300" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
-        <defs>
-          <linearGradient id="wg1" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#10a8d0" stop-opacity="0.6"/>
-            <stop offset="100%" stop-color="#0e274b" stop-opacity="1"/>
-          </linearGradient>
-          <linearGradient id="wg2" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stop-color="#18a978" stop-opacity="0.45"/>
-            <stop offset="100%" stop-color="#1c3f6e" stop-opacity="0.9"/>
-          </linearGradient>
-        </defs>
-        <path class="lwave lwave1" fill="url(#wg1)"
-          d="M0,180 C200,120 400,240 600,180 C800,120 1000,240 1200,180 L1200,300 L0,300 Z"/>
-        <path class="lwave lwave2" fill="url(#wg2)"
-          d="M0,210 C250,150 450,270 700,200 C900,140 1050,260 1200,200 L1200,300 L0,300 Z"/>
-      </svg>
       <div class="loader-logo">
-        <div class="loader-drop">
+        <div class="loader-drop" aria-hidden="true">
           <svg viewBox="0 0 60 80" xmlns="http://www.w3.org/2000/svg">
             <defs>
-              <radialGradient id="dg" cx="40%" cy="30%">
-                <stop offset="0%" stop-color="#7ee8f4"/>
-                <stop offset="100%" stop-color="#1c3f6e"/>
-              </radialGradient>
+              <linearGradient id="dg" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stop-color="#d8f1f8"/>
+                <stop offset="100%" stop-color="#7fc4e8"/>
+              </linearGradient>
             </defs>
             <path d="M30 4 C30 4 6 44 6 56 C6 69 17 76 30 76 C43 76 54 69 54 56 C54 44 30 4 30 4Z" fill="url(#dg)"/>
-            <ellipse cx="22" cy="42" rx="5" ry="9" fill="rgba(255,255,255,0.22)" transform="rotate(-18,22,42)"/>
+            <ellipse cx="22" cy="42" rx="5" ry="9" fill="rgba(255,255,255,0.38)" transform="rotate(-18,22,42)"/>
           </svg>
         </div>
         <div class="loader-wordmark">AWA<span>05</span></div>
@@ -3698,45 +4074,270 @@ function renderComparator() {
   );
 }
 
+
+const SOURCE_COLORS = Object.freeze({
+  awa05: '#5fb3e0',
+  voss: '#8fd6cc',
+  acqua_panna: '#c3b8e8',
+  fiji: '#a8e0ee',
+  essentia: '#a8d9bd',
+  spellegrino: '#f3d98a',
+  evian: '#f0c48a',
+  ecofiltro: '#8fc9a8',
+  salvavidas: '#f0a3a3',
+  smartwater: '#9fcbe3'
+});
+
+const AWA_REDUCED_MOTION = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let awaLastHighlightedSource = null;
+const awaChartTargets = new WeakMap();
+
+function sourceColor(sourceId) {
+  return SOURCE_COLORS[sourceId] || '#7fc4e8';
+}
+
+function colorWithAlpha(hex, alpha) {
+  const clean = String(hex || '').replace('#', '');
+  if (clean.length !== 6) return `rgba(127,196,232,${alpha})`;
+  const r = parseInt(clean.slice(0,2), 16);
+  const g = parseInt(clean.slice(2,4), 16);
+  const b = parseInt(clean.slice(4,6), 16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+function clearSourceHighlight() {
+  document.querySelectorAll('.source-card.source-highlight, #matrix-table .source-highlight')
+    .forEach(el => el.classList.remove('source-highlight'));
+  awaLastHighlightedSource = null;
+}
+
+function highlightSource(sourceId, detail = {}) {
+  if (!sourceId) {
+    clearSourceHighlight();
+    return;
+  }
+
+  document.querySelectorAll('.source-card.source-highlight, #matrix-table .source-highlight')
+    .forEach(el => el.classList.remove('source-highlight'));
+
+  document.querySelectorAll(`.source-card[data-source="${sourceId}"], #matrix-table .matrix-cell[data-source="${sourceId}"]`)
+    .forEach(el => el.classList.add('source-highlight'));
+
+  if (awaLastHighlightedSource === sourceId) return;
+  awaLastHighlightedSource = sourceId;
+
+  const source = sourceById(sourceId);
+  if (!source) return;
+  const details = [];
+  if (detail.paramId) {
+    const p = paramById(detail.paramId);
+    const v = getValue(sourceId, detail.paramId);
+    if (p && v) details.push({ label: p.name, value: `${v.display ?? v.value} ${v.unit || p.unit}` });
+  }
+  details.push({ label: 'Evidencia', value: source.evidence });
+  details.push({ label: 'Perfil', value: source.profile });
+
+  setLens(
+    source.name,
+    `<strong>${source.type}.</strong> ${source.description}`,
+    'Fuente resaltada en gráfica',
+    details
+  );
+}
+
+function awaTooltipOptions() {
+  return {
+    enabled: true,
+    backgroundColor: 'rgba(255,255,255,.97)',
+    titleColor: '#1f2b33',
+    bodyColor: '#3d4d57',
+    borderColor: 'rgba(30,60,80,.14)',
+    borderWidth: 1,
+    padding: 11,
+    cornerRadius: 4,
+    displayColors: true,
+    titleFont: { family: 'Arial', size: 11, weight: '700' },
+    bodyFont: { family: 'Arial', size: 10, weight: '500' },
+    callbacks: {
+      label(ctx) {
+        const label = ctx.dataset.label ? `${ctx.dataset.label}: ` : '';
+        const value = ctx.parsed.y ?? ctx.parsed.x ?? ctx.parsed.r ?? ctx.raw;
+        return `${label}${value}`;
+      }
+    }
+  };
+}
+
+const AWA_TOOLTIP_SHADOW_PLUGIN = {
+  id: 'awaTooltipShadow',
+  beforeTooltipDraw(chart) {
+    chart.ctx.save();
+    chart.ctx.shadowColor = 'rgba(90,150,180,.18)';
+    chart.ctx.shadowBlur = 18;
+    chart.ctx.shadowOffsetY = 7;
+  },
+  afterTooltipDraw(chart) {
+    chart.ctx.restore();
+  }
+};
+
+const AWA_MAP_REFERENCE_PLUGIN = {
+  id: 'awaMapReference',
+  beforeDatasetsDraw(chart) {
+    if (!chart.canvas || chart.canvas.id !== 'chart-map') return;
+    const x = chart.scales.x;
+    const y = chart.scales.y;
+    if (!x || !y) return;
+
+    const ctx = chart.ctx;
+    const left = x.getPixelForValue(6.5);
+    const right = x.getPixelForValue(8.5);
+    const top = y.top;
+    const bottom = y.bottom;
+
+    ctx.save();
+    ctx.fillStyle = 'rgba(168,217,189,.12)';
+    ctx.fillRect(left, top, Math.max(0, right - left), bottom - top);
+
+    ctx.setLineDash([5, 5]);
+    ctx.lineWidth = 1;
+    ctx.strokeStyle = 'rgba(143,201,168,.72)';
+    [6.5, 8.5].forEach(v => {
+      const px = x.getPixelForValue(v);
+      ctx.beginPath();
+      ctx.moveTo(px, top);
+      ctx.lineTo(px, bottom);
+      ctx.stroke();
+    });
+
+    const awaTds = numericValue('awa05', 'tds');
+    if (awaTds !== null) {
+      const py = y.getPixelForValue(awaTds);
+      ctx.strokeStyle = 'rgba(95,179,224,.72)';
+      ctx.beginPath();
+      ctx.moveTo(x.left, py);
+      ctx.lineTo(x.right, py);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+};
+
+if (typeof Chart !== 'undefined') {
+  Chart.register(AWA_TOOLTIP_SHADOW_PLUGIN, AWA_MAP_REFERENCE_PLUGIN);
+}
+
+function animateChartEntrance(chart, kind = 'bar') {
+  if (!chart || chart.$awaAnimated) return;
+  chart.$awaAnimated = true;
+  const canvas = chart.canvas;
+  if (!canvas) return;
+
+  if (AWA_REDUCED_MOTION) {
+    canvas.classList.remove('awa-chart-pending');
+    canvas.style.opacity = '1';
+    chart.update('none');
+    return;
+  }
+
+  const originals = chart.data.datasets.map(ds => Array.isArray(ds.data)
+    ? ds.data.map(v => (v && typeof v === 'object') ? { ...v } : v)
+    : ds.data
+  );
+
+  chart.data.datasets.forEach((ds, di) => {
+    if (!Array.isArray(ds.data)) return;
+    if (kind === 'scatter') {
+      ds.data = ds.data.map(v => (v && typeof v === 'object') ? { ...v, y: 0 } : v);
+    } else {
+      ds.data = ds.data.map(v => typeof v === 'number' ? 0 : v);
+    }
+  });
+
+  chart.options.animation = false;
+  chart.update('none');
+  canvas.classList.remove('awa-chart-pending');
+  canvas.style.opacity = '1';
+
+  requestAnimationFrame(() => {
+    chart.data.datasets.forEach((ds, di) => { ds.data = originals[di]; });
+    chart.options.animation = { duration: 800, easing: 'easeOutQuart' };
+    chart.update();
+  });
+}
+
+const awaChartObserver = ('IntersectionObserver' in window) ? new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const config = awaChartTargets.get(entry.target);
+    if (config) animateChartEntrance(config.chart, config.kind);
+  });
+}, { threshold: .18, rootMargin: '0px 0px -8% 0px' }) : null;
+
+function registerAwaChart(chart, kind = 'bar') {
+  if (!chart || !chart.canvas) return;
+  const canvas = chart.canvas;
+  const target = canvas.closest('.chart-box') || canvas.parentElement || canvas;
+
+  chart.$awaAnimated = false;
+  canvas.classList.toggle('awa-chart-pending', !AWA_REDUCED_MOTION);
+
+  if (AWA_REDUCED_MOTION || !awaChartObserver) {
+    animateChartEntrance(chart, kind);
+    return;
+  }
+
+  awaChartTargets.set(target, { chart, kind });
+  awaChartObserver.observe(target);
+
+  const rect = target.getBoundingClientRect();
+  if (rect.top < window.innerHeight && rect.bottom > 0) {
+    requestAnimationFrame(() => animateChartEntrance(chart, kind));
+  }
+}
+
+
 function chartDatasetFor(paramId) {
   return SOURCES
     .map(s => ({ source: s.name, id: s.id, value: numericValue(s.id, paramId) }))
     .filter(x => x.value !== null);
 }
 
-function aquaColors(n) {
-  const palette = ['#10a8d0','#087fa5','#1c3f6e','#18a978','#6957b0','#5abbd5','#0b5d7d','#79d1e4','#2d9cc6','#0d7451'];
-  return Array.from({ length: n }, (_, i) => palette[i % palette.length]);
+function aquaColors(n, sourceIds = []) {
+  const fallback = ['#5fb3e0','#8fd6cc','#c3b8e8','#a8e0ee','#a8d9bd','#f3d98a','#f0c48a','#8fc9a8','#f0a3a3','#9fcbe3'];
+  return Array.from({ length: n }, (_, i) => sourceIds[i] ? sourceColor(sourceIds[i]) : fallback[i % fallback.length]);
 }
 
 function baseChartOptions(title) {
   return {
     responsive: true,
     maintainAspectRatio: false,
+    animation: false,
+    interaction: { mode: 'nearest', intersect: true },
     plugins: {
       legend: {
         position: 'bottom',
-        labels: { boxWidth: 12, font: { family: 'JetBrains Mono', size: 10 } }
-      },
-      tooltip: {
-        callbacks: {
-          label(ctx) {
-            const label = ctx.dataset.label ? `${ctx.dataset.label}: ` : '';
-            const y = ctx.parsed.y ?? ctx.parsed.x;
-            return `${label}${y}`;
-          }
+        labels: {
+          boxWidth: 11,
+          boxHeight: 11,
+          color: '#6f8089',
+          font: { family: 'Arial', size: 10, weight: '600' }
         }
-      }
+      },
+      tooltip: awaTooltipOptions(),
+      title: { display: false, text: title }
     },
     scales: {
       x: {
         grid: { display: false },
-        ticks: { font: { family: 'JetBrains Mono', size: 9 }, color: '#61706d' }
+        border: { color: 'rgba(30,60,80,.10)' },
+        ticks: { font: { family: 'Arial', size: 9 }, color: '#6f8089' }
       },
       y: {
         beginAtZero: true,
-        grid: { color: 'rgba(14,35,34,.08)' },
-        ticks: { font: { family: 'JetBrains Mono', size: 9 }, color: '#61706d' }
+        grid: { color: 'rgba(30,60,80,.08)', borderDash: [3, 4] },
+        border: { color: 'rgba(30,60,80,.10)' },
+        ticks: { font: { family: 'Arial', size: 9 }, color: '#6f8089' }
       }
     }
   };
@@ -3751,22 +4352,34 @@ function destroyChart(id) {
 
 function renderBarChart(canvasId, paramId, label, unit) {
   const data = chartDatasetFor(paramId);
+  const canvas = $(canvasId);
+  const colors = data.map(x => sourceColor(x.id));
   destroyChart(canvasId);
-  charts[canvasId] = new Chart($(canvasId), {
+  charts[canvasId] = new Chart(canvas, {
     type: 'bar',
     data: {
-      labels: data.map(x => x.source),
+      labels: data.map(x => x.id === 'awa05' ? `⬢ ${x.source}` : x.source),
       datasets: [{
         label,
         data: data.map(x => x.value),
-        backgroundColor: aquaColors(data.length).map(c => `${c}cc`),
-        borderColor: aquaColors(data.length),
-        borderWidth: 1.4,
-        borderRadius: 8
+        backgroundColor: colors.map((c, i) => colorWithAlpha(c, data[i].id === 'awa05' ? .72 : .52)),
+        borderColor: colors,
+        borderWidth: data.map(x => x.id === 'awa05' ? 2.6 : 1.2),
+        borderRadius: 7,
+        borderSkipped: false
       }]
     },
-    options: baseChartOptions(`${label} (${unit})`)
+    options: {
+      ...baseChartOptions(`${label} (${unit})`),
+      onHover(event, active) {
+        if (!active.length) return clearSourceHighlight();
+        const item = data[active[0].index];
+        if (item) highlightSource(item.id, { paramId, value: item.value });
+      }
+    }
   });
+  canvas.addEventListener('mouseleave', clearSourceHighlight, { passive: true });
+  registerAwaChart(charts[canvasId], 'bar');
 }
 
 function renderMineralChart() {
@@ -3774,6 +4387,7 @@ function renderMineralChart() {
   const mineralIds = ['calcium','magnesium','chloride','sulfate','sodium','potassium'];
   const labels = mineralIds.map(id => paramById(id).name);
   const data = mineralIds.map(id => numericValue(selected, id) || 0);
+  const color = sourceColor(selected);
   destroyChart('chart-minerals');
   charts['chart-minerals'] = new Chart($('chart-minerals'), {
     type: 'radar',
@@ -3783,30 +4397,44 @@ function renderMineralChart() {
         label: sourceById(selected).name,
         data,
         fill: true,
-        backgroundColor: 'rgba(16,168,208,.18)',
-        borderColor: '#087fa5',
-        pointBackgroundColor: '#1c3f6e',
-        pointBorderColor: '#fff',
-        pointRadius: 4
+        backgroundColor: colorWithAlpha(color, .20),
+        borderColor: color,
+        borderWidth: selected === 'awa05' ? 2.8 : 2,
+        pointBackgroundColor: color,
+        pointBorderColor: '#ffffff',
+        pointBorderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6
       }]
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      animation: false,
       plugins: {
-        legend: { position: 'bottom', labels: { font: { family: 'JetBrains Mono', size: 10 } } }
+        legend: {
+          position: 'bottom',
+          labels: { color: '#6f8089', font: { family: 'Arial', size: 10, weight: '600' } }
+        },
+        tooltip: awaTooltipOptions()
       },
       scales: {
         r: {
           beginAtZero: true,
-          angleLines: { color: 'rgba(14,35,34,.10)' },
-          grid: { color: 'rgba(14,35,34,.09)' },
-          pointLabels: { color: '#61706d', font: { family: 'JetBrains Mono', size: 9 } },
-          ticks: { color: '#99a7a4', backdropColor: 'transparent', font: { family: 'JetBrains Mono', size: 8 } }
+          angleLines: { color: 'rgba(30,60,80,.09)' },
+          grid: { color: 'rgba(30,60,80,.08)' },
+          pointLabels: { color: '#6f8089', font: { family: 'Arial', size: 9 } },
+          ticks: { color: '#a3b3ba', backdropColor: 'transparent', font: { family: 'Arial', size: 8 } }
         }
+      },
+      onHover(event, active) {
+        if (active.length) highlightSource(selected);
+        else clearSourceHighlight();
       }
     }
   });
+  $('chart-minerals').addEventListener('mouseleave', clearSourceHighlight, { passive: true });
+  registerAwaChart(charts['chart-minerals'], 'radar');
 }
 
 function renderMapChart() {
@@ -3814,60 +4442,95 @@ function renderMapChart() {
     const ph = numericValue(s.id, 'ph');
     const tds = numericValue(s.id, 'tds');
     if (ph === null || tds === null) return null;
-    return { x: ph, y: tds, source: s.name };
+    return { x: ph, y: tds, source: s.name, id: s.id };
   }).filter(Boolean);
   destroyChart('chart-map');
   charts['chart-map'] = new Chart($('chart-map'), {
     type: 'scatter',
     data: {
-      datasets: points.map((p, i) => ({
-        label: p.source,
+      datasets: points.map(p => ({
+        label: p.id === 'awa05' ? `⬢ ${p.source}` : p.source,
         data: [{ x: p.x, y: p.y }],
-        backgroundColor: aquaColors(points.length)[i],
-        borderColor: '#fff',
-        borderWidth: 2,
-        pointRadius: p.source.includes('AWA05') ? 8 : 6,
-        pointHoverRadius: 10
+        backgroundColor: colorWithAlpha(sourceColor(p.id), p.id === 'awa05' ? .92 : .78),
+        borderColor: p.id === 'awa05' ? '#315d75' : '#ffffff',
+        borderWidth: p.id === 'awa05' ? 3 : 2,
+        pointRadius: p.id === 'awa05' ? 9 : 6,
+        pointHoverRadius: p.id === 'awa05' ? 11 : 9
       }))
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      animation: false,
       plugins: {
-        legend: { position: 'bottom', labels: { font: { family: 'JetBrains Mono', size: 9 }, boxWidth: 9 } },
+        legend: {
+          position: 'bottom',
+          labels: { color: '#6f8089', font: { family: 'Arial', size: 9, weight: '600' }, boxWidth: 9 }
+        },
         tooltip: {
+          ...awaTooltipOptions(),
           callbacks: {
             label(ctx) {
-              return `${ctx.dataset.label}: pH ${ctx.parsed.x}, TDS ${ctx.parsed.y} mg/L`;
+              return `${ctx.dataset.label.replace('⬢ ', '')}: pH ${ctx.parsed.x}, TDS ${ctx.parsed.y} mg/L`;
             }
           }
         }
       },
       scales: {
-        x: { title: { display: true, text: 'pH' }, min: 5, max: 10.2, grid: { color: 'rgba(14,35,34,.08)' } },
-        y: { title: { display: true, text: 'TDS mg/L' }, beginAtZero: true, grid: { color: 'rgba(14,35,34,.08)' } }
+        x: {
+          title: { display: true, text: 'pH', color: '#6f8089', font: { family: 'Arial', size: 10, weight: '600' } },
+          min: 5,
+          max: 10.2,
+          grid: { color: 'rgba(30,60,80,.08)', borderDash: [3, 4] },
+          border: { color: 'rgba(30,60,80,.10)' },
+          ticks: { color: '#6f8089', font: { family: 'Arial', size: 9 } }
+        },
+        y: {
+          title: { display: true, text: 'TDS mg/L', color: '#6f8089', font: { family: 'Arial', size: 10, weight: '600' } },
+          beginAtZero: true,
+          grid: { color: 'rgba(30,60,80,.08)', borderDash: [3, 4] },
+          border: { color: 'rgba(30,60,80,.10)' },
+          ticks: { color: '#6f8089', font: { family: 'Arial', size: 9 } }
+        }
+      },
+      onHover(event, active) {
+        if (!active.length) return clearSourceHighlight();
+        const point = points[active[0].datasetIndex];
+        if (point) highlightSource(point.id, { paramId: 'tds', value: point.y });
       }
     }
   });
+  $('chart-map').addEventListener('mouseleave', clearSourceHighlight, { passive: true });
+  registerAwaChart(charts['chart-map'], 'scatter');
 }
 
 function renderMicroChart() {
   const labels = ['Coliformes totales','Coliformes fecales','E. coli'];
   const sourceIds = ['awa05','ecofiltro'];
-  const datasets = sourceIds.map((id, i) => ({
-    label: sourceById(id).name,
+  const datasets = sourceIds.map(id => ({
+    label: id === 'awa05' ? `⬢ ${sourceById(id).name}` : sourceById(id).name,
     data: ['total_coliforms','fecal_coliforms','ecoli'].map(p => numericValue(id, p) || 0),
-    backgroundColor: aquaColors(sourceIds.length)[i] + 'cc',
-    borderColor: aquaColors(sourceIds.length)[i],
-    borderWidth: 1.4,
-    borderRadius: 8
+    backgroundColor: colorWithAlpha(sourceColor(id), id === 'awa05' ? .72 : .52),
+    borderColor: sourceColor(id),
+    borderWidth: id === 'awa05' ? 2.6 : 1.4,
+    borderRadius: 7,
+    borderSkipped: false
   }));
   destroyChart('chart-micro');
   charts['chart-micro'] = new Chart($('chart-micro'), {
     type: 'bar',
     data: { labels, datasets },
-    options: baseChartOptions('Microbiología')
+    options: {
+      ...baseChartOptions('Microbiología'),
+      onHover(event, active) {
+        if (!active.length) return clearSourceHighlight();
+        const sourceId = sourceIds[active[0].datasetIndex];
+        highlightSource(sourceId);
+      }
+    }
   });
+  $('chart-micro').addEventListener('mouseleave', clearSourceHighlight, { passive: true });
+  registerAwaChart(charts['chart-micro'], 'bar');
 }
 
 function renderCharts() {
@@ -4081,6 +4744,7 @@ document.addEventListener('DOMContentLoaded', () => {
       { label: 'Carga manual', value: 'Disponible para certificados locales' }
     ]
   );
+  document.dispatchEvent(new CustomEvent('awa05:rendered'));
 });
 </script>
 
@@ -4117,22 +4781,176 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   </script>
 
+
   <script>
-    /* ── AWA05 Loader dismiss — duración fija de 5 segundos ── */
+    /* AWA05 · Microinteracciones y navegación visual.
+       No interviene PARAMS/SOURCES, localStorage, edición ni exportación. */
     (function () {
-      var DISMISS_MS = 5000;
-      function dismiss() {
+      function applySourceCardColors() {
+        document.querySelectorAll('.source-card[data-source]').forEach(function (card) {
+          var id = card.getAttribute('data-source');
+          if (typeof SOURCE_COLORS !== 'undefined' && SOURCE_COLORS[id]) {
+            card.style.setProperty('--source-color', SOURCE_COLORS[id]);
+          }
+        });
+      }
+
+      function animateKpiValues() {
+        if (typeof AWA_REDUCED_MOTION !== 'undefined' && AWA_REDUCED_MOTION) return;
+        document.querySelectorAll('#kpi-grid .kpi-value').forEach(function (el) {
+          if (el.dataset.counted === '1') return;
+          var text = el.textContent.trim();
+          var match = text.match(/^([^0-9-]*)(-?\d+(?:[.,]\d+)?)(.*)$/);
+          if (!match) return;
+          var target = Number(match[2].replace(',', '.'));
+          if (!Number.isFinite(target)) return;
+          el.dataset.counted = '1';
+          var prefix = match[1], suffix = match[3];
+          var decimals = (match[2].split(/[.,]/)[1] || '').length;
+          var start = performance.now();
+          var duration = 620;
+
+          function frame(now) {
+            var p = Math.min(1, (now - start) / duration);
+            var eased = 1 - Math.pow(1 - p, 3);
+            var value = target * eased;
+            el.textContent = prefix + value.toFixed(decimals) + suffix;
+            if (p < 1) requestAnimationFrame(frame);
+            else el.textContent = text;
+          }
+          requestAnimationFrame(frame);
+        });
+      }
+
+      function installRipple() {
+        document.addEventListener('pointerdown', function (event) {
+          if (typeof AWA_REDUCED_MOTION !== 'undefined' && AWA_REDUCED_MOTION) return;
+          var target = event.target.closest('.hero-action,.top-link,.btn');
+          if (!target) return;
+          target.classList.add('awa-ripple-host');
+          var rect = target.getBoundingClientRect();
+          var size = Math.max(rect.width, rect.height) * 1.9;
+          var ripple = document.createElement('span');
+          ripple.className = 'awa-ripple';
+          ripple.style.width = ripple.style.height = size + 'px';
+          ripple.style.left = (event.clientX - rect.left - size / 2) + 'px';
+          ripple.style.top = (event.clientY - rect.top - size / 2) + 'px';
+          target.appendChild(ripple);
+          setTimeout(function () { ripple.remove(); }, 430);
+        }, { passive: true });
+      }
+
+      function installSectionNavigation() {
+        var links = Array.prototype.slice.call(document.querySelectorAll('.section-nav .top-link[href^="#"]'));
+        var sections = links.map(function (link) {
+          var id = link.getAttribute('href').slice(1);
+          return document.getElementById(id);
+        }).filter(Boolean);
+
+        if (!('IntersectionObserver' in window) || !sections.length) return;
+
+        var observer = new IntersectionObserver(function (entries) {
+          var visible = entries
+            .filter(function (entry) { return entry.isIntersecting; })
+            .sort(function (a, b) { return b.intersectionRatio - a.intersectionRatio; })[0];
+          if (!visible) return;
+          links.forEach(function (link) {
+            link.classList.toggle('active', link.getAttribute('href') === '#' + visible.target.id);
+          });
+        }, { rootMargin: '-18% 0px -64% 0px', threshold: [0, .12, .25, .5] });
+
+        sections.forEach(function (section) { observer.observe(section); });
+      }
+
+      function installScrollProgress() {
+        var bar = document.getElementById('reading-progress');
+        if (!bar) return;
+        function update() {
+          var doc = document.documentElement;
+          var max = Math.max(1, doc.scrollHeight - window.innerHeight);
+          var pct = Math.max(0, Math.min(100, (window.scrollY / max) * 100));
+          bar.style.width = pct + '%';
+        }
+        update();
+        window.addEventListener('scroll', update, { passive: true });
+        window.addEventListener('resize', update, { passive: true });
+      }
+
+      function installLensAnimation() {
+        var lens = document.getElementById('lens');
+        if (!lens || !('MutationObserver' in window)) return;
+        var scheduled = false;
+        var observer = new MutationObserver(function () {
+          if (scheduled) return;
+          scheduled = true;
+          requestAnimationFrame(function () {
+            lens.classList.remove('awa-lens-refresh');
+            void lens.offsetWidth;
+            lens.classList.add('awa-lens-refresh');
+            scheduled = false;
+          });
+        });
+        observer.observe(lens, { childList: true, subtree: true, characterData: true });
+      }
+
+      function installSourceColorObserver() {
+        var grid = document.getElementById('source-grid');
+        if (!grid) return;
+        applySourceCardColors();
+        if ('MutationObserver' in window) {
+          new MutationObserver(applySourceCardColors).observe(grid, { childList: true, subtree: true });
+        }
+      }
+
+      function installKpiObserver() {
+        var grid = document.getElementById('kpi-grid');
+        if (!grid) return;
+        animateKpiValues();
+        if ('MutationObserver' in window) {
+          new MutationObserver(animateKpiValues).observe(grid, { childList: true, subtree: true });
+        }
+      }
+
+      function initVisualUX() {
+        installRipple();
+        installSectionNavigation();
+        installScrollProgress();
+        installLensAnimation();
+        installSourceColorObserver();
+        installKpiObserver();
+      }
+
+      document.addEventListener('DOMContentLoaded', initVisualUX, { once: true });
+    })();
+  </script>
+
+  <script>
+    /* AWA05 Loader dismiss: se resuelve al terminar el render inicial. */
+    (function () {
+      function dismissLoader() {
         var el = document.getElementById('awa-loader');
         if (!el || el.classList.contains('fade-out')) return;
-        el.classList.add('fade-out');
-        setTimeout(function () {
-          if (el) {
-            el.classList.add('gone');
-            el.style.display = 'none';
-          }
-        }, 760);
+        el.classList.add('rendered');
+        requestAnimationFrame(function () {
+          requestAnimationFrame(function () {
+            setTimeout(function () {
+              el.classList.add('fade-out');
+              setTimeout(function () {
+                if (el) {
+                  el.classList.add('gone');
+                  el.style.display = 'none';
+                }
+              }, 520);
+            }, 180);
+          });
+        });
       }
-      setTimeout(dismiss, DISMISS_MS);
+
+      document.addEventListener('awa05:rendered', dismissLoader, { once: true });
+      window.addEventListener('load', function () {
+        var el = document.getElementById('awa-loader');
+        if (el && !el.classList.contains('fade-out')) dismissLoader();
+      }, { once: true });
     })();
   </script>
 
